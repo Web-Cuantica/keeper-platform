@@ -1,0 +1,31 @@
+# Build white-label de Keeper: construye frontend + backend community (sin ee)
+# enteramente en Linux, evitando el toolchain de Windows. Variante community
+# (resuelve el caveat de licencia ee/ — ADR-0012/0013).
+
+# --- Frontend (Node 24 + pnpm 10 + Vite) ---
+FROM node:24-bookworm AS frontend
+WORKDIR /app
+ENV CI=1
+COPY frontend/ ./
+RUN corepack enable \
+ && corepack prepare pnpm@10.34.4 --activate \
+ && pnpm install --frozen-lockfile \
+ && pnpm run build
+
+# --- Backend community (Go 1.25, compatible con bytedance/sonic) ---
+FROM golang:1.25-bookworm AS backend
+WORKDIR /src
+COPY . ./
+RUN CGO_ENABLED=0 GOOS=linux go build -C cmd/community -tags timetzdata \
+    -ldflags "-s -w -X github.com/SigNoz/signoz/pkg/version.variant=community" \
+    -o /out/signoz .
+
+# --- Imagen final ---
+FROM alpine:3.20
+RUN apk add --no-cache ca-certificates
+WORKDIR /root
+COPY --from=backend /out/signoz /root/signoz
+COPY templates /root/templates
+COPY --from=frontend /app/build/ /etc/signoz/web/
+RUN chmod 755 /root /root/signoz
+ENTRYPOINT ["./signoz", "server"]

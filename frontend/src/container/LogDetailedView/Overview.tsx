@@ -120,7 +120,17 @@ function Overview({
 									language="json"
 									options={options}
 									onChange={(): void => {}}
-									height="20vh"
+									height={`${Math.min(
+										Math.max(
+											removeEscapeCharacters(
+												getBodyDisplayString(logData.body),
+											).split('\n').length,
+											1,
+										) *
+											20 +
+											14,
+										400,
+									)}px`}
 									theme={isDarkMode ? 'my-theme' : 'light'}
 									onMount={(_, monaco): void => {
 										document.fonts.ready.then(() => {
