@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'antd';
 import { Switch } from '@signozhq/ui/switch';
@@ -30,6 +31,7 @@ function LogsActionsContainer({
 	orderBy: string;
 	setOrderBy: (value: string) => void;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { options, config } = useOptionsMenu({
 		storageKey: LOCALSTORAGE.LOGS_LIST_OPTIONS,
 		dataSource: DataSource.LOGS,
@@ -42,20 +44,22 @@ function LogsActionsContainer({
 	const formatItems = [
 		{
 			key: 'raw',
-			label: 'Raw',
+			label: t('logs_format_raw', { defaultValue: 'Raw' }),
 			data: {
-				title: 'max lines per row',
+				title: t('logs_format_raw_max_lines', {
+					defaultValue: 'max lines per row',
+				}),
 			},
 		},
 		{
 			key: 'list',
-			label: 'Default',
+			label: t('logs_format_default', { defaultValue: 'Default' }),
 		},
 		{
 			key: 'table',
-			label: 'Column',
+			label: t('logs_format_column', { defaultValue: 'Column' }),
 			data: {
-				title: 'columns',
+				title: t('logs_format_columns', { defaultValue: 'columns' }),
 			},
 		},
 	];
@@ -67,7 +71,11 @@ function LogsActionsContainer({
 					{selectedPanelType === PANEL_TYPES.LIST && (
 						<>
 							<div className="frequency-chart-view-controller">
-								<Typography>Frequency chart</Typography>
+								<Typography>
+									{t('logs_frequency_chart', {
+										defaultValue: 'Frequency chart',
+									})}
+								</Typography>
 								<Switch
 									value={showFrequencyChart}
 									defaultValue
@@ -92,7 +100,8 @@ function LogsActionsContainer({
 						<>
 							<div className="order-by-container">
 								<div className="order-by-label">
-									Order by <Minus size={14} /> <ArrowUp10 size={14} />
+									{t('logs_order_by', { defaultValue: 'Order by' })}{' '}
+									<Minus size={14} /> <ArrowUp10 size={14} />
 								</div>
 
 								<ListViewOrderBy
@@ -122,7 +131,7 @@ function LogsActionsContainer({
 			{config.fieldsSelector && (
 				<FieldsSelector
 					isOpen={isFieldsSelectorOpen}
-					title="Edit columns"
+					title={t('logs_edit_columns', { defaultValue: 'Edit columns' })}
 					fields={config.fieldsSelector.value}
 					onFieldsChange={config.fieldsSelector.onFieldsChange}
 					onClose={(): void => setIsFieldsSelectorOpen(false)}

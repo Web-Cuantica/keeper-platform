@@ -8,6 +8,7 @@ import {
 	useRef,
 	useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import {
 	Check,
@@ -102,6 +103,7 @@ function ExplorerOptions({
 	splitedQueries = [],
 	handleChangeSelectedView,
 }: ExplorerOptionsProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [isExport, setIsExport] = useState<boolean>(false);
 	const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
 	const [newViewName, setNewViewName] = useState<string>('');
@@ -377,7 +379,9 @@ function ExplorerOptions({
 			{
 				onSuccess: () => {
 					notifications.success({
-						message: 'View Updated Successfully',
+						message: t('explorer_view_updated_success', {
+							defaultValue: 'View Updated Successfully',
+						}),
 					});
 					refetchAllView();
 				},
@@ -707,13 +711,19 @@ function ExplorerOptions({
 
 	const infoIconText = useMemo(() => {
 		if (isLogsExplorer) {
-			return 'Learn more about Logs explorer';
+			return t('explorer_learn_more_logs', {
+				defaultValue: 'Learn more about Logs explorer',
+			});
 		}
 		if (isMetricsExplorer) {
-			return 'Learn more about Metrics explorer';
+			return t('explorer_learn_more_metrics', {
+				defaultValue: 'Learn more about Metrics explorer',
+			});
 		}
-		return 'Learn more about Traces explorer';
-	}, [isLogsExplorer, isMetricsExplorer]);
+		return t('explorer_learn_more_traces', {
+			defaultValue: 'Learn more about Traces explorer',
+		});
+	}, [isLogsExplorer, isMetricsExplorer, t]);
 
 	const infoIconLink = useMemo(() => {
 		if (isLogsExplorer) {
@@ -741,7 +751,7 @@ function ExplorerOptions({
 					shape="round"
 					icon={<ConciergeBell size={16} />}
 				>
-					Create an Alert
+					{t('explorer_create_alert', { defaultValue: 'Create an Alert' })}
 				</Button>
 			);
 			return (
@@ -775,7 +785,7 @@ function ExplorerOptions({
 				onClick={(): void => onCreateAlertsHandler(query)}
 				icon={<ConciergeBell size={16} />}
 			>
-				Create an Alert
+				{t('explorer_create_alert', { defaultValue: 'Create an Alert' })}
 			</Button>
 		);
 	}, [
@@ -784,6 +794,7 @@ function ExplorerOptions({
 		isOneChartPerQuery,
 		onCreateAlertsHandler,
 		splitedQueries,
+		t,
 	]);
 
 	const AddToDashboardButton = useMemo(() => {
@@ -796,7 +807,7 @@ function ExplorerOptions({
 					onClick={onAddToDashboard}
 					icon={<Plus size={16} />}
 				>
-					Add to Dashboard
+					{t('explorer_add_to_dashboard', { defaultValue: 'Add to Dashboard' })}
 				</Button>
 			);
 			return (
@@ -835,10 +846,10 @@ function ExplorerOptions({
 				onClick={onAddToDashboard}
 				icon={<Plus size={16} />}
 			>
-				Add to Dashboard
+				{t('explorer_add_to_dashboard', { defaultValue: 'Add to Dashboard' })}
 			</Button>
 		);
-	}, [disabled, isOneChartPerQuery, onAddToDashboard, splitedQueries]);
+	}, [disabled, isOneChartPerQuery, onAddToDashboard, splitedQueries, t]);
 
 	const hideToolbar = (): void => {
 		setExplorerToolBarVisibility(false, sourcepage);
@@ -860,7 +871,10 @@ function ExplorerOptions({
 						'explorer-update',
 					)}
 				>
-					<Tooltip title="Clear this view" placement="top">
+					<Tooltip
+						title={t('explorer_clear_view', { defaultValue: 'Clear this view' })}
+						placement="top"
+					>
 						<Button
 							className="action-icon"
 							onClick={handleClearSelect}
@@ -878,7 +892,12 @@ function ExplorerOptions({
 									hidden: !isEditDeleteSupported,
 								})}
 							/>
-							<Tooltip title="Update this view" placement="top">
+							<Tooltip
+								title={t('explorer_update_view', {
+									defaultValue: 'Update this view',
+								})}
+								placement="top"
+							>
 								<Button
 									className={cx('action-icon', isEditDeleteSupported ? ' ' : 'hidden')}
 									disabled={isViewUpdating}
@@ -902,7 +921,9 @@ function ExplorerOptions({
 					<div className="view-options">
 						<Select<string, { key: string; value: string }>
 							showSearch
-							placeholder="Select a view"
+							placeholder={t('explorer_select_view_placeholder', {
+								defaultValue: 'Select a view',
+							})}
 							loading={viewsIsLoading || isRefetching}
 							value={viewName || undefined}
 							onSelect={handleSelect}
@@ -945,7 +966,7 @@ function ExplorerOptions({
 							disabled={viewsIsLoading || isRefetching}
 							icon={<Disc3 size={16} />}
 						>
-							Save this view
+							{t('explorer_save_view', { defaultValue: 'Save this view' })}
 						</Button>
 					</div>
 
@@ -967,7 +988,7 @@ function ExplorerOptions({
 										{infoIconText}
 										<Typography.Link href={infoIconLink} target="_blank">
 											{' '}
-											here
+											{t('explorer_learn_more_here', { defaultValue: 'here' })}
 										</Typography.Link>{' '}
 									</div>
 								}
@@ -976,7 +997,7 @@ function ExplorerOptions({
 							</Tooltip>
 						)}
 
-						<Tooltip title="Hide">
+						<Tooltip title={t('explorer_hide', { defaultValue: 'Hide' })}>
 							<Button
 								disabled={disabled}
 								shape="circle"
@@ -1000,7 +1021,11 @@ function ExplorerOptions({
 			/>
 			<Modal
 				className="save-view-modal"
-				title={<span className="title">Save this view</span>}
+				title={
+					<span className="title">
+						{t('explorer_save_view', { defaultValue: 'Save this view' })}
+					</span>
+				}
 				open={isSaveModalOpen}
 				closable
 				onCancel={hideSaveViewModal}
@@ -1014,18 +1039,22 @@ function ExplorerOptions({
 						data-testid="save-view-btn"
 						className="save-button"
 					>
-						Save this view
+						{t('explorer_save_view', { defaultValue: 'Save this view' })}
 					</Button>,
 				]}
 			>
-				<Typography.Text>Label</Typography.Text>
+				<Typography.Text>
+					{t('explorer_save_view_label', { defaultValue: 'Label' })}
+				</Typography.Text>
 				<div className="save-view-input">
 					<ColorPicker
 						value={color}
 						onChange={(value, hex): void => setColor(hex)}
 					/>
 					<Input
-						placeholder="e.g. External http method view"
+						placeholder={t('explorer_save_view_name_placeholder', {
+							defaultValue: 'e.g. External http method view',
+						})}
 						value={newViewName}
 						onChange={(e): void => setNewViewName(e.target.value)}
 					/>

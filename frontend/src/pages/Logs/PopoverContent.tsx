@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { InputNumber, Row, Space } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
 
@@ -10,10 +11,14 @@ function PopoverContent({
 	linesPerRow,
 	handleLinesPerRowChange,
 }: PopoverContentProps): JSX.Element {
+	const { t } = useTranslation('pages');
+
 	return (
 		<Row align="middle">
 			<Space align="center">
-				<Typography>Max lines per Row </Typography>
+				<Typography>
+					{t('logstabs_max_lines_per_row', { defaultValue: 'Max lines per Row' })}{' '}
+				</Typography>
 				<InputNumber
 					min={1}
 					max={10}

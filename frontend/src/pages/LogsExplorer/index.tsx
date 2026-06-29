@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQueryClient } from 'react-query';
 import * as Sentry from '@sentry/react';
 import getLocalStorageKey from 'api/browser/localstorage/get';
@@ -45,6 +46,7 @@ import { ExplorerViews } from './utils';
 import './LogsExplorer.styles.scss';
 
 function LogsExplorer(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [showLiveLogs, setShowLiveLogs] = useState<boolean>(false);
 
 	// Get panel type from URL
@@ -175,40 +177,40 @@ function LogsExplorer(): JSX.Element {
 		() => ({
 			list: {
 				name: 'list',
-				label: 'List',
+				label: t('logs_view_list', { defaultValue: 'List' }),
 				show: true,
 				key: 'list',
 			},
 			timeseries: {
 				name: 'timeseries',
-				label: 'Timeseries',
+				label: t('logs_view_timeseries', { defaultValue: 'Timeseries' }),
 				disabled: false,
 				show: true,
 				key: 'timeseries',
 			},
 			trace: {
 				name: 'trace',
-				label: 'Trace',
+				label: t('logs_view_trace', { defaultValue: 'Trace' }),
 				disabled: false,
 				show: false,
 				key: 'trace',
 			},
 			table: {
 				name: 'table',
-				label: 'Table',
+				label: t('logs_view_table', { defaultValue: 'Table' }),
 				disabled: false,
 				show: true,
 				key: 'table',
 			},
 			clickhouse: {
 				name: 'clickhouse',
-				label: 'Clickhouse',
+				label: t('logs_view_clickhouse', { defaultValue: 'Clickhouse' }),
 				disabled: false,
 				show: false,
 				key: 'clickhouse',
 			},
 		}),
-		[],
+		[t],
 	);
 
 	const handleShowLiveLogs = useCallback(() => {
@@ -274,7 +276,11 @@ function LogsExplorer(): JSX.Element {
 							</div>
 							<div className="logs-explorer-views">
 								{isCancelled ? (
-									<QueryCancelledPlaceholder subText='Click "Run Query" to load logs.' />
+									<QueryCancelledPlaceholder
+									subText={t('logs_run_query_to_load', {
+										defaultValue: 'Click "Run Query" to load logs.',
+									})}
+								/>
 								) : (
 									<LogsExplorerViewsContainer
 										listQueryKeyRef={listQueryKeyRef}

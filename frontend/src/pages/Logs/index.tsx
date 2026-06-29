@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 // eslint-disable-next-line no-restricted-imports
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
@@ -34,9 +35,24 @@ import SpaceContainer from './styles';
 import './logs.styles.scss';
 
 function OldLogsExplorer(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const dispatch = useDispatch<Dispatch<AppActions>>();
 	const { order } = useSelector<AppState, ILogsReducer>((store) => store.logs);
 	const location = useLocation();
+
+	// Traduce el label del modo de vista usando su key estable (no el texto)
+	const getViewModeLabel = useCallback(
+		(key: string, fallback: string): string =>
+			t(`logstabs_viewmode_${key}`, { defaultValue: fallback }),
+		[t],
+	);
+
+	// Traduce el nombre del orden usando su enum estable (no el texto)
+	const getOrderName = useCallback(
+		(orderEnum: string, fallback: string): string =>
+			t(`logstabs_order_${orderEnum}`, { defaultValue: fallback }),
+		[t],
+	);
 
 	const {
 		viewModeOptionList,
@@ -112,7 +128,9 @@ function OldLogsExplorer(): JSX.Element {
 									onChange={onChangeVeiwMode}
 								>
 									{viewModeOptionList.map((option) => (
-										<Select.Option key={option.value}>{option.label}</Select.Option>
+										<Select.Option key={option.value}>
+											{getViewModeLabel(String(option.key), option.label)}
+										</Select.Option>
 									))}
 								</Select>
 
@@ -122,7 +140,9 @@ function OldLogsExplorer(): JSX.Element {
 										placement="right"
 										content={renderPopoverContent}
 									>
-										<Button>Format</Button>
+										<Button>
+											{t('logstabs_format', { defaultValue: 'Format' })}
+										</Button>
 									</Popover>
 								)}
 
@@ -133,7 +153,9 @@ function OldLogsExplorer(): JSX.Element {
 									onChange={handleChangeOrder}
 								>
 									{orderItems.map((item) => (
-										<Select.Option key={item.enum}>{item.name}</Select.Option>
+										<Select.Option key={item.enum}>
+											{getOrderName(item.enum, item.name)}
+										</Select.Option>
 									))}
 								</Select>
 							</Space>

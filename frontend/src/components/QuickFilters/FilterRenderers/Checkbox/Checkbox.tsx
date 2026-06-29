@@ -1,5 +1,6 @@
 /* eslint-disable sonarjs/no-identical-functions */
 import { Fragment, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Input } from '@signozhq/ui/input';
 import { Skeleton } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
@@ -32,6 +33,7 @@ interface ICheckboxProps {
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export default function CheckboxFilter(props: ICheckboxProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { source, filter, onFilterChange } = props;
 	const [searchText, setSearchText] = useState<string>('');
 
@@ -108,7 +110,9 @@ export default function CheckboxFilter(props: ICheckboxProps): JSX.Element {
 					{!isEmptyStateWithDocsEnabled && (
 						<section className="search">
 							<Input
-								placeholder="Filter values"
+								placeholder={t('explorer_filter_values_placeholder', {
+									defaultValue: 'Filter values',
+								})}
 								onChange={(e): void => setSearchTextDebounced(e.target.value)}
 								disabled={isFilterDisabled}
 							/>
@@ -133,9 +137,9 @@ export default function CheckboxFilter(props: ICheckboxProps): JSX.Element {
 										onlyButtonLabel={
 											isSomeFilterPresentForCurrentAttribute
 												? currentFilterState[value] && !isMultipleValuesTrueForTheKey
-													? 'All'
-													: 'Only'
-												: 'Only'
+													? t('explorer_filter_all', { defaultValue: 'All' })
+													: t('explorer_filter_only', { defaultValue: 'Only' })
+												: t('explorer_filter_only', { defaultValue: 'Only' })
 										}
 										customRendererForValue={filter.customRendererForValue}
 										onCheckboxChange={(checked): void => onChange(value, checked, false)}
@@ -150,13 +154,17 @@ export default function CheckboxFilter(props: ICheckboxProps): JSX.Element {
 						<LogsQuickFilterEmptyState attributeKey={filter.attributeKey.key} />
 					) : (
 						<section className="no-data">
-							<Typography.Text>No values found</Typography.Text>{' '}
+							<Typography.Text>
+								{t('explorer_no_values_found', {
+									defaultValue: 'No values found',
+								})}
+							</Typography.Text>{' '}
 						</section>
 					)}
 					{visibleItemsCount < attributeValues?.length && (
 						<section className="show-more">
 							<Typography.Text className="show-more-text" onClick={onShowMore}>
-								Show More...
+								{t('explorer_show_more', { defaultValue: 'Show More...' })}
 							</Typography.Text>
 						</section>
 					)}

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Typography } from '@signozhq/ui/typography';
 import eyesEmojiUrl from 'assets/Images/eyesEmoji.svg';
 
@@ -10,14 +11,18 @@ interface QueryCancelledPlaceholderProps {
 function QueryCancelledPlaceholder({
 	subText,
 }: QueryCancelledPlaceholderProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	return (
 		<div className={styles.placeholder}>
 			<img className={styles.emoji} src={eyesEmojiUrl} alt="eyes emoji" />
 			<Typography className={styles.text}>
-				Query cancelled.
+				{t('explorer_query_cancelled', { defaultValue: 'Query cancelled.' })}
 				<span className={styles.subText}>
 					{' '}
-					{subText || 'Click "Run Query" to load data.'}
+					{subText ||
+						t('explorer_query_cancelled_subtext', {
+							defaultValue: 'Click "Run Query" to load data.',
+						})}
 				</span>
 			</Typography>
 		</div>
