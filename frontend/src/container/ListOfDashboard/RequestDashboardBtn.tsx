@@ -16,7 +16,7 @@ export function RequestDashboardBtn(): JSX.Element {
 	const [requestedDashboardName, setRequestedDashboardName] = useState('');
 
 	const { notifications } = useNotifications();
-	const { t } = useTranslation(['common']);
+	const { t } = useTranslation(['dashboard', 'common']);
 
 	const handleRequestDashboardSubmit = async (): Promise<void> => {
 		try {
@@ -28,7 +28,9 @@ export function RequestDashboardBtn(): JSX.Element {
 
 			if (response.statusCode === 200) {
 				notifications.success({
-					message: 'Dashboard Request Submitted',
+					message: t('dashboard:modal_dashboard_request_submitted', {
+						defaultValue: 'Dashboard Request Submitted',
+					}),
 				});
 
 				setIsSubmittingRequestForDashboard(false);
@@ -62,15 +64,21 @@ export function RequestDashboardBtn(): JSX.Element {
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-					Browse dashboard templates
+					{t('dashboard:modal_browse_dashboard_templates', {
+						defaultValue: 'Browse dashboard templates',
+					})}
 				</a>{' '}
-				or request a new template →
+				{t('dashboard:modal_or_request_new_template', {
+					defaultValue: 'or request a new template →',
+				})}
 			</Typography.Text>
 
 			<div className="form-section">
 				<Space.Compact style={{ width: '100%' }}>
 					<Input
-						placeholder="Enter dashboard name..."
+						placeholder={t('dashboard:modal_enter_dashboard_name', {
+							defaultValue: 'Enter dashboard name...',
+						})}
 						style={{ width: 300, marginBottom: 0 }}
 						value={requestedDashboardName}
 						onChange={(e): void => setRequestedDashboardName(e.target.value)}
@@ -92,7 +100,7 @@ export function RequestDashboardBtn(): JSX.Element {
 							requestedDashboardName?.trim().length === 0
 						}
 					>
-						Submit
+						{t('dashboard:modal_submit', { defaultValue: 'Submit' })}
 					</Button>
 				</Space.Compact>
 			</div>

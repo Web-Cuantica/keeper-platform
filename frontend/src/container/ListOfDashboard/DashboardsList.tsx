@@ -330,31 +330,46 @@ function DashboardsList(): JSX.Element {
 		const monthsDiff = currentTime.diff(lastRefresh, 'months');
 
 		if (isEmpty(time)) {
-			return `No updates yet!`;
+			return t('list_no_updates_yet', { defaultValue: 'No updates yet!' });
 		}
 
 		if (monthsDiff > 0) {
-			return `Last Updated ${monthsDiff} months ago`;
+			return t('list_last_updated_months_ago', {
+				defaultValue: 'Last Updated {{count}} months ago',
+				count: monthsDiff,
+			});
 		}
 
 		if (daysDiff > 0) {
-			return `Last Updated ${daysDiff} days ago`;
+			return t('list_last_updated_days_ago', {
+				defaultValue: 'Last Updated {{count}} days ago',
+				count: daysDiff,
+			});
 		}
 
 		if (hoursDiff > 0) {
-			return `Last Updated ${hoursDiff} hrs ago`;
+			return t('list_last_updated_hrs_ago', {
+				defaultValue: 'Last Updated {{count}} hrs ago',
+				count: hoursDiff,
+			});
 		}
 
 		if (minutedDiff > 0) {
-			return `Last Updated ${minutedDiff} mins ago`;
+			return t('list_last_updated_mins_ago', {
+				defaultValue: 'Last Updated {{count}} mins ago',
+				count: minutedDiff,
+			});
 		}
 
-		return `Last Updated ${secondsDiff} sec ago`;
+		return t('list_last_updated_sec_ago', {
+			defaultValue: 'Last Updated {{count}} sec ago',
+			count: secondsDiff,
+		});
 	};
 
 	const columns: TableProps<Data>['columns'] = [
 		{
-			title: 'Dashboards',
+			title: t('list_dashboards', { defaultValue: 'Dashboards' }),
 			key: 'dashboard',
 			render: (dashboard: Data, _, index): JSX.Element => {
 				const formattedDateAndTime = formatTimezoneAdjustedTimestamp(
@@ -435,7 +450,7 @@ function DashboardsList(): JSX.Element {
 												icon={<Expand size={12} />}
 												onClick={onClickHandler}
 											>
-												View
+												{t('list_view', { defaultValue: 'View' })}
 											</Button>
 											<Button
 												type="text"
@@ -447,7 +462,7 @@ function DashboardsList(): JSX.Element {
 													openInNewTab(getLink());
 												}}
 											>
-												Open in New Tab
+												{t('list_open_in_new_tab', { defaultValue: 'Open in New Tab' })}
 											</Button>
 											<Button
 												type="text"
@@ -459,7 +474,7 @@ function DashboardsList(): JSX.Element {
 													setCopy(getAbsoluteUrl(getLink()));
 												}}
 											>
-												Copy Link
+												{t('list_copy_link', { defaultValue: 'Copy Link' })}
 											</Button>
 											<Button
 												type="text"
@@ -467,7 +482,7 @@ function DashboardsList(): JSX.Element {
 												icon={<FileJson size={12} />}
 												onClick={handleJsonExport}
 											>
-												Export JSON
+												{t('list_export_json', { defaultValue: 'Export JSON' })}
 											</Button>
 											<DeleteButton
 												name={dashboard.name}
@@ -524,7 +539,8 @@ function DashboardsList(): JSX.Element {
 							{dashboard.lastUpdatedBy && visibleColumns.updatedBy && (
 								<div className="updated-by">
 									<Typography.Text className="text">
-										Last Updated By - &nbsp;
+										{t('list_last_updated_by', { defaultValue: 'Last Updated By' })} -
+										&nbsp;
 									</Typography.Text>
 									<div className="dashboard-tag">
 										<Typography.Text className="tag-text">
@@ -552,7 +568,8 @@ function DashboardsList(): JSX.Element {
 						data-testid="import-json-menu-cta"
 						onClick={(): void => onModalHandler(false)}
 					>
-						<Radius size={14} /> Import JSON
+						<Radius size={14} />{' '}
+						{t('list_import_json', { defaultValue: 'Import JSON' })}
 					</div>
 				),
 				key: '1',
@@ -572,7 +589,7 @@ function DashboardsList(): JSX.Element {
 							gap="small"
 						>
 							<div className="create-dashboard-menu-item">
-								<Github size={14} /> View templates
+								<Github size={14} /> {t('view_template')}
 							</div>
 							<ExternalLink size={14} />
 						</Flex>
@@ -592,7 +609,8 @@ function DashboardsList(): JSX.Element {
 							onNewDashboardHandler();
 						}}
 					>
-						<LayoutGrid size={14} /> Create dashboard
+						<LayoutGrid size={14} />{' '}
+						{t('list_create_dashboard', { defaultValue: 'Create dashboard' })}
 					</div>
 				),
 				key: '0',
@@ -600,14 +618,16 @@ function DashboardsList(): JSX.Element {
 		}
 
 		return menuItems;
-	}, [createNewDashboard, onNewDashboardHandler]);
+	}, [createNewDashboard, onNewDashboardHandler, t]);
 
 	const showPaginationItem = (total: number, range: number[]): JSX.Element => (
 		<>
 			<Typography.Text className="numbers">
 				{range[0]} &#8212; {range[1]}
 			</Typography.Text>
-			<Typography.Text className="total">of {total}</Typography.Text>
+			<Typography.Text className="total">
+				{t('list_of_total', { defaultValue: 'of {{total}}', total })}
+			</Typography.Text>
 		</>
 	);
 
@@ -640,10 +660,14 @@ function DashboardsList(): JSX.Element {
 		<div className="dashboards-list-container">
 			<div className="dashboards-list-view-content">
 				<div className="dashboards-list-title-container">
-					<Typography.Title className="title">Dashboards</Typography.Title>
+					<Typography.Title className="title">
+						{t('list_dashboards', { defaultValue: 'Dashboards' })}
+					</Typography.Title>
 					<Flex align="center" justify="space-between">
 						<Typography.Text className="subtitle">
-							Create and manage dashboards for your workspace.
+							{t('list_subtitle', {
+								defaultValue: 'Create and manage dashboards for your workspace.',
+							})}
 						</Typography.Text>
 					</Flex>
 					{isCloudUserVal && (
@@ -667,7 +691,10 @@ function DashboardsList(): JSX.Element {
 						<img src={awwSnapUrl} alt="something went wrong" className="error-img" />
 
 						<Typography.Text className="error-text">
-							Something went wrong :/ Please retry or contact support.
+							{t('list_error_state_text', {
+								defaultValue:
+									'Something went wrong :/ Please retry or contact support.',
+							})}
 						</Typography.Text>
 						<section className="action-btns">
 							<Button
@@ -676,14 +703,14 @@ function DashboardsList(): JSX.Element {
 								icon={<RotateCw size={16} />}
 								onClick={(): Promise<any> => refetchDashboardList()}
 							>
-								Retry
+								{t('list_retry', { defaultValue: 'Retry' })}
 							</Button>
 							<Button
 								type="text"
 								className="learn-more"
 								onClick={(): void => handleContactSupport(isCloudUserVal)}
 							>
-								Contact Support
+								{t('list_contact_support', { defaultValue: 'Contact Support' })}
 							</Button>
 							<ArrowUpRight size={16} className="learn-more-arrow" />
 						</section>
@@ -693,10 +720,12 @@ function DashboardsList(): JSX.Element {
 						<img src={dashboardsUrl} alt="dashboards" className="dashboard-img" />
 						<section className="text">
 							<Typography.Text className="no-dashboard">
-								No dashboards yet.{' '}
+								{t('list_no_dashboards_yet', { defaultValue: 'No dashboards yet.' })}{' '}
 							</Typography.Text>
 							<Typography.Text className="info">
-								Create a dashboard to start visualizing your data
+								{t('list_empty_state_info', {
+									defaultValue: 'Create a dashboard to start visualizing your data',
+								})}
 							</Typography.Text>
 						</section>
 
@@ -716,7 +745,7 @@ function DashboardsList(): JSX.Element {
 											logEvent('Dashboard List: New dashboard clicked', {});
 										}}
 									>
-										New Dashboard
+										{t('list_new_dashboard', { defaultValue: 'New Dashboard' })}
 									</Button>
 								</DropdownMenuSimple>
 								<Button
@@ -730,7 +759,7 @@ function DashboardsList(): JSX.Element {
 										);
 									}}
 								>
-									Learn more
+									{t('list_learn_more', { defaultValue: 'Learn more' })}
 								</Button>
 								<ArrowUpRight size={16} className="learn-more-arrow" />
 							</section>
@@ -740,7 +769,9 @@ function DashboardsList(): JSX.Element {
 					<>
 						<div className="dashboards-list-header-container">
 							<Input
-								placeholder="Search by name, description, or tags..."
+								placeholder={t('list_search_placeholder', {
+									defaultValue: 'Search by name, description, or tags...',
+								})}
 								prefix={<Search size={12} color={Color.BG_VANILLA_400} />}
 								value={searchString}
 								data-testid="dashboards-list-search"
@@ -762,7 +793,7 @@ function DashboardsList(): JSX.Element {
 											logEvent('Dashboard List: New dashboard clicked', {});
 										}}
 									>
-										New dashboard
+										{t('list_new_dashboard_cta', { defaultValue: 'New dashboard' })}
 									</Button>
 								</DropdownMenuSimple>
 							)}
@@ -772,23 +803,27 @@ function DashboardsList(): JSX.Element {
 							<div className="no-search">
 								<img src={emptyStateUrl} alt="img" className="img" />
 								<Typography.Text className="text">
-									No dashboards found for {searchString}. Create a new dashboard?
+									{t('list_no_dashboards_found', {
+										defaultValue:
+											'No dashboards found for {{searchString}}. Create a new dashboard?',
+										searchString,
+									})}
 								</Typography.Text>
 							</div>
 						) : (
 							<>
 								<div className="all-dashboards-header">
 									<Typography.Text className="typography">
-										All Dashboards
+										{t('list_all_dashboards', { defaultValue: 'All Dashboards' })}
 									</Typography.Text>
 									<section className="right-actions">
-										<Tooltip title="Sort">
+										<Tooltip title={t('list_sort', { defaultValue: 'Sort' })}>
 											<Popover
 												trigger="click"
 												content={
 													<div className="sort-content">
 														<Typography.Text className="sort-heading">
-															Sort By
+															{t('list_sort_by', { defaultValue: 'Sort By' })}
 														</Typography.Text>
 														<Button
 															type="text"
@@ -796,7 +831,7 @@ function DashboardsList(): JSX.Element {
 															onClick={(): void => sortHandle('createdAt')}
 															data-testid="sort-by-last-created"
 														>
-															Last created
+															{t('list_last_created', { defaultValue: 'Last created' })}
 															{dashboardsListQueryParams.columnKey === 'createdAt' && (
 																<Check size={14} />
 															)}
@@ -807,7 +842,7 @@ function DashboardsList(): JSX.Element {
 															onClick={(): void => sortHandle('updatedAt')}
 															data-testid="sort-by-last-updated"
 														>
-															Last updated
+															{t('list_last_updated', { defaultValue: 'Last updated' })}
 															{dashboardsListQueryParams.columnKey === 'updatedAt' && (
 																<Check size={14} />
 															)}
@@ -835,7 +870,9 @@ function DashboardsList(): JSX.Element {
 															setIsConfigureMetadata(true);
 														}}
 													>
-														Configure metadata
+														{t('list_configure_metadata', {
+															defaultValue: 'Configure metadata',
+														})}
 													</Button>
 												</div>
 											}
@@ -881,7 +918,9 @@ function DashboardsList(): JSX.Element {
 						// reset to default if the changes are not applied
 						setVisibleColumns(getLocalStorageDynamicColumns());
 					}}
-					title="Configure Metadata"
+					title={t('list_configure_metadata_title', {
+						defaultValue: 'Configure Metadata',
+					})}
 					footer={
 						<Button
 							type="text"
@@ -892,7 +931,7 @@ function DashboardsList(): JSX.Element {
 								setDynamicColumnsLocalStorage(visibleColumns);
 							}}
 						>
-							Save Changes
+							{t('list_save_changes', { defaultValue: 'Save Changes' })}
 						</Button>
 					}
 					rootClassName="configure-metadata-root"
@@ -951,7 +990,9 @@ function DashboardsList(): JSX.Element {
 						<div className="metadata-action">
 							<div className="left">
 								<CalendarClock size={14} />
-								<Typography.Text>Created at</Typography.Text>
+								<Typography.Text>
+									{t('list_created_at', { defaultValue: 'Created at' })}
+								</Typography.Text>
 							</div>
 							<div className="connection-line" />
 							<div className="right">
@@ -970,7 +1011,9 @@ function DashboardsList(): JSX.Element {
 						<div className="metadata-action">
 							<div className="left">
 								<CalendarClock size={14} />
-								<Typography.Text>Created by</Typography.Text>
+								<Typography.Text>
+									{t('list_created_by', { defaultValue: 'Created by' })}
+								</Typography.Text>
 							</div>
 							<div className="connection-line" />
 							<div className="right">
@@ -989,7 +1032,9 @@ function DashboardsList(): JSX.Element {
 						<div className="metadata-action">
 							<div className="left">
 								<Clock4 size={14} />
-								<Typography.Text>Updated at</Typography.Text>
+								<Typography.Text>
+									{t('list_updated_at', { defaultValue: 'Updated at' })}
+								</Typography.Text>
 							</div>
 							<div className="connection-line" />
 							<div className="right">
@@ -1007,7 +1052,9 @@ function DashboardsList(): JSX.Element {
 						<div className="metadata-action">
 							<div className="left">
 								<Clock4 size={14} />
-								<Typography.Text>Updated by</Typography.Text>
+								<Typography.Text>
+									{t('list_updated_by', { defaultValue: 'Updated by' })}
+								</Typography.Text>
 							</div>
 							<div className="connection-line" />
 							<div className="right">

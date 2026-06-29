@@ -46,12 +46,16 @@ export function DeleteButton({
 		const { destroy } = modal.confirm({
 			title: (
 				<Typography.Title level={5}>
-					Are you sure you want to delete the
+					{t('dashboard:modal_delete_confirm_prefix', {
+						defaultValue: 'Are you sure you want to delete the',
+					})}
 					<span style={{ color: 'var(--danger-background)', fontWeight: 500 }}>
 						{' '}
 						{name}{' '}
 					</span>
-					dashboard?
+					{t('dashboard:modal_delete_confirm_suffix', {
+						defaultValue: 'dashboard?',
+					})}
 				</Typography.Title>
 			),
 			icon: (
@@ -60,7 +64,7 @@ export function DeleteButton({
 					size="3xl"
 				/>
 			),
-			okText: 'Delete',
+			okText: t('dashboard:modal_delete', { defaultValue: 'Delete' }),
 			okButtonProps: {
 				danger: true,
 				onClick: (e) => {
@@ -125,7 +129,9 @@ export function DeleteButton({
 						}
 					}}
 				>
-					Delete Dashboard
+					{t('dashboard:modal_delete_dashboard', {
+						defaultValue: 'Delete Dashboard',
+					})}
 				</Button>
 			</Tooltip>
 

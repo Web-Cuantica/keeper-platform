@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { ChangeEvent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Input } from '@signozhq/ui/input';
 import { Button, Modal } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
@@ -135,6 +136,8 @@ export default function DashboardTemplatesModal({
 	onCreateNewDashboard,
 	onCancel,
 }: DashboardTemplatesModalProps): JSX.Element {
+	const { t } = useTranslation(['dashboard']);
+
 	const [selectedDashboardTemplate, setSelectedDashboardTemplate] = useState(
 		templatesList[0],
 	);
@@ -161,7 +164,11 @@ export default function DashboardTemplatesModal({
 		>
 			<div className="new-dashboard-templates-content-container">
 				<div className="new-dashboard-templates-content-header">
-					<Typography.Text>New Dashboard</Typography.Text>
+					<Typography.Text>
+						{t('dashboard:modal_new_dashboard_title', {
+							defaultValue: 'New Dashboard',
+						})}
+					</Typography.Text>
 
 					<X size={14} className="periscope-btn ghost" onClick={onCancel} />
 				</div>
@@ -170,7 +177,9 @@ export default function DashboardTemplatesModal({
 					<div className="new-dashboard-templates-list">
 						<Input
 							className="new-dashboard-templates-search"
-							placeholder="🔍 Search..."
+							placeholder={t('dashboard:modal_search_placeholder', {
+								defaultValue: '🔍 Search...',
+							})}
 							onChange={handleDashboardTemplateSearch}
 						/>
 
@@ -214,7 +223,9 @@ export default function DashboardTemplatesModal({
 									icon={<Plus size={14} />}
 									onClick={onCreateNewDashboard}
 								>
-									New dashboard
+									{t('dashboard:modal_new_dashboard', {
+										defaultValue: 'New dashboard',
+									})}
 								</Button>
 							</div>
 						</div>
