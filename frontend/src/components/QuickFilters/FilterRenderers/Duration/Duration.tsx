@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Collapse } from 'antd';
 import {
 	IQuickFiltersConfig,
@@ -36,6 +37,7 @@ function Duration({
 	onFilterChange?: (query: Query) => void;
 	source?: QuickFiltersSource;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [selectedFilters, setSelectedFilters] =
 		useState<
 			Record<
@@ -293,7 +295,7 @@ function Duration({
 								selectedFilters={selectedFilters}
 							/>
 						),
-						label: 'Duration',
+						label: t('qf_duration', { defaultValue: 'Duration' }),
 					},
 				]}
 			/>
@@ -303,7 +305,7 @@ function Duration({
 					onClick={onClearHandler}
 					data-testid="collapse-duration-clearBtn"
 				>
-					Clear All
+					{t('qf_clear_all', { defaultValue: 'Clear All' })}
 				</Button>
 			)}
 		</div>

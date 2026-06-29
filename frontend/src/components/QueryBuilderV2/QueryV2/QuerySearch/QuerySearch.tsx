@@ -1,5 +1,6 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { CircleCheck, Info, TriangleAlert, Filter } from '@signozhq/icons';
 import {
 	autocompletion,
@@ -108,6 +109,7 @@ function QuerySearch({
 	showFilterSuggestionsWithoutMetric,
 	initialExpression,
 }: QuerySearchProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const isDarkMode = useIsDarkMode();
 	const [valueSuggestions, setValueSuggestions] = useState<any[]>([]);
 	const [activeKey, setActiveKey] = useState<string>('');
@@ -1506,7 +1508,13 @@ function QuerySearch({
 							]),
 						),
 					]}
-					placeholder={placeholder}
+					placeholder={
+					placeholder ??
+					t('qf_query_placeholder', {
+						defaultValue:
+							"Enter your filter query (e.g., http.status_code >= 500 AND service.name = 'frontend')",
+					})
+				}
 					basicSetup={{
 						lineNumbers: false,
 					}}
@@ -1654,8 +1662,7 @@ QuerySearch.defaultProps = {
 	onRun: undefined,
 	signalSource: '',
 	hardcodedAttributeKeys: undefined,
-	placeholder:
-		"Enter your filter query (e.g., http.status_code >= 500 AND service.name = 'frontend')",
+	placeholder: undefined,
 	showFilterSuggestionsWithoutMetric: false,
 	initialExpression: undefined,
 };

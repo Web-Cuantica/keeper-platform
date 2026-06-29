@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
 	ArrowUpToLine,
 	Filter,
@@ -53,6 +54,7 @@ export default function QuickFilters(props: IQuickFiltersProps): JSX.Element {
 		showQueryName = true,
 	} = props;
 	const { user } = useAppContext();
+	const { t } = useTranslation('pages');
 	const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 	const isAdmin = user.role === USER_ROLES.ADMIN;
 	const [params, setParams] = useApiMonitoringParams();
@@ -181,12 +183,14 @@ export default function QuickFilters(props: IQuickFiltersProps): JSX.Element {
 		<section className="left-actions">
 			<Filter size="md" />
 			<Typography.Text className="text">
-				{displayedQueryName ? 'Filters for' : 'Filters'}
+				{displayedQueryName
+					? t('qf_filters_for', { defaultValue: 'Filters for' })
+					: t('qf_filters', { defaultValue: 'Filters' })}
 			</Typography.Text>
 			{queryOptions.length > 1 && (!isListView || shouldShowDropdownInListView) ? (
 				<Combobox open={open} onOpenChange={setOpen}>
 					<ComboboxTrigger
-						placeholder="Select a query"
+						placeholder={t('qf_select_query', { defaultValue: 'Select a query' })}
 						value={queryOptions.find((f) => f.value === validQueryIndex)?.label || ''}
 						className="select-box"
 					/>
@@ -215,7 +219,10 @@ export default function QuickFilters(props: IQuickFiltersProps): JSX.Element {
 			) : (
 				displayedQueryName && (
 					<Tooltip
-						title={`Filter currently in sync with query ${displayedQueryName}`}
+						title={t('qf_sync_tooltip', {
+							defaultValue: 'Filter currently in sync with query {{queryName}}',
+							queryName: displayedQueryName,
+						})}
 					>
 						<Typography.Text className="sync-tag">
 							{displayedQueryName}
@@ -228,13 +235,15 @@ export default function QuickFilters(props: IQuickFiltersProps): JSX.Element {
 
 	const renderRightActions = (): JSX.Element => (
 		<section className="right-actions">
-			<Tooltip title="Reset All">
+			<Tooltip title={t('qf_reset_all', { defaultValue: 'Reset All' })}>
 				<div className="right-action-icon-container">
 					<RefreshCw className="sync-icon" size="md" onClick={handleReset} />
 				</div>
 			</Tooltip>
 			{showFilterCollapse && (
-				<Tooltip title="Collapse Filters">
+				<Tooltip
+					title={t('qf_collapse_filters', { defaultValue: 'Collapse Filters' })}
+				>
 					<div className="right-action-icon-container">
 						<ArrowUpToLine
 							style={{ rotate: '270deg', cursor: 'pointer' }}
@@ -245,7 +254,7 @@ export default function QuickFilters(props: IQuickFiltersProps): JSX.Element {
 				</Tooltip>
 			)}
 			{isDynamicFilters && isAdmin && (
-				<Tooltip title="Settings">
+				<Tooltip title={t('qf_settings', { defaultValue: 'Settings' })}>
 					<div
 						className={classNames('right-action-icon-container', {
 							active: isSettingsOpen,
@@ -261,8 +270,13 @@ export default function QuickFilters(props: IQuickFiltersProps): JSX.Element {
 						<AnnouncementTooltip
 							show={showAnnouncementTooltip}
 							position={{ top: -5, left: 15 }}
-							title="Edit your quick filters"
-							message="You can now customize and re-arrange your quick filters panel. Select the quick filters you’d need and hide away the rest for faster exploration."
+							title={t('qf_edit_quick_filters', {
+								defaultValue: 'Edit your quick filters',
+							})}
+							message={t('qf_edit_quick_filters_msg', {
+								defaultValue:
+									'You can now customize and re-arrange your quick filters panel. Select the quick filters you’d need and hide away the rest for faster exploration.',
+							})}
 							onClose={(): void => {
 								setLocalStorageKey(
 									LOCALSTORAGE.QUICK_FILTERS_SETTINGS_ANNOUNCEMENT,
@@ -280,7 +294,9 @@ export default function QuickFilters(props: IQuickFiltersProps): JSX.Element {
 		<>
 			{source === QuickFiltersSource.API_MONITORING && (
 				<div className="api-quick-filters-header">
-					<Typography.Text>Show IP addresses</Typography.Text>
+					<Typography.Text>
+						{t('qf_show_ip', { defaultValue: 'Show IP addresses' })}
+					</Typography.Text>
 					<Switch
 						style={{ marginLeft: 'auto' }}
 						value={showIP ?? true}
@@ -323,7 +339,9 @@ export default function QuickFilters(props: IQuickFiltersProps): JSX.Element {
 				{filterConfig.length === 0 && (
 					<div className="no-filters-container">
 						<Frown size={16} />
-						<Typography.Text>No filters found</Typography.Text>
+						<Typography.Text>
+							{t('qf_no_filters', { defaultValue: 'No filters found' })}
+						</Typography.Text>
 					</div>
 				)}
 			</section>
