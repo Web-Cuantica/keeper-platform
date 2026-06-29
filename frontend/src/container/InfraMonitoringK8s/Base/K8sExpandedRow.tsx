@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { Button } from '@signozhq/ui/button';
 import { Typography } from '@signozhq/ui/typography';
@@ -59,6 +60,7 @@ export function K8sExpandedRow<T>({
 	getRowKey,
 	getItemKey,
 }: K8sExpandedRowProps<T>): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [, setGroupBy] = useInfraMonitoringGroupBy();
 	const [, setCurrentPage] = useInfraMonitoringPageListing();
 	const [queryFilters, setFilters] = useInfraMonitoringFiltersK8s();
@@ -196,7 +198,7 @@ export function K8sExpandedRow<T>({
 			onClick={handleViewAllClick}
 			prefix={<CornerDownRight size={14} />}
 		>
-			View All
+			{t('infra_view_all', { defaultValue: 'View All' })}
 		</Button>
 	) : null;
 
@@ -206,7 +208,10 @@ export function K8sExpandedRow<T>({
 			data-testid="expanded-table-container"
 		>
 			{isError && (
-				<Typography>{data?.error?.toString() || 'Something went wrong'}</Typography>
+				<Typography>
+					{data?.error?.toString() ||
+						t('infra_something_went_wrong', { defaultValue: 'Something went wrong' })}
+				</Typography>
 			)}
 
 			<div data-testid="expanded-table">

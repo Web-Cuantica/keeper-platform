@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 // eslint-disable-next-line no-restricted-imports
 import { useSelector } from 'react-redux';
 import { Color } from '@signozhq/design-tokens';
@@ -36,6 +37,7 @@ function GraphView({
 	metricInspectionAppliedOptions,
 	isInspectMetricsRefetching,
 }: GraphViewProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const isDarkMode = useIsDarkMode();
 	const graphRef = useRef<HTMLDivElement>(null);
 	const dimensions = useResizeObserver(graphRef);
@@ -202,7 +204,10 @@ function GraphView({
 					</Button>
 					<Button className="time-series-button-label" size="middle" disabled>
 						{/* First time series in that of timestamps. Hence -1 */}
-						{`${formattedInspectMetricsTimeSeries.length - 1} time series`}
+						{t('metrics_time_series_count', {
+							defaultValue: '{{seriesCount}} time series',
+							seriesCount: formattedInspectMetricsTimeSeries.length - 1,
+						})}
 					</Button>
 				</Button.Group>
 				<div className="view-toggle-button">
@@ -218,7 +223,9 @@ function GraphView({
 						}}
 					/>
 					<Typography.Text>
-						{viewType === 'graph' ? 'Graph View' : 'Table View'}
+						{viewType === 'graph'
+							? t('metrics_graph_view', { defaultValue: 'Graph View' })
+							: t('metrics_table_view', { defaultValue: 'Table View' })}
 					</Typography.Text>
 				</div>
 			</div>

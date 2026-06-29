@@ -3,6 +3,7 @@ import { Typography } from '@signozhq/ui/typography';
 // supports the `onWheel` handler (used to blur on scroll for number inputs).
 import { Input, Select } from 'antd';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import { TIME_AGGREGATION_OPTIONS } from './constants';
 import { InspectionStep } from './types';
@@ -15,6 +16,7 @@ function MetricTimeAggregation({
 	inspectionStep,
 	inspectMetricsTimeSeries,
 }: MetricTimeAggregationProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	return (
 		<div
 			data-testid="metric-time-aggregation"
@@ -25,11 +27,15 @@ function MetricTimeAggregation({
 					'selected-step': inspectionStep === InspectionStep.TIME_AGGREGATION,
 				})}
 			>
-				<Typography.Text>AGGREGATE BY TIME</Typography.Text>
+				<Typography.Text>
+					{t('metrics_aggregate_by_time', { defaultValue: 'AGGREGATE BY TIME' })}
+				</Typography.Text>
 			</div>
 			<div className="metric-time-aggregation-content">
 				<div className="inspect-metrics-input-group">
-					<Typography.Text>Align with</Typography.Text>
+					<Typography.Text>
+						{t('metrics_align_with', { defaultValue: 'Align with' })}
+					</Typography.Text>
 					<Select
 						value={currentMetricInspectionOptions.timeAggregationOption}
 						onChange={(value): void => {
@@ -48,7 +54,9 @@ function MetricTimeAggregation({
 							}
 						}}
 						style={{ width: 130 }}
-						placeholder="Select option"
+						placeholder={t('metrics_select_option', {
+							defaultValue: 'Select option',
+						})}
 					>
 						{Object.entries(TIME_AGGREGATION_OPTIONS).map(([key, value]) => (
 							<Select.Option key={key} value={key}>
@@ -58,13 +66,17 @@ function MetricTimeAggregation({
 					</Select>
 				</div>
 				<div className="inspect-metrics-input-group">
-					<Typography.Text>aggregated every</Typography.Text>
+					<Typography.Text>
+						{t('metrics_aggregated_every', { defaultValue: 'aggregated every' })}
+					</Typography.Text>
 					<Input
 						type="number"
 						className="no-arrows-input"
 						value={currentMetricInspectionOptions.timeAggregationInterval}
-						placeholder="Select interval..."
-						suffix="seconds"
+						placeholder={t('metrics_select_interval', {
+							defaultValue: 'Select interval...',
+						})}
+						suffix={t('metrics_seconds', { defaultValue: 'seconds' })}
 						onChange={(e): void => {
 							dispatchMetricInspectionOptions({
 								type: 'SET_TIME_AGGREGATION_INTERVAL',

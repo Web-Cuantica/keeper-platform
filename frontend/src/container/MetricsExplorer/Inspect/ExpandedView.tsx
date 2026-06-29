@@ -1,5 +1,6 @@
 /* eslint-disable sonarjs/no-identical-functions */
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Color } from '@signozhq/design-tokens';
 import type { TableColumnsType as ColumnsType } from 'antd';
 import { Card, Tooltip } from 'antd';
@@ -35,6 +36,7 @@ function ExpandedView({
 	metricInspectionAppliedOptions,
 	timeAggregatedSeriesMap,
 }: ExpandedViewProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [selectedTimeSeries, setSelectedTimeSeries] =
 		useState<InspectMetricsSeries | null>(null);
 
@@ -125,7 +127,7 @@ function ExpandedView({
 	const columns: ColumnsType<DataType> = useMemo(
 		() => [
 			{
-				title: 'Label',
+				title: t('metrics_label', { defaultValue: 'Label' }),
 				dataIndex: 'label',
 				key: 'label',
 				width: 50,
@@ -133,7 +135,7 @@ function ExpandedView({
 				className: 'labels-key',
 			},
 			{
-				title: 'Value',
+				title: t('metrics_value', { defaultValue: 'Value' }),
 				dataIndex: 'value',
 				key: 'value',
 				width: 50,
@@ -142,7 +144,7 @@ function ExpandedView({
 				className: 'labels-value',
 			},
 		],
-		[],
+		[t],
 	);
 
 	return (
@@ -150,7 +152,9 @@ function ExpandedView({
 			<div className="expanded-view-header">
 				<Typography.Title level={5}>
 					<Focus size={16} color={Color.BG_VANILLA_100} />
-					<div>POINT INSPECTOR</div>
+					<div>
+						{t('metrics_point_inspector', { defaultValue: 'POINT INSPECTOR' })}
+					</div>
 				</Typography.Title>
 			</div>
 			{/* Show only when space aggregation is completed */}
@@ -176,7 +180,7 @@ function ExpandedView({
 						<div className="graph-popover-section">
 							<div className="graph-popover-row">
 								<Typography.Text className="graph-popover-row-label">
-									VALUES
+									{t('metrics_values', { defaultValue: 'VALUES' })}
 								</Typography.Text>
 								<div className="graph-popover-inner-row">
 									{spaceAggregatedData?.map(({ value, title, timestamp }) => (
@@ -190,7 +194,7 @@ function ExpandedView({
 							</div>
 							<div className="graph-popover-row">
 								<Typography.Text className="graph-popover-row-label">
-									TIME SERIES
+									{t('metrics_time_series_label', { defaultValue: 'TIME SERIES' })}
 								</Typography.Text>
 								<div className="graph-popover-inner-row">
 									{spaceAggregatedData?.map(({ title, timeSeries }) => (
@@ -252,7 +256,7 @@ function ExpandedView({
 						<div className="graph-popover-section">
 							<div className="graph-popover-row">
 								<Typography.Text className="graph-popover-row-label">
-									RAW VALUES
+									{t('metrics_raw_values', { defaultValue: 'RAW VALUES' })}
 								</Typography.Text>
 								<div className="graph-popover-inner-row">
 									{rawData?.map(({ value: rawValue, timestamp, title }) => (
@@ -266,7 +270,7 @@ function ExpandedView({
 							</div>
 							<div className="graph-popover-row">
 								<Typography.Text className="graph-popover-row-label">
-									TIMESTAMPS
+									{t('metrics_timestamps', { defaultValue: 'TIMESTAMPS' })}
 								</Typography.Text>
 								<div className="graph-popover-inner-row">
 									{rawData?.map(({ timestamp }) => (
@@ -308,7 +312,7 @@ function ExpandedView({
 						<div className="graph-popover-section">
 							<div className="graph-popover-row">
 								<Typography.Text className="graph-popover-row-label">
-									RAW VALUES
+									{t('metrics_raw_values', { defaultValue: 'RAW VALUES' })}
 								</Typography.Text>
 								<div className="graph-popover-inner-row">
 									{timeAggregatedData?.map(({ value, title, timestamp }) => (
@@ -322,7 +326,7 @@ function ExpandedView({
 							</div>
 							<div className="graph-popover-row">
 								<Typography.Text className="graph-popover-row-label">
-									TIMESTAMPS
+									{t('metrics_timestamps', { defaultValue: 'TIMESTAMPS' })}
 								</Typography.Text>
 								<div className="graph-popover-inner-row">
 									{timeAggregatedData?.map(({ timestamp }) => (
@@ -344,9 +348,12 @@ function ExpandedView({
 			{/* Labels */}
 			{selectedTimeSeries && (
 				<>
-					<Typography.Title
-						level={5}
-					>{`${selectedTimeSeries?.title} Labels`}</Typography.Title>
+					<Typography.Title level={5}>
+						{t('metrics_series_labels', {
+							defaultValue: '{{title}} Labels',
+							title: selectedTimeSeries?.title,
+						})}
+					</Typography.Title>
 					<ResizeTable
 						columns={columns}
 						tableLayout="fixed"

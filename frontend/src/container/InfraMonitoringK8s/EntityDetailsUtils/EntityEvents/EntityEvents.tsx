@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Table, TableColumnsType } from 'antd';
 import logEvent from 'api/common/logEvent';
 import {
@@ -84,6 +85,7 @@ function EntityEventsContent({
 	queryKey,
 	category,
 }: Omit<Props, 'initialExpression'>): JSX.Element {
+	const { t } = useTranslation('pages');
 	const expression = useExpression();
 	const inputExpression = useInputExpression();
 	const userExpression = useUserExpression();
@@ -171,9 +173,14 @@ function EntityEventsContent({
 	const { formatTimezoneAdjustedTimestamp } = useTimezone();
 	const columns: TableColumnsType<EventDataType> = useMemo(
 		() => [
-			{ title: 'Severity', dataIndex: 'severity', key: 'severity', width: 100 },
 			{
-				title: 'Timestamp',
+				title: t('infra_events_column_severity', { defaultValue: 'Severity' }),
+				dataIndex: 'severity',
+				key: 'severity',
+				width: 100,
+			},
+			{
+				title: t('infra_events_column_timestamp', { defaultValue: 'Timestamp' }),
 				dataIndex: 'timestamp',
 				width: 240,
 				ellipsis: true,
@@ -183,9 +190,13 @@ function EntityEventsContent({
 						typeof value === 'string' ? value : value / 1e6,
 					),
 			},
-			{ title: 'Body', dataIndex: 'body', key: 'body' },
+			{
+				title: t('infra_events_column_body', { defaultValue: 'Body' }),
+				dataIndex: 'body',
+				key: 'body',
+			},
 		],
-		[formatTimezoneAdjustedTimestamp],
+		[formatTimezoneAdjustedTimestamp, t],
 	);
 
 	const handleExpandRowIcon = ({

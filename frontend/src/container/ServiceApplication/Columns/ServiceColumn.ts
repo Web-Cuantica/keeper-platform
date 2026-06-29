@@ -1,15 +1,27 @@
 import type { ColumnsType, ColumnType } from 'antd/es/table';
 import { generatorResizeTableColumns } from 'components/TableRenderer/utils';
+import type { TFunction } from 'i18next';
 import { ServicesList } from 'types/api/metrics/getService';
 
-import { baseColumnOptions } from './BaseColumnOptions';
-import { ColumnKey, ColumnTitle } from './ColumnContants';
+import { getBaseColumnOptions } from './BaseColumnOptions';
+import { ColumnKey, getColumnTitles } from './ColumnContants';
 import { getColumnSearchProps } from './GetColumnSearchProps';
 
 export const getColumns = (
 	search: string,
 	isMetricData: boolean,
+	t: TFunction,
 ): ColumnsType<ServicesList> => {
+	const columnTitles = getColumnTitles(t);
+	// Unidad de la latencia P99: ns para datos de métricas, ms para trazas.
+	const p99Unit: string = isMetricData
+		? t('pages:svc_unit_ns', { defaultValue: 'ns' })
+		: t('pages:svc_unit_ms', { defaultValue: 'ms' });
+	// Conector "in"/"en" traducido por separado para evitar interpolación
+	// (los componentes consumen el texto ya resuelto).
+	const inWord: string = t('pages:svc_unit_in', { defaultValue: 'in' });
+	const p99Title = `${columnTitles[ColumnKey.P99]} (${inWord} ${p99Unit})`;
+
 	const dynamicColumnOption: {
 		key: string;
 		columnOption: ColumnType<ServicesList>;
@@ -17,15 +29,13 @@ export const getColumns = (
 		{
 			key: ColumnKey.Application,
 			columnOption: {
-				...getColumnSearchProps('serviceName', search),
+				...getColumnSearchProps('serviceName', search, t),
 			},
 		},
 		{
 			key: ColumnKey.P99,
 			columnOption: {
-				title: `${ColumnTitle[ColumnKey.P99]}${
-					isMetricData ? ' (in ns)' : ' (in ms)'
-				}`,
+				title: p99Title,
 				sorter: (a: ServicesList, b: ServicesList): number => a.p99 - b.p99,
 				render: (value: number): string => {
 					if (Number.isNaN(value)) {
@@ -54,7 +64,7 @@ export const getColumns = (
 	];
 
 	return generatorResizeTableColumns<ServicesList>({
-		baseColumnOptions,
+		baseColumnOptions: getBaseColumnOptions(t),
 		dynamicColumnOption,
 	});
 };

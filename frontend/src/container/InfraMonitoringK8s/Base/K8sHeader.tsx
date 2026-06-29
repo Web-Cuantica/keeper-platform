@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@signozhq/ui/button';
 import { Select } from 'antd';
 import logEvent from 'api/common/logEvent';
@@ -43,6 +44,7 @@ function K8sHeader<TData>({
 	columns,
 	columnStorageKey,
 }: K8sHeaderProps<TData>): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [isFiltersSidePanelOpen, setIsFiltersSidePanelOpen] = useState(false);
 	const [urlFilters, setUrlFilters] = useInfraMonitoringFiltersK8s();
 
@@ -184,7 +186,10 @@ function K8sHeader<TData>({
 				</div>
 
 				<div className={styles.k8SAttributeSearchContainer}>
-					<div className={styles.groupByLabel}> Group by </div>
+					<div className={styles.groupByLabel}>
+						{' '}
+						{t('infra_group_by_label', { defaultValue: 'Group by' })}{' '}
+					</div>
 					<Select
 						className={styles.groupBySelect}
 						loading={isLoadingGroupByFilters}
@@ -192,7 +197,9 @@ function K8sHeader<TData>({
 						value={groupBy}
 						allowClear
 						maxTagCount="responsive"
-						placeholder="Search for attribute"
+						placeholder={t('infra_group_by_placeholder', {
+							defaultValue: 'Search for attribute',
+						})}
 						style={{ width: '100%' }}
 						options={groupByOptions}
 						onChange={handleGroupByChange}

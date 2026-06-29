@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQueryClient } from 'react-query';
 import type { TableColumnsType as ColumnsType } from 'antd';
 import { Input } from '@signozhq/ui/input';
@@ -44,6 +45,7 @@ function Metadata({
 	isLoadingMetricMetadata,
 	refetchMetricMetadata,
 }: MetadataProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [isEditing, setIsEditing] = useState(false);
 
 	const [metricMetadataState, setMetricMetadataState] =
@@ -99,7 +101,15 @@ function Metadata({
 				return <MetricTypeRendererV2 type={value as MetrictypesTypeDTO} />;
 			}
 			if (key === TableFields.IS_MONOTONIC) {
-				return <FieldRenderer field={value ? 'Yes' : 'No'} />;
+				return (
+					<FieldRenderer
+						field={
+							value
+								? t('metrics_yes', { defaultValue: 'Yes' })
+								: t('metrics_no', { defaultValue: 'No' })
+						}
+					/>
+				);
 			}
 			if (key === TableFields.Temporality) {
 				const temporality = METRIC_METADATA_TEMPORALITY_OPTIONS.find(
@@ -113,7 +123,7 @@ function Metadata({
 			}
 			return <FieldRenderer field={fieldValue || '-'} />;
 		},
-		[isErrorMetricMetadata],
+		[isErrorMetricMetadata, t],
 	);
 
 	const renderColumnValue = useCallback(
@@ -206,7 +216,7 @@ function Metadata({
 	const columns: ColumnsType<DataType> = useMemo(
 		() => [
 			{
-				title: 'Key',
+				title: t('metrics_attr_key', { defaultValue: 'Key' }),
 				dataIndex: 'key',
 				key: 'key',
 				width: 50,
@@ -221,7 +231,7 @@ function Metadata({
 				),
 			},
 			{
-				title: 'Value',
+				title: t('metrics_attr_value', { defaultValue: 'Value' }),
 				dataIndex: 'value',
 				key: 'value',
 				width: 50,
@@ -231,7 +241,7 @@ function Metadata({
 				render: renderColumnValue,
 			},
 		],
-		[renderColumnValue],
+		[renderColumnValue, t],
 	);
 
 	const handleSave = useCallback(() => {
@@ -247,7 +257,9 @@ function Metadata({
 						[MetricsExplorerEventKeys.Modal]: 'metric-details',
 					});
 					notifications.success({
-						message: 'Metadata updated successfully',
+						message: t('metrics_metadata_updated_success', {
+							defaultValue: 'Metadata updated successfully',
+						}),
 					});
 					setIsEditing(false);
 					invalidateListMetrics(queryClient);
@@ -259,7 +271,11 @@ function Metadata({
 					const errorMessage = (error as AxiosError<RenderErrorResponseDTO>).response
 						?.data.error?.message;
 					notifications.error({
-						message: errorMessage || METRIC_METADATA_UPDATE_ERROR_MESSAGE,
+						message:
+							errorMessage ||
+							t('metrics_metadata_update_error', {
+								defaultValue: METRIC_METADATA_UPDATE_ERROR_MESSAGE,
+							}),
 					});
 				},
 			},
@@ -270,6 +286,7 @@ function Metadata({
 		metricMetadataState,
 		notifications,
 		queryClient,
+		t,
 	]);
 
 	const cancelEdit = useCallback(
@@ -300,7 +317,9 @@ function Metadata({
 						disabled={isUpdatingMetricsMetadata}
 					>
 						<X size={14} />
-						<Typography.Text>Cancel</Typography.Text>
+						<Typography.Text>
+							{t('metrics_cancel', { defaultValue: 'Cancel' })}
+						</Typography.Text>
 					</Button>
 					<Button
 						className="action-button"
@@ -312,7 +331,9 @@ function Metadata({
 						disabled={isUpdatingMetricsMetadata}
 					>
 						<Save size={14} />
-						<Typography.Text>Save</Typography.Text>
+						<Typography.Text>
+							{t('metrics_save', { defaultValue: 'Save' })}
+						</Typography.Text>
 					</Button>
 				</div>
 			);
@@ -332,7 +353,9 @@ function Metadata({
 					disabled={isUpdatingMetricsMetadata || isLoadingMetricMetadata}
 				>
 					<PenLine size={14} />
-					<Typography.Text>Edit</Typography.Text>
+					<Typography.Text>
+						{t('metrics_edit', { defaultValue: 'Edit' })}
+					</Typography.Text>
 				</Button>
 			</div>
 		);
@@ -343,6 +366,7 @@ function Metadata({
 		isLoadingMetricMetadata,
 		cancelEdit,
 		handleSave,
+		t,
 	]);
 
 	const items = useMemo(
@@ -350,7 +374,9 @@ function Metadata({
 			{
 				label: (
 					<div className="metrics-accordion-header metrics-metadata-header">
-						<Typography.Text>Metadata</Typography.Text>
+						<Typography.Text>
+							{t('metrics_metadata', { defaultValue: 'Metadata' })}
+						</Typography.Text>
 						{actionButton}
 					</div>
 				),
@@ -363,7 +389,9 @@ function Metadata({
 					<div className="metric-metadata-error-state">
 						<MetricDetailsErrorState
 							refetch={refetchMetricMetadata}
-							errorMessage="Something went wrong while fetching metric metadata"
+							errorMessage={t('metrics_metadata_fetch_error', {
+								defaultValue: 'Something went wrong while fetching metric metadata',
+							})}
 						/>
 					</div>
 				) : (
@@ -385,6 +413,7 @@ function Metadata({
 			isErrorMetricMetadata,
 			refetchMetricMetadata,
 			tableData,
+			t,
 		],
 	);
 

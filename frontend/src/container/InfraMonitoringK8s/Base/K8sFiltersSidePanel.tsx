@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@signozhq/ui/button';
 import { DrawerWrapper } from '@signozhq/ui/drawer';
 import {
@@ -45,6 +46,7 @@ function K8sFiltersSidePanel<TData>({
 	columns: TableColumnDef<TData>[];
 	storageKey: string;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const columnPickerItems = useMemo(
 		() => toColumnPickerItems(columns),
 		[columns],
@@ -77,7 +79,11 @@ function K8sFiltersSidePanel<TData>({
 
 	const drawerContent = (
 		<>
-			<div className={styles.columnsTitle}>Added Columns (Click to remove)</div>
+			<div className={styles.columnsTitle}>
+				{t('infra_columns_added_title', {
+					defaultValue: 'Added Columns (Click to remove)',
+				})}
+			</div>
 
 			<div className={styles.columnsList}>
 				{addedColumns.map((column) => (
@@ -98,7 +104,11 @@ function K8sFiltersSidePanel<TData>({
 
 			<div className={styles.horizontalDivider} />
 
-			<div className={styles.columnsTitle}>Other Columns (Click to add)</div>
+			<div className={styles.columnsTitle}>
+				{t('infra_columns_other_title', {
+					defaultValue: 'Other Columns (Click to add)',
+				})}
+			</div>
 
 			<div className={styles.columnsList}>
 				{hiddenColumns.map((column) => (
@@ -128,7 +138,7 @@ function K8sFiltersSidePanel<TData>({
 					onClose();
 				}
 			}}
-			title="Columns"
+			title={t('infra_columns_drawer_title', { defaultValue: 'Columns' })}
 			direction="right"
 			showCloseButton
 			showOverlay={false}

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQueryClient } from 'react-query';
 import { useSearchParams } from 'react-router-dom-v5-compat';
 import * as Sentry from '@sentry/react';
@@ -53,6 +54,7 @@ import './Explorer.styles.scss';
 const ONE_CHART_PER_QUERY_ENABLED_KEY = 'isOneChartPerQueryEnabled';
 
 function Explorer(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const {
 		handleRunQuery,
 		stagedQuery,
@@ -329,16 +331,24 @@ function Explorer(): JSX.Element {
 
 	const oneChartPerQueryDisabledTooltip = useMemo(() => {
 		if (splitedQueries.length <= 1) {
-			return 'One chart per query cannot be toggled for a single query.';
+			return t('metrics_one_chart_per_query_single_query', {
+				defaultValue: 'One chart per query cannot be toggled for a single query.',
+			});
 		}
 		if (units.length <= 1) {
-			return 'One chart per query cannot be toggled when there is only one metric.';
+			return t('metrics_one_chart_per_query_single_metric', {
+				defaultValue:
+					'One chart per query cannot be toggled when there is only one metric.',
+			});
 		}
 		if (disableOneChartPerQuery) {
-			return 'One chart per query cannot be disabled for multiple queries with different units.';
+			return t('metrics_one_chart_per_query_different_units', {
+				defaultValue:
+					'One chart per query cannot be disabled for multiple queries with different units.',
+			});
 		}
-		return;
-	}, [disableOneChartPerQuery, splitedQueries.length, units.length]);
+		return undefined;
+	}, [disableOneChartPerQuery, splitedQueries.length, units.length, t]);
 
 	// Show the y axis unit selector if -
 	// 1. There is only one metric
@@ -353,7 +363,9 @@ function Explorer(): JSX.Element {
 			<div className="metrics-explorer-explore-container">
 				<div className="explore-header">
 					<div className="explore-header-left-actions">
-						<span>1 chart/query</span>
+						<span>
+							{t('metrics_one_chart_per_query', { defaultValue: '1 chart/query' })}
+						</span>
 						<Tooltip
 							open={disableOneChartPerQuery ? undefined : false}
 							title={oneChartPerQueryDisabledTooltip}

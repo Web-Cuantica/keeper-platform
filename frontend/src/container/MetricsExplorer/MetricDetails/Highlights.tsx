@@ -6,6 +6,7 @@ import { useGetMetricHighlights } from 'api/generated/services/metrics';
 import { DATE_TIME_FORMATS } from 'constants/dateTimeFormats';
 import { Info } from '@signozhq/icons';
 import { useTimezone } from 'providers/Timezone';
+import { useTranslation } from 'react-i18next';
 
 import { formatNumberIntoHumanReadableFormat } from '../Summary/utils';
 import { HighlightsProps } from './types';
@@ -19,6 +20,7 @@ const TOOLTIP_CONTENT_PROPS = {
 };
 
 function Highlights({ metricName }: HighlightsProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const {
 		data: metricHighlightsData,
 		isLoading: isLoadingMetricHighlights,
@@ -45,14 +47,18 @@ function Highlights({ metricName }: HighlightsProps): JSX.Element {
 	);
 	const lastReceivedText = formatTimestampToReadableDate(
 		metricHighlights?.lastReceived,
+		t,
 	);
 	const { formatTimezoneAdjustedTimestamp } = useTimezone();
 	const lastReceivedTooltipText = metricHighlights?.lastReceived
-		? `Last received on ${formatTimezoneAdjustedTimestamp(
-				metricHighlights.lastReceived,
-				DATE_TIME_FORMATS.DASH_DATETIME_UTC,
-			)}`
-		: 'No data received yet';
+		? t('metrics_last_received_on', {
+				defaultValue: 'Last received on {{date}}',
+				date: formatTimezoneAdjustedTimestamp(
+					metricHighlights.lastReceived,
+					DATE_TIME_FORMATS.DASH_DATETIME_UTC,
+				),
+			})
+		: t('metrics_no_data_received', { defaultValue: 'No data received yet' });
 
 	if (isErrorMetricHighlights) {
 		return (
@@ -63,7 +69,10 @@ function Highlights({ metricName }: HighlightsProps): JSX.Element {
 				>
 					<Info size={16} color={Color.BG_CHERRY_500} />
 					<Typography.Text>
-						Something went wrong while fetching metric highlights
+						{t('metrics_highlights_fetch_error', {
+							defaultValue:
+								'Something went wrong while fetching metric highlights',
+						})}
 					</Typography.Text>
 					<Button
 						type="link"
@@ -72,7 +81,7 @@ function Highlights({ metricName }: HighlightsProps): JSX.Element {
 							refetchMetricHighlights();
 						}}
 					>
-						Retry ?
+						{t('metrics_retry_question', { defaultValue: 'Retry ?' })}
 					</Button>
 				</div>
 			</div>
@@ -83,20 +92,24 @@ function Highlights({ metricName }: HighlightsProps): JSX.Element {
 		<div className="metric-details-content-grid">
 			<div className="labels-row">
 				<Typography.Text color="muted" className="metric-details-grid-label">
-					SAMPLES
+					{t('metrics_samples', { defaultValue: 'SAMPLES' })}
 				</Typography.Text>
 				<Typography.Text color="muted" className="metric-details-grid-label">
-					TIME SERIES
+					{t('metrics_time_series_label', { defaultValue: 'TIME SERIES' })}
 				</Typography.Text>
 				<Typography.Text color="muted" className="metric-details-grid-label">
-					LAST RECEIVED
+					{t('metrics_last_received', { defaultValue: 'LAST RECEIVED' })}
 				</Typography.Text>
 			</div>
 			<div className="values-row">
 				{isLoadingMetricHighlights ? (
 					<div className="metric-highlights-loading-inline">
 						<Spin size="small" />
-						<Typography.Text color="muted">Loading metric stats</Typography.Text>
+						<Typography.Text color="muted">
+							{t('metrics_loading_stats', {
+								defaultValue: 'Loading metric stats',
+							})}
+						</Typography.Text>
 					</div>
 				) : (
 					<>
@@ -121,12 +134,21 @@ function Highlights({ metricName }: HighlightsProps): JSX.Element {
 							data-testid="metric-highlights-time-series-total"
 						>
 							<TooltipSimple
-								title="Active time series are those that have received data points in the last 1 hour."
+								title={t('metrics_active_time_series_tooltip', {
+									defaultValue:
+										'Active time series are those that have received data points in the last 1 hour.',
+								})}
 								side="top"
 								tooltipContentProps={TOOLTIP_CONTENT_PROPS}
 								arrow
 							>
-								<span>{`${timeSeriesTotal} total ⎯ ${timeSeriesActive} active`}</span>
+								<span>
+									{t('metrics_time_series_total_active', {
+										defaultValue: '{{total}} total ⎯ {{active}} active',
+										total: timeSeriesTotal,
+										active: timeSeriesActive,
+									})}
+								</span>
 							</TooltipSimple>
 						</Typography.Text>
 						<Typography.Text

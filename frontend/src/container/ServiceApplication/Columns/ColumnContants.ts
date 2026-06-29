@@ -1,3 +1,5 @@
+import type { TFunction } from 'i18next';
+
 export enum ColumnKey {
 	Application = 'serviceName',
 	P99 = 'p99',
@@ -5,12 +7,22 @@ export enum ColumnKey {
 	Operations = 'callRate',
 }
 
-export const ColumnTitle: Record<ColumnKey, string> = {
-	[ColumnKey.Application]: 'Application',
-	[ColumnKey.P99]: 'P99 latency',
-	[ColumnKey.ErrorRate]: 'Error Rate (% of total)',
-	[ColumnKey.Operations]: 'Operations Per Second',
-};
+// Devuelve los títulos de columna traducidos. Recibe `t` para mantener el tipado
+// y garantizar que el namespace `pages` ya esté cargado por el componente.
+export const getColumnTitles = (t: TFunction): Record<ColumnKey, string> => ({
+	[ColumnKey.Application]: t('pages:svc_col_application', {
+		defaultValue: 'Application',
+	}),
+	[ColumnKey.P99]: t('pages:svc_col_p99_latency', {
+		defaultValue: 'P99 latency',
+	}),
+	[ColumnKey.ErrorRate]: t('pages:svc_col_error_rate', {
+		defaultValue: 'Error Rate (% of total)',
+	}),
+	[ColumnKey.Operations]: t('pages:svc_col_operations_per_second', {
+		defaultValue: 'Operations Per Second',
+	}),
+});
 
 export enum ColumnWidth {
 	Application = 200,
@@ -21,4 +33,6 @@ export enum ColumnWidth {
 
 export const SORTING_ORDER = 'descend';
 
-export const SEARCH_PLACEHOLDER = 'Search by service';
+// Placeholder del buscador de servicios; traducido vía `t` (namespace `pages`).
+export const getSearchPlaceholder = (t: TFunction): string =>
+	t('pages:svc_search_by_service', { defaultValue: 'Search by service' });

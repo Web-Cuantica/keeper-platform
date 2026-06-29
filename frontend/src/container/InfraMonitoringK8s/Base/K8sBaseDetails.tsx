@@ -5,6 +5,7 @@ import React, {
 	useRef,
 	useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 // eslint-disable-next-line no-restricted-imports
 import { Color, Spacing } from '@signozhq/design-tokens';
@@ -174,6 +175,7 @@ export default function K8sBaseDetails<T>({
 	tabsConfig,
 	customTabs,
 }: K8sBaseDetailsProps<T>): JSX.Element {
+	const { t } = useTranslation('pages');
 	const selectedTime = useGlobalTimeStore((s) => s.selectedTime);
 	const getMinMaxTime = useGlobalTimeStore((s) => s.getMinMaxTime);
 	const lastComputedMinMax = useGlobalTimeStore((s) => s.lastComputedMinMax);
@@ -450,8 +452,11 @@ export default function K8sBaseDetails<T>({
 					<Typography.Text className="title">
 						{entityName ||
 							((isEntityError || hasResponseError) &&
-								'Failed to load entity details') ||
-							(isEntityLoading && 'Loading...') ||
+								t('infra_entity_details_failed', {
+									defaultValue: 'Failed to load entity details',
+								})) ||
+							(isEntityLoading &&
+								t('infra_loading', { defaultValue: 'Loading...' })) ||
 							'-'}
 					</Typography.Text>
 				</>
@@ -474,7 +479,9 @@ export default function K8sBaseDetails<T>({
 						{entityResponse?.error ||
 							(entityError instanceof Error
 								? entityError.message
-								: 'Failed to load entity details')}
+								: t('infra_entity_details_failed', {
+										defaultValue: 'Failed to load entity details',
+									}))}
 					</Typography.Text>
 				</div>
 			)}
@@ -530,7 +537,7 @@ export default function K8sBaseDetails<T>({
 													label: (
 														<div className="view-title">
 															<BarChart size={14} />
-															Metrics
+															{t('infra_tab_metrics', { defaultValue: 'Metrics' })}
 														</div>
 													),
 												},
@@ -543,7 +550,7 @@ export default function K8sBaseDetails<T>({
 													label: (
 														<div className="view-title">
 															<ScrollText size={14} />
-															Logs
+															{t('infra_tab_logs', { defaultValue: 'Logs' })}
 														</div>
 													),
 												},
@@ -556,7 +563,7 @@ export default function K8sBaseDetails<T>({
 													label: (
 														<div className="view-title">
 															<DraftingCompass size={14} />
-															Traces
+															{t('infra_tab_traces', { defaultValue: 'Traces' })}
 														</div>
 													),
 												},
@@ -569,7 +576,7 @@ export default function K8sBaseDetails<T>({
 													label: (
 														<div className="view-title">
 															<ChevronsLeftRight size={14} />
-															Events
+															{t('infra_tab_events', { defaultValue: 'Events' })}
 														</div>
 													),
 												},
@@ -582,7 +589,7 @@ export default function K8sBaseDetails<T>({
 													label: (
 														<div className="view-title">
 															<Package2 size={14} />
-															Containers
+															{t('infra_tab_containers', { defaultValue: 'Containers' })}
 														</div>
 													),
 												},
@@ -595,7 +602,7 @@ export default function K8sBaseDetails<T>({
 													label: (
 														<div className="view-title">
 															<ChevronsLeftRight size={14} />
-															Processes
+															{t('infra_tab_processes', { defaultValue: 'Processes' })}
 														</div>
 													),
 												},
@@ -614,7 +621,12 @@ export default function K8sBaseDetails<T>({
 							/>
 
 							{selectedView === VIEW_TYPES.LOGS && (
-								<Tooltip title="Go to Logs Explorer" placement="left">
+								<Tooltip
+									title={t('infra_go_to_logs_explorer', {
+										defaultValue: 'Go to Logs Explorer',
+									})}
+									placement="left"
+								>
 									<Button
 										icon={<Compass size={18} />}
 										className="compass-button"
@@ -623,7 +635,12 @@ export default function K8sBaseDetails<T>({
 								</Tooltip>
 							)}
 							{selectedView === VIEW_TYPES.TRACES && (
-								<Tooltip title="Go to Traces Explorer" placement="left">
+								<Tooltip
+									title={t('infra_go_to_traces_explorer', {
+										defaultValue: 'Go to Traces Explorer',
+									})}
+									placement="left"
+								>
 									<Button
 										icon={<Compass size={18} />}
 										className="compass-button"

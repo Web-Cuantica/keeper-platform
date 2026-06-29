@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
 	Button,
 	Empty,
@@ -28,6 +29,7 @@ function MetricNameSearch({
 	queryFilterExpression: Filter;
 	onFilterChange: (value: string) => void;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
 	const [searchString, setSearchString] = useState<string>('');
 	const [debouncedSearchString, setDebouncedSearchString] = useState<string>('');
@@ -158,9 +160,21 @@ function MetricNameSearch({
 		if (isLoadingMetricNameFilterValues) {
 			items.push(<Spin />);
 		} else if (isErrorMetricNameFilterValues) {
-			items.push(<Empty description="Error fetching metric names" />);
+			items.push(
+				<Empty
+					description={t('metrics_name_search_error', {
+						defaultValue: 'Error fetching metric names',
+					})}
+				/>,
+			);
 		} else if (metricNameFilterValues?.length === 0) {
-			items.push(<Empty description="No metric names found" />);
+			items.push(
+				<Empty
+					description={t('metrics_name_search_empty', {
+						defaultValue: 'No metric names found',
+					})}
+				/>,
+			);
 		} else {
 			items.push(
 				...metricNameFilterValues.map((filterValue, index) => (
@@ -182,6 +196,7 @@ function MetricNameSearch({
 		isLoadingMetricNameFilterValues,
 		metricNameFilterValues,
 		searchString,
+		t,
 	]);
 
 	const debouncedUpdate = useDebouncedFn((value) => {
@@ -203,7 +218,9 @@ function MetricNameSearch({
 				<Input
 					ref={inputRef}
 					onKeyDown={handleKeyDown}
-					placeholder="Search..."
+					placeholder={t('metrics_search_input_placeholder', {
+						defaultValue: 'Search...',
+					})}
 					value={searchString}
 					onChange={handleInputChange}
 					bordered
@@ -213,7 +230,7 @@ function MetricNameSearch({
 				</Menu>
 			</div>
 		),
-		[handleKeyDown, searchString, handleInputChange, popoverItems],
+		[handleKeyDown, searchString, handleInputChange, popoverItems, t],
 	);
 
 	useEffect(() => {

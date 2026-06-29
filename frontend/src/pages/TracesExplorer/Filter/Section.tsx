@@ -6,6 +6,7 @@ import {
 	useMemo,
 	useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Collapse } from 'antd';
 import { Divider } from '@signozhq/ui/divider';
 
@@ -29,6 +30,7 @@ interface SectionProps {
 
 export function Section(props: SectionProps): JSX.Element {
 	const { panelName, setSelectedFilters, selectedFilters, handleRun } = props;
+	const { t } = useTranslation('pages');
 
 	const defaultOpenPanes = useMemo(
 		() =>
@@ -103,7 +105,7 @@ export function Section(props: SectionProps): JSX.Element {
 					onClick={onClearHandler}
 					data-testid={`collapse-${panelName}-clearBtn`}
 				>
-					Clear All
+					{t('traces_filters_clear_all', { defaultValue: 'Clear All' })}
 				</Button>
 			</div>
 		</div>

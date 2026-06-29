@@ -34,7 +34,7 @@ function ServiceMetricTable({
 	} = useSelector<AppState, GlobalReducer>((state) => state.globalTime);
 
 	const { notifications } = useNotifications();
-	const { t: getText } = useTranslation(['services']);
+	const { t: getText } = useTranslation(['services', 'pages']);
 
 	const { isFetchingActiveLicense, trialInfo } = useAppContext();
 	const { isCloudUser: isCloudUserVal } = useGetTenantLicense();
@@ -68,7 +68,10 @@ function ServiceMetricTable({
 	);
 
 	const { search } = useLocation();
-	const tableColumns = useMemo(() => getColumns(search, true), [search]);
+	const tableColumns = useMemo(() => getColumns(search, true, getText), [
+		search,
+		getText,
+	]);
 	const [RPS, setRPS] = useState(0);
 
 	useEffect(() => {
@@ -96,7 +99,12 @@ function ServiceMetricTable({
 	const paginationConfig = {
 		defaultPageSize: 10,
 		showTotal: (total: number, range: number[]): string =>
-			`${range[0]}-${range[1]} of ${total} items`,
+			getText('pages:svc_pagination_total', {
+				defaultValue: '{{start}}-{{end}} of {{total}} items',
+				start: range[0],
+				end: range[1],
+				total,
+			}),
 	};
 	return (
 		<div className="service-metric-table-container">
@@ -104,7 +112,9 @@ function ServiceMetricTable({
 				<Flex justify="left">
 					<Typography.Title level={5} color="warning" style={{ marginTop: 0 }}>
 						<SolidAlertTriangle size="md" /> {getText('rps_over_100')}
-						<a href="mailto:cloud-support@signoz.io">email</a>
+						<a href="mailto:cloud-support@signoz.io">
+							{getText('pages:svc_email', { defaultValue: 'email' })}
+						</a>
 					</Typography.Title>
 				</Flex>
 			)}

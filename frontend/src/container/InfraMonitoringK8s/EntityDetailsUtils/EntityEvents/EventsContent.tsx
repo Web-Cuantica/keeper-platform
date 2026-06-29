@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { ColumnsType } from 'antd/lib/table';
 import { ResizeTable } from 'components/ResizeTable';
 import FieldRenderer from 'container/LogDetailedView/FieldRenderer';
@@ -11,6 +12,7 @@ export function EventContents({
 }: {
 	data: Record<string, string> | undefined;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const tableData = useMemo(
 		() =>
 			data ? Object.keys(data).map((key) => ({ key, value: data[key] })) : [],
@@ -19,7 +21,7 @@ export function EventContents({
 
 	const columns: ColumnsType<DataType> = [
 		{
-			title: 'Key',
+			title: t('infra_events_content_column_key', { defaultValue: 'Key' }),
 			dataIndex: 'key',
 			key: 'key',
 			width: 50,
@@ -28,7 +30,7 @@ export function EventContents({
 			render: (field: string): JSX.Element => <FieldRenderer field={field} />,
 		},
 		{
-			title: 'Value',
+			title: t('infra_events_content_column_value', { defaultValue: 'Value' }),
 			dataIndex: 'value',
 			key: 'value',
 			width: 50,

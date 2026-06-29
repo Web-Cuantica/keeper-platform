@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Card } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
 import { ArrowRight } from '@signozhq/icons';
@@ -11,6 +12,7 @@ function GraphPopover({
 	popoverRef,
 	openInExpandedView,
 }: GraphPopoverProps): JSX.Element | null {
+	const { t } = useTranslation('pages');
 	const { x, y, value, timestamp, timeSeries } = options || {
 		x: 0,
 		y: 0,
@@ -60,7 +62,9 @@ function GraphPopover({
 				</div>
 				<div className="inspect-graph-popover-button-row">
 					<Button size="small" type="primary" onClick={openInExpandedView}>
-						<Typography.Text>View details</Typography.Text>
+						<Typography.Text>
+							{t('metrics_view_details', { defaultValue: 'View details' })}
+						</Typography.Text>
 						<ArrowRight size={10} />
 					</Button>
 				</div>

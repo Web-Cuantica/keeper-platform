@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 import { Card } from 'antd';
 import logEvent from 'api/common/logEvent';
@@ -70,6 +71,7 @@ function EntityLogsContent({
 	queryKey,
 	category,
 }: Omit<Props, 'initialExpression'>): JSX.Element {
+	const { t } = useTranslation('pages');
 	const virtuosoRef = useRef<VirtuosoHandle>(null);
 
 	const expression = useExpression();
@@ -197,13 +199,21 @@ function EntityLogsContent({
 		(): JSX.Element | null => (
 			<>
 				{isFetchingNextPage ? (
-					<div className={styles.logsLoadingSkeleton}> Loading more logs ... </div>
+					<div className={styles.logsLoadingSkeleton}>
+						{' '}
+						{t('infra_logs_loading_more', {
+							defaultValue: 'Loading more logs ...',
+						})}{' '}
+					</div>
 				) : !hasNextPage && logs.length > 0 ? (
-					<div className={styles.logsLoadingSkeleton}> *** End *** </div>
+					<div className={styles.logsLoadingSkeleton}>
+						{' '}
+						{t('infra_logs_end', { defaultValue: '*** End ***' })}{' '}
+					</div>
 				) : null}
 			</>
 		),
-		[isFetchingNextPage, hasNextPage, logs.length],
+		[isFetchingNextPage, hasNextPage, logs.length, t],
 	);
 
 	const renderContent = useMemo(

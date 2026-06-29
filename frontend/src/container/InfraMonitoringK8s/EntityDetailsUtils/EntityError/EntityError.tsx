@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Typography } from '@signozhq/ui/typography';
 import { useGetTenantLicense } from 'hooks/useGetTenantLicense';
 import history from 'lib/history';
@@ -9,6 +10,7 @@ import awwSnapUrl from '@/assets/Icons/awwSnap.svg';
 import styles from './EntityError.module.scss';
 
 export default function EntityError(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { isCloudUser: isCloudUserVal } = useGetTenantLicense();
 
 	const handleContactSupport = (): void => {
@@ -24,8 +26,13 @@ export default function EntityError(): JSX.Element {
 			<div className={styles.content}>
 				<img src={awwSnapUrl} alt="error" className={styles.icon} />
 				<Typography.Text>
-					<span className={styles.title}>Aw snap :/ </span>
-					Something went wrong. Please try again or contact support.
+					<span className={styles.title}>
+						{t('infra_error_aw_snap_title', { defaultValue: 'Aw snap :/ ' })}
+					</span>
+					{t('infra_error_aw_snap_message', {
+						defaultValue:
+							'Something went wrong. Please try again or contact support.',
+					})}
 				</Typography.Text>
 
 				<div
@@ -40,7 +47,7 @@ export default function EntityError(): JSX.Element {
 					}}
 				>
 					<Typography.Link className={styles.contactSupportText}>
-						Contact Support
+						{t('infra_contact_support', { defaultValue: 'Contact Support' })}
 					</Typography.Link>
 					<ArrowRight size={14} />
 				</div>

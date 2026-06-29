@@ -4,6 +4,7 @@ import type { ColumnType } from 'antd/es/table';
 import ROUTES from 'constants/routes';
 import { routeConfig } from 'container/SideNav/config';
 import { getQueryString } from 'container/SideNav/helper';
+import type { TFunction } from 'i18next';
 import { ServicesList } from 'types/api/metrics/getService';
 
 import { filterDropdown } from '../Filter/FilterDropdown';
@@ -12,8 +13,9 @@ import { Name } from '../styles';
 export const getColumnSearchProps = (
 	dataIndex: keyof ServicesList,
 	search: string,
+	t: TFunction,
 ): ColumnType<ServicesList> => ({
-	filterDropdown,
+	filterDropdown: (props): JSX.Element => filterDropdown({ ...props, t }),
 	filterIcon: <Search size="md" />,
 	onFilter: (
 		value: string | number | boolean,

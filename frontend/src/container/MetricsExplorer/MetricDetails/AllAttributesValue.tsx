@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useCopyToClipboard } from 'react-use';
 import { Button, Input, Menu, Popover, Tooltip } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
@@ -14,17 +15,24 @@ export function AllAttributesEmptyText({
 	isErrorAttributes,
 	refetchAttributes,
 }: AllAttributesEmptyTextProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	if (isErrorAttributes) {
 		return (
 			<div className="all-attributes-error-state">
 				<MetricDetailsErrorState
 					refetch={refetchAttributes}
-					errorMessage="Something went wrong while fetching attributes"
+					errorMessage={t('metrics_attributes_fetch_error', {
+						defaultValue: 'Something went wrong while fetching attributes',
+					})}
 				/>
 			</div>
 		);
 	}
-	return <Typography.Text>No attributes found</Typography.Text>;
+	return (
+		<Typography.Text>
+			{t('metrics_no_attributes_found', { defaultValue: 'No attributes found' })}
+		</Typography.Text>
+	);
 }
 
 export function AllAttributesValue({
@@ -32,6 +40,7 @@ export function AllAttributesValue({
 	filterValue,
 	goToMetricsExploreWithAppliedAttribute,
 }: AllAttributesValueProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [attributePopoverKey, setAttributePopoverKey] = useState<string | null>(
 		null,
 	);
@@ -76,12 +85,14 @@ export function AllAttributesValue({
 				items={[
 					{
 						icon: <SquareArrowOutUpRight size={14} />,
-						label: 'Open in Metric Explorer',
+						label: t('metrics_open_in_metric_explorer', {
+							defaultValue: 'Open in Metric Explorer',
+						}),
 						key: 'open-in-explorer',
 					},
 					{
 						icon: <Copy size={14} />,
-						label: 'Copy Value',
+						label: t('metrics_copy_value', { defaultValue: 'Copy Value' }),
 						key: 'copy-value',
 					},
 				]}
@@ -90,7 +101,7 @@ export function AllAttributesValue({
 				}}
 			/>
 		),
-		[handleMenuItemClick],
+		[handleMenuItemClick, t],
 	);
 
 	const filteredAllValues = useMemo(
@@ -106,7 +117,9 @@ export function AllAttributesValue({
 	const allValuesPopoverContent = (
 		<div className="all-values-popover">
 			<Input
-				placeholder="Search values"
+				placeholder={t('metrics_search_values', {
+					defaultValue: 'Search values',
+				})}
 				size="small"
 				prefix={<Search size={12} />}
 				value={allValuesSearch}
@@ -123,7 +136,15 @@ export function AllAttributesValue({
 									{attribute}
 								</Typography.Text>
 								<div className="all-values-item-actions">
-									<Tooltip title={isCopied ? 'Copied!' : 'Copy value'}>
+									<Tooltip
+										title={
+											isCopied
+												? t('metrics_copied', { defaultValue: 'Copied!' })
+												: t('metrics_copy_value_tooltip', {
+														defaultValue: 'Copy value',
+													})
+										}
+									>
 										<Button
 											type="text"
 											size="small"
@@ -134,7 +155,11 @@ export function AllAttributesValue({
 											}}
 										/>
 									</Tooltip>
-									<Tooltip title="Open in Metric Explorer">
+									<Tooltip
+										title={t('metrics_open_in_metric_explorer', {
+											defaultValue: 'Open in Metric Explorer',
+										})}
+									>
 										<Button
 											type="text"
 											size="small"
@@ -151,7 +176,7 @@ export function AllAttributesValue({
 					})}
 				{allValuesOpen && filteredAllValues.length === 0 && (
 					<Typography.Text color="muted" className="all-values-empty">
-						No values found
+						{t('metrics_no_values_found', { defaultValue: 'No values found' })}
 					</Typography.Text>
 				)}
 			</div>
@@ -204,7 +229,10 @@ export function AllAttributesValue({
 					overlayClassName="metric-details-popover all-values-popover-overlay"
 				>
 					<Button type="text" className="all-values-button">
-						All values ({filterValue.length})
+						{t('metrics_all_values', {
+							defaultValue: 'All values ({{count}})',
+							count: filterValue.length,
+						})}
 					</Button>
 				</Popover>
 			)}

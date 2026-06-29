@@ -1,14 +1,18 @@
 import { Search } from '@signozhq/icons';
 import { Button, Card, Input, Space } from 'antd';
 import type { FilterDropdownProps } from 'antd/es/table/interface';
+import type { TFunction } from 'i18next';
 
-import { SEARCH_PLACEHOLDER } from '../Columns/ColumnContants';
+import { getSearchPlaceholder } from '../Columns/ColumnContants';
+
+type FilterDropdownPropsWithT = FilterDropdownProps & { t: TFunction };
 
 export const filterDropdown = ({
 	setSelectedKeys,
 	selectedKeys,
 	confirm,
-}: FilterDropdownProps): JSX.Element => {
+	t,
+}: FilterDropdownPropsWithT): JSX.Element => {
 	const handleSearch = (): void => {
 		confirm();
 	};
@@ -17,11 +21,13 @@ export const filterDropdown = ({
 		setSelectedKeys(e.target.value ? [e.target.value] : []);
 	};
 
+	const searchText: string = t('pages:svc_search', { defaultValue: 'Search' });
+
 	return (
 		<Card size="small">
 			<Space align="start" direction="vertical">
 				<Input
-					placeholder={SEARCH_PLACEHOLDER}
+					placeholder={getSearchPlaceholder(t)}
 					value={selectedKeys[0]}
 					onChange={selectedKeysHandler}
 					allowClear
@@ -33,7 +39,7 @@ export const filterDropdown = ({
 					icon={<Search size="md" />}
 					size="small"
 				>
-					Search
+					{searchText}
 				</Button>
 			</Space>
 		</Card>

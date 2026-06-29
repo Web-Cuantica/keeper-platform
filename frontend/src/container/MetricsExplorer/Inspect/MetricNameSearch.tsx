@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Typography } from '@signozhq/ui/typography';
 import { initialQueriesMap } from 'constants/queryBuilder';
 import { MetricNameSelector } from 'container/QueryBuilder/filters';
@@ -11,6 +12,7 @@ function MetricNameSearch({
 	currentMetricName,
 	setCurrentMetricName,
 }: MetricNameSearchProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [searchText, setSearchText] = useState(currentMetricName);
 
 	const handleSetMetricName = (value: BaseAutocompleteData): void => {
@@ -26,7 +28,9 @@ function MetricNameSearch({
 			data-testid="metric-name-search"
 			className="inspect-metrics-input-group metric-name-search"
 		>
-			<Typography.Text>From</Typography.Text>
+			<Typography.Text>
+				{t('metrics_filter_from', { defaultValue: 'From' })}
+			</Typography.Text>
 			<MetricNameSelector
 				defaultValue={searchText ?? ''}
 				query={initialQueriesMap[DataSource.METRICS].builder.queryData[0]}

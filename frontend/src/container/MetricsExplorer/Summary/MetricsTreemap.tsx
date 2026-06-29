@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useWindowSize } from 'react-use';
 import { Group } from '@visx/group';
 import { Treemap } from '@visx/hierarchy';
@@ -34,6 +35,7 @@ function MetricsTreemapInternal({
 	viewType,
 	openMetricDetails,
 }: MetricsTreemapInternalProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { width: windowWidth } = useWindowSize();
 
 	const treemapWidth = useMemo(
@@ -101,7 +103,10 @@ function MetricsTreemapInternal({
 	if (isError) {
 		return (
 			<Empty
-				description="Error fetching metrics. If the problem persists, please contact support."
+				description={t('metrics_treemap_error', {
+					defaultValue:
+						'Error fetching metrics. If the problem persists, please contact support.',
+				})}
 				data-testid="metrics-treemap-error-state"
 				style={treemapStylesWithPadding}
 			/>
@@ -111,7 +116,9 @@ function MetricsTreemapInternal({
 	if (!data || !data?.[viewType]?.length) {
 		return (
 			<Empty
-				description="No metrics found"
+				description={t('metrics_treemap_empty', {
+					defaultValue: 'No metrics found',
+				})}
 				data-testid="metrics-treemap-empty-state"
 				style={treemapStylesWithPadding}
 			/>
@@ -185,6 +192,23 @@ function MetricsTreemap({
 	openMetricDetails,
 	setHeatmapView,
 }: MetricsTreemapProps): JSX.Element {
+	const { t } = useTranslation('pages');
+
+	// Traduce las etiquetas de las opciones de vista (config a nivel de módulo)
+	const treemapViewOptions = useMemo(
+		() =>
+			TREEMAP_VIEW_OPTIONS.map((option) => ({
+				...option,
+				label:
+					option.value === MetricsexplorertypesTreemapModeDTO.timeseries
+						? t('metrics_treemap_option_time_series', {
+								defaultValue: 'Time Series',
+							})
+						: t('metrics_treemap_option_samples', { defaultValue: 'Samples' }),
+			})),
+		[t],
+	);
+
 	return (
 		<div
 			className="metrics-treemap-container"
@@ -192,16 +216,21 @@ function MetricsTreemap({
 		>
 			<div className="metrics-treemap-title">
 				<div className="metrics-treemap-title-left">
-					<Typography.Title level={4}>Proportion View</Typography.Title>
+					<Typography.Title level={4}>
+						{t('metrics_proportion_view', { defaultValue: 'Proportion View' })}
+					</Typography.Title>
 					<Tooltip
-						title="The treemap displays the proportion of samples/timeseries in the selected time range. Each tile represents a unique metric, and its size indicates the percentage of samples/timeseries it contributes to the total."
+						title={t('metrics_proportion_view_tooltip', {
+							defaultValue:
+								'The treemap displays the proportion of samples/timeseries in the selected time range. Each tile represents a unique metric, and its size indicates the percentage of samples/timeseries it contributes to the total.',
+						})}
 						placement="right"
 					>
 						<Info size={16} />
 					</Tooltip>
 				</div>
 				<Select
-					options={TREEMAP_VIEW_OPTIONS}
+					options={treemapViewOptions}
 					value={viewType}
 					onChange={setHeatmapView}
 					disabled={isLoading}

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { generatePath } from 'react-router-dom';
 import { Color } from '@signozhq/design-tokens';
 import { DropdownMenuSimple } from '@signozhq/ui/dropdown-menu';
@@ -12,13 +13,13 @@ import { QueryParams } from 'constants/query';
 import ROUTES from 'constants/routes';
 import { Bell, Grid2X2 } from '@signozhq/icons';
 import { openInNewTab } from 'utils/navigation';
-import { pluralize } from 'utils/pluralize';
 
 import { DashboardsAndAlertsPopoverProps } from './types';
 
 function DashboardsAndAlertsPopover({
 	metricName,
 }: DashboardsAndAlertsPopoverProps): JSX.Element | null {
+	const { t } = useTranslation('pages');
 	const {
 		data: alertsData,
 		isLoading: isLoadingAlerts,
@@ -139,7 +140,11 @@ function DashboardsAndAlertsPopover({
 					>
 						<Grid2X2 size={12} color={Color.BG_SIENNA_500} />
 						<Typography.Text>
-							{pluralize(dashboards.length, 'dashboard')}
+							{t('metrics_dashboards_count', {
+								defaultValue: '{{count}} dashboard',
+								defaultValue_other: '{{count}} dashboards',
+								count: dashboards.length,
+							})}
 						</Typography.Text>
 					</div>
 				</DropdownMenuSimple>
@@ -157,7 +162,11 @@ function DashboardsAndAlertsPopover({
 					>
 						<Bell size={12} color={Color.BG_SAKURA_500} />
 						<Typography.Text>
-							{pluralize(alerts.length, 'alert rule')}
+							{t('metrics_alert_rules_count', {
+								defaultValue: '{{count}} alert rule',
+								defaultValue_other: '{{count}} alert rules',
+								count: alerts.length,
+							})}
 						</Typography.Text>
 					</div>
 				</DropdownMenuSimple>

@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { QueryKey } from 'react-query';
 // eslint-disable-next-line no-restricted-imports
 import { useSelector } from 'react-redux';
@@ -17,6 +18,7 @@ import SkipOnBoardingModal from '../SkipOnBoardModal';
 import ServiceMetricsApplication from './ServiceMetricsApplication';
 
 function ServicesUsingMetrics(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const {
 		maxTime,
 		minTime,
@@ -55,7 +57,9 @@ function ServicesUsingMetrics(): JSX.Element {
 	}
 
 	if (isLoading) {
-		return <Spinner tip="Loading..." />;
+		return (
+			<Spinner tip={t('pages:svc_loading', { defaultValue: 'Loading...' })} />
+		);
 	}
 
 	return <ServiceMetricsApplication topLevelOperations={topLevelOperations} />;

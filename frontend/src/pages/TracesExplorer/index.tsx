@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQueryClient } from 'react-query';
 import { useSearchParams } from 'react-router-dom-v5-compat';
 import * as Sentry from '@sentry/react';
@@ -63,6 +64,7 @@ import TimeSeriesView from './TimeSeriesView';
 import './TracesExplorer.styles.scss';
 
 function TracesExplorer(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const {
 		panelType,
 		updateAllQueriesOperators,
@@ -300,7 +302,11 @@ function TracesExplorer(): JSX.Element {
 
 					<div className="traces-explorer-views">
 						{isCancelled && (
-							<QueryCancelledPlaceholder subText='Click "Run Query" to load traces.' />
+							<QueryCancelledPlaceholder
+								subText={t('traces_run_query_to_load', {
+									defaultValue: 'Click "Run Query" to load traces.',
+								})}
+							/>
 						)}
 
 						{!isCancelled && selectedView === ExplorerViews.LIST && (

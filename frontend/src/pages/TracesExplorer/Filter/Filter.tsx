@@ -6,6 +6,7 @@ import {
 	useMemo,
 	useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
 	ArrowUpToLine,
 	Filter as FilterIcon,
@@ -40,6 +41,7 @@ interface FilterProps {
 
 export function Filter(props: FilterProps): JSX.Element {
 	const { setOpen } = props;
+	const { t } = useTranslation('pages');
 	const [selectedFilters, setSelectedFilters] =
 		useState<
 			Record<
@@ -248,9 +250,14 @@ export function Filter(props: FilterProps): JSX.Element {
 				<Flex gap={8} align="center">
 					<div className="filter-title">
 						<FilterIcon size="md" />
-						<Typography.Text>Filters</Typography.Text>
+						<Typography.Text>
+							{t('traces_filters', { defaultValue: 'Filters' })}
+						</Typography.Text>
 					</div>
-					<Tooltip title="Reset" placement="right">
+					<Tooltip
+						title={t('traces_filters_reset', { defaultValue: 'Reset' })}
+						placement="right"
+					>
 						<Button
 							onClick={(): void => handleRun({ resetAll: true })}
 							className="sync-icon"
@@ -260,7 +267,10 @@ export function Filter(props: FilterProps): JSX.Element {
 						</Button>
 					</Tooltip>
 				</Flex>
-				<Tooltip title="Collapse" placement="right">
+				<Tooltip
+					title={t('traces_filters_collapse', { defaultValue: 'Collapse' })}
+					placement="right"
+				>
 					<Button
 						onClick={(): void => setOpen(false)}
 						className="arrow-icon"

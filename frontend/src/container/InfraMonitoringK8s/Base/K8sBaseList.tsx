@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { Typography } from '@signozhq/ui/typography';
 import logEvent from 'api/common/logEvent';
@@ -77,6 +78,7 @@ export function K8sBaseList<T extends K8sEntityData>({
 	eventCategory,
 	renderEmptyState,
 }: K8sBaseListProps<T>): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [queryFilters] = useInfraMonitoringFiltersK8s();
 	const [currentPage] = useInfraMonitoringPageListing();
 	const [currentPageSize] = useInfraMonitoringPageSizeListing();
@@ -256,7 +258,10 @@ export function K8sBaseList<T extends K8sEntityData>({
 				columnStorageKey={columnStorageKey}
 			/>
 			{isError && (
-				<Typography>{data?.error?.toString() || 'Something went wrong'}</Typography>
+				<Typography>
+					{data?.error?.toString() ||
+						t('infra_something_went_wrong', { defaultValue: 'Something went wrong' })}
+				</Typography>
 			)}
 
 			{showEmptyState ? (

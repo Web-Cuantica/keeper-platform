@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useCopyToClipboard } from 'react-use';
 import type { TableColumnsType as ColumnsType } from 'antd';
 import { Button, Collapse, Input, Menu, Popover, Tooltip } from 'antd';
@@ -36,6 +37,7 @@ function AllAttributes({
 	minTime,
 	maxTime,
 }: AllAttributesProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [searchString, setSearchString] = useState('');
 	const [activeKey, setActiveKey] = useState<string[]>([ALL_ATTRIBUTES_KEY]);
 	const [keyPopoverOpen, setKeyPopoverOpen] = useState<string | null>(null);
@@ -177,7 +179,7 @@ function AllAttributes({
 	const columns: ColumnsType<DataType> = useMemo(
 		() => [
 			{
-				title: 'Key',
+				title: t('metrics_attr_key', { defaultValue: 'Key' }),
 				dataIndex: 'key',
 				key: 'key',
 				width: 50,
@@ -193,12 +195,14 @@ function AllAttributes({
 										items={[
 											{
 												icon: <SquareArrowOutUpRight size={14} />,
-												label: 'Open in Metric Explorer',
+												label: t('metrics_open_in_metric_explorer', {
+													defaultValue: 'Open in Metric Explorer',
+												}),
 												key: 'open-in-explorer',
 											},
 											{
 												icon: <Copy size={14} />,
-												label: 'Copy Key',
+												label: t('metrics_copy_key', { defaultValue: 'Copy Key' }),
 												key: 'copy-key',
 											},
 										]}
@@ -236,7 +240,7 @@ function AllAttributes({
 				},
 			},
 			{
-				title: 'Value',
+				title: t('metrics_attr_value', { defaultValue: 'Value' }),
 				dataIndex: 'value',
 				key: 'value',
 				width: 50,
@@ -259,6 +263,7 @@ function AllAttributes({
 			handleKeyMenuItemClick,
 			keyPopoverOpen,
 			copiedKey,
+			t,
 		],
 	);
 
@@ -268,14 +273,20 @@ function AllAttributes({
 				label: (
 					<div className="metrics-accordion-header">
 						<div className="all-attributes-header-title">
-							<Typography.Text>All Attributes</Typography.Text>
-							<Tooltip title="Showing attributes for the selected time range">
+							<Typography.Text>
+								{t('metrics_all_attributes', { defaultValue: 'All Attributes' })}
+							</Typography.Text>
+							<Tooltip
+								title={t('metrics_all_attributes_tooltip', {
+									defaultValue: 'Showing attributes for the selected time range',
+								})}
+							>
 								<Info size={14} />
 							</Tooltip>
 						</div>
 						<Input
 							className="all-attributes-search-input"
-							placeholder="Search"
+							placeholder={t('metrics_search', { defaultValue: 'Search' })}
 							value={searchString}
 							size="small"
 							suffix={<Search size={12} />}
@@ -321,6 +332,7 @@ function AllAttributes({
 			columns,
 			tableData,
 			refetchAttributes,
+			t,
 		],
 	);
 

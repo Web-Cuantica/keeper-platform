@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQueryClient } from 'react-query';
 import * as Sentry from '@sentry/react';
 import { Color } from '@signozhq/design-tokens';
@@ -35,6 +36,7 @@ function Inspect({
 	isOpen,
 	onClose,
 }: InspectProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const isDarkMode = useIsDarkMode();
 	const [currentMetricName, setCurrentMetricName] =
 		useState<string>(defaultMetricName);
@@ -203,7 +205,11 @@ function Inspect({
 		if (isCancelled) {
 			return renderFallback(
 				'inspect-metrics-cancelled',
-				<QueryCancelledPlaceholder subText='Click "Run Query" to see inspect results.' />,
+				<QueryCancelledPlaceholder
+					subText={t('metrics_inspect_cancelled_subtext', {
+						defaultValue: 'Click "Run Query" to see inspect results.',
+					})}
+				/>,
 			);
 		}
 
@@ -214,14 +220,22 @@ function Inspect({
 		if (isInspectMetricsError) {
 			return renderFallback(
 				'inspect-metrics-error',
-				<Empty description="Error loading inspect metrics." />,
+				<Empty
+					description={t('metrics_inspect_error', {
+						defaultValue: 'Error loading inspect metrics.',
+					})}
+				/>,
 			);
 		}
 
 		if (inspectMetricsTimeSeries.length === 0) {
 			return renderFallback(
 				'inspect-metrics-empty',
-				<Empty description="No time series found for this metric to inspect." />,
+				<Empty
+					description={t('metrics_inspect_empty', {
+						defaultValue: 'No time series found for this metric to inspect.',
+					})}
+				/>,
 			);
 		}
 
@@ -270,6 +284,7 @@ function Inspect({
 		currentQueryData,
 		expandedViewOptions,
 		timeAggregatedSeriesMap,
+		t,
 	]);
 
 	useEffect(() => {
@@ -284,14 +299,16 @@ function Inspect({
 				width="100%"
 				title={
 					<div className="inspect-metrics-title">
-						<Typography.Text>Metrics Explorer —</Typography.Text>
+						<Typography.Text>
+							{t('metrics_inspect_title', { defaultValue: 'Metrics Explorer —' })}
+						</Typography.Text>
 						<Button
 							className="inspect-metrics-button"
 							size="small"
 							icon={<Compass size={14} />}
 							disabled
 						>
-							Inspect Metric
+							{t('metrics_inspect_metric', { defaultValue: 'Inspect Metric' })}
 						</Button>
 					</div>
 				}

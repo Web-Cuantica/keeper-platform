@@ -6,6 +6,7 @@ import {
 } from 'api/generated/services/sigNoz.schemas';
 import { SpaceAggregation, TimeAggregation } from 'api/v5/v5';
 import { initialQueriesMap, toAttributeType } from 'constants/queryBuilder';
+import { TFunction } from 'i18next';
 import { DataTypes } from 'types/api/queryBuilder/queryAutocompleteResponse';
 import { Query } from 'types/api/queryBuilder/queryBuilderData';
 import { DataSource, ReduceOperators } from 'types/common/queryBuilder';
@@ -14,7 +15,24 @@ import { MetricMetadata, MetricMetadataFormState } from './types';
 
 export function formatTimestampToReadableDate(
 	timestamp: number | string | undefined,
+	t?: TFunction,
 ): string {
+	// Fallback al texto en inglés (interpolando los tokens) cuando no se
+	// provee la función de traducción
+	const translate = (
+		key: string,
+		defaultValue: string,
+		options: Record<string, string | number> = {},
+	): string => {
+		if (t) {
+			return t(key, { defaultValue, ...options });
+		}
+		return defaultValue.replace(
+			/\{\{(\w+)\}\}/g,
+			(_, token) => `${options[token] ?? ''}`,
+		);
+	};
+
 	if (!timestamp) {
 		return '-';
 	}
@@ -23,28 +41,43 @@ export function formatTimestampToReadableDate(
 	const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
 	if (diffInSeconds < 60) {
-		return 'Few seconds ago';
+		return translate('metrics_few_seconds_ago', 'Few seconds ago');
 	}
 
 	const diffInMinutes = Math.floor(diffInSeconds / 60);
 	if (diffInMinutes < 60) {
-		return `${diffInMinutes} minute${diffInMinutes > 1 ? 's' : ''} ago`;
+		return diffInMinutes > 1
+			? translate('metrics_minutes_ago', '{{value}} minutes ago', {
+					value: diffInMinutes,
+				})
+			: translate('metrics_minute_ago', '{{value}} minute ago', {
+					value: diffInMinutes,
+				});
 	}
 
 	const diffInHours = Math.floor(diffInMinutes / 60);
 	if (diffInHours < 24) {
-		return `${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
+		return diffInHours > 1
+			? translate('metrics_hours_ago', '{{value}} hours ago', {
+					value: diffInHours,
+				})
+			: translate('metrics_hour_ago', '{{value}} hour ago', {
+					value: diffInHours,
+				});
 	}
 
 	const diffInDays = Math.floor(diffInHours / 24);
 	if (diffInDays === 1) {
-		return `Yesterday at ${date
-			.getHours()
+		const time = `${date.getHours().toString().padStart(2, '0')}:${date
+			.getMinutes()
 			.toString()
-			.padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+			.padStart(2, '0')}`;
+		return translate('metrics_yesterday_at', 'Yesterday at {{time}}', { time });
 	}
 	if (diffInDays < 7) {
-		return `${diffInDays} days ago`;
+		return translate('metrics_days_ago', '{{value}} days ago', {
+			value: diffInDays,
+		});
 	}
 
 	return date.toLocaleDateString();

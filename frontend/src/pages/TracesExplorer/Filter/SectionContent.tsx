@@ -6,6 +6,7 @@ import {
 	useMemo,
 	useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Card, Input, Tooltip } from 'antd';
 import { Checkbox } from '@signozhq/ui/checkbox';
 import { ParaGraph } from 'container/Trace/Filters/Panel/PanelBody/Common/styles';
@@ -34,6 +35,7 @@ interface SectionBodyProps {
 
 export function SectionBody(props: SectionBodyProps): JSX.Element {
 	const { type, setSelectedFilters, selectedFilters, handleRun } = props;
+	const { t } = useTranslation('pages');
 	const [visibleItemsCount, setVisibleItemsCount] = useState(10);
 	const [searchFilter, setSearchFilter] = useState<string>('');
 	const [searchText, setSearchText] = useState<string>('');
@@ -139,11 +141,15 @@ export function SectionBody(props: SectionBodyProps): JSX.Element {
 				<Input.Search
 					value={searchFilter}
 					onChange={handleSearch}
-					placeholder="Filter Values"
+					placeholder={t('traces_filters_filter_values', {
+						defaultValue: 'Filter Values',
+					})}
 					className="search-input"
 				/>
 				{listData.length === 0 && isEmpty(searchFilter) ? (
-					<div style={{ padding: '8px 18px' }}>No data found</div>
+					<div style={{ padding: '8px 18px' }}>
+						{t('traces_filters_no_data_found', { defaultValue: 'No data found' })}
+					</div>
 				) : (
 					<>
 						{listData.map((item) => (
@@ -166,7 +172,7 @@ export function SectionBody(props: SectionBodyProps): JSX.Element {
 						))}
 						{visibleItemsCount < results.length && (
 							<Button onClick={handleShowMore} type="link">
-								Show More
+								{t('traces_filters_show_more', { defaultValue: 'Show More' })}
 							</Button>
 						)}
 					</>

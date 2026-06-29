@@ -20,11 +20,14 @@ function ServiceTraceTable({
 }: ServiceTableProps): JSX.Element {
 	const { search } = useLocation();
 	const [RPS, setRPS] = useState(0);
-	const { t: getText } = useTranslation(['services']);
+	const { t: getText } = useTranslation(['services', 'pages']);
 
 	const { isFetchingActiveLicense, trialInfo } = useAppContext();
 	const { isCloudUser: isCloudUserVal } = useGetTenantLicense();
-	const tableColumns = useMemo(() => getColumns(search, false), [search]);
+	const tableColumns = useMemo(() => getColumns(search, false, getText), [
+		search,
+		getText,
+	]);
 
 	useEffect(() => {
 		if (
@@ -51,7 +54,12 @@ function ServiceTraceTable({
 	const paginationConfig = {
 		defaultPageSize: 10,
 		showTotal: (total: number, range: number[]): string =>
-			`${range[0]}-${range[1]} of ${total} items`,
+			getText('pages:svc_pagination_total', {
+				defaultValue: '{{start}}-{{end}} of {{total}} items',
+				start: range[0],
+				end: range[1],
+				total,
+			}),
 	};
 	return (
 		<div className="service-traces-table-container">
@@ -59,7 +67,9 @@ function ServiceTraceTable({
 				<Flex justify="left">
 					<Typography.Title level={5} color="warning" style={{ marginTop: 0 }}>
 						<SolidAlertTriangle size="md" /> {getText('rps_over_100')}
-						<a href="mailto:cloud-support@signoz.io">email</a>
+						<a href="mailto:cloud-support@signoz.io">
+							{getText('pages:svc_email', { defaultValue: 'email' })}
+						</a>
 					</Typography.Title>
 				</Flex>
 			)}

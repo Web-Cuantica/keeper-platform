@@ -70,7 +70,7 @@ function AllErrors(): JSX.Element {
 	);
 	const { pathname } = useLocation();
 	const params = useUrlQuery();
-	const { t } = useTranslation(['common']);
+	const { t } = useTranslation(['common', 'pages']);
 	const {
 		updatedOrder,
 		getUpdatedOffset,
@@ -272,13 +272,13 @@ function AllErrors(): JSX.Element {
 					>
 						<Flex align="center" justify="center" gap={4}>
 							<Search size="md" />
-							Search
+							{t('pages:exc_search_button', { defaultValue: 'Search' })}
 						</Flex>
 					</Button>
 				</Space>
 			</Card>
 		),
-		[getUpdatedExceptionType, getUpdatedServiceName, handleSearch],
+		[getUpdatedExceptionType, getUpdatedServiceName, handleSearch, t],
 	);
 
 	const onExceptionTypeFilter: ColumnType<Exception>['onFilter'] = useCallback(
@@ -325,11 +325,15 @@ function AllErrors(): JSX.Element {
 
 	const columns: ColumnsType<Exception> = [
 		{
-			title: 'Exception Type',
+			title: t('pages:exc_col_exception_type', { defaultValue: 'Exception Type' }),
 			width: 100,
 			dataIndex: 'exceptionType',
 			key: 'exceptionType',
-			...getFilter(onExceptionTypeFilter, 'Search By Exception', 'exceptionType'),
+			...getFilter(
+				onExceptionTypeFilter,
+				t('pages:exc_search_by_exception', { defaultValue: 'Search By Exception' }),
+				'exceptionType',
+			),
 			render: (value, record): JSX.Element => (
 				<Tooltip overlay={(): JSX.Element => value}>
 					<Link
@@ -349,7 +353,7 @@ function AllErrors(): JSX.Element {
 			),
 		},
 		{
-			title: 'Error Message',
+			title: t('pages:exc_col_error_message', { defaultValue: 'Error Message' }),
 			dataIndex: 'exceptionMessage',
 			key: 'exceptionMessage',
 			width: 100,
@@ -360,7 +364,7 @@ function AllErrors(): JSX.Element {
 			),
 		},
 		{
-			title: 'Count',
+			title: t('pages:exc_col_count', { defaultValue: 'Count' }),
 			width: 50,
 			dataIndex: 'exceptionCount',
 			key: 'exceptionCount',
@@ -372,7 +376,7 @@ function AllErrors(): JSX.Element {
 			),
 		},
 		{
-			title: 'Last Seen',
+			title: t('pages:exc_col_last_seen', { defaultValue: 'Last Seen' }),
 			dataIndex: 'lastSeen',
 			width: 80,
 			key: 'lastSeen',
@@ -386,7 +390,7 @@ function AllErrors(): JSX.Element {
 			),
 		},
 		{
-			title: 'First Seen',
+			title: t('pages:exc_col_first_seen', { defaultValue: 'First Seen' }),
 			dataIndex: 'firstSeen',
 			width: 80,
 			key: 'firstSeen',
@@ -400,7 +404,7 @@ function AllErrors(): JSX.Element {
 			),
 		},
 		{
-			title: 'Application',
+			title: t('pages:exc_col_application', { defaultValue: 'Application' }),
 			dataIndex: 'serviceName',
 			width: 100,
 			key: 'serviceName',
@@ -412,7 +416,9 @@ function AllErrors(): JSX.Element {
 			),
 			...getFilter(
 				onApplicationTypeFilter,
-				'Search By Application',
+				t('pages:exc_search_by_application', {
+					defaultValue: 'Search By Application',
+				}),
 				'serviceName',
 			),
 		},
@@ -477,7 +483,11 @@ function AllErrors(): JSX.Element {
 
 	if (isCancelled && !data?.payload?.length) {
 		return (
-			<QueryCancelledPlaceholder subText='Click "Run Query" to load exceptions.' />
+			<QueryCancelledPlaceholder
+				subText={t('pages:exc_run_query_to_load', {
+					defaultValue: 'Click "Run Query" to load exceptions.',
+				})}
+			/>
 		);
 	}
 

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import * as Sentry from '@sentry/react';
 import { Button, CollapseProps } from 'antd';
 import { Collapse, Tooltip } from 'antd';
@@ -58,6 +59,7 @@ import K8sVolumesList from './Volumes/K8sVolumesList';
 import styles from './InfraMonitoringK8s.module.scss';
 
 export default function InfraMonitoringK8s(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [showFilters, setShowFilters] = useState(true);
 
 	const [selectedCategory, setSelectedCategory] = useInfraMonitoringCategory();
@@ -129,7 +131,7 @@ export default function InfraMonitoringK8s(): JSX.Element {
 		{
 			label: renderCategoryLabel(
 				<Container size={14} className={styles.quickFiltersCategoryLabelIcon} />,
-				'Pods',
+				t('infra_category_pods', { defaultValue: 'Pods' }),
 			),
 			key: K8sCategories.PODS,
 			showArrow: false,
@@ -145,7 +147,7 @@ export default function InfraMonitoringK8s(): JSX.Element {
 		{
 			label: renderCategoryLabel(
 				<Workflow size={14} className={styles.quickFiltersCategoryLabelIcon} />,
-				'Nodes',
+				t('infra_category_nodes', { defaultValue: 'Nodes' }),
 			),
 			key: K8sCategories.NODES,
 			showArrow: false,
@@ -161,7 +163,7 @@ export default function InfraMonitoringK8s(): JSX.Element {
 		{
 			label: renderCategoryLabel(
 				<FilePenLine size={14} className={styles.quickFiltersCategoryLabelIcon} />,
-				'Namespaces',
+				t('infra_category_namespaces', { defaultValue: 'Namespaces' }),
 			),
 			key: K8sCategories.NAMESPACES,
 			showArrow: false,
@@ -177,7 +179,7 @@ export default function InfraMonitoringK8s(): JSX.Element {
 		{
 			label: renderCategoryLabel(
 				<Boxes size={14} className={styles.quickFiltersCategoryLabelIcon} />,
-				'Clusters',
+				t('infra_category_clusters', { defaultValue: 'Clusters' }),
 			),
 			key: K8sCategories.CLUSTERS,
 			showArrow: false,
@@ -193,7 +195,7 @@ export default function InfraMonitoringK8s(): JSX.Element {
 		{
 			label: renderCategoryLabel(
 				<Computer size={14} className={styles.quickFiltersCategoryLabelIcon} />,
-				'Deployments',
+				t('infra_category_deployments', { defaultValue: 'Deployments' }),
 			),
 			key: K8sCategories.DEPLOYMENTS,
 			showArrow: false,
@@ -209,7 +211,7 @@ export default function InfraMonitoringK8s(): JSX.Element {
 		{
 			label: renderCategoryLabel(
 				<Bolt size={14} className={styles.quickFiltersCategoryLabelIcon} />,
-				'Jobs',
+				t('infra_category_jobs', { defaultValue: 'Jobs' }),
 			),
 			key: K8sCategories.JOBS,
 			showArrow: false,
@@ -225,7 +227,7 @@ export default function InfraMonitoringK8s(): JSX.Element {
 		{
 			label: renderCategoryLabel(
 				<Group size={14} className={styles.quickFiltersCategoryLabelIcon} />,
-				'DaemonSets',
+				t('infra_category_daemonsets', { defaultValue: 'DaemonSets' }),
 			),
 			key: K8sCategories.DAEMONSETS,
 			showArrow: false,
@@ -241,7 +243,7 @@ export default function InfraMonitoringK8s(): JSX.Element {
 		{
 			label: renderCategoryLabel(
 				<ArrowUpDown size={14} className={styles.quickFiltersCategoryLabelIcon} />,
-				'StatefulSets',
+				t('infra_category_statefulsets', { defaultValue: 'StatefulSets' }),
 			),
 			key: K8sCategories.STATEFULSETS,
 			showArrow: false,
@@ -257,7 +259,7 @@ export default function InfraMonitoringK8s(): JSX.Element {
 		{
 			label: renderCategoryLabel(
 				<HardDrive size={14} className={styles.quickFiltersCategoryLabelIcon} />,
-				'Volumes',
+				t('infra_category_volumes', { defaultValue: 'Volumes' }),
 			),
 			key: K8sCategories.VOLUMES,
 			showArrow: false,
@@ -333,9 +335,15 @@ export default function InfraMonitoringK8s(): JSX.Element {
 					{showFilters && (
 						<div className={styles.quickFiltersContainer}>
 							<div className={styles.quickFiltersContainerHeader}>
-								<Typography.Text>Filters</Typography.Text>
+								<Typography.Text>
+									{t('infra_filters_title', { defaultValue: 'Filters' })}
+								</Typography.Text>
 
-								<Tooltip title="Collapse Filters">
+								<Tooltip
+									title={t('infra_filters_collapse_tooltip', {
+										defaultValue: 'Collapse Filters',
+									})}
+								>
 									<ArrowUpToLine
 										style={{ transform: 'rotate(270deg)' }}
 										onClick={handleFilterVisibilityChange}

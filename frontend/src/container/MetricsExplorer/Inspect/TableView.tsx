@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { TableColumnsType as ColumnsType } from 'antd';
 import { Card, Flex, Table } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
@@ -14,6 +15,7 @@ function TableView({
 	isInspectMetricsRefetching,
 	metricInspectionAppliedOptions,
 }: TableViewProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const isSpaceAggregatedWithoutLabel = useMemo(
 		() =>
 			!!metricInspectionAppliedOptions.spaceAggregationOption &&
@@ -54,13 +56,13 @@ function TableView({
 				),
 			})),
 			{
-				title: 'Values',
+				title: t('metrics_values_column', { defaultValue: 'Values' }),
 				dataIndex: 'values',
 				align: 'left',
 				sticky: 'right',
 			},
 		],
-		[labelKeys],
+		[labelKeys, t],
 	);
 	const openExpandedView = useCallback(
 		(series: InspectMetricsSeries, value: string, timestamp: number): void => {

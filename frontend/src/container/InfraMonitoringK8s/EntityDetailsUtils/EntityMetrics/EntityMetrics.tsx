@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { UseQueryResult } from 'react-query';
 import { Skeleton } from 'antd';
 import cx from 'classnames';
@@ -65,6 +66,7 @@ function EntityMetrics<T>({
 	queryKey,
 	category,
 }: EntityMetricsProps<T>): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { visibilities, setElement } = useMultiIntersectionObserver(
 		entityWidgetInfo.length,
 		{ threshold: 0.1 },
@@ -155,7 +157,8 @@ function EntityMetrics<T>({
 
 		if (query.error && !isKeyNotFoundError(query.error)) {
 			const errorMessage =
-				(query.error as Error)?.message || 'Something went wrong';
+				(query.error as Error)?.message ||
+				t('infra_something_went_wrong', { defaultValue: 'Something went wrong' });
 			return <div>{errorMessage}</div>;
 		}
 
