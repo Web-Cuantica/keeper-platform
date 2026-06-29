@@ -41,6 +41,8 @@ import AIAssistantModal from 'container/AIAssistant/AIAssistantModal';
 import AIAssistantPanel from 'container/AIAssistant/AIAssistantPanel';
 import { useAIAssistantStore } from 'container/AIAssistant/store/useAIAssistantStore';
 import SideNav from 'container/SideNav';
+
+import { resolveSideNavPinned } from './sideNavPinned';
 import TopNav from 'container/TopNav';
 import dayjs from 'dayjs';
 import { useKeyboardHotkeys } from 'hooks/hotkeys/useKeyboardHotkeys';
@@ -713,9 +715,12 @@ function AppLayout(props: AppLayoutProps): JSX.Element {
 		},
 	);
 
-	const sideNavPinnedPreference = userPreferences?.find(
+	// Por defecto el sidenav va EXPANDIDO (pinned). Solo se respeta el colapso si el
+	// usuario lo guardó explícitamente como `false`; si nunca lo configuró → expandido.
+	const sideNavPinnedRaw = userPreferences?.find(
 		(preference) => preference.name === USER_PREFERENCES.SIDENAV_PINNED,
-	)?.value as boolean;
+	)?.value as boolean | undefined;
+	const sideNavPinnedPreference = resolveSideNavPinned(sideNavPinnedRaw);
 
 	// Add loading state to prevent layout shift during initial load
 	const [isSidebarLoaded, setIsSidebarLoaded] = useState(false);
@@ -724,9 +729,10 @@ function AppLayout(props: AppLayoutProps): JSX.Element {
 	const getSidebarStateFromLocalStorage = useCallback((): boolean => {
 		try {
 			const storedValue = getLocalStorageApi(USER_PREFERENCES.SIDENAV_PINNED);
-			return storedValue === 'true';
+			// Default expandido: solo colapsado si está explícitamente guardado como 'false'.
+			return resolveSideNavPinned(storedValue);
 		} catch {
-			return false;
+			return true;
 		}
 	}, []);
 

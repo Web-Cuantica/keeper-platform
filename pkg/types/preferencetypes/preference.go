@@ -131,10 +131,11 @@ func NewAvailablePreference() map[Name]Preference {
 			Name:          NameSidenavPinned,
 			Description:   "Controls whether the primary sidenav remains expanded or can be collapsed. When enabled, the sidenav will stay open and pinned to provide constant visibility of navigation options.",
 			ValueType:     ValueTypeBoolean,
-			DefaultValue:  MustNewValue(false, ValueTypeBoolean),
+			// Keeper: el sidenav va EXPANDIDO por defecto (el usuario puede colapsarlo).
+			DefaultValue:  MustNewValue(true, ValueTypeBoolean),
 			AllowedScopes: []Scope{ScopeUser},
 			AllowedValues: []string{},
-			Value:         MustNewValue(false, ValueTypeBoolean),
+			Value:         MustNewValue(true, ValueTypeBoolean),
 		},
 		NameNavShortcuts: {
 			Name:          NameNavShortcuts,
