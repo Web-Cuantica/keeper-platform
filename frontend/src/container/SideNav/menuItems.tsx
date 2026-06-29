@@ -1,4 +1,5 @@
 import { MenuProps } from 'antd';
+import { TFunction } from 'i18next';
 import ROUTES from 'constants/routes';
 import {
 	ArrowUpRight,
@@ -10,6 +11,7 @@ import {
 	Bug,
 	Building2,
 	ChartArea,
+	Check,
 	Cloudy,
 	DraftingCompass,
 	FileKey2,
@@ -432,66 +434,78 @@ export const settingsNavSections: SettingsNavSection[] = [
 	},
 ];
 
-export const helpSupportDropdownMenuItems: SidebarItem[] = [
-	{
-		key: 'documentation',
-		label: (
-			<div className="nav-item-label-container">
-				<span>Documentation</span>
-				<ArrowUpRight size={14} />
-			</div>
-		),
-		icon: <Book size={14} />,
-		isExternal: true,
-		url: 'https://signoz.io/docs',
-		itemKey: 'documentation',
-	},
-	{
-		key: 'github',
-		label: (
-			<div className="nav-item-label-container">
-				<span>GitHub</span>
-				<ArrowUpRight size={14} />
-			</div>
-		),
+// Construye los items del menú de ayuda/soporte. Recibe `t` para traducir los
+// textos visibles; sin `t` cae al inglés (p. ej. en tests o render inicial).
+export const getHelpSupportDropdownMenuItems = (
+	t?: TFunction,
+): SidebarItem[] => {
+	const tr = (key: string, fallback: string): string =>
+		t ? (t(key, { defaultValue: fallback }) as string) : fallback;
 
-		icon: <Github size={14} />,
-		isExternal: true,
-		url: 'https://github.com/signoz/signoz',
-		itemKey: 'github',
-	},
-	{
-		key: 'slack',
-		label: (
-			<div className="nav-item-label-container">
-				<span>Community Slack</span>
-				<ArrowUpRight size={14} />
-			</div>
-		),
-		icon: <Slack size={14} />,
-		isExternal: true,
-		url: 'https://signoz.io/slack',
-		itemKey: 'community-slack',
-	},
-	{
-		key: 'chat-support',
-		label: 'Chat with Support',
-		icon: <MessageSquareText size={14} />,
-		itemKey: 'chat-support',
-	},
-	{
-		key: 'invite-collaborators',
-		label: 'Invite a Team Member',
-		icon: <Plus size={14} />,
-		itemKey: 'invite-collaborators',
-	},
-];
+	return [
+		{
+			key: 'documentation',
+			label: (
+				<div className="nav-item-label-container">
+					<span>{tr('ui_documentation', 'Documentation')}</span>
+					<ArrowUpRight size={14} />
+				</div>
+			),
+			icon: <Book size={14} />,
+			isExternal: true,
+			url: 'https://signoz.io/docs',
+			itemKey: 'documentation',
+		},
+		{
+			key: 'github',
+			label: (
+				<div className="nav-item-label-container">
+					<span>GitHub</span>
+					<ArrowUpRight size={14} />
+				</div>
+			),
+
+			icon: <Github size={14} />,
+			isExternal: true,
+			url: 'https://github.com/signoz/signoz',
+			itemKey: 'github',
+		},
+		{
+			key: 'slack',
+			label: (
+				<div className="nav-item-label-container">
+					<span>{tr('ui_community_slack', 'Community Slack')}</span>
+					<ArrowUpRight size={14} />
+				</div>
+			),
+			icon: <Slack size={14} />,
+			isExternal: true,
+			url: 'https://signoz.io/slack',
+			itemKey: 'community-slack',
+		},
+		{
+			key: 'chat-support',
+			label: tr('ui_chat_with_support', 'Chat with Support'),
+			icon: <MessageSquareText size={14} />,
+			itemKey: 'chat-support',
+		},
+		{
+			key: 'invite-collaborators',
+			label: tr('ui_invite_team_member', 'Invite a Team Member'),
+			icon: <Plus size={14} />,
+			itemKey: 'invite-collaborators',
+		},
+	];
+};
 
 export interface UserSettingsMenuItemsParams {
 	userEmail: string;
 	isWorkspaceBlocked: boolean;
 	isEnterpriseSelfHostedUser: boolean;
 	isCommunityEnterpriseUser: boolean;
+	// `t` traduce los labels; `currentLanguage` marca el idioma activo del selector.
+	t?: TFunction;
+	currentLanguage?: string;
 }
 
 export const getUserSettingsDropdownMenuItems = ({
@@ -499,13 +513,21 @@ export const getUserSettingsDropdownMenuItems = ({
 	isWorkspaceBlocked,
 	isEnterpriseSelfHostedUser,
 	isCommunityEnterpriseUser,
-}: UserSettingsMenuItemsParams): MenuProps['items'] =>
-	[
+	t,
+	currentLanguage,
+}: UserSettingsMenuItemsParams): MenuProps['items'] => {
+	const tr = (key: string, fallback: string): string =>
+		t ? (t(key, { defaultValue: fallback }) as string) : fallback;
+	const isSpanish = (currentLanguage ?? '').startsWith('es');
+
+	return [
 		{
 			key: 'label',
 			label: (
 				<div className="user-settings-dropdown-logged-in-section">
-					<span className="user-settings-dropdown-label-text">LOGGED IN AS</span>
+					<span className="user-settings-dropdown-label-text">
+						{tr('ui_logged_in_as', 'LOGGED IN AS')}
+					</span>
 					<span className="user-settings-dropdown-label-email">{userEmail}</span>
 				</div>
 			),
@@ -515,14 +537,14 @@ export const getUserSettingsDropdownMenuItems = ({
 		{ type: 'divider' as const },
 		{
 			key: 'workspace',
-			label: 'Workspace Settings',
+			label: tr('ui_workspace_settings', 'Workspace Settings'),
 			icon: <Building2 size={14} color={Style.L1_FOREGROUND} />,
 			disabled: isWorkspaceBlocked,
 			dataTestId: 'workspace-settings-nav-item',
 		},
 		{
 			key: 'account',
-			label: 'Account Settings',
+			label: tr('ui_account_settings', 'Account Settings'),
 			icon: <User size={14} color={Style.L1_FOREGROUND} />,
 			dataTestId: 'account-settings-nav-item',
 		},
@@ -530,7 +552,7 @@ export const getUserSettingsDropdownMenuItems = ({
 			? [
 					{
 						key: 'license',
-						label: 'Manage License',
+						label: tr('ui_manage_license', 'Manage License'),
 						icon: <Shield size={14} color={Style.L1_FOREGROUND} />,
 						dataTestId: 'manage-license-nav-item',
 					},
@@ -538,15 +560,43 @@ export const getUserSettingsDropdownMenuItems = ({
 			: []),
 		{
 			key: 'keyboard-shortcuts',
-			label: 'Keyboard Shortcuts',
+			label: tr('keyboard-shortcuts', 'Keyboard Shortcuts'),
 			icon: <Keyboard size={14} color={Style.L1_FOREGROUND} />,
 			dataTestId: 'keyboard-shortcuts-nav-item',
+		},
+		{ type: 'divider' as const },
+		// Selector de idioma: marca con palomita el idioma activo.
+		{
+			key: 'lang-es',
+			label: tr('language_spanish', 'Español'),
+			icon: (
+				<Check
+					size={14}
+					color={Style.L1_FOREGROUND}
+					style={{ opacity: isSpanish ? 1 : 0 }}
+				/>
+			),
+			dataTestId: 'language-es-nav-item',
+		},
+		{
+			key: 'lang-en',
+			label: tr('language_english', 'English'),
+			icon: (
+				<Check
+					size={14}
+					color={Style.L1_FOREGROUND}
+					style={{ opacity: isSpanish ? 0 : 1 }}
+				/>
+			),
+			dataTestId: 'language-en-nav-item',
 		},
 		{ type: 'divider' as const },
 		{
 			key: 'logout',
 			label: (
-				<span className="user-settings-dropdown-logout-section">Sign out</span>
+				<span className="user-settings-dropdown-logout-section">
+					{tr('ui_sign_out', 'Sign out')}
+				</span>
 			),
 			icon: (
 				<LogOut
@@ -558,6 +608,7 @@ export const getUserSettingsDropdownMenuItems = ({
 			dataTestId: 'logout-nav-item',
 		},
 	].filter(Boolean);
+};
 
 /** Mapping of some newly added routes and their corresponding active sidebar menu key */
 export const NEW_ROUTES_MENU_ITEM_KEY_MAP: Record<string, string> = {

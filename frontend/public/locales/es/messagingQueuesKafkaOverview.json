@@ -1,0 +1,54 @@
+{
+	"breadcrumb": "Colas de mensajería",
+	"header": "Kafka / Resumen",
+	"overview": {
+		"title": "Comienza a enviar datos en tan solo 20 minutos",
+		"subtitle": "Conecta y monitorea tus flujos de datos"
+	},
+	"configureConsumer": {
+		"title": "Configurar consumidor",
+		"description": "Agrega fuentes de datos de consumidores para obtener información y mejorar el monitoreo.",
+		"button": "Comenzar"
+	},
+	"configureProducer": {
+		"title": "Configurar productor",
+		"description": "Agrega fuentes de datos de productores para obtener información y mejorar el monitoreo.",
+		"button": "Comenzar"
+	},
+	"monitorKafka": {
+		"title": "Monitorear Kafka",
+		"description": "Agrega tu fuente de Kafka para obtener información y mejorar el seguimiento de la actividad.",
+		"button": "Comenzar"
+	},
+	"summarySection": {
+		"viewDetailsButton": "Ver detalles",
+		"consumer": {
+			"title": "Vista de lag del consumidor",
+			"description": "Conecta y monitorea tus flujos de datos"
+		},
+		"producer": {
+			"title": "Vista de latencia del productor",
+			"description": "Conecta y monitorea tus flujos de datos"
+		},
+		"partition": {
+			"title": "Vista de latencia de particiones",
+			"description": "Conecta y monitorea tus flujos de datos"
+		},
+		"dropRate": {
+			"title": "Vista de tasa de descarte",
+			"description": "Conecta y monitorea tus flujos de datos"
+		},
+		"metricPage": {
+			"title": "Vista de métricas",
+			"description": "Conecta y monitorea tus flujos de datos"
+		}
+	},
+	"confirmModal": {
+		"content": "Antes de navegar a la página de detalles, asegúrate de haber configurado todo lo necesario para garantizar un monitoreo correcto de los datos.",
+		"okText": "Continuar"
+	},
+	"overviewSummarySection": {
+		"title": "Monitorea tus flujos de datos",
+		"subtitle": "Monitorea métricas clave de Kafka como el lag del consumidor y la latencia para garantizar un flujo de datos eficiente y solucionar problemas en tiempo real."
+	}
+}

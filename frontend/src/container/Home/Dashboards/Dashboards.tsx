@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Button, Skeleton } from 'antd';
 import { Badge } from '@signozhq/ui/badge';
@@ -24,6 +25,7 @@ export default function Dashboards({
 	onUpdateChecklistDoneItem: (itemKey: string) => void;
 	loadingUserPreferences: boolean;
 }): JSX.Element {
+	const { t } = useTranslation('home');
 	const { safeNavigate } = useSafeNavigate();
 	const { user } = useAppContext();
 
@@ -60,10 +62,18 @@ export default function Dashboards({
 				<div className="empty-state-content">
 					<img src={dialsUrl} alt="empty-alert-icon" className="empty-state-icon" />
 
-					<div className="empty-title">You don’t have any dashboards yet.</div>
+					<div className="empty-title">
+						{t('dash_empty_title', {
+							defaultValue: "You don't have any dashboards yet.",
+						})}
+					</div>
 
 					{user?.role !== USER_ROLES.VIEWER && (
-						<div className="empty-description">Create a dashboard to get started</div>
+						<div className="empty-description">
+							{t('dash_empty_description', {
+								defaultValue: 'Create a dashboard to get started',
+							})}
+						</div>
 					)}
 				</div>
 
@@ -78,7 +88,7 @@ export default function Dashboards({
 									logEvent('Homepage: Create dashboard clicked', {});
 								}}
 							>
-								New Dashboard
+								{t('dash_create_button', { defaultValue: 'New Dashboard' })}
 							</Button>
 						</Link>
 
@@ -95,7 +105,8 @@ export default function Dashboards({
 								);
 							}}
 						>
-							Learn more <ArrowUpRight size={12} />
+							{t('learn_more', { defaultValue: 'Learn more' })}{' '}
+							<ArrowUpRight size={12} />
 						</Button>
 					</div>
 				)}
@@ -187,7 +198,9 @@ export default function Dashboards({
 		<Card className="dashboards-list-card home-data-card">
 			{dashboardsExist && (
 				<Card.Header>
-					<div className="dashboards-header home-data-card-header">Dashboards</div>
+					<div className="dashboards-header home-data-card-header">
+						{t('dash_header', { defaultValue: 'Dashboards' })}
+					</div>
 				</Card.Header>
 			)}
 			<Card.Content>
@@ -205,7 +218,8 @@ export default function Dashboards({
 									logEvent('Homepage: All dashboards clicked', {});
 								}}
 							>
-								All Dashboards <ArrowRight size={12} />
+								{t('dash_view_all', { defaultValue: 'All Dashboards' })}{' '}
+								<ArrowRight size={12} />
 							</Button>
 						</Link>
 					</div>

@@ -16,7 +16,17 @@ i18n
 	// init i18next
 	.init({
 		debug: false,
-		fallbackLng: 'en',
+		// Español por defecto: en el primer ingreso (sin preferencia guardada) el portal
+		// arranca en 'es'. Si una clave faltara en 'es', cae a 'en' como respaldo.
+		fallbackLng: ['es', 'en'],
+		supportedLngs: ['es', 'en', 'en-GB'],
+		// Sin 'navigator': el idioma NO depende del navegador del usuario. Solo se respeta
+		// lo que el usuario elija en el selector (persistido en localStorage) o ?lng= para pruebas.
+		detection: {
+			order: ['querystring', 'localStorage', 'cookie'],
+			lookupQuerystring: 'lng',
+			caches: ['localStorage'],
+		},
 		interpolation: {
 			escapeValue: false, // not needed for react as it escapes by default
 		},
@@ -33,5 +43,14 @@ i18n
 			useSuspense: false,
 		},
 	});
+
+// Mantiene el atributo <html lang> en sincronía con el idioma activo (accesibilidad y SEO).
+function syncHtmlLang(lng?: string): void {
+	if (typeof document !== 'undefined' && lng) {
+		document.documentElement.lang = lng.startsWith('es') ? 'es' : 'en';
+	}
+}
+i18n.on('languageChanged', syncHtmlLang);
+i18n.on('initialized', () => syncHtmlLang(i18n.language));
 
 export default i18n;

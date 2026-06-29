@@ -1,0 +1,18 @@
+{
+	"display_name": "Nombre para mostrar",
+	"signoz": "Keeper",
+	"email_address": "Correo electrónico",
+	"name_optional": "Nombre (opcional)",
+	"role": "Rol",
+	"email_placeholder": "john@signoz.io",
+	"name_placeholder": "John",
+	"add_another_team_member": "Agregar otro miembro del equipo",
+	"invite_team_members": "Invitar miembros del equipo",
+	"invite_members": "Invitar miembros",
+	"pending_invites": "Invitaciones pendientes",
+	"authenticated_domains": "Dominios autenticados",
+	"delete_domain_message": "¿Estás seguro de que deseas eliminar este dominio?",
+	"delete_domain": "Eliminar dominio",
+	"add_domain": "Agregar dominios",
+	"saml_settings": "Tu configuración de SAML se ha guardado, por favor inicia sesión desde una ventana de incógnito para confirmar que se configuró correctamente"
+}

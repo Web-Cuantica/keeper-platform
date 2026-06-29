@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@signozhq/ui/button';
 import { Skeleton } from 'antd';
 import logEvent from 'api/common/logEvent';
@@ -24,6 +25,8 @@ function DataSourceInfo({
 	dataSentToSigNoz: boolean;
 	isLoading: boolean;
 }): JSX.Element {
+	const { t } = useTranslation('home');
+
 	const { activeLicense } = useAppContext();
 
 	const notSendingData = !dataSentToSigNoz;
@@ -60,13 +63,20 @@ function DataSourceInfo({
 	const renderNotSendingData = (): JSX.Element => (
 		<>
 			<h2 className="welcome-title">
-				Hello there, Welcome to your Keeper workspace
+				{t('datasource_welcome_title', {
+					defaultValue: 'Hello there, Welcome to your Keeper workspace',
+				})}
 			</h2>
 
 			<p className="welcome-description">
-				You’re not sending any data yet. <br />
-				Keeper is so much better with your data ⎯ start by sending your telemetry
-				data to Keeper.
+				{t('datasource_no_data_line1', {
+					defaultValue: 'You’re not sending any data yet.',
+				})}{' '}
+				<br />
+				{t('datasource_no_data_line2', {
+					defaultValue:
+						'Keeper is so much better with your data ⎯ start by sending your telemetry data to Keeper.',
+				})}
 			</p>
 
 			<Card className="welcome-card">
@@ -75,7 +85,9 @@ function DataSourceInfo({
 						<div className="workspace-ready-header">
 							<span className="workspace-ready-title">
 								<img src={hurrayUrl} alt="hurray" />
-								Your workspace is ready
+								{t('datasource_workspace_ready', {
+									defaultValue: 'Your workspace is ready',
+								})}
 							</span>
 
 							<Button
@@ -87,7 +99,9 @@ function DataSourceInfo({
 								onClick={handleConnect}
 								// TODO - Support tabindex, keyboard events - @H4ad
 							>
-								Connect Data Source
+								{t('datasource_connect_data_source', {
+									defaultValue: 'Connect Data Source',
+								})}
 							</Button>
 						</div>
 
@@ -109,7 +123,9 @@ function DataSourceInfo({
 	const renderDataReceived = (): JSX.Element => (
 		<>
 			<h2 className="welcome-title">
-				Hello there, Welcome to your Keeper workspace
+				{t('datasource_welcome_title', {
+					defaultValue: 'Hello there, Welcome to your Keeper workspace',
+				})}
 			</h2>
 
 			{!isError && hostsData && (

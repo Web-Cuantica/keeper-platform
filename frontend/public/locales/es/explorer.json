@@ -1,0 +1,4 @@
+{
+    "name_of_the_view": "Nombre de la vista",
+    "delete_confirm_message": "¿Seguro que deseas eliminar la vista {{viewName}}? Eliminar una vista es irreversible y no se puede deshacer."
+}

@@ -1,0 +1,24 @@
+{
+	"metricGraphCategory": {
+		"brokerMetrics": {
+			"title": "Métricas del broker",
+			"description": "Las métricas del broker de Kafka aquí te informan sobre la pérdida o el retraso de datos a través de elecciones de líder no limpias y rendimientos de red, así como sobre fallos de peticiones mediante las métricas de purgatorios de peticiones y tiempos de espera"
+		},
+		"consumerMetrics": {
+			"title": "Métricas del consumidor",
+			"description": "Las métricas del consumidor de Kafka brindan información sobre el desfase entre la producción y el consumo de mensajes, las tasas de éxito y la latencia de la entrega de mensajes, y el volumen de datos consumidos."
+		},
+		"producerMetrics": {
+			"title": "Métricas del productor",
+			"description": "Los productores de Kafka envían mensajes a los brokers para su almacenamiento y distribución por tema. Estas métricas te informan sobre el volumen y la tasa de datos enviados, y la tasa de éxito de la entrega de mensajes."
+		},
+		"brokerJVMMetrics": {
+			"title": "Métricas JVM del broker",
+			"description": "Los brokers de Kafka son aplicaciones Java que exponen métricas de JVM para informar sobre el estado del sistema del broker. Las métricas de recolección de basura como las siguientes brindan información clave sobre la memoria libre, el rendimiento del broker y el tamaño del heap. Necesitas habilitar new_gc_metrics para que esta sección se complete."
+		},
+		"partitionMetrics": {
+			"title": "Métricas de partición",
+			"description": "Las particiones de Kafka son la unidad de paralelismo en Kafka. Estas métricas te informan sobre el número de particiones por tema, el offset actual de cada partición, el offset más antiguo y el número de réplicas sincronizadas."
+		}
+	}
+}

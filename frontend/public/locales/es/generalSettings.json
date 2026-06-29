@@ -1,0 +1,21 @@
+{
+	"total_retention_period": "Periodo total de retención",
+	"move_to_s3": "Mover a S3\n(debe ser menor que el periodo total de retención)",
+	"status_message": {
+		"success": "Tu última solicitud para cambiar el periodo de retención a {{total_retention}} {{s3_part}} se realizó correctamente.",
+		"failed": "Tu última solicitud para cambiar el periodo de retención a {{total_retention}} {{s3_part}} falló. Inténtalo de nuevo.",
+		"pending": "Tu última solicitud para cambiar el periodo de retención a {{total_retention}} {{s3_part}} está pendiente. Esto puede tardar un poco.",
+		"s3_part": "y S3 a {{s3_retention}}"
+	},
+	"retention_save_button": {
+		"pending": "Actualizando el periodo de retención de {{name}}",
+		"success": "Guardar"
+	},
+	"retention_request_race_condition": "Tu solicitud para cambiar el periodo de retención falló, ya que otra solicitud aún está en proceso.",
+	"retention_error_message": "Hubo un problema al cambiar el periodo de retención de {{name}}. Inténtalo de nuevo o comunícate con support@signoz.io",
+	"retention_failed_message": "Hubo un problema al cambiar el periodo de retención. Inténtalo de nuevo o comunícate con support@signoz.io",
+	"retention_comparison_error": "El periodo total de retención de {{name}} no puede ser menor o igual al periodo tras el cual los datos se mueven a s3.",
+	"retention_null_value_error": "El periodo de retención de {{name}} aún no está configurado. Configúralo eligiendo una opción a continuación",
+	"retention_confirmation": "¿Estás seguro de que deseas cambiar el periodo de retención?",
+	"retention_confirmation_description": "Esto cambiará la cantidad de almacenamiento necesaria para guardar {{name}}."
+}

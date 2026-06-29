@@ -1,5 +1,6 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from 'antd';
 import logEvent from 'api/common/logEvent';
 import ROUTES from 'constants/routes';
@@ -33,6 +34,8 @@ function HomeChecklist({
 	onSkip: (item: ChecklistItem) => void;
 	isLoading: boolean;
 }): JSX.Element {
+	const { t } = useTranslation('home');
+
 	const { user, activeLicense } = useAppContext();
 
 	const [completedChecklistItems, setCompletedChecklistItems] = useState<
@@ -51,7 +54,9 @@ function HomeChecklist({
 	return (
 		<div className="home-checklist-container">
 			<div className="completed-checklist-container">
-				<div className="completed-checklist-title">Completed</div>
+				<div className="completed-checklist-title">
+					{t('checklist_completed', { defaultValue: 'Completed' })}
+				</div>
 
 				{completedChecklistItems.map((item) => (
 					<div key={item.id} className="completed-checklist-item">
@@ -62,7 +67,9 @@ function HomeChecklist({
 
 			{whatsNextChecklistItems.length > 0 && (
 				<div className="whats-next-checklist-container">
-					<div className="whats-next-checklist-title">What&apos;s Next</div>
+					<div className="whats-next-checklist-title">
+						{t('checklist_whats_next', { defaultValue: "What's Next" })}
+					</div>
 
 					<div className="whats-next-checklist-items-container">
 						{whatsNextChecklistItems.map((item, index) => (
@@ -104,7 +111,10 @@ function HomeChecklist({
 														}
 													}}
 												>
-													Get Started &nbsp; <ArrowRight size={16} />
+													{t('checklist_get_started', {
+														defaultValue: 'Get Started',
+													})}{' '}
+													&nbsp; <ArrowRight size={16} />
 												</Button>
 
 												{item.docsLink && (
@@ -139,7 +149,9 @@ function HomeChecklist({
 														loading={isLoading}
 														icon={<ArrowRightToLine size={16} />}
 													>
-														Skip for now
+														{t('checklist_skip_for_now', {
+															defaultValue: 'Skip for now',
+														})}
 													</Button>
 												</div>
 											)}

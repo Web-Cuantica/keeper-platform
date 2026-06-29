@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 // eslint-disable-next-line no-restricted-imports
 import { useSelector } from 'react-redux'; // old code, TODO: fix this correctly
 import { Link } from 'react-router-dom';
@@ -33,6 +34,8 @@ export default function ServiceTraces({
 	onUpdateChecklistDoneItem: (itemKey: string) => void;
 	loadingUserPreferences: boolean;
 }): JSX.Element {
+	const { t } = useTranslation('home');
+
 	const { selectedTime } = useSelector<AppState, GlobalReducer>(
 		(state) => state.globalTime,
 	);
@@ -113,10 +116,16 @@ export default function ServiceTraces({
 							className="empty-state-icon"
 						/>
 
-						<div className="empty-title">You are not sending traces yet.</div>
+						<div className="empty-title">
+							{t('home:services_empty_title', {
+								defaultValue: 'You are not sending traces yet.',
+							})}
+						</div>
 
 						<div className="empty-description">
-							Start sending traces to see your services.
+							{t('home:services_empty_description', {
+								defaultValue: 'Start sending traces to see your services.',
+							})}
 						</div>
 					</div>
 
@@ -140,7 +149,8 @@ export default function ServiceTraces({
 									}
 								}}
 							>
-								Get Started &nbsp; <ArrowRight size={16} />
+								{t('home:services_get_started', { defaultValue: 'Get Started' })}{' '}
+								&nbsp; <ArrowRight size={16} />
 							</Button>
 
 							<Button
@@ -156,14 +166,15 @@ export default function ServiceTraces({
 									);
 								}}
 							>
-								Learn more <ArrowUpRight size={12} />
+								{t('home:services_learn_more', { defaultValue: 'Learn more' })}{' '}
+								<ArrowUpRight size={12} />
 							</Button>
 						</div>
 					)}
 				</div>
 			</div>
 		),
-		[user?.role, activeLicense],
+		[user?.role, activeLicense, t],
 	);
 
 	const renderDashboardsList = useCallback(
@@ -218,7 +229,7 @@ export default function ServiceTraces({
 			{servicesExist && (
 				<Card.Header>
 					<div className="services-header home-data-card-header">
-						Services
+						{t('home:services_title', { defaultValue: 'Services' })}
 						<div className="services-header-actions">
 							<Select
 								value={timeRange.selectedInterval}
@@ -245,7 +256,8 @@ export default function ServiceTraces({
 									logEvent('Homepage: All Services clicked', {});
 								}}
 							>
-								All Services <ArrowRight size={12} />
+								{t('home:services_all_services', { defaultValue: 'All Services' })}{' '}
+								<ArrowRight size={12} />
 							</Button>
 						</Link>
 					</div>

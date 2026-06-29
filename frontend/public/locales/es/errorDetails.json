@@ -1,0 +1,9 @@
+{
+	"see_trace_graph": "Mira lo que ocurrió antes y después de este error en un gráfico de traza",
+	"see_error_in_trace_graph": "Ver el error en el gráfico de traza",
+	"stack_trace": "Stacktrace",
+	"older": "Más antiguo",
+	"newer": "Más reciente",
+	"something_went_wrong": "¡¡¡Ups!!! Algo salió mal",
+	"contact_if_issue_exists": "No te preocupes, nuestro equipo está aquí para ayudarte. Contacta a soporte si el problema persiste."
+}

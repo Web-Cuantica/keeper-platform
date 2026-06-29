@@ -7,6 +7,7 @@ import {
 	useRef,
 	useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 // eslint-disable-next-line no-restricted-imports
 import { useSelector } from 'react-redux';
@@ -84,7 +85,7 @@ import { buildNavUrl, getQueryString } from './helper';
 import {
 	defaultMoreMenuItems,
 	getUserSettingsDropdownMenuItems,
-	helpSupportDropdownMenuItems as DefaultHelpSupportDropdownMenuItems,
+	getHelpSupportDropdownMenuItems,
 	helpSupportMenuItem,
 	primaryMenuItems,
 	aiAssistantMenuItem,
@@ -131,6 +132,7 @@ function SortableFilter({ item }: { item: SidebarItem }): JSX.Element {
 // eslint-disable-next-line sonarjs/cognitive-complexity
 function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 	const { openCmdK } = useCmdK();
+	const { t, i18n } = useTranslation('sidenav');
 	const { pathname, search } = useLocation();
 	const { currentVersion, latestVersion, isCurrentVersionError } = useSelector<
 		AppState,
@@ -159,10 +161,8 @@ function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 		},
 	);
 
-	const [helpSupportDropdownMenuItems, setHelpSupportDropdownMenuItems] =
-		useState<(SidebarItem | DropdownSeparator)[]>(
-			DefaultHelpSupportDropdownMenuItems,
-		);
+	// El menú de Ayuda y soporte se calcula como useMemo más abajo (helpSupportDropdownMenuItems),
+	// para que sea reactivo a `t` y NO quede en inglés si el namespace 'sidenav' aún no cargó.
 
 	const [tempPinnedMenuItems, setTempPinnedMenuItems] = useState<SidebarItem[]>(
 		[],
@@ -518,13 +518,32 @@ function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 				isWorkspaceBlocked,
 				isEnterpriseSelfHostedUser,
 				isCommunityEnterpriseUser,
+				t,
+				currentLanguage: i18n.language,
 			}),
 		[
 			isEnterpriseSelfHostedUser,
 			isCommunityEnterpriseUser,
 			user.email,
 			isWorkspaceBlocked,
+			t,
+			i18n.language,
 		],
+	);
+
+	// Cambia el idioma de la app: persiste la elección y recarga para que TODO
+	// (títulos, menús construidos en estado, etc.) quede consistente en el nuevo idioma.
+	const changeAppLanguage = useCallback(
+		(lng: string): void => {
+			try {
+				window.localStorage.setItem('i18nextLng', lng);
+			} catch (e) {
+				// localStorage puede no estar disponible; el cambio se aplica igual abajo.
+			}
+			void i18n.changeLanguage(lng);
+			window.location.reload();
+		},
+		[i18n],
 	);
 
 	useEffect(() => {
@@ -544,12 +563,16 @@ function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 		isCommunityUser,
 	]);
 
-	useEffect(() => {
+	const helpSupportDropdownMenuItems = useMemo<
+		(SidebarItem | DropdownSeparator)[]
+	>(() => {
+		let items: (SidebarItem | DropdownSeparator)[] = getHelpSupportDropdownMenuItems(
+			t,
+		);
+
 		if (!isAdmin) {
-			setHelpSupportDropdownMenuItems((prevState) =>
-				prevState.filter(
-					(item) => !('key' in item) || item.key !== 'invite-collaborators',
-				),
+			items = items.filter(
+				(item) => !('key' in item) || item.key !== 'invite-collaborators',
 			);
 		}
 
@@ -564,8 +587,8 @@ function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 				(isCloudUser || isEnterpriseSelfHostedUser)
 			)
 		) {
-			setHelpSupportDropdownMenuItems((prevState) =>
-				prevState.filter((item) => !('key' in item) || item.key !== 'chat-support'),
+			items = items.filter(
+				(item) => !('key' in item) || item.key !== 'chat-support',
 			);
 		}
 
@@ -584,37 +607,35 @@ function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 				}),
 			);
 			const changelogKey = CHANGELOG_LABEL.toLowerCase().replace(' ', '-');
-			setHelpSupportDropdownMenuItems((prevState) => {
-				if (dropdownItems.length === 0) {
-					return [
-						...prevState,
-						{
-							type: 'divider',
-						},
-						{
-							key: changelogKey,
-							label: (
-								<div className="nav-item-label-container">
-									<span>{CHANGELOG_LABEL}</span>
-									<ArrowUpRight size={14} />
-								</div>
-							),
-							icon: <ScrollText size={14} />,
-							itemKey: changelogKey,
-							isExternal: true,
-							url: 'https://signoz.io/changelog/',
-						},
-					];
-				}
-
-				return [
-					...prevState,
+			if (dropdownItems.length === 0) {
+				items = [
+					...items,
+					{
+						type: 'divider',
+					},
+					{
+						key: changelogKey,
+						label: (
+							<div className="nav-item-label-container">
+								<span>{CHANGELOG_LABEL}</span>
+								<ArrowUpRight size={14} />
+							</div>
+						),
+						icon: <ScrollText size={14} />,
+						itemKey: changelogKey,
+						isExternal: true,
+						url: 'https://signoz.io/changelog/',
+					},
+				];
+			} else {
+				items = [
+					...items,
 					{
 						type: 'divider',
 					},
 					{
 						type: 'group',
-						label: "WHAT'S NEW",
+						label: t('ui_whats_new', { defaultValue: "WHAT'S NEW" }),
 					},
 					...dropdownItems,
 					{
@@ -631,14 +652,19 @@ function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 						url: 'https://signoz.io/changelog/',
 					},
 				];
-			});
+			}
 		}
+
+		return items;
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
+		t,
 		isAdmin,
 		isChatSupportEnabled,
 		isPremiumSupportEnabled,
 		isCloudUser,
+		isEnterpriseSelfHostedUser,
+		isLoggedIn,
 		trialInfo,
 		changelog,
 	]);
@@ -955,6 +981,12 @@ function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 					history.push(ROUTES.SHORTCUTS);
 				}
 				break;
+			case 'lang-es':
+				changeAppLanguage('es');
+				break;
+			case 'lang-en':
+				changeAppLanguage('en');
+				break;
 			case 'logout':
 				void Logout();
 				break;
@@ -1034,7 +1066,9 @@ function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 												changelog && (
 													<div className="version-update-notification-tooltip">
 														<div className="version-update-notification-tooltip-title">
-															There&apos;s a new version available.
+															{t('ui_new_version_available', {
+																defaultValue: "There's a new version available.",
+															})}
 														</div>
 
 														<div className="version-update-notification-tooltip-content">
@@ -1090,7 +1124,10 @@ function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 									}}
 								>
 									<PackagePlus size={16} />
-									<div className="license tag nav-item-label"> New source </div>
+									<div className="license tag nav-item-label">
+										{' '}
+										{t('ui_new_source', { defaultValue: 'New source' })}{' '}
+									</div>
 								</Button>
 							</div>
 						)}
@@ -1110,10 +1147,17 @@ function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 												<MousePointerClick size={16} />
 											</div>
 
-											<div className="nav-section-title-text">SHORTCUTS</div>
+											<div className="nav-section-title-text">
+												{t('ui_shortcuts', { defaultValue: 'SHORTCUTS' })}
+											</div>
 
 											{pinnedMenuItems.length > 1 && (
-												<Tooltip title="Manage shortcuts" placement="right">
+												<Tooltip
+													title={t('ui_manage_shortcuts', {
+														defaultValue: 'Manage shortcuts',
+													})}
+													placement="right"
+												>
 													<div
 														className="nav-section-title-icon reorder"
 														onClick={(): void => {
@@ -1129,7 +1173,9 @@ function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 
 										{pinnedMenuItems.length === 0 && (
 											<div className="nav-section-subtitle">
-												You have not added any shortcuts yet.
+												{t('ui_no_shortcuts', {
+													defaultValue: 'You have not added any shortcuts yet.',
+												})}
 											</div>
 										)}
 									</div>
@@ -1174,7 +1220,9 @@ function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 												<Ellipsis size={16} />
 											</div>
 
-											<div className="nav-section-title-text">MORE</div>
+											<div className="nav-section-title-text">
+												{t('ui_more', { defaultValue: 'MORE' })}
+											</div>
 
 											<div className="collapse-expand-section-icon">
 												{isMoreMenuCollapsed ? (
@@ -1208,7 +1256,9 @@ function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 									<ChevronsDown size={16} />
 								</div>
 
-								<div className="scroll-for-more-label">Scroll for more</div>
+								<div className="scroll-for-more-label">
+									{t('ui_scroll_for_more', { defaultValue: 'Scroll for more' })}
+								</div>
 							</div>
 						</div>
 					</div>
@@ -1224,7 +1274,9 @@ function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 											<div className="nav-item-data" data-testid="help-support-nav-item">
 												<div className="nav-item-icon">{helpSupportMenuItem.icon}</div>
 
-												<div className="nav-item-label">{helpSupportMenuItem.label}</div>
+												<div className="nav-item-label">
+													{t('ui_help_support', { defaultValue: 'Help & Support' })}
+												</div>
 											</div>
 										</div>
 									</DropdownMenuTrigger>
@@ -1266,7 +1318,9 @@ function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 											<div className="nav-item-data" data-testid="settings-nav-item">
 												<div className="nav-item-icon">{userSettingsMenuItem.icon}</div>
 
-												<div className="nav-item-label">{userSettingsMenuItem.label}</div>
+												<div className="nav-item-label">
+													{t('settings', { defaultValue: 'Settings' })}
+												</div>
 											</div>
 										</div>
 									</DropdownMenuTrigger>
@@ -1315,7 +1369,11 @@ function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 
 			<Modal
 				className="reorder-shortcut-nav-items-modal"
-				title={<span className="title">Manage Shortcuts</span>}
+				title={
+					<span className="title">
+						{t('ui_manage_shortcuts_title', { defaultValue: 'Manage Shortcuts' })}
+					</span>
+				}
 				open={isReorderShortcutNavItemsModalOpen}
 				closable
 				onCancel={(): void => {
@@ -1332,7 +1390,7 @@ function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 						className="periscope-btn cancel-btn secondary-btn"
 						icon={<X size={16} />}
 					>
-						Cancel
+						{t('ui_cancel', { defaultValue: 'Cancel' })}
 					</Button>,
 					<Button
 						key="submit"
@@ -1341,7 +1399,7 @@ function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 						onClick={handleReorderShortcutNavItems}
 						data-testid="save-changes-btn"
 					>
-						Save Changes
+						{t('ui_save_changes', { defaultValue: 'Save Changes' })}
 					</Button>,
 				]}
 			>

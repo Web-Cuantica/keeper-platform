@@ -1,0 +1,11 @@
+{
+	"something_went_wrong": "Algo salió mal",
+	"already_logged_in": "Sesión ya iniciada",
+	"success": "Éxito",
+	"cancel": "Cancelar",
+	"share": "Compartir",
+	"save": "Guardar",
+	"edit": "Editar",
+	"logged_in": "Sesión iniciada",
+	"pending_data_placeholder": "¡Recuperando tu {{dataSource}}!"
+}

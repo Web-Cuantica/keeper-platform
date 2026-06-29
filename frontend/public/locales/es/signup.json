@@ -1,0 +1,18 @@
+{
+  "label_email": "Correo electrónico",
+  "placeholder_email": "name@yourcompany.com",
+  "label_password": "Contraseña",
+  "label_confirm_password": "Confirmar contraseña",
+  "label_firstname": "Nombre",
+  "placeholder_firstname": "Tu nombre",
+  "label_orgname": "Nombre de la organización",
+  "placeholder_orgname": "Tu empresa",
+  "prompt_keepme_posted": "Mantenme al tanto de las nuevas funciones de Keeper",
+  "prompt_anonymise": "Anonimizar mis datos de uso. Recopilamos datos para medir el uso del producto",
+  "failed_confirm_password": "Las contraseñas no coinciden. Inténtalo de nuevo",
+  "unexpected_error": "Algo salió mal",
+  "failed_to_initiate_login": "Se completó la creación de la cuenta, pero no se pudo iniciar sesión",
+  "token_required": "Se requiere un token de invitación para crear una cuenta, solicita uno a tu administrador",
+  "button_get_started": "Comenzar",
+  "prompt_admin_warning": "Esto creará una cuenta de administrador. Si no eres administrador, pide a tu administrador un enlace de invitación"
+}

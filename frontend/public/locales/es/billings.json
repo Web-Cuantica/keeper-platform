@@ -1,0 +1,16 @@
+{
+	"days_remaining": "días restantes en tu periodo de facturación.",
+	"billing": "Facturación",
+	"manage_billing_and_costs": "Administra tu información de facturación, facturas y monitorea los costos.",
+	"enterprise_cloud": "Enterprise Cloud",
+	"teams_cloud": "Teams Cloud",
+	"enterprise": "Enterprise",
+	"teams": "Teams",
+	"card_details_recieved_and_billing_info": "Hemos recibido los datos de tu tarjeta; tu facturación comenzará únicamente después de que finalice tu periodo de prueba gratuita.",
+	"upgrade_plan": "Mejorar plan",
+	"manage_billing": "Administrar facturación",
+	"upgrade_now_text": "Mejora ahora para tener acceso ininterrumpido",
+	"billing_start_info": "Tu facturación comenzará únicamente después del periodo de prueba",
+	"checkout_plans": "Conoce las funciones de los planes de pago",
+	"here": "aquí"
+}

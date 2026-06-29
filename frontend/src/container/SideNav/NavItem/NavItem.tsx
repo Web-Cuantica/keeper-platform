@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Tooltip } from 'antd';
 import { Badge } from '@signozhq/ui/badge';
 import cx from 'classnames';
@@ -27,6 +28,13 @@ export default function NavItem({
 	dataTestId?: string;
 }): JSX.Element {
 	const { label, icon, isBeta, isNew, isEarlyAccess, tooltip } = item;
+	// Traducimos el label por su itemKey (namespace 'sidenav'); si no hay clave
+	// o el label es un nodo JSX, se conserva el original como respaldo.
+	const { t } = useTranslation('sidenav');
+	const displayLabel =
+		item.itemKey && typeof label === 'string'
+			? t(item.itemKey, { defaultValue: label })
+			: label;
 
 	const handleTogglePinClick = (
 		event: React.MouseEvent<SVGSVGElement, MouseEvent>,
@@ -58,7 +66,7 @@ export default function NavItem({
 					</div>
 				)}
 
-				<div className="nav-item-label">{label}</div>
+				<div className="nav-item-label">{displayLabel}</div>
 
 				{isBeta && (
 					<div className="nav-item-beta">
@@ -71,19 +79,24 @@ export default function NavItem({
 				{isNew && (
 					<div className="nav-item-new">
 						<Badge color="robin" className="sidenav-new-tag">
-							New
+							{t('tag_new', { defaultValue: 'New' })}
 						</Badge>
 					</div>
 				)}
 
 				{isEarlyAccess && (
 					<div className="nav-item-early-access">
-						<Badge color="robin">Early Access</Badge>
+						<Badge color="robin">
+							{t('tag_early_access', { defaultValue: 'Early Access' })}
+						</Badge>
 					</div>
 				)}
 
 				{onTogglePin && !isPinned && (
-					<Tooltip title="Add to shortcuts" placement="right">
+					<Tooltip
+						title={t('ui_add_to_shortcuts', { defaultValue: 'Add to shortcuts' })}
+						placement="right"
+					>
 						<Pin
 							size={12}
 							className="nav-item-pin-icon"
@@ -94,7 +107,12 @@ export default function NavItem({
 				)}
 
 				{onTogglePin && isPinned && (
-					<Tooltip title="Remove from shortcuts" placement="right">
+					<Tooltip
+						title={t('ui_remove_from_shortcuts', {
+							defaultValue: 'Remove from shortcuts',
+						})}
+						placement="right"
+					>
 						<PinOff
 							size={12}
 							className="nav-item-pin-icon"

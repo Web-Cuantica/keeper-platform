@@ -1,0 +1,19 @@
+{
+	"monitor_signup": "Monitorea tus aplicaciones. Encuentra qué está causando los problemas.",
+	"version": "Versión",
+	"latest_version": "Versión más reciente",
+	"current_version": "Versión actual",
+	"release_notes": "Notas de la versión",
+	"read_how_to_upgrade": "Lee las instrucciones sobre cómo actualizar",
+	"latest_version_signoz": "Estás ejecutando la versión más reciente de Keeper.",
+	"stale_version": "Estás en una versión anterior y podrías estar perdiéndote las funciones más recientes que hemos lanzado. Te recomendamos actualizar a la versión más reciente",
+	"oops_something_went_wrong_version": "Vaya... estamos teniendo problemas para obtener la información de la versión actualizada",
+	"n_a": "N/D",
+	"routes": {
+		"general": "General",
+		"alert_channels": "Canales de alerta",
+		"all_errors": "Todas las excepciones",
+		"index_fields": "Campos de índice",
+		"pipelines": "Pipelines"
+	}
+}

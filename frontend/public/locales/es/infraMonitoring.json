@@ -1,0 +1,8 @@
+{
+	"containers_visualization_message": "La capacidad de visualizar contenedores está en desarrollo activo y debería estar disponible para ti pronto.",
+	"processes_visualization_message": "La capacidad de visualizar procesos está en desarrollo activo y debería estar disponible para ti pronto.",
+	"working_message": "Estamos trabajando para extender el monitoreo de infraestructura y cubrir un montón de casos distintos. Gracias por tu paciencia.",
+	"waitlist_message": "Únete a la lista de espera para acceso anticipado.",
+	"waitlist_success_message": "Hemos recibido tu solicitud de acceso anticipado. Nos pondremos en contacto contigo en cuanto lancemos la función.",
+	"contact_support": "Contactar a soporte"
+}

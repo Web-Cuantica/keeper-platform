@@ -1,0 +1,22 @@
+{
+  "label_email": "Correo electrónico",
+  "placeholder_email": "name@yourcompany.com",
+  "label_password": "Contraseña",
+  "button_initiate_login": "Siguiente",
+  "button_login": "Iniciar sesión",
+  "login_page_title": "Iniciar sesión con Keeper",
+  "login_with_sso": "Iniciar sesión con SSO",
+  "login_with_pwd": "Iniciar sesión con contraseña",
+  "forgot_password": "¿Olvidaste tu contraseña?",
+  "create_an_account": "Crear una cuenta",
+  "prompt_if_admin": "Si eres administrador,",
+  "prompt_create_account": "Si estás configurando Keeper por primera vez,",
+  "prompt_no_account": "¿No tienes una cuenta? Contacta a tu administrador para que te envíe un enlace de invitación.",
+  "prompt_forgot_password": "Pide a tu administrador que restablezca tu contraseña y te envíe un nuevo enlace de invitación",
+  "prompt_on_sso_error": "¿Estás intentando resolver un problema de configuración de SSO?",
+  "unexpected_error": "Lo sentimos, algo salió mal",
+  "failed_to_login": "lo sentimos, no se pudo iniciar sesión",
+  "invalid_email": "Ingresa una dirección de correo electrónico válida",
+  "invalid_account": "Esta cuenta no existe. Para crear una nueva cuenta, contacta a tu administrador para obtener un enlace de invitación",
+  "invalid_config": "Se detectó una configuración no válida, contacta a tu administrador"
+}

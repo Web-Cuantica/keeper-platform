@@ -1,0 +1,4 @@
+{
+	"delete_confirm_message": "¿Seguro que deseas eliminar {{keyName}}? Eliminar una llave de ingesta es irreversible y no se puede deshacer.",
+	"delete_limit_confirm_message": "¿Seguro que deseas eliminar el límite {{limit_name}} para la llave de ingesta {{keyName}}?"
+}

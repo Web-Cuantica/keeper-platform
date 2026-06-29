@@ -1,0 +1,23 @@
+{
+	"general": "General",
+	"alert_channels": "Canales de alerta",
+	"organization_settings": "Configuración de la organización",
+	"ingestion_settings": "Configuración de ingesta",
+	"api_keys": "Llaves de API",
+	"my_settings": "Mi configuración",
+	"overview_metrics": "Métricas de resumen",
+	"custom_domain_settings": "Configuración de dominio personalizado",
+	"dbcall_metrics": "Llamadas a base de datos",
+	"external_metrics": "Llamadas externas",
+	"pipeline": "Pipeline",
+	"pipelines": "Pipelines",
+	"archives": "Archivos",
+	"logs_to_metrics": "Logs a métricas",
+	"roles": "Roles",
+	"role_details": "Detalles del rol",
+	"role_edit": "Editar rol",
+	"role_create": "Crear rol",
+	"members": "Miembros",
+	"service_accounts": "Cuentas de servicio",
+	"mcp_server": "Servidor MCP"
+}

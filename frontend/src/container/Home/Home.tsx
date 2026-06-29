@@ -1,5 +1,6 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from 'react-query';
 import { Color } from '@signozhq/design-tokens';
 import {
@@ -64,6 +65,7 @@ const homeInterval = 30 * 60 * 1000;
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export default function Home(): JSX.Element {
+	const { t } = useTranslation('home');
 	const { user } = useAppContext();
 	const { safeNavigate } = useSafeNavigate();
 	const isDarkMode = useIsDarkMode();
@@ -283,7 +285,7 @@ export default function Home(): JSX.Element {
 				<Header
 					leftComponent={
 						<div className="home-header-left">
-							<House size={14} /> Home
+							<House size={14} /> {t('home:main_home', { defaultValue: 'Home' })}
 						</div>
 					}
 					rightComponent={
@@ -315,7 +317,9 @@ export default function Home(): JSX.Element {
 										color="secondary"
 										prefix={<ClipboardList size={14} />}
 									>
-										Welcome checklist
+										{t('home:main_welcome_checklist', {
+											defaultValue: 'Welcome checklist',
+										})}
 									</Button>
 								</Popover>
 							)}
@@ -346,7 +350,9 @@ export default function Home(): JSX.Element {
 											</div>
 
 											<div className="active-ingestion-card-content-description">
-												Logs ingestion is active
+												{t('home:main_logs_ingestion_active', {
+													defaultValue: 'Logs ingestion is active',
+												})}
 											</div>
 										</div>
 
@@ -373,7 +379,7 @@ export default function Home(): JSX.Element {
 											}}
 										>
 											<Compass size={12} />
-											Explore Logs
+											{t('home:main_explore_logs', { defaultValue: 'Explore Logs' })}
 										</div>
 									</div>
 								</Card.Content>
@@ -390,7 +396,9 @@ export default function Home(): JSX.Element {
 											</div>
 
 											<div className="active-ingestion-card-content-description">
-												Traces ingestion is active
+												{t('home:main_traces_ingestion_active', {
+													defaultValue: 'Traces ingestion is active',
+												})}
 											</div>
 										</div>
 
@@ -416,7 +424,7 @@ export default function Home(): JSX.Element {
 											}}
 										>
 											<Compass size={12} />
-											Explore Traces
+											{t('home:main_explore_traces', { defaultValue: 'Explore Traces' })}
 										</div>
 									</div>
 								</Card.Content>
@@ -433,7 +441,9 @@ export default function Home(): JSX.Element {
 											</div>
 
 											<div className="active-ingestion-card-content-description">
-												Metrics ingestion is active
+												{t('home:main_metrics_ingestion_active', {
+													defaultValue: 'Metrics ingestion is active',
+												})}
 											</div>
 										</div>
 
@@ -459,7 +469,7 @@ export default function Home(): JSX.Element {
 											}}
 										>
 											<Compass size={12} />
-											Explore Metrics
+											{t('home:main_explore_metrics', { defaultValue: 'Explore Metrics' })}
 										</div>
 									</div>
 								</Card.Content>
@@ -484,10 +494,17 @@ export default function Home(): JSX.Element {
 											</div>
 
 											<div className="section-title">
-												<div className="title">Filter and save views with the Explorer</div>
+												<div className="title">
+													{t('home:main_filter_save_views_explorer', {
+														defaultValue: 'Filter and save views with the Explorer',
+													})}
+												</div>
 
 												<div className="description">
-													Explore your data, and save useful views for everyone in the team.
+													{t('home:main_filter_save_views_explorer_desc', {
+														defaultValue:
+															'Explore your data, and save useful views for everyone in the team.',
+													})}
 												</div>
 											</div>
 										</div>
@@ -507,7 +524,9 @@ export default function Home(): JSX.Element {
 													});
 												}}
 											>
-												Open Logs Explorer
+												{t('home:main_open_logs_explorer', {
+													defaultValue: 'Open Logs Explorer',
+												})}
 											</Button>
 
 											<Button
@@ -524,7 +543,9 @@ export default function Home(): JSX.Element {
 													});
 												}}
 											>
-												Open Traces Explorer
+												{t('home:main_open_traces_explorer', {
+													defaultValue: 'Open Traces Explorer',
+												})}
 											</Button>
 
 											<Button
@@ -541,7 +562,9 @@ export default function Home(): JSX.Element {
 													});
 												}}
 											>
-												Open Metrics Explorer
+												{t('home:main_open_metrics_explorer', {
+													defaultValue: 'Open Metrics Explorer',
+												})}
 											</Button>
 										</div>
 									</div>
@@ -557,10 +580,16 @@ export default function Home(): JSX.Element {
 											</div>
 
 											<div className="section-title">
-												<div className="title">Create a dashboard</div>
+												<div className="title">
+													{t('home:main_create_a_dashboard', {
+														defaultValue: 'Create a dashboard',
+													})}
+												</div>
 
 												<div className="description">
-													Create a dashboard to visualize your data.
+													{t('home:main_create_a_dashboard_desc', {
+														defaultValue: 'Create a dashboard to visualize your data.',
+													})}
 												</div>
 											</div>
 										</div>
@@ -580,7 +609,9 @@ export default function Home(): JSX.Element {
 													});
 												}}
 											>
-												Create dashboard
+												{t('home:main_create_dashboard', {
+													defaultValue: 'Create dashboard',
+												})}
 											</Button>
 										</div>
 									</div>
@@ -602,10 +633,14 @@ export default function Home(): JSX.Element {
 											</div>
 
 											<div className="section-title">
-												<div className="title">Add an alert</div>
+												<div className="title">
+													{t('home:main_add_an_alert', { defaultValue: 'Add an alert' })}
+												</div>
 
 												<div className="description">
-													Create bespoke alerting rules to suit your needs.
+													{t('home:main_add_an_alert_desc', {
+														defaultValue: 'Create bespoke alerting rules to suit your needs.',
+													})}
 												</div>
 											</div>
 										</div>
@@ -625,7 +660,9 @@ export default function Home(): JSX.Element {
 													});
 												}}
 											>
-												Create an alert
+												{t('home:main_create_an_alert', {
+													defaultValue: 'Create an alert',
+												})}
 											</Button>
 										</div>
 									</div>
@@ -699,7 +736,9 @@ export default function Home(): JSX.Element {
 											onClick={handleWillDoThisLater}
 											loading={updatingUserPreferences}
 										>
-											I&apos;ll do this later
+											{t('home:main_ill_do_this_later', {
+												defaultValue: "I'll do this later",
+											})}
 										</Button>
 									</div>
 								</Card.Footer>

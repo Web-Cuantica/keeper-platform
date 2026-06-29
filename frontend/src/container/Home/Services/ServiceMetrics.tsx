@@ -1,4 +1,5 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { QueryKey } from 'react-query';
 // eslint-disable-next-line no-restricted-imports
 import { useSelector } from 'react-redux';
@@ -49,64 +50,76 @@ const EmptyState = memo(
 	}: {
 		user: IUser;
 		activeLicenseV3: LicenseResModel | null;
-	}): JSX.Element => (
-		<div className="empty-state-container">
-			<div className="empty-state-content-container">
-				<div className="empty-state-content">
-					<img
-						src={triangleRulerUrl}
-						alt="empty-alert-icon"
-						className="empty-state-icon"
-					/>
-					<div className="empty-title">You are not sending traces yet.</div>
-					<div className="empty-description">
-						Start sending traces to see your services.
+	}): JSX.Element => {
+		const { t } = useTranslation('home');
+
+		return (
+			<div className="empty-state-container">
+				<div className="empty-state-content-container">
+					<div className="empty-state-content">
+						<img
+							src={triangleRulerUrl}
+							alt="empty-alert-icon"
+							className="empty-state-icon"
+						/>
+						<div className="empty-title">
+							{t('home:services_empty_title', {
+								defaultValue: 'You are not sending traces yet.',
+							})}
+						</div>
+						<div className="empty-description">
+							{t('home:services_empty_description', {
+								defaultValue: 'Start sending traces to see your services.',
+							})}
+						</div>
 					</div>
+
+					{user?.role !== USER_ROLES.VIEWER && (
+						<div className="empty-actions-container">
+							<Button
+								type="default"
+								className="periscope-btn secondary"
+								onClick={(): void => {
+									logEvent('Homepage: Get Started clicked', {
+										source: 'Service Metrics',
+									});
+
+									if (
+										activeLicenseV3 &&
+										activeLicenseV3.platform === LicensePlatform.CLOUD
+									) {
+										history.push(ROUTES.GET_STARTED_WITH_CLOUD);
+									} else {
+										openInNewTab(DOCS_LINKS.ADD_DATA_SOURCE);
+									}
+								}}
+							>
+								{t('home:services_get_started', { defaultValue: 'Get Started' })}{' '}
+								&nbsp; <ArrowRight size={16} />
+							</Button>
+
+							<Button
+								type="link"
+								className="learn-more-link"
+								onClick={(): void => {
+									logEvent('Homepage: Learn more clicked', {
+										source: 'Service Metrics',
+									});
+									window.open(
+										'https://signoz.io/docs/instrumentation/overview/',
+										'_blank',
+									);
+								}}
+							>
+								{t('home:services_learn_more', { defaultValue: 'Learn more' })}{' '}
+								<ArrowUpRight size={12} />
+							</Button>
+						</div>
+					)}
 				</div>
-
-				{user?.role !== USER_ROLES.VIEWER && (
-					<div className="empty-actions-container">
-						<Button
-							type="default"
-							className="periscope-btn secondary"
-							onClick={(): void => {
-								logEvent('Homepage: Get Started clicked', {
-									source: 'Service Metrics',
-								});
-
-								if (
-									activeLicenseV3 &&
-									activeLicenseV3.platform === LicensePlatform.CLOUD
-								) {
-									history.push(ROUTES.GET_STARTED_WITH_CLOUD);
-								} else {
-									openInNewTab(DOCS_LINKS.ADD_DATA_SOURCE);
-								}
-							}}
-						>
-							Get Started &nbsp; <ArrowRight size={16} />
-						</Button>
-
-						<Button
-							type="link"
-							className="learn-more-link"
-							onClick={(): void => {
-								logEvent('Homepage: Learn more clicked', {
-									source: 'Service Metrics',
-								});
-								window.open(
-									'https://signoz.io/docs/instrumentation/overview/',
-									'_blank',
-								);
-							}}
-						>
-							Learn more <ArrowUpRight size={12} />
-						</Button>
-					</div>
-				)}
 			</div>
-		</div>
-	),
+		);
+	},
 );
 EmptyState.displayName = 'EmptyState';
 
@@ -143,6 +156,8 @@ function ServiceMetrics({
 	onUpdateChecklistDoneItem: (itemKey: string) => void;
 	loadingUserPreferences: boolean;
 }): JSX.Element {
+	const { t } = useTranslation('home');
+
 	const { selectedTime: globalSelectedInterval } = useSelector<
 		AppState,
 		GlobalReducer
@@ -324,7 +339,7 @@ function ServiceMetrics({
 				<Card.Header>
 					<div className="services-header home-data-card-header">
 						{' '}
-						Services
+						{t('home:services_title', { defaultValue: 'Services' })}
 						<div className="services-header-actions">
 							<Select
 								value={timeRange.selectedInterval}
@@ -355,7 +370,8 @@ function ServiceMetrics({
 									logEvent('Homepage: All Services clicked', {});
 								}}
 							>
-								All Services <ArrowRight size={12} />
+								{t('home:services_all_services', { defaultValue: 'All Services' })}{' '}
+								<ArrowRight size={12} />
 							</Button>
 						</Link>
 					</div>

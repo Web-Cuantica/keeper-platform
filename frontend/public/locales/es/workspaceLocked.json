@@ -1,0 +1,22 @@
+{
+	"trialPlanExpired": "El plan de prueba expiró",
+	"gotQuestions": "¿Tienes preguntas?",
+	"contactUs": "Contáctanos",
+	"upgradeToContinue": "Actualiza para continuar",
+	"upgradeNow": "Actualiza ahora para seguir disfrutando de todas las excelentes funciones que has estado usando.",
+	"yourDataIsSafe": "Tus datos están seguros con nosotros hasta",
+	"actNow": "Actúa ahora para evitar interrupciones y continúa donde lo dejaste.",
+	"contactAdmin": "Contacta a tu administrador para proceder con la actualización.",
+	"continueMyJourney": "Continuar mi recorrido",
+	"needMoreTime": "¿Necesitas más tiempo?",
+	"extendTrial": "Extender prueba",
+	"extendTrialMsgPart1": "Si tienes una razón específica por la que no pudiste terminar tu PoC en el periodo de prueba, escríbenos a",
+	"extendTrialMsgPart2": "con el motivo. A veces podemos extender la prueba unos días según cada caso",
+	"whyChooseSignoz": "Por qué elegir Keeper",
+	"enterpriseGradeObservability": "Observabilidad de nivel empresarial",
+	"observabilityDescription": "Obtén acceso a observabilidad a cualquier escala con seguridad y cumplimiento avanzados.",
+	"continueToUpgrade": "Continuar con la actualización",
+	"youAreInGoodCompany": "Estás en buena compañía",
+	"faqs": "Preguntas frecuentes",
+	"somethingWentWrong": "Algo salió mal"
+}

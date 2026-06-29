@@ -44,7 +44,7 @@ function SettingsPage(): JSX.Element {
 		['current_org_settings'],
 		user.role,
 	);
-	const { t } = useTranslation(['routes']);
+	const { t } = useTranslation(['routes', 'sidenav']);
 
 	const isGatewayEnabled =
 		featureFlags?.find((feature) => feature.name === FeatureKeys.GATEWAY)
@@ -284,7 +284,7 @@ function SettingsPage(): JSX.Element {
 					data-testid="settings-page-title"
 				>
 					<Cog size={16} />
-					Settings
+					{t('sidenav:ui_settings_page_title', { defaultValue: 'Settings' })}
 				</div>
 			</header>
 
@@ -307,7 +307,17 @@ function SettingsPage(): JSX.Element {
 								}`}
 							>
 								{section.title && (
-									<div className="settings-nav-section-title">{section.title}</div>
+									<div className="settings-nav-section-title">
+										{section.key === 'identity-access'
+											? t('sidenav:section_identity_access', {
+													defaultValue: section.title,
+												})
+											: section.key === 'authentication'
+												? t('sidenav:section_authentication', {
+														defaultValue: section.title,
+													})
+												: section.title}
+									</div>
 								)}
 								{enabledItems.map((item) => (
 									<NavItem
