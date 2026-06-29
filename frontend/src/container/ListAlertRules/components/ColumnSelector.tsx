@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Columns3 } from '@signozhq/icons';
 import { Button } from '@signozhq/ui/button';
 import { Checkbox } from '@signozhq/ui/checkbox';
@@ -21,6 +22,7 @@ function ColumnSelector<TData>({
 	columns,
 	storageKey,
 }: ColumnSelectorProps<TData>): JSX.Element {
+	const { t } = useTranslation('pages');
 	const hiddenColumnIds = useHiddenColumnIds(storageKey);
 
 	const selectableColumns = useMemo(
@@ -49,11 +51,13 @@ function ColumnSelector<TData>({
 					prefix={<Columns3 size={14} />}
 					data-testid="alert-columns-button"
 				>
-					Columns
+					{t('pages:alertlist_columns', { defaultValue: 'Columns' })}
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent align="end" className={styles.popoverContent}>
-				<div className={styles.title}>Toggle Columns</div>
+				<div className={styles.title}>
+					{t('pages:alertlist_toggle_columns', { defaultValue: 'Toggle Columns' })}
+				</div>
 				<div className={styles.columnList}>
 					{selectableColumns.map((col) => {
 						const isVisible = !hiddenColumnIds.includes(col.id);

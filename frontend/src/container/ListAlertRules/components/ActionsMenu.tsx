@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQueryClient } from 'react-query';
 import { Ellipsis } from '@signozhq/icons';
 import { Button } from '@signozhq/ui/button';
@@ -32,6 +33,7 @@ function ActionsMenu({
 	onEdit,
 	isLoading: externalLoading = false,
 }: ActionsMenuProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const queryClient = useQueryClient();
 
 	const handleToggle = useCallback((): void => {
@@ -42,18 +44,31 @@ function ActionsMenu({
 				disabled: newDisabled,
 			} as RuletypesPostableRuleDTO).then(() => invalidateListRules(queryClient)),
 			{
-				loading: newDisabled ? 'Disabling alert...' : 'Enabling alert...',
-				success: newDisabled ? 'Alert disabled' : 'Alert enabled',
+				loading: newDisabled
+					? t('pages:alertlist_toast_disabling', {
+							defaultValue: 'Disabling alert...',
+					  })
+					: t('pages:alertlist_toast_enabling', {
+							defaultValue: 'Enabling alert...',
+					  }),
+				success: newDisabled
+					? t('pages:alertlist_toast_disabled', { defaultValue: 'Alert disabled' })
+					: t('pages:alertlist_toast_enabled', { defaultValue: 'Alert enabled' }),
 				error: (error): string => {
 					const apiError = convertToApiError(
 						error as AxiosError<RenderErrorResponseDTO>,
 					);
-					return apiError?.getErrorMessage() || 'Failed to toggle alert state';
+					return (
+						apiError?.getErrorMessage() ||
+						t('pages:alertlist_toast_toggle_error', {
+							defaultValue: 'Failed to toggle alert state',
+						})
+					);
 				},
 				position: 'top-right',
 			},
 		);
-	}, [rule, queryClient]);
+	}, [rule, queryClient, t]);
 
 	const handleEdit = useCallback((): void => {
 		alertActionLogEvent(ALERT_ACTIONS.EDIT, rule);
@@ -79,18 +94,27 @@ function ActionsMenu({
 				}
 			}),
 			{
-				loading: 'Cloning alert...',
-				success: 'Alert cloned successfully',
+				loading: t('pages:alertlist_toast_cloning', {
+					defaultValue: 'Cloning alert...',
+				}),
+				success: t('pages:alertlist_toast_cloned', {
+					defaultValue: 'Alert cloned successfully',
+				}),
 				error: (error): string => {
 					const apiError = convertToApiError(
 						error as AxiosError<RenderErrorResponseDTO>,
 					);
-					return apiError?.getErrorMessage() || 'Failed to clone alert';
+					return (
+						apiError?.getErrorMessage() ||
+						t('pages:alertlist_toast_clone_error', {
+							defaultValue: 'Failed to clone alert',
+						})
+					);
 				},
 				position: 'top-right',
 			},
 		);
-	}, [rule, queryClient, onEdit]);
+	}, [rule, queryClient, onEdit, t]);
 
 	const handleDelete = useCallback((): void => {
 		alertActionLogEvent(ALERT_ACTIONS.DELETE, rule);
@@ -99,49 +123,62 @@ function ActionsMenu({
 				invalidateListRules(queryClient),
 			),
 			{
-				loading: 'Deleting alert...',
-				success: 'Alert deleted successfully',
+				loading: t('pages:alertlist_toast_deleting', {
+					defaultValue: 'Deleting alert...',
+				}),
+				success: t('pages:alertlist_toast_deleted', {
+					defaultValue: 'Alert deleted successfully',
+				}),
 				error: (error): string => {
 					const apiError = convertToApiError(
 						error as AxiosError<RenderErrorResponseDTO>,
 					);
-					return apiError?.getErrorMessage() || 'Failed to delete alert';
+					return (
+						apiError?.getErrorMessage() ||
+						t('pages:alertlist_toast_delete_error', {
+							defaultValue: 'Failed to delete alert',
+						})
+					);
 				},
 				position: 'top-right',
 			},
 		);
-	}, [rule, queryClient]);
+	}, [rule, queryClient, t]);
 
 	const menuItems = useMemo(
 		() => [
 			{
 				key: 'toggle',
-				label: rule.disabled ? 'Enable' : 'Disable',
+				label: rule.disabled
+					? t('pages:alertlist_action_enable', { defaultValue: 'Enable' })
+					: t('pages:alertlist_action_disable', { defaultValue: 'Disable' }),
 				disabled: externalLoading,
 				onClick: handleToggle,
 			},
 			{
 				key: 'edit',
-				label: 'Edit',
+				label: t('pages:alertlist_action_edit', { defaultValue: 'Edit' }),
 				disabled: externalLoading,
 				onClick: handleEdit,
 			},
 			{
 				key: 'edit-new-tab',
-				label: 'Edit in New Tab',
+				label: t('pages:alertlist_action_edit_new_tab', {
+					defaultValue: 'Edit in New Tab',
+				}),
 				disabled: externalLoading,
 				onClick: handleEditNewTab,
 			},
 			{
 				key: 'clone',
-				label: 'Clone',
+				label: t('pages:alertlist_action_clone', { defaultValue: 'Clone' }),
 				disabled: externalLoading,
 				onClick: handleClone,
 			},
 			{ key: 'divider', type: 'divider' as const },
 			{
 				key: 'delete',
-				label: 'Delete',
+				label: t('pages:alertlist_action_delete', { defaultValue: 'Delete' }),
 				disabled: externalLoading,
 				danger: true,
 				onClick: handleDelete,
@@ -155,6 +192,7 @@ function ActionsMenu({
 			handleEditNewTab,
 			handleClone,
 			handleDelete,
+			t,
 		],
 	);
 

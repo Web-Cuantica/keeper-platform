@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Divider } from '@signozhq/ui/divider';
 import { Plus, RefreshCw } from '@signozhq/icons';
 import { Button } from '@signozhq/ui/button';
@@ -39,6 +40,7 @@ interface AlertsEmptyStateProps {
 export function AlertsEmptyState({
 	onRefresh,
 }: AlertsEmptyStateProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { user } = useAppContext();
 	const { safeNavigate } = useSafeNavigate();
 	const [addNewAlert] = useComponentPermission(
@@ -60,9 +62,13 @@ export function AlertsEmptyState({
 		<div className={styles.alertListContainer}>
 			<div className={styles.alertListViewContent}>
 				<div>
-					<Typography.Title className={styles.title}>Alert Rules</Typography.Title>
+					<Typography.Title className={styles.title}>
+						{t('pages:alertlist_empty_title', { defaultValue: 'Alert Rules' })}
+					</Typography.Title>
 					<Typography.Text className={styles.subtitle}>
-						Create and manage alert rules for your resources.
+						{t('pages:alertlist_empty_subtitle', {
+							defaultValue: 'Create and manage alert rules for your resources.',
+						})}
 					</Typography.Text>
 				</div>
 				<section className={styles.emptyAlertInfoContainer}>
@@ -75,11 +81,15 @@ export function AlertsEmptyState({
 							/>
 							<div>
 								<Typography.Text className={styles.emptyInfo}>
-									No Alert rules yet.{' '}
+									{t('pages:alertlist_empty_no_rules', {
+										defaultValue: 'No Alert rules yet.',
+									})}{' '}
 								</Typography.Text>
 								<br />
 								<Typography.Text className={styles.emptyAlertAction}>
-									Create an Alert Rule to get started
+									{t('pages:alertlist_empty_get_started', {
+										defaultValue: 'Create an Alert Rule to get started',
+									})}
 								</Typography.Text>
 							</div>
 						</section>
@@ -93,7 +103,9 @@ export function AlertsEmptyState({
 								>
 									<span className={styles.buttonContent}>
 										<Plus size="md" />
-										New Alert Rule
+										{t('pages:alertlist_new_alert_rule', {
+											defaultValue: 'New Alert Rule',
+										})}
 									</span>
 								</Button>
 								{onRefresh && (
@@ -103,12 +115,14 @@ export function AlertsEmptyState({
 										color="secondary"
 										testId="list-alerts-empty-refresh-button"
 									>
-										Refresh
+										{t('pages:alertlist_refresh', { defaultValue: 'Refresh' })}
 									</Button>
 								)}
 							</div>
 							<InfoLinkText
-								infoText="Watch a tutorial on creating a sample alert"
+								infoText={t('pages:alertlist_watch_tutorial', {
+									defaultValue: 'Watch a tutorial on creating a sample alert',
+								})}
 								link="https://youtu.be/xjxNIqiv4_M"
 								leftIconVisible
 								rightIconVisible
@@ -143,7 +157,11 @@ export function AlertsEmptyState({
 				</section>
 				<div className={styles.getStartedText}>
 					<Divider className="get-started-text__divider">
-						<Typography.Text>Or get started with these sample alerts</Typography.Text>
+						<Typography.Text>
+							{t('pages:alertlist_sample_alerts_divider', {
+								defaultValue: 'Or get started with these sample alerts',
+							})}
+						</Typography.Text>
 					</Divider>
 				</div>
 

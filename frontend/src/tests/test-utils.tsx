@@ -94,12 +94,16 @@ const mockStored = (role?: string): any =>
 
 jest.mock('react-i18next', () => ({
 	useTranslation: (): {
-		t: (str: string) => string;
+		t: (str: string, options?: { defaultValue?: string }) => string;
 		i18n: {
 			changeLanguage: () => Promise<void>;
 		};
 	} => ({
-		t: (str: string): string => str,
+		// Honra `defaultValue` para que los componentes i18n-izados con
+		// t('clave', { defaultValue: 'English' }) rendericen el inglés en tests
+		// (igual que antes de la i18n), en vez de la clave cruda.
+		t: (str: string, options?: { defaultValue?: string }): string =>
+			options?.defaultValue ?? str,
 		i18n: {
 			changeLanguage: (): Promise<void> => new Promise(() => {}),
 		},

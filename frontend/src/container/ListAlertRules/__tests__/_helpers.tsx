@@ -9,6 +9,22 @@ import TimezoneProvider from 'providers/Timezone';
 import { onNuqsUrlUpdate, resetNuqsState } from 'tests/nuqs-helpers';
 import { getAppContextMock } from 'tests/test-utils';
 
+// Sobrescribe el mock global de react-i18next (que devuelve la clave) para que
+// respete el defaultValue. Así los textos i18n-izados con t('clave', { defaultValue })
+// renderizan su valor en inglés en los tests, igual que antes de la i18n.
+jest.mock('react-i18next', () => ({
+	useTranslation: (): {
+		t: (str: string, options?: { defaultValue?: string }) => string;
+		i18n: { changeLanguage: () => Promise<void> };
+	} => ({
+		t: (str: string, options?: { defaultValue?: string }): string =>
+			options?.defaultValue ?? str,
+		i18n: {
+			changeLanguage: (): Promise<void> => new Promise(() => {}),
+		},
+	}),
+}));
+
 interface RenderOptions {
 	role?: string;
 	initialRoute?: string;

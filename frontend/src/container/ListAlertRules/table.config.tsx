@@ -4,6 +4,7 @@ import LabelColumn from 'components/Alerts/LabelColumn';
 import type { TableColumnDef } from 'components/TanStackTableView';
 import TanStackTable from 'components/TanStackTableView';
 import { DATE_TIME_FORMATS } from 'constants/dateTimeFormats';
+import type { TFunction } from 'i18next';
 
 import type { AlertRule } from './types';
 
@@ -16,11 +17,12 @@ const STATE_CONFIG: Record<string, { color: BadgeColor; label: string }> = {
 
 export function getAlertRuleColumns(
 	formatTimezoneAdjustedTimestamp: (date: string, format: string) => string,
+	t: TFunction,
 ): TableColumnDef<AlertRule>[] {
 	return [
 		{
 			id: 'state',
-			header: 'Status',
+			header: t('pages:alertlist_col_status', { defaultValue: 'Status' }),
 			accessorKey: 'state',
 			width: { fixed: '100px' },
 			enableSort: true,
@@ -28,24 +30,33 @@ export function getAlertRuleColumns(
 			enableMove: false,
 			cell: ({ row, value }): JSX.Element => {
 				const state = String(value ?? '').toLowerCase();
+				const STATE_LABELS: Record<string, string> = {
+					firing: t('pages:alertlist_state_firing', { defaultValue: 'Firing' }),
+					inactive: t('pages:alertlist_state_ok', { defaultValue: 'OK' }),
+					pending: t('pages:alertlist_state_pending', { defaultValue: 'Pending' }),
+					disabled: t('pages:alertlist_state_disabled', {
+						defaultValue: 'Disabled',
+					}),
+				};
 				const config = STATE_CONFIG[state] ?? {
 					color: 'secondary' as BadgeColor,
-					label: 'Unknown',
+					label: t('pages:alertlist_state_unknown', { defaultValue: 'Unknown' }),
 				};
+				const label = STATE_LABELS[state] ?? config.label;
 				return (
 					<Badge
 						color={config.color}
 						variant="outline"
 						testId={`alert-row-${row.id ?? ''}-state`}
 					>
-						{config.label}
+						{label}
 					</Badge>
 				);
 			},
 		},
 		{
 			id: 'name',
-			header: 'Alert Name',
+			header: t('pages:alertlist_col_alert_name', { defaultValue: 'Alert Name' }),
 			accessorKey: 'alert',
 			width: { default: '100%' },
 			enableSort: true,
@@ -62,7 +73,7 @@ export function getAlertRuleColumns(
 		},
 		{
 			id: 'severity',
-			header: 'Severity',
+			header: t('pages:alertlist_col_severity', { defaultValue: 'Severity' }),
 			accessorFn: (row) => row.labels?.severity ?? '',
 			width: { fixed: '120px' },
 			enableSort: true,
@@ -89,7 +100,7 @@ export function getAlertRuleColumns(
 		},
 		{
 			id: 'labels',
-			header: 'Labels',
+			header: t('pages:alertlist_col_labels', { defaultValue: 'Labels' }),
 			accessorKey: 'labels',
 			width: { default: '100%' },
 			enableSort: false,
@@ -110,7 +121,7 @@ export function getAlertRuleColumns(
 		},
 		{
 			id: 'createdAt',
-			header: 'Created At',
+			header: t('pages:alertlist_col_created_at', { defaultValue: 'Created At' }),
 			accessorKey: 'createdAt',
 			width: { default: '100%' },
 			enableSort: true,
@@ -126,7 +137,7 @@ export function getAlertRuleColumns(
 		},
 		{
 			id: 'createdBy',
-			header: 'Created By',
+			header: t('pages:alertlist_col_created_by', { defaultValue: 'Created By' }),
 			accessorKey: 'createdBy',
 			width: { default: '100%' },
 			enableSort: false,
@@ -138,7 +149,7 @@ export function getAlertRuleColumns(
 		},
 		{
 			id: 'updatedAt',
-			header: 'Updated At',
+			header: t('pages:alertlist_col_updated_at', { defaultValue: 'Updated At' }),
 			accessorKey: 'updatedAt',
 			width: { default: '100%' },
 			enableSort: true,
@@ -154,7 +165,7 @@ export function getAlertRuleColumns(
 		},
 		{
 			id: 'updatedBy',
-			header: 'Updated By',
+			header: t('pages:alertlist_col_updated_by', { defaultValue: 'Updated By' }),
 			accessorKey: 'updatedBy',
 			width: { default: '100%' },
 			enableSort: false,

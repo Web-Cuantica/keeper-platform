@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Plus, Search } from '@signozhq/icons';
 import { Button } from '@signozhq/ui/button';
 import { Input } from '@signozhq/ui/input';
@@ -33,6 +34,7 @@ const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 10;
 
 function ListAlertRules(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { user } = useAppContext();
 	const [addNewAlert, action] = useComponentPermission(
 		['add_new_alert', 'action'],
@@ -78,8 +80,8 @@ function ListAlertRules(): JSX.Element {
 	}, [setFilterValues, clearSearch]);
 
 	const columns = useMemo(
-		() => getAlertRuleColumns(formatTimezoneAdjustedTimestamp),
-		[formatTimezoneAdjustedTimestamp],
+		() => getAlertRuleColumns(formatTimezoneAdjustedTimestamp, t),
+		[formatTimezoneAdjustedTimestamp, t],
 	);
 
 	const paginatedRules = useMemo(() => {
@@ -97,7 +99,9 @@ function ListAlertRules(): JSX.Element {
 			{
 				id: 'actions',
 				header: (): JSX.Element => (
-					<span style={{ textAlign: 'right', display: 'block' }}>Actions</span>
+					<span style={{ textAlign: 'right', display: 'block' }}>
+						{t('pages:alertlist_col_actions', { defaultValue: 'Actions' })}
+					</span>
 				),
 				accessorKey: 'id',
 				width: { fixed: '80px', ignoreLastColumnFill: true },
@@ -112,7 +116,7 @@ function ListAlertRules(): JSX.Element {
 				),
 			},
 		];
-	}, [action, columns, handleEdit]);
+	}, [action, columns, handleEdit, t]);
 
 	const hasActiveFilters =
 		searchText.length > 0 || (filterValues ?? []).length > 0;
@@ -138,13 +142,17 @@ function ListAlertRules(): JSX.Element {
 								color="primary"
 								testId="list-alerts-new-alert-button"
 							>
-								New Alert
+								{t('pages:alertlist_new_alert', { defaultValue: 'New Alert' })}
 							</Button>
 						)}
 						<TextToolTip
-							text="More details on how to create alerts"
+							text={t('pages:alertlist_create_alerts_tooltip', {
+								defaultValue: 'More details on how to create alerts',
+							})}
 							url="https://signoz.io/docs/alerts/?utm_source=product&utm_medium=list-alerts"
-							urlText="Learn More"
+							urlText={t('pages:alertlist_learn_more', {
+								defaultValue: 'Learn More',
+							})}
 						/>
 					</div>
 				</div>
@@ -154,7 +162,9 @@ function ListAlertRules(): JSX.Element {
 				<div className={styles.filtersRow}>
 					<Input
 						className={styles.searchInput}
-						placeholder="Search by Alert Name, Severity and Labels"
+						placeholder={t('pages:alertlist_search_placeholder', {
+							defaultValue: 'Search by Alert Name, Severity and Labels',
+						})}
 						value={searchText}
 						onChange={handleSearchChange}
 						suffix={<Search size={14} className={styles.searchIcon} />}
@@ -165,13 +175,25 @@ function ListAlertRules(): JSX.Element {
 
 			<div ref={containerRef} className={styles.tableContainer}>
 				{isError ? (
-					<ErrorEmptyState title="Failed to load alert rules" onRefresh={refetch} />
+					<ErrorEmptyState
+						title={t('pages:alertlist_load_error', {
+							defaultValue: 'Failed to load alert rules',
+						})}
+						onRefresh={refetch}
+					/>
 				) : isEmptyDueToFilters ? (
 					<NoResultsEmptyState
-						title="No matching alert rules"
-						subtitle="No alert rules match your search. Try adjusting your search criteria."
+						title={t('pages:alertlist_no_match_title', {
+							defaultValue: 'No matching alert rules',
+						})}
+						subtitle={t('pages:alertlist_no_match_subtitle', {
+							defaultValue:
+								'No alert rules match your search. Try adjusting your search criteria.',
+						})}
 						onClear={handleClearFilters}
-						clearButtonText="Clear Search"
+						clearButtonText={t('pages:alertlist_clear_search', {
+							defaultValue: 'Clear Search',
+						})}
 					/>
 				) : isEmptyNoRules ? (
 					<AlertsEmptyState onRefresh={refetch} />
