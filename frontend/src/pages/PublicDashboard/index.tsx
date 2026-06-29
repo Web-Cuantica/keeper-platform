@@ -3,7 +3,7 @@ import { Typography } from '@signozhq/ui/typography';
 import { useGetPublicDashboardData } from 'hooks/dashboard/useGetPublicDashboardData';
 import { Frown } from '@signozhq/icons';
 
-import signozBrandLogoUrl from '@/assets/Logos/signoz-brand-logo.svg';
+import signozBrandLogoUrl from '@/assets/Logos/cuantica-icon.png';
 
 import PublicDashboardContainer from '../../container/PublicDashboardContainer';
 
@@ -40,10 +40,10 @@ function PublicDashboardPage(): JSX.Element {
 
 					<div className="public-dashboard-error-content-header">
 						<div className="brand">
-							<img src={signozBrandLogoUrl} alt="SigNoz" className="brand-logo" />
+							<img src={signozBrandLogoUrl} alt="Keeper" className="brand-logo" />
 
 							<Typography.Title level={2} className="brand-title">
-								SigNoz
+								Keeper
 							</Typography.Title>
 						</div>
 

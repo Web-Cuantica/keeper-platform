@@ -18,7 +18,7 @@ import { useSafeNavigate } from 'hooks/useSafeNavigate';
 import { isEmpty, isNull } from 'lodash-es';
 import { isModifierKeyPressed } from 'utils/app';
 
-import signozBrandLogoUrl from '@/assets/Logos/signoz-brand-logo.svg';
+import signozBrandLogoUrl from '@/assets/Logos/cuantica-icon.png';
 
 import { useOnboardingContext } from '../../context/OnboardingContext';
 import {
@@ -383,9 +383,9 @@ export default function ModuleStepsContainer({
 				<div>
 					<div className="steps-container-header">
 						<div className="brand-logo" onClick={handleLogoClick}>
-							<img src={signozBrandLogoUrl} alt="SigNoz" />
+							<img src={signozBrandLogoUrl} alt="Keeper" />
 
-							<div className="brand-logo-name">SigNoz</div>
+							<div className="brand-logo-name">Keeper</div>
 						</div>
 					</div>
 
@@ -485,8 +485,8 @@ export default function ModuleStepsContainer({
 							selectedDataSource?.name || '',
 							activeStep?.module?.id,
 						)}
-						buttonText="Facing issues sending data to SigNoz?"
-						onHoverText="Click here to get help with sending data to SigNoz"
+						buttonText="Facing issues sending data to Keeper?"
+						onHoverText="Click here to get help with sending data to Keeper"
 					/>
 				</div>
 			</div>

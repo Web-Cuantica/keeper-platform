@@ -1,6 +1,6 @@
 import history from 'lib/history';
 
-import signozBrandLogoUrl from '@/assets/Logos/signoz-brand-logo.svg';
+import signozBrandLogoUrl from '@/assets/Logos/cuantica-icon.png';
 
 import './FullScreenHeader.styles.scss';
 
@@ -15,9 +15,9 @@ export default function FullScreenHeader({
 	return (
 		<div className="full-screen-header-container">
 			<div className="brand-logo" onClick={handleLogoClick}>
-				<img src={signozBrandLogoUrl} alt="SigNoz" />
+				<img src={signozBrandLogoUrl} alt="Keeper" />
 
-				<div className="brand-logo-name">SigNoz</div>
+				<div className="brand-logo-name">Keeper</div>
 			</div>
 		</div>
 	);

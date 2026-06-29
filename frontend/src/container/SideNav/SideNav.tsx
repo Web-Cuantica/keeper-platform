@@ -76,7 +76,7 @@ import { isModifierKeyPressed } from 'utils/app';
 import { showErrorNotification } from 'utils/error';
 import { openInNewTab } from 'utils/navigation';
 
-import signozBrandLogoUrl from '@/assets/Logos/signoz-brand-logo.svg';
+import signozBrandLogoUrl from '@/assets/Logos/cuantica-logo.png';
 
 import { useCmdK } from '../../providers/cmdKProvider';
 import { routeConfig } from './config';
@@ -1008,7 +1008,7 @@ function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 									onClickHandler(ROUTES.HOME, event);
 								}}
 							>
-								<img src={signozBrandLogoUrl} alt="SigNoz" />
+								<img src={signozBrandLogoUrl} alt="Keeper" />
 							</div>
 
 							{(licenseTag || currentVersion) && (

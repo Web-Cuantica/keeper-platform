@@ -28,7 +28,7 @@ function NoData(): JSX.Element {
 				<div className="reason-1">
 					<img src={constructionUrl} alt="no-data" className="construction-img" />
 					<Typography.Text className="text">
-						The trace data has not been rendered on your SigNoz server yet. You can
+						The trace data has not been rendered on your Keeper server yet. You can
 						wait for a bit and refresh this page if this is the case.
 					</Typography.Text>
 				</div>

@@ -69,7 +69,7 @@ const supportChannels = [
 		key: 'slack_community',
 		name: 'Slack Community',
 		icon: <Slack size={16} />,
-		title: 'Get support from the SigNoz community on Slack.',
+		title: 'Get support from the Keeper community on Slack.',
 		url: 'https://signoz.io/slack',
 		btnText: 'Join Slack',
 		isExternal: true,
@@ -262,7 +262,7 @@ export default function Support(): JSX.Element {
 			>
 				<Typography.Text className="add-credit-card-text">
 					You&apos;re currently on <span className="highlight-text">Trial plan</span>
-					. Add a credit card to access SigNoz chat support to your workspace.
+					. Add a credit card to access Keeper chat support to your workspace.
 				</Typography.Text>
 			</Modal>
 		</div>
