@@ -184,6 +184,16 @@ export default defineConfig(({ mode }): UserConfig => {
 			open: true,
 			port: 3301,
 			host: true,
+			// Hot-reload en contenedor: watch por polling (mounts de Windows) y
+			// proxy del /api al backend Keeper. Solo afecta `vite` (dev), no el build.
+			watch: { usePolling: true },
+			proxy: {
+				'/api': {
+					target: process.env.KEEPER_DEV_BACKEND || 'http://host.docker.internal:8080',
+					changeOrigin: true,
+					ws: true,
+				},
+			},
 		},
 		preview: {
 			port: 3301,

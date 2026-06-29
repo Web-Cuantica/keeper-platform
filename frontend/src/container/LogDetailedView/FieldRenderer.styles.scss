@@ -1,9 +1,10 @@
 .field-renderer-container {
 	display: flex !important;
 	gap: 8px;
-	align-items: flex-start;
-	justify-content: space-between;
-	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	flex-direction: row;
+	flex-wrap: wrap;
 
 	.label {
 		color: var(--text-robin-400);

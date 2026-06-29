@@ -58,3 +58,67 @@
 		}
 	}
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Kebab de acciones por-atributo (estilo DataDog): SIEMPRE visible, a la
+// izquierda del valor, con menú desplegable (no en hover).
+// ─────────────────────────────────────────────────────────────────────────────
+.value-field {
+	display: flex;
+	align-items: flex-start;
+	gap: 6px;
+
+	// El contenido del valor ocupa el resto y puede encogerse/envolverse.
+	> :not(.log-attr-actions) {
+		flex: 1 1 auto;
+		min-width: 0;
+	}
+
+	.log-attr-actions {
+		order: -1; // kebab a la izquierda del valor, como DataDog
+		flex: 0 0 auto;
+		display: inline-flex;
+		align-items: center;
+		margin-top: 1px;
+	}
+
+	.log-attr-kebab {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 22px;
+		height: 22px;
+		min-width: 22px;
+		padding: 0;
+		border-radius: 4px;
+		// Claramente visible (estilo DataDog), no apenas perceptible.
+		color: var(--l1-foreground, #c0c1c3);
+		opacity: 0.85;
+		border: 1px solid transparent;
+		transition: opacity 0.12s ease, background-color 0.12s ease,
+			border-color 0.12s ease;
+
+		svg {
+			transform: rotate(90deg); // convierte "…" en "⋮" vertical
+		}
+
+		&:hover {
+			opacity: 1;
+			background-color: color-mix(in srgb, var(--l1-foreground) 10%, transparent);
+			border-color: var(--l1-border);
+		}
+	}
+}
+
+.log-attr-actions-menu {
+	.ant-dropdown-menu {
+		min-width: 224px;
+		border-radius: 6px;
+		padding: 4px;
+	}
+
+	.ant-dropdown-menu-item {
+		font-size: 13px;
+		border-radius: 4px;
+	}
+}

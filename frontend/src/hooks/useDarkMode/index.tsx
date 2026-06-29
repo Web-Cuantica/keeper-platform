@@ -142,11 +142,11 @@ export const useThemeConfig = (): ThemeConfig => {
 			borderRadiusXS: 2,
 			fontFamily: 'Inter',
 			fontSize: 13,
-			colorPrimary: '#4E74F8',
+			colorPrimary: '#1368F1',
 			colorBgBase: isDarkMode ? '#0B0C0E' : '#fff',
 			colorBgContainer: isDarkMode ? '#121317' : '#fff',
-			colorLink: '#4E74F8',
-			colorPrimaryText: '#3F5ECC',
+			colorLink: '#1368F1',
+			colorPrimaryText: '#0F53C1',
 		},
 		components: {
 			Dropdown: {

@@ -5,6 +5,9 @@
 
 @import '@signozhq/design-tokens/dist/themes/signoz-tokens.css';
 
+/* Keeper / Cuántica — sobreescribe tokens de marca (debe ir DESPUÉS de los de SigNoz) */
+@import './keeper-brand.scss';
+
 /* Import fonts from CDN */
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans&wght@500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');

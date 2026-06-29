@@ -1452,17 +1452,32 @@ function QuerySearch({
 						stopEventsExtension,
 						Prec.highest(
 							keymap.of([
+								{
+									key: 'Enter',
+									preventDefault: true,
+									// Enter ejecuta la query (UX estilo DataDog), igual que el botón
+									// Run Query — incluso con el dropdown de autocompletado abierto
+									// (activateOnTyping lo abre al teclear). Va antes que
+									// completionKeymap para tener prioridad sobre "aceptar sugerencia";
+									// para aceptar una sugerencia se usa click. Cierra el
+									// autocompletado y corre con la expresión actual del editor.
+									run: (view): boolean => {
+										closeCompletion(view);
+										if (onRun && typeof onRun === 'function') {
+											const user = getCurrentExpression();
+											onRun(
+												isScopedFilter
+													? combineInitialAndUserExpression(initialExpression ?? '', user)
+													: user,
+											);
+										}
+										return true;
+									},
+								},
 								...completionKeymap,
 								{
 									key: 'Escape',
 									run: closeCompletion,
-								},
-								{
-									key: 'Enter',
-									preventDefault: true,
-									// Prevent default behavior of Enter to add new line
-									// and instead run a custom action
-									run: (): boolean => true,
 								},
 								{
 									key: 'Mod-Enter',

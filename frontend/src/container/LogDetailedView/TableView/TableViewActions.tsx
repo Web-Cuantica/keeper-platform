@@ -1,11 +1,14 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Color } from '@signozhq/design-tokens';
-import { Button, Popover, Spin, Tooltip, Tree } from 'antd';
+import { Button, Dropdown, Popover, Spin, Tooltip, Tree } from 'antd';
+import type { MenuProps } from 'antd';
 import type { DataNode } from 'antd/es/tree';
+import { useCopyToClipboard } from 'react-use';
 import GroupByIcon from 'assets/CustomIcons/GroupByIcon';
 import cx from 'classnames';
 import CopyClipboardHOC from 'components/Logs/CopyClipboardHOC';
+import { v4 as uuid } from 'uuid';
 import { DATE_TIME_FORMATS } from 'constants/dateTimeFormats';
 import { QueryParams } from 'constants/query';
 import { OPERATORS } from 'constants/queryBuilder';
@@ -19,6 +22,7 @@ import { ICurrentQueryData } from 'hooks/useHandleExplorerTabChange';
 import {
 	ArrowDownToDot,
 	ArrowUpFromDot,
+	Copy,
 	Ellipsis,
 	RefreshCw,
 } from '@signozhq/icons';
@@ -140,7 +144,12 @@ export default function TableViewActions(
 	} = props;
 
 	const { pathname } = useLocation();
-	const { stagedQuery, updateQueriesData } = useQueryBuilder();
+	const {
+		stagedQuery,
+		updateQueriesData,
+		currentQuery,
+		redirectWithQueryBuilderData,
+	} = useQueryBuilder();
 	const viewName = useGetSearchQueryParam(QueryParams.viewName) || '';
 	const { dataType, logType: fieldType } = getFieldAttributes(record.field);
 
@@ -151,6 +160,9 @@ export default function TableViewActions(
 	);
 
 	const [isOpen, setIsOpen] = useState<boolean>(false);
+
+	// Copia al portapapeles para las acciones del menú kebab (estilo DataDog).
+	const [, setCopy] = useCopyToClipboard();
 
 	const { formatTimezoneAdjustedTimestamp } = useTimezone();
 
@@ -353,6 +365,183 @@ export default function TableViewActions(
 		cleanTimestamp,
 	]);
 
+	// Aplica un filtro del atributo al query del explorer. Usa el MISMO mecanismo
+	// probado que el sidebar de facets: arma el item en filters.items y, como el
+	// explorer V5 prioriza filter.expression sobre filters.items, sincroniza la
+	// expresión con el helper canónico (fusiona con la existente sin perderla).
+	// Luego redirige para correr la query. (El antiguo onClickHandler ->
+	// onAddToQueryExplorer dependía de un fetch de autocomplete que no aplicaba el
+	// filtro en este contexto, por eso el kebab "no hacía nada".)
+	const applyFilter = useCallback(
+		(operator: string, replace = false): void => {
+			if (!currentQuery) {
+				return;
+			}
+			const normalizedDataType: DataTypes =
+				dataType && Object.values(DataTypes).includes(dataType as DataTypes)
+					? (dataType as DataTypes)
+					: DataTypes.String;
+
+			const rawValue = parseFieldValue(fieldData.value);
+			const formatted =
+				typeof rawValue === 'number' || typeof rawValue === 'boolean'
+					? String(rawValue)
+					: `'${String(rawValue).replace(/'/g, "\\'")}'`;
+			const clause = `${fieldFilterKey} ${operator} ${formatted}`;
+
+			const newItem = {
+				id: uuid(),
+				op: operator,
+				key: {
+					id: fieldFilterKey,
+					key: fieldFilterKey,
+					dataType: normalizedDataType,
+					type: fieldType || '',
+				} as BaseAutocompleteData,
+				value: rawValue,
+			};
+
+			const nextQuery = {
+				...currentQuery,
+				builder: {
+					...currentQuery.builder,
+					queryData: currentQuery.builder.queryData.map((item, index) => {
+						if (index !== 0) {
+							return item;
+						}
+						const existingItems = replace ? [] : item.filters?.items || [];
+						const existingExpr = replace ? '' : (item.filter?.expression || '').trim();
+						// El explorer V5 prioriza filter.expression; se anexa el clause nuevo
+						// a la expresión existente (sintaxis `key op 'valor'`).
+						const expression = existingExpr ? `${existingExpr} AND ${clause}` : clause;
+						return {
+							...item,
+							filters: {
+								items: [...existingItems, newItem],
+								op: item.filters?.op || 'AND',
+							},
+							filter: { ...item.filter, expression },
+						};
+					}),
+				},
+			};
+
+			redirectWithQueryBuilderData(nextQuery);
+		},
+		[
+			currentQuery,
+			dataType,
+			fieldFilterKey,
+			fieldType,
+			fieldData.value,
+			redirectWithQueryBuilderData,
+		],
+	);
+
+	// Acciones del atributo en un menú kebab (estilo DataDog): copiar, filtrar,
+	// excluir, agrupar y reemplazar filtro. El onClick va a NIVEL DE MENÚ (no
+	// por item) porque el onClick por-item del Dropdown de antd no dispara aquí.
+	const actionMenuItems: MenuProps['items'] = useMemo(() => {
+		const items: MenuProps['items'] = [
+			{ key: 'copy-value', icon: <Copy size={14} />, label: 'Copy value' },
+			{
+				key: 'copy-key-value',
+				icon: <Copy size={14} />,
+				label: 'Copy key:value',
+			},
+			{ type: 'divider' },
+			{
+				key: 'filter-for',
+				icon: <ArrowDownToDot size={14} style={{ transform: 'rotate(90deg)' }} />,
+				label: `Filter by ${fieldFilterKey}`,
+			},
+			{
+				key: 'filter-out',
+				icon: <ArrowUpFromDot size={14} style={{ transform: 'rotate(90deg)' }} />,
+				label: `Exclude ${fieldFilterKey}`,
+			},
+		];
+
+		if (!isOldLogsExplorerOrLiveLogsPage) {
+			items.push(
+				{
+					key: 'group-by',
+					icon: <GroupByIcon />,
+					label: `Group by ${fieldFilterKey}`,
+				},
+				{
+					key: 'replace-filter',
+					icon: <RefreshCw size={14} />,
+					label: 'Replace filter with this value',
+				},
+			);
+		}
+
+		return items;
+	}, [fieldFilterKey, isOldLogsExplorerOrLiveLogsPage]);
+
+	// onClick a nivel de menú: rutea cada acción por su key (patrón confiable).
+	const handleMenuClick = useCallback<NonNullable<MenuProps['onClick']>>(
+		({ key }): void => {
+			switch (key) {
+				case 'copy-value':
+					setCopy(textToCopy);
+					break;
+				case 'copy-key-value':
+					setCopy(`${fieldFilterKey}: ${textToCopy}`);
+					break;
+				case 'filter-for':
+					applyFilter(OPERATORS['=']);
+					break;
+				case 'filter-out':
+					applyFilter(OPERATORS['!=']);
+					break;
+				case 'group-by':
+					handleGroupByAttribute();
+					break;
+				case 'replace-filter':
+					applyFilter(OPERATORS['='], true);
+					break;
+				default:
+					break;
+			}
+		},
+		[
+			setCopy,
+			textToCopy,
+			fieldFilterKey,
+			applyFilter,
+			handleGroupByAttribute,
+		],
+	);
+
+	// El kebab ⋮ siempre visible (no en hover) que abre el menú de acciones.
+	const renderActionsKebab = useCallback((): JSX.Element | null => {
+		if (isListViewPanel || RESTRICTED_SELECTED_FIELDS.includes(fieldFilterKey)) {
+			return null;
+		}
+		return (
+			<span className="log-attr-actions" data-log-detail-ignore="true">
+				<Dropdown
+					menu={{ items: actionMenuItems, onClick: handleMenuClick }}
+					trigger={['click']}
+					placement="bottomRight"
+					// `drawer-popover` evita que el handleClickOutside del LogDetail cierre
+					// el drawer (y desmonte el menú) en el mousedown, antes de que dispare
+					// el onClick del item. Sin esto, ninguna acción del kebab corría.
+					overlayClassName="log-attr-actions-menu drawer-popover"
+				>
+					<Button
+						type="text"
+						className="log-attr-kebab periscope-btn"
+						icon={<Ellipsis size={14} />}
+						onClick={(e): void => e.stopPropagation()}
+					/>
+				</Dropdown>
+			</span>
+		);
+	}, [isListViewPanel, fieldFilterKey, actionMenuItems, handleMenuClick]);
+
 	// Early return for body field with async processing
 	if (record.field === 'body') {
 		return (
@@ -364,84 +553,7 @@ export default function TableViewActions(
 					textToCopy={textToCopy}
 					handleChangeSelectedView={handleChangeSelectedView}
 				/>
-				{!isListViewPanel &&
-					!RESTRICTED_SELECTED_FIELDS.includes(fieldFilterKey) && (
-						<span className="action-btn">
-							<Tooltip title="Filter for value" mouseLeaveDelay={0}>
-								<Button
-									className="filter-btn periscope-btn"
-									icon={
-										isfilterInLoading ? (
-											<Spin size="small" />
-										) : (
-											<ArrowDownToDot size={14} style={{ transform: 'rotate(90deg)' }} />
-										)
-									}
-									onClick={onClickHandler(
-										OPERATORS['='],
-										fieldFilterKey,
-										parseFieldValue(fieldData.value),
-										dataType,
-										fieldType,
-									)}
-								/>
-							</Tooltip>
-							<Tooltip title="Filter out value" mouseLeaveDelay={0}>
-								<Button
-									className="filter-btn periscope-btn"
-									icon={
-										isfilterOutLoading ? (
-											<Spin size="small" />
-										) : (
-											<ArrowUpFromDot size={14} style={{ transform: 'rotate(90deg)' }} />
-										)
-									}
-									onClick={onClickHandler(
-										OPERATORS['!='],
-										fieldFilterKey,
-										parseFieldValue(fieldData.value),
-										dataType,
-										fieldType,
-									)}
-								/>
-							</Tooltip>
-							{!isOldLogsExplorerOrLiveLogsPage && (
-								<Popover
-									open={isOpen}
-									onOpenChange={setIsOpen}
-									arrow={false}
-									content={
-										<div data-log-detail-ignore="true">
-											<Button
-												className="more-filter-actions"
-												type="text"
-												icon={<GroupByIcon />}
-												onClick={handleGroupByAttribute}
-											>
-												Group By Attribute
-											</Button>
-											<Button
-												className="more-filter-actions"
-												type="text"
-												icon={<RefreshCw size={14} />}
-												onClick={handleReplaceFilter}
-											>
-												Replace filters with this value
-											</Button>
-										</div>
-									}
-									rootClassName="table-view-actions-content"
-									trigger="hover"
-									placement="bottomLeft"
-								>
-									<Button
-										icon={<Ellipsis size={14} />}
-										className="filter-btn periscope-btn"
-									/>
-								</Popover>
-							)}
-						</span>
-					)}
+				{renderActionsKebab()}
 			</div>
 		);
 	}
@@ -451,84 +563,7 @@ export default function TableViewActions(
 			<CopyClipboardHOC entityKey={fieldFilterKey} textToCopy={textToCopy}>
 				{renderFieldContent()}
 			</CopyClipboardHOC>
-			{!isListViewPanel &&
-				!RESTRICTED_SELECTED_FIELDS.includes(fieldFilterKey) && (
-					<span className="action-btn">
-						<Tooltip title="Filter for value" mouseLeaveDelay={0}>
-							<Button
-								className="filter-btn periscope-btn"
-								icon={
-									isfilterInLoading ? (
-										<Spin size="small" />
-									) : (
-										<ArrowDownToDot size={14} style={{ transform: 'rotate(90deg)' }} />
-									)
-								}
-								onClick={onClickHandler(
-									OPERATORS['='],
-									fieldFilterKey,
-									parseFieldValue(fieldData.value),
-									dataType,
-									fieldType,
-								)}
-							/>
-						</Tooltip>
-						<Tooltip title="Filter out value" mouseLeaveDelay={0}>
-							<Button
-								className="filter-btn periscope-btn"
-								icon={
-									isfilterOutLoading ? (
-										<Spin size="small" />
-									) : (
-										<ArrowUpFromDot size={14} style={{ transform: 'rotate(90deg)' }} />
-									)
-								}
-								onClick={onClickHandler(
-									OPERATORS['!='],
-									fieldFilterKey,
-									parseFieldValue(fieldData.value),
-									dataType,
-									fieldType,
-								)}
-							/>
-						</Tooltip>
-						{!isOldLogsExplorerOrLiveLogsPage && (
-							<Popover
-								open={isOpen}
-								onOpenChange={setIsOpen}
-								arrow={false}
-								content={
-									<div data-log-detail-ignore="true">
-										<Button
-											className="more-filter-actions"
-											type="text"
-											icon={<GroupByIcon />}
-											onClick={handleGroupByAttribute}
-										>
-											Group By Attribute
-										</Button>
-										<Button
-											className="more-filter-actions"
-											type="text"
-											icon={<RefreshCw size={14} />}
-											onClick={handleReplaceFilter}
-										>
-											Replace filters with this value
-										</Button>
-									</div>
-								}
-								rootClassName="table-view-actions-content"
-								trigger="hover"
-								placement="bottomLeft"
-							>
-								<Button
-									icon={<Ellipsis size={14} />}
-									className="filter-btn periscope-btn"
-								/>
-							</Popover>
-						)}
-					</span>
-				)}
+			{renderActionsKebab()}
 		</div>
 	);
 }

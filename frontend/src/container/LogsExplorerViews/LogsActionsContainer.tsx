@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { Button } from 'antd';
 import { Switch } from '@signozhq/ui/switch';
 import { Typography } from '@signozhq/ui/typography';
 import DownloadOptionsMenu from 'components/DownloadOptionsMenu/DownloadOptionsMenu';
@@ -7,9 +9,10 @@ import LogsFormatOptionsMenu from 'components/LogsFormatOptionsMenu/LogsFormatOp
 import ListViewOrderBy from 'components/OrderBy/ListViewOrderBy';
 import { LOCALSTORAGE } from 'constants/localStorage';
 import { PANEL_TYPES } from 'constants/queryBuilder';
+import ROUTES from 'constants/routes';
 import { useOptionsMenu } from 'container/OptionsMenu';
 import { LOGS_REQUIRED_COLUMNS } from 'container/OptionsMenu/constants';
-import { ArrowUp10, Minus } from '@signozhq/icons';
+import { ArrowUp10, Minus, Play } from '@signozhq/icons';
 import { DataSource, StringOperators } from 'types/common/queryBuilder';
 
 function LogsActionsContainer({
@@ -34,6 +37,7 @@ function LogsActionsContainer({
 	});
 
 	const [isFieldsSelectorOpen, setIsFieldsSelectorOpen] = useState(false);
+	const history = useHistory();
 
 	const formatItems = [
 		{
@@ -61,14 +65,25 @@ function LogsActionsContainer({
 			<div className="tab-options">
 				<div className="tab-options-left">
 					{selectedPanelType === PANEL_TYPES.LIST && (
-						<div className="frequency-chart-view-controller">
-							<Typography>Frequency chart</Typography>
-							<Switch
-								value={showFrequencyChart}
-								defaultValue
-								onChange={handleToggleFrequencyChart}
-							/>
-						</div>
+						<>
+							<div className="frequency-chart-view-controller">
+								<Typography>Frequency chart</Typography>
+								<Switch
+									value={showFrequencyChart}
+									defaultValue
+									onChange={handleToggleFrequencyChart}
+								/>
+							</div>
+							<Button
+								type="text"
+								size="small"
+								icon={<Play size={14} />}
+								className="keeper-live-tail-btn"
+								onClick={(): void => history.push(ROUTES.LIVE_LOGS)}
+							>
+								Live Tail
+							</Button>
+						</>
 					)}
 				</div>
 

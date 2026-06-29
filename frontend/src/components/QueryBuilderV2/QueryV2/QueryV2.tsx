@@ -51,7 +51,7 @@ export const QueryV2 = forwardRef(function QueryV2(
 	},
 	ref: ForwardedRef<HTMLDivElement>,
 ): JSX.Element {
-	const { cloneQuery, panelType } = useQueryBuilder();
+	const { cloneQuery, panelType, handleRunQuery } = useQueryBuilder();
 
 	const showFunctions = query?.functions?.length > 0;
 	const { dataSource } = query;
@@ -182,6 +182,7 @@ export const QueryV2 = forwardRef(function QueryV2(
 											queryData={query}
 											dataSource={dataSource}
 											signalSource={signalSource}
+											onRun={handleRunQuery}
 										/>
 									</div>
 
@@ -252,6 +253,7 @@ export const QueryV2 = forwardRef(function QueryV2(
 											queryData={query}
 											dataSource={dataSource}
 											signalSource={signalSource}
+											onRun={handleRunQuery}
 										/>
 									</div>
 

@@ -1,0 +1,27 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Keeper / Cuántica — white-label de marca.
+// Sobreescribe los tokens de color de SigNoz. Se importa en styles.scss DESPUÉS
+// de los design-tokens para ganar. Per-cliente: este es el ÚNICO archivo a tocar
+// (cambiar la paleta y los logos). Paleta extraída de webcuantica.com.
+// ─────────────────────────────────────────────────────────────────────────────
+:root {
+	// Colores de marca (referencia)
+	--keeper-primary: #1368f1; // azul vívido
+	--keeper-secondary: #5c2d91; // morado
+	--keeper-tertiary: #00f2ff; // cian
+	--keeper-dark: #2e3440; // slate oscuro
+
+	// Primario → escala robin de SigNoz (botones, links, nav activo, acentos).
+	--bg-robin-50: #e7f0fe;
+	--bg-robin-100: #c4dafd;
+	--bg-robin-150: #c4dafd;
+	--bg-robin-200: #9bc0fc;
+	--bg-robin-300: #5e9af8;
+	--bg-robin-400: #2e78f4;
+	--bg-robin-500: #1368f1;
+	--bg-robin-600: #0f53c1;
+	--bg-robin-700: #0b3e91;
+	--bg-robin-800: #082a61;
+	--bg-robin-900: #041530;
+	--bg-robin-950: #020b1a;
+}

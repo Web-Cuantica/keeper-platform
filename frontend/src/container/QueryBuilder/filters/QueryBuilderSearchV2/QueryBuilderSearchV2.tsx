@@ -470,8 +470,21 @@ function QueryBuilderSearchV2(
 				handleRunQuery();
 				setIsOpen(false);
 			}
+			// Enter normal ejecuta la query cuando el dropdown de sugerencias está
+			// cerrado (no se está eligiendo una sugerencia). UX estilo DataDog.
+			if (
+				event.key === 'Enter' &&
+				!event.ctrlKey &&
+				!event.metaKey &&
+				!event.shiftKey &&
+				!isOpen
+			) {
+				event.preventDefault();
+				event.stopPropagation();
+				handleRunQuery();
+			}
 		},
-		[handleRunQuery, searchValue],
+		[handleRunQuery, searchValue, isOpen],
 	);
 
 	const handleOnBlur = useCallback((): void => {

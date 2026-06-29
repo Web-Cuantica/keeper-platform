@@ -1,14 +1,19 @@
-# Build white-label de Keeper: construye frontend + backend community (sin ee)
-# enteramente en Linux, evitando el toolchain de Windows. Variante community
-# (resuelve el caveat de licencia ee/ — ADR-0012/0013).
+# syntax=docker/dockerfile:1
+# Build white-label de Keeper: frontend + backend community (sin ee) en Linux,
+# evitando el toolchain de Windows. Cache mounts (pnpm store + go-build) para que
+# las iteraciones de UI sean rápidas.
 
 # --- Frontend (Node 24 + pnpm 10 + Vite) ---
 FROM node:24-bookworm AS frontend
 WORKDIR /app
 ENV CI=1
+# Heap de 4GB para el build de vite (4096, NO 6144: heaps altos en builds
+# repetidos pueden desestabilizar WSL/Docker Desktop).
+ENV NODE_OPTIONS=--max-old-space-size=4096
+RUN corepack enable && corepack prepare pnpm@10.34.4 --activate
 COPY frontend/ ./
-RUN corepack enable \
- && corepack prepare pnpm@10.34.4 --activate \
+RUN --mount=type=cache,target=/pnpm-store \
+    pnpm config set store-dir /pnpm-store \
  && pnpm install --frozen-lockfile \
  && pnpm run build
 
@@ -16,7 +21,9 @@ RUN corepack enable \
 FROM golang:1.25-bookworm AS backend
 WORKDIR /src
 COPY . ./
-RUN CGO_ENABLED=0 GOOS=linux go build -C cmd/community -tags timetzdata \
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/go/pkg/mod \
+    CGO_ENABLED=0 GOOS=linux go build -C cmd/community -tags timetzdata \
     -ldflags "-s -w -X github.com/SigNoz/signoz/pkg/version.variant=community" \
     -o /out/signoz .
 

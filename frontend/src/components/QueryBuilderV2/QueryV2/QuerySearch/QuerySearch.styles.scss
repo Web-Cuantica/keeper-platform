@@ -73,7 +73,7 @@ $max-recents-shown: 5;
 	}
 
 	.cm-editor {
-		border-radius: 2px;
+		border-radius: 6px;
 		// overflow: hidden;
 		background-color: transparent !important;
 
@@ -82,17 +82,22 @@ $max-recents-shown: 5;
 		}
 
 		.cm-content {
-			border-radius: 2px;
+			// Caja sutil estilo DataDog: esquinas redondeadas, fondo ligeramente
+			// elevado (theme-safe vía color-mix) y borde suave para que se lea como
+			// "caja" sin marcarse de más. El foco resalta con el azul de marca.
+			border-radius: 6px;
 			border: 1px solid var(--l1-border);
+			background-color: color-mix(in srgb, var(--l1-foreground) 4%, transparent);
 			padding: 0px !important;
 
 			&:focus-within {
-				border-color: var(--l1-border);
+				border-color: var(--primary-background);
 			}
 		}
 
 		&.cm-focused {
-			outline: 1px solid var(--l1-border);
+			outline: 1px solid var(--primary-background);
+			border-radius: 6px;
 		}
 
 		.cm-tooltip-autocomplete {

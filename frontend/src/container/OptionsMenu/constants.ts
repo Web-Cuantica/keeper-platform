@@ -19,7 +19,49 @@ export const EXCLUDED_COLUMNS: Record<DataSource, string[]> = {
 	[DataSource.LOGS]: [],
 };
 
+// Columnas mostradas por DEFAULT en logs (estilo DataDog):
+// fecha · servicio · host · severidad · contenido. service.name/host.name/
+// severity_text son removibles; solo timestamp y body son requeridas.
 export const defaultLogsSelectedColumns: TelemetryFieldKey[] = [
+	{
+		name: 'timestamp',
+		signal: 'logs',
+		fieldContext: 'log',
+		fieldDataType: '',
+		isIndexed: false,
+	},
+	{
+		name: 'service.name',
+		signal: 'logs',
+		fieldContext: 'resource',
+		fieldDataType: 'string',
+		isIndexed: false,
+	},
+	{
+		name: 'host.name',
+		signal: 'logs',
+		fieldContext: 'resource',
+		fieldDataType: 'string',
+		isIndexed: false,
+	},
+	{
+		name: 'severity_text',
+		signal: 'logs',
+		fieldContext: 'log',
+		fieldDataType: 'string',
+		isIndexed: false,
+	},
+	{
+		name: 'body',
+		signal: 'logs',
+		fieldContext: 'log',
+		fieldDataType: '',
+		isIndexed: false,
+	},
+];
+
+// Solo timestamp + body son obligatorias (siempre presentes; invariante del writer).
+const logsRequiredColumns: TelemetryFieldKey[] = [
 	{
 		name: 'timestamp',
 		signal: 'logs',
@@ -37,14 +79,12 @@ export const defaultLogsSelectedColumns: TelemetryFieldKey[] = [
 ];
 
 // Names that must always be present in logs selectColumns (writer invariant).
-const LOGS_REQUIRED_COLUMN_NAMES = defaultLogsSelectedColumns.map(
-	(c) => c.name,
-);
+const LOGS_REQUIRED_COLUMN_NAMES = logsRequiredColumns.map((c) => c.name);
 
 // Composite keys (not bare names) so the picker locks ONLY the canonical
 // `log.body`/`log.timestamp` — a same-name variant like `attribute.body` stays
 // removable.
-export const LOGS_REQUIRED_COLUMNS = defaultLogsSelectedColumns.map((c) =>
+export const LOGS_REQUIRED_COLUMNS = logsRequiredColumns.map((c) =>
 	buildCompositeKey(c.name, c.fieldContext),
 );
 
