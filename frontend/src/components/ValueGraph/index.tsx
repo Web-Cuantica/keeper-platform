@@ -28,6 +28,8 @@ function Unit({
 				color:
 					threshold.thresholdFormat === 'Text'
 						? threshold.thresholdColor
+						: threshold.thresholdFormat === 'Background'
+						? '#ffffff'
 						: undefined,
 				fontSize: `calc(${fontSize} * 0.7)`,
 			}}
@@ -113,9 +115,12 @@ function ValueGraph({
 					className="value-graph-text"
 					data-testid="value-graph-text"
 					style={{
+						// Número en blanco cuando el fondo del panel toma color (threshold Background).
 						color:
 							threshold.thresholdFormat === 'Text'
 								? threshold.thresholdColor
+								: threshold.thresholdFormat === 'Background'
+								? '#ffffff'
 								: undefined,
 						fontSize,
 					}}
