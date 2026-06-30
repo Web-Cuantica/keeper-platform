@@ -46,6 +46,7 @@ import { USER_PREFERENCES } from 'constants/userPreferences';
 import { useAIAssistantStore } from 'container/AIAssistant/store/useAIAssistantStore';
 import { useKeyboardHotkeys } from 'hooks/hotkeys/useKeyboardHotkeys';
 import useComponentPermission from 'hooks/useComponentPermission';
+import { useIsDarkMode } from 'hooks/useDarkMode';
 import { useGetTenantLicense } from 'hooks/useGetTenantLicense';
 import { useIsAIAssistantEnabled } from 'hooks/useIsAIAssistantEnabled';
 import { useNotifications } from 'hooks/useNotifications';
@@ -77,7 +78,7 @@ import { isModifierKeyPressed } from 'utils/app';
 import { showErrorNotification } from 'utils/error';
 import { openInNewTab } from 'utils/navigation';
 
-import signozBrandLogoUrl from '@/assets/Logos/cuantica-logo.png';
+import signozBrandLogoUrl from '@/assets/Logos/cuantica-icon.png';
 
 import { useCmdK } from '../../providers/cmdKProvider';
 import { routeConfig } from './config';
@@ -134,6 +135,8 @@ function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 	const { openCmdK } = useCmdK();
 	const { t, i18n } = useTranslation('sidenav');
 	const { pathname, search } = useLocation();
+	// En dark mode el icono (puntos negros) se invierte a blanco para que se vea.
+	const isDarkMode = useIsDarkMode();
 	const { currentVersion, latestVersion, isCurrentVersionError } = useSelector<
 		AppState,
 		AppReducer
@@ -1040,7 +1043,11 @@ function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 									onClickHandler(ROUTES.HOME, event);
 								}}
 							>
-								<img src={signozBrandLogoUrl} alt="Keeper" />
+								<img
+									src={signozBrandLogoUrl}
+									alt="Web Cuántica"
+									style={{ filter: isDarkMode ? 'invert(1)' : 'none' }}
+								/>
 							</div>
 
 							{(licenseTag || currentVersion) && (
@@ -1054,7 +1061,7 @@ function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 											'version-update-notification',
 									)}
 								>
-									{licenseTag && <span className="license-type"> {licenseTag} </span>}
+									<span className="license-type">Web Cuántica</span>
 
 									{currentVersion && (
 										<Tooltip
@@ -1088,7 +1095,9 @@ function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 													className={cx('version', changelog && 'version-clickable')}
 													onClick={onClickVersionHandler}
 												>
-													{currentVersion}
+													{currentVersion && currentVersion !== '<unset>'
+														? currentVersion
+														: 'v1.0.0'}
 												</span>
 
 												{showVersionUpdateNotification && changelog && (
