@@ -43,6 +43,12 @@ function LiveLogsListChart({
 					...item,
 					disabled: false,
 					aggregateOperator: LogsAggregatorOperator.COUNT,
+					// La gráfica de frecuencia es una serie temporal: limpiamos los campos
+					// propios del panel de lista (orden por timestamp y pageSize) que el
+					// endpoint v5 rechaza en una agregación, y normalizamos el conteo.
+					orderBy: [],
+					pageSize: undefined,
+					aggregations: [{ expression: 'count()' }],
 					filters: {
 						...item.filters,
 						items:
