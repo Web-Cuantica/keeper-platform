@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import RouteTab from 'components/RouteTab';
 import { TabRoutes } from 'components/RouteTab/types';
@@ -11,6 +12,24 @@ import MessagingQueues from './MessagingQueues';
 import MQDetailPage from './MQDetailPage/MQDetailPage';
 
 import './MessagingQueuesMainPage.styles.scss';
+
+// Etiqueta de pestaña traducible (los `name` son nodos a nivel de módulo).
+function TabName({
+	icon,
+	tKey,
+	fallback,
+}: {
+	icon: JSX.Element;
+	tKey: string;
+	fallback: string;
+}): JSX.Element {
+	const { t } = useTranslation('pages');
+	return (
+		<div className="tab-item">
+			{icon} {t(tKey, { defaultValue: fallback })}
+		</div>
+	);
+}
 
 export const Kafka: TabRoutes = {
 	Component: MessagingQueues,
@@ -48,9 +67,7 @@ export const Celery: TabRoutes = {
 export const Overview: TabRoutes = {
 	Component: CeleryOverview,
 	name: (
-		<div className="tab-item">
-			<Rows3 size={16} /> Overview
-		</div>
+		<TabName icon={<Rows3 size={16} />} tKey="modtab_overview" fallback="Overview" />
 	),
 	route: ROUTES.MESSAGING_QUEUES_OVERVIEW,
 	key: ROUTES.MESSAGING_QUEUES_OVERVIEW,

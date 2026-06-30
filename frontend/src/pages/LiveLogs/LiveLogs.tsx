@@ -5,6 +5,7 @@ import { liveLogsCompositeQuery } from 'container/LiveLogs/constants';
 import LiveLogsContainer from 'container/LiveLogs/LiveLogsContainer';
 import { useQueryBuilder } from 'hooks/queryBuilder/useQueryBuilder';
 import { useShareBuilderUrl } from 'hooks/queryBuilder/useShareBuilderUrl';
+import { EventSourceProvider } from 'providers/EventSource';
 import { DataSource } from 'types/common/queryBuilder';
 
 interface LiveLogsProps {
@@ -20,7 +21,9 @@ function LiveLogs({ handleChangeSelectedView }: LiveLogsProps): JSX.Element {
 	}, [handleSetConfig]);
 
 	return (
-		<LiveLogsContainer handleChangeSelectedView={handleChangeSelectedView} />
+		<EventSourceProvider>
+			<LiveLogsContainer handleChangeSelectedView={handleChangeSelectedView} />
+		</EventSourceProvider>
 	);
 }
 

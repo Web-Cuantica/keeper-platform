@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 // eslint-disable-next-line no-restricted-imports
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Card } from 'antd';
 import Spinner from 'components/Spinner';
 import TextToolTip from 'components/TextToolTip';
@@ -64,6 +65,7 @@ export interface graphDataType {
 }
 
 function ServiceMap(props: ServiceMapProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const fgRef = useRef();
 
 	const { getDetailedServiceMapItems, globalTime, serviceMap } = props;
@@ -83,14 +85,18 @@ function ServiceMap(props: ServiceMapProps): JSX.Element {
 	});
 
 	if (serviceMap.loading) {
-		return <Spinner size="large" tip="Loading..." />;
+		return (
+			<Spinner size="large" tip={t('svcmap_loading', { defaultValue: 'Loading...' })} />
+		);
 	}
 
 	if (!serviceMap.loading && serviceMap.items.length === 0) {
 		return (
 			<Container>
 				<ResourceAttributesFilter />
-				<Card>No Service Found</Card>
+				<Card>
+					{t('svcmap_no_services', { defaultValue: 'No Service Found' })}
+				</Card>
 			</Container>
 		);
 	}
