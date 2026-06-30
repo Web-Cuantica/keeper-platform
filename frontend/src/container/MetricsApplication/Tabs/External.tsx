@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 // eslint-disable-next-line no-restricted-imports
 import { useDispatch } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
@@ -33,6 +34,7 @@ import { v4 as uuid } from 'uuid';
 import { FeatureKeys } from '../../../constants/features';
 import { useAppContext } from '../../../providers/App/App';
 import {
+	getTranslatedGraphTitle,
 	GraphTitle,
 	legend,
 	MENU_ITEMS,
@@ -51,6 +53,7 @@ import {
 } from './util';
 
 function External(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [selectedTimeStamp, setSelectedTimeStamp] = useState<number>(0);
 	const [selectedData, setSelectedData] = useState<any>(undefined);
 	const { servicename: encodedServiceName } = useParams<IServiceName>();
@@ -104,12 +107,15 @@ function External(): JSX.Element {
 					clickhouse_sql: [],
 					id: uuid(),
 				},
-				title: GraphTitle.EXTERNAL_CALL_ERROR_PERCENTAGE,
+				title: getTranslatedGraphTitle(
+					GraphTitle.EXTERNAL_CALL_ERROR_PERCENTAGE,
+					t,
+				),
 				panelTypes: PANEL_TYPES.TIME_SERIES,
 				yAxisUnit: '%',
 				id: GraphTitle.EXTERNAL_CALL_ERROR_PERCENTAGE,
 			}),
-		[servicename, tagFilterItems, dotMetricsEnabled],
+		[servicename, tagFilterItems, dotMetricsEnabled, t],
 	);
 
 	const selectedTraceTags = useMemo(
@@ -131,13 +137,13 @@ function External(): JSX.Element {
 					clickhouse_sql: [],
 					id: uuid(),
 				},
-				title: GraphTitle.EXTERNAL_CALL_DURATION,
+				title: getTranslatedGraphTitle(GraphTitle.EXTERNAL_CALL_DURATION, t),
 				panelTypes: PANEL_TYPES.TIME_SERIES,
 				yAxisUnit: 'ms',
 				id: GraphTitle.EXTERNAL_CALL_DURATION,
 				fillSpans: true,
 			}),
-		[servicename, tagFilterItems, dotMetricsEnabled],
+		[servicename, tagFilterItems, dotMetricsEnabled, t],
 	);
 
 	const errorApmToTraceQuery = useGetAPMToTracesQueries({
@@ -199,13 +205,16 @@ function External(): JSX.Element {
 					clickhouse_sql: [],
 					id: uuid(),
 				},
-				title: GraphTitle.EXTERNAL_CALL_RPS_BY_ADDRESS,
+				title: getTranslatedGraphTitle(
+					GraphTitle.EXTERNAL_CALL_RPS_BY_ADDRESS,
+					t,
+				),
 				panelTypes: PANEL_TYPES.TIME_SERIES,
 				yAxisUnit: 'reqps',
 				id: GraphTitle.EXTERNAL_CALL_RPS_BY_ADDRESS,
 				fillSpans: true,
 			}),
-		[servicename, tagFilterItems, dotMetricsEnabled],
+		[servicename, tagFilterItems, dotMetricsEnabled, t],
 	);
 
 	const externalCallDurationAddressWidget = useMemo(
@@ -223,13 +232,16 @@ function External(): JSX.Element {
 					clickhouse_sql: [],
 					id: uuid(),
 				},
-				title: GraphTitle.EXTERNAL_CALL_DURATION_BY_ADDRESS,
+				title: getTranslatedGraphTitle(
+					GraphTitle.EXTERNAL_CALL_DURATION_BY_ADDRESS,
+					t,
+				),
 				panelTypes: PANEL_TYPES.TIME_SERIES,
 				yAxisUnit: 'ms',
 				id: GraphTitle.EXTERNAL_CALL_DURATION_BY_ADDRESS,
 				fillSpans: true,
 			}),
-		[servicename, tagFilterItems, dotMetricsEnabled],
+		[servicename, tagFilterItems, dotMetricsEnabled, t],
 	);
 
 	const apmToTraceQuery = useGetAPMToTracesQueries({

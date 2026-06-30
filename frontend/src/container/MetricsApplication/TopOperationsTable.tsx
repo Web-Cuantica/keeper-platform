@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 // eslint-disable-next-line no-restricted-imports
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -40,6 +41,7 @@ function TopOperationsTable({
 	isEntryPoint,
 	onEntryPointToggle,
 }: TopOperationsTableProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const searchInput = useRef<InputRef>(null);
 	const { servicename: encodedServiceName } = useParams<IServiceName>();
 	const { safeNavigate } = useSafeNavigate();
@@ -137,14 +139,14 @@ function TopOperationsTable({
 
 	const columns: ColumnsType<TopOperationList> = [
 		{
-			title: 'Name',
+			title: t('svc_col_name', { defaultValue: 'Name' }),
 			dataIndex: 'name',
 			key: 'name',
 			width: 100,
 			...getSearchOption(),
 		},
 		{
-			title: 'P50  (in ms)',
+			title: t('svc_col_p50_ms', { defaultValue: 'P50  (in ms)' }),
 			dataIndex: 'p50',
 			key: 'p50',
 			width: 50,
@@ -152,7 +154,7 @@ function TopOperationsTable({
 			render: (value: number): string => (value / 1_000_000).toFixed(2),
 		},
 		{
-			title: 'P95  (in ms)',
+			title: t('svc_col_p95_ms', { defaultValue: 'P95  (in ms)' }),
 			dataIndex: 'p95',
 			key: 'p95',
 			width: 50,
@@ -160,7 +162,7 @@ function TopOperationsTable({
 			render: (value: number): string => (value / 1_000_000).toFixed(2),
 		},
 		{
-			title: 'P99  (in ms)',
+			title: t('svc_col_p99_ms', { defaultValue: 'P99  (in ms)' }),
 			dataIndex: 'p99',
 			key: 'p99',
 			width: 50,
@@ -168,7 +170,7 @@ function TopOperationsTable({
 			render: (value: number): string => (value / 1_000_000).toFixed(2),
 		},
 		{
-			title: 'Number of Calls',
+			title: t('svc_col_number_of_calls', { defaultValue: 'Number of Calls' }),
 			dataIndex: 'numCalls',
 			key: 'numCalls',
 			width: 50,
@@ -176,7 +178,7 @@ function TopOperationsTable({
 				a.numCalls - b.numCalls,
 		},
 		{
-			title: 'Error Rate',
+			title: t('svc_col_error_rate_simple', { defaultValue: 'Error Rate' }),
 			dataIndex: 'errorCount',
 			key: 'errorCount',
 			width: 50,
@@ -196,9 +198,15 @@ function TopOperationsTable({
 	};
 
 	const entryPointSpanInfo = {
-		text: 'Shows the spans where requests enter new services for the first time',
-		url: 'https://signoz.io/docs/traces-management/guides/entry-point-spans-service-overview/',
-		urlText: 'Learn more about Entrypoint Spans.',
+		text: t('svc_entrypoint_spans_tooltip', {
+			defaultValue:
+				'Shows the spans where requests enter new services for the first time',
+		}),
+		url:
+			'https://signoz.io/docs/traces-management/guides/entry-point-spans-service-overview/',
+		urlText: t('svc_entrypoint_spans_learn_more', {
+			defaultValue: 'Learn more about Entrypoint Spans.',
+		}),
 	};
 
 	return (
@@ -213,7 +221,9 @@ function TopOperationsTable({
 				</div>
 				<div className="top-operation__entry-point">
 					<Switch value={isEntryPoint} onChange={onEntryPointToggle} />
-					<span className="top-operation__entry-point-label">Entrypoint Spans</span>
+					<span className="top-operation__entry-point-label">
+						{t('svc_entrypoint_spans', { defaultValue: 'Entrypoint Spans' })}
+					</span>
 					<TextToolTip
 						text={entryPointSpanInfo.text}
 						url={entryPointSpanInfo.url}
@@ -227,7 +237,11 @@ function TopOperationsTable({
 				loading={isLoading}
 				showHeader
 				title={(): string =>
-					isEntryPoint ? 'Key Entrypoint Operations' : 'Key Operations'
+					isEntryPoint
+						? t('svc_key_entrypoint_operations', {
+								defaultValue: 'Key Entrypoint Operations',
+						  })
+						: t('svc_key_operations', { defaultValue: 'Key Operations' })
 				}
 				tableLayout="fixed"
 				dataSource={data}

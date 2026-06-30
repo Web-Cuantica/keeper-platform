@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { Tabs, TabsProps } from 'antd';
 import { QueryParams } from 'constants/query';
@@ -9,12 +10,17 @@ import { useSafeNavigate } from 'hooks/useSafeNavigate';
 import useUrlQuery from 'hooks/useUrlQuery';
 
 import ApDexApplication from './ApDex/ApDexApplication';
-import { MetricsApplicationTab, TAB_KEY_VS_LABEL } from './types';
+import {
+	MetricsApplicationTab,
+	TAB_KEY_VS_I18N_KEY,
+	TAB_KEY_VS_LABEL,
+} from './types';
 import useMetricsApplicationTabKey from './useMetricsApplicationTabKey';
 
 import './MetricsApplication.styles.scss';
 
 function MetricsApplication(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { servicename: encodedServiceName } = useParams<{
 		servicename: string;
 	}>();
@@ -26,17 +32,23 @@ function MetricsApplication(): JSX.Element {
 
 	const items: TabsProps['items'] = [
 		{
-			label: TAB_KEY_VS_LABEL[MetricsApplicationTab.OVER_METRICS],
+			label: t(TAB_KEY_VS_I18N_KEY[MetricsApplicationTab.OVER_METRICS], {
+				defaultValue: TAB_KEY_VS_LABEL[MetricsApplicationTab.OVER_METRICS],
+			}),
 			key: MetricsApplicationTab.OVER_METRICS,
 			children: <Overview />,
 		},
 		{
-			label: TAB_KEY_VS_LABEL[MetricsApplicationTab.DB_CALL_METRICS],
+			label: t(TAB_KEY_VS_I18N_KEY[MetricsApplicationTab.DB_CALL_METRICS], {
+				defaultValue: TAB_KEY_VS_LABEL[MetricsApplicationTab.DB_CALL_METRICS],
+			}),
 			key: MetricsApplicationTab.DB_CALL_METRICS,
 			children: <DBCall />,
 		},
 		{
-			label: TAB_KEY_VS_LABEL[MetricsApplicationTab.EXTERNAL_METRICS],
+			label: t(TAB_KEY_VS_I18N_KEY[MetricsApplicationTab.EXTERNAL_METRICS], {
+				defaultValue: TAB_KEY_VS_LABEL[MetricsApplicationTab.EXTERNAL_METRICS],
+			}),
 			key: MetricsApplicationTab.EXTERNAL_METRICS,
 			children: <External />,
 		},

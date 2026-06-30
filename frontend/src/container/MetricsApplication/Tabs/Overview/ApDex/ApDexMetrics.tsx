@@ -1,4 +1,5 @@
 import { ReactNode, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { Space } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
@@ -13,6 +14,7 @@ import { PANEL_TYPES } from 'constants/queryBuilder';
 import Graph from 'container/GridCardLayout/GridCard';
 import DisplayThreshold from 'container/GridCardLayout/WidgetHeader/DisplayThreshold';
 import {
+	getTranslatedGraphTitle,
 	GraphTitle,
 	SERVICE_CHART_ID,
 	SERVICE_DETAIL_DRILLDOWN_ENABLED,
@@ -36,6 +38,7 @@ function ApDexMetrics({
 	topLevelOperationsRoute,
 	handleGraphClick,
 }: ApDexMetricsProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { servicename: encodedServiceName } = useParams<IServiceName>();
 	const servicename = decodeURIComponent(encodedServiceName);
 	const { featureFlags } = useAppContext();
@@ -62,7 +65,7 @@ function ApDexMetrics({
 				},
 				title: (
 					<Space>
-						<Typography>{GraphTitle.APDEX}</Typography>
+						<Typography>{getTranslatedGraphTitle(GraphTitle.APDEX, t)}</Typography>
 						<TextToolTip
 							text={apDexToolTipText}
 							url={apDexToolTipUrl}
@@ -82,6 +85,7 @@ function ApDexMetrics({
 			thresholdValue,
 			topLevelOperationsRoute,
 			dotMetricsEnabled,
+			t,
 		],
 	);
 

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 // eslint-disable-next-line no-restricted-imports
 import { useDispatch } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
@@ -31,6 +32,7 @@ import { v4 as uuid } from 'uuid';
 import { FeatureKeys } from '../../../constants/features';
 import { useAppContext } from '../../../providers/App/App';
 import {
+	getTranslatedGraphTitle,
 	GraphTitle,
 	MENU_ITEMS,
 	SERVICE_CHART_ID,
@@ -49,6 +51,7 @@ import {
 } from './util';
 
 function DBCall(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { servicename: encodedServiceName } = useParams<IServiceName>();
 
 	const servicename = decodeURIComponent(encodedServiceName);
@@ -111,13 +114,13 @@ function DBCall(): JSX.Element {
 					clickhouse_sql: [],
 					id: uuid(),
 				},
-				title: GraphTitle.DATABASE_CALLS_RPS,
+				title: getTranslatedGraphTitle(GraphTitle.DATABASE_CALLS_RPS, t),
 				panelTypes: PANEL_TYPES.TIME_SERIES,
 				yAxisUnit: 'reqps',
 				id: SERVICE_CHART_ID.dbCallsRPS,
 				fillSpans: false,
 			}),
-		[servicename, tagFilterItems, dotMetricsEnabled, legend],
+		[servicename, tagFilterItems, dotMetricsEnabled, legend, t],
 	);
 	const databaseCallsAverageDurationWidget = useMemo(
 		() =>
@@ -133,13 +136,13 @@ function DBCall(): JSX.Element {
 					clickhouse_sql: [],
 					id: uuid(),
 				},
-				title: GraphTitle.DATABASE_CALLS_AVG_DURATION,
+				title: getTranslatedGraphTitle(GraphTitle.DATABASE_CALLS_AVG_DURATION, t),
 				panelTypes: PANEL_TYPES.TIME_SERIES,
 				yAxisUnit: 'ms',
 				id: GraphTitle.DATABASE_CALLS_AVG_DURATION,
 				fillSpans: true,
 			}),
-		[servicename, tagFilterItems, dotMetricsEnabled],
+		[servicename, tagFilterItems, dotMetricsEnabled, t],
 	);
 
 	const stepInterval = useMemo(
@@ -194,7 +197,7 @@ function DBCall(): JSX.Element {
 						safeNavigate,
 					})}
 				>
-					View Traces
+					{t('svc_view_traces', { defaultValue: 'View Traces' })}
 				</Button>
 				<Card data-testid="database_call_rps">
 					<GraphContainer>
@@ -231,7 +234,7 @@ function DBCall(): JSX.Element {
 						safeNavigate,
 					})}
 				>
-					View Traces
+					{t('svc_view_traces', { defaultValue: 'View Traces' })}
 				</Button>
 
 				<Card data-testid="database_call_avg_duration">

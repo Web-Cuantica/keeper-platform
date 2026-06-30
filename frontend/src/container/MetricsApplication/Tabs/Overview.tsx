@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 // eslint-disable-next-line no-restricted-imports
 import { useDispatch, useSelector } from 'react-redux';
@@ -37,7 +38,7 @@ import { openInNewTab } from 'utils/navigation';
 import { secondsToMilliseconds } from 'utils/timeUtils';
 import { v4 as uuid } from 'uuid';
 
-import { GraphTitle, SERVICE_CHART_ID } from '../constant';
+import { getTranslatedGraphTitle, GraphTitle, SERVICE_CHART_ID } from '../constant';
 import { getWidgetQueryBuilder } from '../MetricsApplication.factory';
 import {
 	errorPercentage,
@@ -62,6 +63,7 @@ import {
 } from './util';
 
 function Application(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { servicename: encodedServiceName } = useParams<IServiceName>();
 	const servicename = decodeURIComponent(encodedServiceName);
 
@@ -164,12 +166,12 @@ function Application(): JSX.Element {
 					clickhouse_sql: [],
 					id: uuid(),
 				},
-				title: GraphTitle.RATE_PER_OPS,
+				title: getTranslatedGraphTitle(GraphTitle.RATE_PER_OPS, t),
 				panelTypes: PANEL_TYPES.TIME_SERIES,
 				yAxisUnit: 'ops',
 				id: SERVICE_CHART_ID.rps,
 			}),
-		[servicename, tagFilterItems, topLevelOperationsRoute, dotMetricsEnabled],
+		[servicename, tagFilterItems, topLevelOperationsRoute, dotMetricsEnabled, t],
 	);
 
 	const errorPercentageWidget = useMemo(
@@ -187,13 +189,13 @@ function Application(): JSX.Element {
 					clickhouse_sql: [],
 					id: uuid(),
 				},
-				title: GraphTitle.ERROR_PERCENTAGE,
+				title: getTranslatedGraphTitle(GraphTitle.ERROR_PERCENTAGE, t),
 				panelTypes: PANEL_TYPES.TIME_SERIES,
 				yAxisUnit: '%',
 				id: SERVICE_CHART_ID.errorPercentage,
 				fillSpans: true,
 			}),
-		[servicename, tagFilterItems, topLevelOperationsRoute, dotMetricsEnabled],
+		[servicename, tagFilterItems, topLevelOperationsRoute, dotMetricsEnabled, t],
 	);
 
 	const stepInterval = useMemo(
@@ -333,7 +335,7 @@ function Application(): JSX.Element {
 							safeNavigate,
 						})}
 					>
-						View Traces
+						{t('svc_view_traces', { defaultValue: 'View Traces' })}
 					</Button>
 					<TopLevelOperation
 						handleGraphClick={handleGraphClick}

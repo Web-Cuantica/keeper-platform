@@ -64,6 +64,32 @@ export enum GraphTitle {
 	EXTERNAL_CALL_DURATION_BY_ADDRESS = 'External Call duration(by Address)',
 }
 
+// Mapa de cada valor del enum GraphTitle a su clave de i18n (namespace 'pages').
+// Los valores del enum NO se traducen porque tambien se usan como identificadores
+// (id de widget, legends en las queries); solo se traduce el texto mostrado en render.
+export const GRAPH_TITLE_I18N_KEYS: Record<GraphTitle, string> = {
+	[GraphTitle.APDEX]: 'svc_panel_apdex',
+	[GraphTitle.LATENCY]: 'svc_panel_latency',
+	[GraphTitle.RATE_PER_OPS]: 'svc_panel_rate',
+	[GraphTitle.ERROR_PERCENTAGE]: 'svc_panel_error_percentage',
+	[GraphTitle.DATABASE_CALLS_RPS]: 'svc_panel_database_calls_rps',
+	[GraphTitle.DATABASE_CALLS_AVG_DURATION]: 'svc_panel_database_calls_avg_duration',
+	[GraphTitle.EXTERNAL_CALL_ERROR_PERCENTAGE]:
+		'svc_panel_external_call_error_percentage',
+	[GraphTitle.EXTERNAL_CALL_DURATION]: 'svc_panel_external_call_duration',
+	[GraphTitle.EXTERNAL_CALL_RPS_BY_ADDRESS]:
+		'svc_panel_external_call_rps_by_address',
+	[GraphTitle.EXTERNAL_CALL_DURATION_BY_ADDRESS]:
+		'svc_panel_external_call_duration_by_address',
+};
+
+// Devuelve el titulo de panel traducido a partir del valor del enum GraphTitle.
+// Tipamos 't' de forma laxa para evitar depender del tipo TFunction.
+export const getTranslatedGraphTitle = (
+	graphTitle: GraphTitle,
+	t: (key: string, options?: Record<string, unknown>) => string,
+): string => t(GRAPH_TITLE_I18N_KEYS[graphTitle], { defaultValue: graphTitle });
+
 export enum KeyOperationTableHeader {
 	P50 = 'P50',
 	P90 = 'P90',

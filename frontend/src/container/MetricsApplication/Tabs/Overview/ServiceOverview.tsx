@@ -1,10 +1,12 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { ENTITY_VERSION_V4 } from 'constants/app';
 import { FeatureKeys } from 'constants/features';
 import { PANEL_TYPES } from 'constants/queryBuilder';
 import Graph from 'container/GridCardLayout/GridCard';
 import {
+	getTranslatedGraphTitle,
 	GraphTitle,
 	SERVICE_CHART_ID,
 	SERVICE_DETAIL_DRILLDOWN_ENABLED,
@@ -38,6 +40,7 @@ function ServiceOverview({
 	topLevelOperationsIsLoading,
 	stepInterval,
 }: ServiceOverviewProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { servicename: encodedServiceName } = useParams<IServiceName>();
 	const servicename = decodeURIComponent(encodedServiceName);
 
@@ -76,7 +79,7 @@ function ServiceOverview({
 					clickhouse_sql: [],
 					id: uuid(),
 				},
-				title: GraphTitle.LATENCY,
+				title: getTranslatedGraphTitle(GraphTitle.LATENCY, t),
 				panelTypes: PANEL_TYPES.TIME_SERIES,
 				yAxisUnit: 'ns',
 				id: SERVICE_CHART_ID.latency,
@@ -87,6 +90,7 @@ function ServiceOverview({
 			tagFilterItems,
 			topLevelOperationsRoute,
 			dotMetricsEnabled,
+			t,
 		],
 	);
 
