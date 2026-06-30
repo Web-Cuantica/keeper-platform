@@ -51,7 +51,7 @@ import allInOneLightModeUrl from '@/assets/Images/allInOneLightMode.svg';
 import perilianBackgroundUrl from '@/assets/Images/perilianBackground.svg';
 
 import AlertRules from './AlertRules/AlertRules';
-import { defaultChecklistItemsState } from './constants';
+import { getDefaultChecklistItems } from './constants';
 import Dashboards from './Dashboards/Dashboards';
 import DataSourceInfo from './DataSourceInfo/DataSourceInfo';
 import HomeChecklist, { ChecklistItem } from './HomeChecklist/HomeChecklist';
@@ -75,8 +75,9 @@ export default function Home(): JSX.Element {
 	const [updatingUserPreferences, setUpdatingUserPreferences] = useState(false);
 	const [loadingUserPreferences, setLoadingUserPreferences] = useState(true);
 
-	const [checklistItems, setChecklistItems] = useState<ChecklistItem[]>(
-		defaultChecklistItemsState,
+	// Lista de pasos del onboarding traducida (namespace "home")
+	const [checklistItems, setChecklistItems] = useState<ChecklistItem[]>(() =>
+		getDefaultChecklistItems(t),
 	);
 
 	const [isWelcomeChecklistSkipped, setIsWelcomeChecklistSkipped] =

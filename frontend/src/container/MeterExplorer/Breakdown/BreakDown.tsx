@@ -127,9 +127,12 @@ function Section(section: MetricSection): JSX.Element {
 			<div className="meter-page-grid">
 				{graphs.map((widget) => {
 					// Traducimos el título del panel (definido en inglés en graphs.ts) en render.
-					const panelKey = PANEL_TITLE_KEYS[widget?.title];
+					// widget.title es ReactNode; lo normalizamos a string para indexar el mapa de claves.
+					const widgetTitle =
+						typeof widget?.title === 'string' ? widget.title : '';
+					const panelKey = PANEL_TITLE_KEYS[widgetTitle];
 					const translatedWidget = panelKey
-						? { ...widget, title: t(panelKey, { defaultValue: widget.title }) }
+						? { ...widget, title: t(panelKey, { defaultValue: widgetTitle }) }
 						: widget;
 					return (
 						<Card

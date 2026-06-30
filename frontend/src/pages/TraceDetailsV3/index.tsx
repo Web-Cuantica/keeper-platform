@@ -1,5 +1,6 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { ChartNoAxesGantt, TriangleAlert } from '@signozhq/icons';
 import getLocalStorageKey from 'api/browser/localstorage/get';
@@ -35,6 +36,7 @@ import cx from 'classnames';
 import styles from './TraceDetailsV3.module.scss';
 
 function TraceDetailsV3(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { id: traceId } = useParams<TraceDetailV3URLProps>();
 	const urlQuery = useUrlQuery();
 	const [interestedSpanId, setInterestedSpanId] = useState<IInterestedSpan>(
@@ -395,11 +397,14 @@ function TraceDetailsV3(): JSX.Element {
 											label: (
 												<div className={styles.collapseLabel}>
 													<span className={styles.collapseTitle}>
-														Flame Graph
+														{t('trace_flame_graph', { defaultValue: 'Flame Graph' })}
 														{traceData?.payload?.totalSpansCount &&
 															traceData.payload.totalSpansCount > FLAMEGRAPH_SPAN_LIMIT && (
 																<WarningPopover
-																	message="The total span count exceeds the visualization limit. Displaying a sampled subset of spans in flamegraph."
+																	message={t('trace_flame_graph_sampled_warning', {
+																		defaultValue:
+																			'The total span count exceeds the visualization limit. Displaying a sampled subset of spans in flamegraph.',
+																	})}
 																	placement="bottomLeft"
 																/>
 															)}
@@ -408,7 +413,10 @@ function TraceDetailsV3(): JSX.Element {
 														<span className={styles.collapseCount}>
 															<span className={styles.collapseCountItem}>
 																<ChartNoAxesGantt size={13} />
-																Spans: {traceData.payload.totalSpansCount}
+																{t('trace_spans_count', {
+																	n: traceData.payload.totalSpansCount,
+																	defaultValue: 'Spans: {{n}}',
+																})}
 															</span>
 															<span
 																className={cx(styles.collapseCountItem, {
@@ -416,7 +424,10 @@ function TraceDetailsV3(): JSX.Element {
 																})}
 															>
 																<TriangleAlert size={13} />
-																Errors: {traceData.payload.totalErrorSpansCount ?? 0}
+																{t('trace_errors_count', {
+																	n: traceData.payload.totalErrorSpansCount ?? 0,
+																	defaultValue: 'Errors: {{n}}',
+																})}
 															</span>
 														</span>
 													) : null}
@@ -448,7 +459,7 @@ function TraceDetailsV3(): JSX.Element {
 									items={[
 										{
 											key: 'waterfall',
-											label: 'Waterfall',
+											label: t('trace_waterfall', { defaultValue: 'Waterfall' }),
 											children: activeKeys.includes('waterfall')
 												? waterfallChildren
 												: null,

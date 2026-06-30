@@ -1,4 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useCopyToClipboard } from 'react-use';
 import { ChevronsRight, Copy, Search, X } from '@signozhq/icons';
@@ -89,6 +90,7 @@ function Filters({
 	onExpand: () => void;
 	onCollapse: () => void;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [, setCopy] = useCopyToClipboard();
 	const [filters, setFilters] = useState<TagFilter>(
 		BASE_FILTER_QUERY.filters || { items: [], op: 'AND' },
@@ -260,7 +262,9 @@ function Filters({
 
 	const highlightErrorsToggle = (
 		<div className={styles.highlightErrorsToggle}>
-			<Typography.Text>Highlight errors</Typography.Text>
+			<Typography.Text>
+				{t('trace_highlight_errors', { defaultValue: 'Highlight errors' })}
+			</Typography.Text>
 			<Switch
 				color="cherry"
 				value={isHighlightErrors}
@@ -286,7 +290,9 @@ function Filters({
 		/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
 		<div className={styles.pill} onClick={onExpand}>
 			<Search size={12} />
-			<span className={styles.pillText}>{expression || 'Search...'}</span>
+			<span className={styles.pillText}>
+				{expression || t('trace_search', { defaultValue: 'Search...' })}
+			</span>
 			{expression && <span className={styles.pillIndicator} />}
 		</div>
 	);
@@ -297,17 +303,24 @@ function Filters({
 			<TooltipContent side="bottom" align="start">
 				<div className={styles.pillPopover}>
 					<div className={styles.pillPopoverHeader}>
-						<Typography.Text>Search query</Typography.Text>
+						<Typography.Text>
+							{t('trace_search_query', { defaultValue: 'Search query' })}
+						</Typography.Text>
 						<Button
 							variant="ghost"
 							size="icon"
 							color="secondary"
 							onClick={(): void => {
 								setCopy(expression);
-								toast.success('Copied to clipboard', {
-									richColors: false,
-									position: 'top-right',
-								});
+								toast.success(
+									t('trace_copied_to_clipboard', {
+										defaultValue: 'Copied to clipboard',
+									}),
+									{
+										richColors: false,
+										position: 'top-right',
+									},
+								);
 							}}
 						>
 							<Copy size={12} />
@@ -371,7 +384,10 @@ function Filters({
 									onChange={handleExpressionChange}
 									onRun={handleRunQuery}
 									dataSource={DataSource.TRACES}
-									placeholder="Enter your filter query (e.g., http.status_code >= 500 AND service.name = 'frontend')"
+									placeholder={t('trace_filter_placeholder', {
+										defaultValue:
+											"Enter your filter query (e.g., http.status_code >= 500 AND service.name = 'frontend')",
+									})}
 								/>
 							</div>
 						</div>
@@ -407,7 +423,9 @@ function Filters({
 											<X size={14} />
 										</Button>
 									</TooltipTrigger>
-									<TooltipContent>Clear filter</TooltipContent>
+									<TooltipContent>
+										{t('trace_clear_filter', { defaultValue: 'Clear filter' })}
+									</TooltipContent>
 								</TooltipRoot>
 							)}
 							<TooltipRoot>
@@ -421,7 +439,9 @@ function Filters({
 										<ChevronsRight size={14} />
 									</Button>
 								</TooltipTrigger>
-								<TooltipContent>Collapse filters</TooltipContent>
+								<TooltipContent>
+									{t('trace_collapse_filters', { defaultValue: 'Collapse filters' })}
+								</TooltipContent>
 							</TooltipRoot>
 						</div>
 					)}

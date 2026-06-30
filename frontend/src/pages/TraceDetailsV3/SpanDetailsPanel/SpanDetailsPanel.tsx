@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
 	TabsContent,
 	TabsList,
@@ -51,7 +52,7 @@ import { SpanV3 } from 'types/api/trace/getTraceV3';
 import { DataSource, LogsAggregatorOperator } from 'types/common/queryBuilder';
 import { openInNewTab } from 'utils/navigation';
 
-import { HIGHLIGHTED_OPTIONS } from './config';
+import { getHighlightedOptions } from './config';
 import {
 	// KEY_ATTRIBUTE_KEYS, // uncomment when key attributes section is re-enabled
 	SpanDetailVariant,
@@ -89,9 +90,14 @@ function SpanDetailsContent({
 	traceStartTime?: number;
 	traceEndTime?: number;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const FIVE_MINUTES_IN_MS = 5 * 60 * 1000;
 	const spanAttributeActions = useSpanAttributeActions();
 	const logTraceEvent = useTraceDetailLogEvent('v3', selectedSpan.trace_id);
+
+	// Opciones destacadas con etiquetas traducidas (el config es a nivel de módulo
+	// y recibe `t` mediante la fábrica getHighlightedOptions).
+	const highlightedOptions = useMemo(() => getHighlightedOptions(t), [t]);
 	const handleTabChange = useCallback(
 		(tab: string): void => {
 			logTraceEvent(TraceDetailEvents.SpanPanelTabChanged, {
@@ -286,7 +292,7 @@ function SpanDetailsContent({
 			<div className={styles.detailsSection}>
 				<div className={styles.spanRow}>
 					<KeyValueLabel
-						badgeKey="Span name"
+						badgeKey={t('trace_span_name', { defaultValue: 'Span name' })}
 						badgeValue={selectedSpan.name}
 						maxCharacters={50}
 					/>
@@ -318,7 +324,9 @@ function SpanDetailsContent({
 										).toFixed(2)}
 										%
 									</strong>
-									{' of total exec time'}
+									{` ${t('trace_of_total_exec', {
+										defaultValue: 'of total exec time',
+									})}`}
 								</>
 							)}
 						</span>
@@ -346,7 +354,7 @@ function SpanDetailsContent({
 
 				{/* Step 6: HighlightedOptions */}
 				<div className={styles.highlightedOptions}>
-					{HIGHLIGHTED_OPTIONS.map((option) => {
+					{highlightedOptions.map((option) => {
 						const rendered = option.render(selectedSpan);
 						if (!rendered) {
 							return null;
@@ -394,17 +402,20 @@ function SpanDetailsContent({
 				<TabsRoot defaultValue="overview" onValueChange={handleTabChange}>
 					<TabsList variant="secondary">
 						<TabsTrigger value="overview" variant="secondary">
-							<Bookmark size={14} /> Overview
+							<Bookmark size={14} /> {t('trace_tab_overview', { defaultValue: 'Overview' })}
 						</TabsTrigger>
 						<TabsTrigger value="events" variant="secondary">
-							<ScrollText size={14} /> Events ({selectedSpan.events?.length || 0})
+							<ScrollText size={14} />{' '}
+							{t('trace_tab_events', { defaultValue: 'Events' })} (
+							{selectedSpan.events?.length || 0})
 						</TabsTrigger>
 						<TabsTrigger value="logs" variant="secondary">
-							<List size={14} /> Logs
+							<List size={14} /> {t('trace_tab_logs', { defaultValue: 'Logs' })}
 						</TabsTrigger>
 						{infraMetadata && (
 							<TabsTrigger value="metrics" variant="secondary">
-								<ChartColumnBig size={14} /> Metrics
+								<ChartColumnBig size={14} />{' '}
+								{t('trace_tab_metrics', { defaultValue: 'Metrics' })}
 							</TabsTrigger>
 						)}
 					</TabsList>
@@ -475,6 +486,7 @@ function SpanDetailsPanel({
 	traceStartTime,
 	traceEndTime,
 }: SpanDetailsPanelProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const headerActions = useMemo((): HeaderAction[] => {
 		const actions: HeaderAction[] = [
 			// TODO: Add back when driven through separate config for different pages
@@ -522,7 +534,7 @@ function SpanDetailsPanel({
 	const content = (
 		<>
 			<DetailsHeader
-				title="Span details"
+				title={t('trace_span_details', { defaultValue: 'Span details' })}
 				onClose={panelState.close}
 				actions={headerActions}
 				className={

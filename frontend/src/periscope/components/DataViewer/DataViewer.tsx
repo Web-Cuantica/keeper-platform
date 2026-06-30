@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useCopyToClipboard } from 'react-use';
 import { ChevronDown, Copy } from '@signozhq/icons';
 import { Button } from '@signozhq/ui/button';
@@ -32,8 +33,15 @@ function DataViewer({
 	drawerKey = 'default',
 	prettyViewProps,
 }: DataViewerProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [viewMode, setViewMode] = useState<ViewMode>('pretty');
 	const [, setCopy] = useCopyToClipboard();
+
+	// Traduce la etiqueta visible de cada modo por su valor (JSON se deja igual).
+	const viewModeLabels: Record<ViewMode, string> = {
+		pretty: t('trace_pretty', { defaultValue: 'Pretty' }),
+		json: 'JSON',
+	};
 
 	const jsonString = useMemo(() => JSON.stringify(data, null, 2), [data]);
 
@@ -54,13 +62,15 @@ function DataViewer({
 	const handleCopy = (): void => {
 		const text = JSON.stringify(data, null, 2);
 		setCopy(text);
-		toast.success('Copied to clipboard', {
-			position: 'top-right',
-		});
+		toast.success(
+			t('trace_copied_to_clipboard', { defaultValue: 'Copied to clipboard' }),
+			{
+				position: 'top-right',
+			},
+		);
 	};
 
-	const currentLabel =
-		VIEW_MODE_OPTIONS.find((opt) => opt.value === viewMode)?.label ?? 'Pretty';
+	const currentLabel = viewModeLabels[viewMode] ?? viewModeLabels.pretty;
 
 	return (
 		<div className="data-viewer">
@@ -78,7 +88,7 @@ function DataViewer({
 									type: 'radio',
 									key: opt.value,
 									value: opt.value,
-									label: opt.label,
+									label: viewModeLabels[opt.value],
 								})),
 							},
 						],
@@ -98,7 +108,7 @@ function DataViewer({
 					type="button"
 					className="data-viewer__copy-btn"
 					onClick={handleCopy}
-					aria-label="Copy JSON"
+					aria-label={t('trace_copy_json', { defaultValue: 'Copy JSON' })}
 				>
 					<Copy size={14} />
 				</button>

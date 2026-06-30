@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { ChevronDown, ChevronRight } from '@signozhq/icons';
 import { Badge } from '@signozhq/ui/badge';
@@ -55,15 +56,28 @@ export function LinkedSpansToggle({
 	isOpen: boolean;
 	toggleOpen: () => void;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
+	// Plural manejado en el componente: se elige la clave explícita según el conteo.
+	// El número se pasa como {{n}} (no como `count`) para no activar la resolución
+	// de plurales de i18next, que aquí no aplica.
+	let labelKey = 'trace_linked_spans';
+	let labelDefault = '{{n}} linked spans';
 	if (count === 0) {
-		return <span className={styles.label}>0 linked spans</span>;
+		labelKey = 'trace_linked_spans_zero';
+		labelDefault = '0 linked spans';
+	} else if (count === 1) {
+		labelKey = 'trace_linked_spans_singular';
+		labelDefault = '{{n}} linked span';
+	}
+	const label = t(labelKey, { n: count, defaultValue: labelDefault });
+
+	if (count === 0) {
+		return <span className={styles.label}>{label}</span>;
 	}
 
 	return (
 		<button type="button" className={styles.toggle} onClick={toggleOpen}>
-			<span className={styles.label}>
-				{count} linked span{count !== 1 ? 's' : ''}
-			</span>
+			<span className={styles.label}>{label}</span>
 			{isOpen ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
 		</button>
 	);
@@ -76,6 +90,7 @@ export function LinkedSpansPanel({
 	linkedSpans: SpanReference[];
 	isOpen: boolean;
 }): JSX.Element | null {
+	const { t } = useTranslation('pages');
 	const getLink = useCallback(
 		(item: SpanReference): string =>
 			`${ROUTES.TRACE}/${item.traceId}?spanId=${item.spanId}`,
@@ -91,7 +106,7 @@ export function LinkedSpansPanel({
 			{linkedSpans.map((item) => (
 				<KeyValueLabel
 					key={item.spanId}
-					badgeKey="Linked Span ID"
+					badgeKey={t('trace_linked_span_id', { defaultValue: 'Linked Span ID' })}
 					badgeValue={
 						<Link to={getLink(item)}>
 							<Badge color="vanilla">{item.spanId}</Badge>

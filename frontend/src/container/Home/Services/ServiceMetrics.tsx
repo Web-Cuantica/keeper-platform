@@ -4,7 +4,7 @@ import { QueryKey } from 'react-query';
 // eslint-disable-next-line no-restricted-imports
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Button, Select, Skeleton, Table } from 'antd';
+import { Button, Select, Skeleton, Table, TableProps } from 'antd';
 import logEvent from 'api/common/logEvent';
 import { ENTITY_VERSION_V4 } from 'constants/app';
 import ROUTES from 'constants/routes';
@@ -38,7 +38,7 @@ import triangleRulerUrl from '@/assets/Icons/triangle-ruler.svg';
 
 import { FeatureKeys } from '../../../constants/features';
 import { DOCS_LINKS } from '../constants';
-import { columns, TIME_PICKER_OPTIONS } from './constants';
+import { getColumns, TIME_PICKER_OPTIONS } from './constants';
 
 const homeInterval = 30 * 60 * 1000;
 
@@ -128,9 +128,11 @@ const ServicesListTable = memo(
 	({
 		services,
 		onRowClick,
+		columns,
 	}: {
 		services: ServicesList[];
 		onRowClick: (record: ServicesList, event: React.MouseEvent) => void;
+		columns: TableProps<ServicesList>['columns'];
 	}): JSX.Element => (
 		<div className="services-list-container home-data-item-container metrics-services-list">
 			<div className="services-list">
@@ -176,6 +178,9 @@ function ServiceMetrics({
 
 	const { queries } = useResourceAttribute();
 	const { safeNavigate } = useSafeNavigate();
+
+	// Columnas de la tabla traducidas (namespace "home")
+	const columns = useMemo(() => getColumns(t), [t]);
 
 	const selectedTags = useMemo(
 		() => (convertRawQueriesToTraceSelectedTags(queries) as Tags[]) || [],
@@ -353,7 +358,11 @@ function ServiceMetrics({
 			)}
 			<Card.Content>
 				{servicesExist ? (
-					<ServicesListTable services={top5Services} onRowClick={handleRowClick} />
+					<ServicesListTable
+						services={top5Services}
+						onRowClick={handleRowClick}
+						columns={columns}
+					/>
 				) : (
 					<EmptyState user={user} activeLicenseV3={activeLicense} />
 				)}

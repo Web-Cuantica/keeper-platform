@@ -1,32 +1,41 @@
 import { TableProps } from 'antd';
 import { ServicesList } from 'types/api/metrics/getService';
 
-export const columns: TableProps<ServicesList>['columns'] = [
-	{
-		title: 'APPLICATION',
-		dataIndex: 'serviceName',
-		key: 'serviceName',
-	},
-	{
-		title: 'P99 LATENCY (in ms)',
-		dataIndex: 'p99',
-		key: 'p99',
-		render: (value: number): string => (value / 1000000).toFixed(2),
-	},
-	{
-		title: 'ERROR RATE (% of total)',
-		dataIndex: 'errorRate',
-		key: 'errorRate',
+// Función de traducción tipada localmente para no importar TFunction
+type TFunc = (key: string, options?: Record<string, unknown>) => string;
 
-		render: (value: number): string => value.toFixed(2),
-	},
-	{
-		title: 'OPS / SEC',
-		dataIndex: 'callRate',
-		key: 'callRate',
-		render: (value: number): string => value.toFixed(2),
-	},
-];
+// Genera las columnas de la tabla de servicios del Inicio traducidas
+// (namespace "home"). Recibe `t` desde el componente que la renderiza.
+export function getColumns(t: TFunc): TableProps<ServicesList>['columns'] {
+	return [
+		{
+			title: t('steps_col_application', { defaultValue: 'APPLICATION' }),
+			dataIndex: 'serviceName',
+			key: 'serviceName',
+		},
+		{
+			title: t('steps_col_p99_latency', { defaultValue: 'P99 LATENCY (in ms)' }),
+			dataIndex: 'p99',
+			key: 'p99',
+			render: (value: number): string => (value / 1000000).toFixed(2),
+		},
+		{
+			title: t('steps_col_error_rate', {
+				defaultValue: 'ERROR RATE (% of total)',
+			}),
+			dataIndex: 'errorRate',
+			key: 'errorRate',
+
+			render: (value: number): string => value.toFixed(2),
+		},
+		{
+			title: t('steps_col_ops_sec', { defaultValue: 'OPS / SEC' }),
+			dataIndex: 'callRate',
+			key: 'callRate',
+			render: (value: number): string => value.toFixed(2),
+		},
+	];
+}
 
 export enum TimeIntervalsEnum {
 	LAST_5_MINUTES = 60 * 5 * 1000, // 300000

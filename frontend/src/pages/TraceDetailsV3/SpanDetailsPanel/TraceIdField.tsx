@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { useCopyToClipboard } from 'react-use';
 import { Button } from '@signozhq/ui/button';
@@ -18,6 +19,7 @@ interface TraceIdFieldProps {
  * existing link to the trace detail page.
  */
 export function TraceIdField({ span }: TraceIdFieldProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const match = useRouteMatch<{ id: string }>({
 		path: ROUTES.TRACE_DETAIL,
 		exact: true,
@@ -29,9 +31,14 @@ export function TraceIdField({ span }: TraceIdFieldProps): JSX.Element {
 	if (isCurrentTrace) {
 		const handleCopy = (): void => {
 			setCopy(span.trace_id);
-			toast.success('Trace ID copied to clipboard', {
-				position: 'top-right',
-			});
+			toast.success(
+				t('trace_trace_id_copied', {
+					defaultValue: 'Trace ID copied to clipboard',
+				}),
+				{
+					position: 'top-right',
+				},
+			);
 		};
 
 		return (
@@ -40,7 +47,9 @@ export function TraceIdField({ span }: TraceIdFieldProps): JSX.Element {
 				color="secondary"
 				className={styles.traceIdCopy}
 				onClick={handleCopy}
-				title="Click to copy trace ID"
+				title={t('trace_click_to_copy_trace_id', {
+					defaultValue: 'Click to copy trace ID',
+				})}
 			>
 				{span.trace_id}
 			</Button>

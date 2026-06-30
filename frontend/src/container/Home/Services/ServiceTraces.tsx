@@ -23,7 +23,7 @@ import { openInNewTab } from 'utils/navigation';
 import triangleRulerUrl from '@/assets/Icons/triangle-ruler.svg';
 
 import { DOCS_LINKS } from '../constants';
-import { columns, TIME_PICKER_OPTIONS } from './constants';
+import { getColumns, TIME_PICKER_OPTIONS } from './constants';
 
 const homeInterval = 30 * 60 * 1000;
 
@@ -50,6 +50,9 @@ export default function ServiceTraces({
 	});
 
 	const { safeNavigate } = useSafeNavigate();
+
+	// Columnas de la tabla traducidas (namespace "home")
+	const columns = useMemo(() => getColumns(t), [t]);
 
 	// Fetch Services
 	const {
@@ -201,7 +204,7 @@ export default function ServiceTraces({
 				</div>
 			</div>
 		),
-		[top5Services, safeNavigate],
+		[top5Services, safeNavigate, columns],
 	);
 
 	if (isServicesLoading || isServicesFetching) {

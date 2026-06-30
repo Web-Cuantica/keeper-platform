@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { JSONTree, KeyPath } from 'react-json-tree';
 import { useCopyToClipboard } from 'react-use';
 import { Copy, Ellipsis, Pin, PinOff } from '@signozhq/icons';
@@ -79,6 +80,7 @@ function PrettyView({
 	pinnedFieldsValue,
 	onPinnedFieldsChange,
 }: PrettyViewProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const isDarkMode = useIsDarkMode();
 	const [, setCopy] = useCopyToClipboard();
 	const { searchQuery, setSearchQuery, filteredData } = useSearchFilter(data);
@@ -137,7 +139,7 @@ function PrettyView({
 			if (isActionVisible('copy', context.isNested)) {
 				items.push({
 					key: 'copy-value',
-					label: 'Copy Value',
+					label: t('trace_copy_value', { defaultValue: 'Copy Value' }),
 					icon: <Copy size={12} />,
 					onClick: (): void => {
 						const text =
@@ -145,9 +147,12 @@ function PrettyView({
 								? JSON.stringify(context.fieldValue, null, 2)
 								: String(context.fieldValue);
 						setCopy(text);
-						toast.success('Copied to clipboard', {
-							position: 'top-right',
-						});
+						toast.success(
+							t('trace_copied_to_clipboard', { defaultValue: 'Copied to clipboard' }),
+							{
+								position: 'top-right',
+							},
+						);
 					},
 				});
 			}
@@ -161,7 +166,9 @@ function PrettyView({
 
 				items.push({
 					key: 'pin',
-					label: pinned ? 'Unpin field' : 'Pin field',
+					label: pinned
+						? t('trace_unpin_field', { defaultValue: 'Unpin field' })
+						: t('trace_pin_field', { defaultValue: 'Pin field' }),
 					icon: pinned ? <PinOff size={12} /> : <Pin size={12} />,
 					onClick: (): void => {
 						togglePin(resolvedPath);
@@ -196,7 +203,7 @@ function PrettyView({
 
 			return items;
 		},
-		[actions, isActionVisible, isPinned, togglePin, displayKeyToForwardPath],
+		[actions, isActionVisible, isPinned, togglePin, displayKeyToForwardPath, t],
 	);
 
 	const renderWithActions = useCallback(
@@ -318,7 +325,9 @@ function PrettyView({
 					<Input
 						className="pretty-view__search-input"
 						type="text"
-						placeholder="Search for a field..."
+						placeholder={t('trace_search_field', {
+							defaultValue: 'Search for a field...',
+						})}
 						value={searchQuery}
 						onChange={(e): void => setSearchQuery(e.target.value)}
 					/>
@@ -327,7 +336,9 @@ function PrettyView({
 
 			{showPinned && Object.keys(filteredPinnedData).length > 0 && (
 				<div className="pretty-view__pinned">
-					<div className="pretty-view__pinned-header">PINNED ITEMS</div>
+					<div className="pretty-view__pinned-header">
+						{t('trace_pinned_items', { defaultValue: 'PINNED ITEMS' })}
+					</div>
 					<JSONTree
 						key={`pinned-${searchQuery}`}
 						data={filteredPinnedData}

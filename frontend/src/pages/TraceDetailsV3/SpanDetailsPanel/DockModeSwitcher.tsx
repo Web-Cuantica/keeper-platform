@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Dock, PanelBottom, PanelRight } from '@signozhq/icons';
 import { ToggleGroup, ToggleGroupItem } from '@signozhq/ui/toggle-group';
 import {
@@ -45,6 +46,19 @@ function DockModeSwitcher({
 	onChange,
 	tooltipClassName,
 }: DockModeSwitcherProps): JSX.Element {
+	const { t } = useTranslation('pages');
+	// Traduce el tooltip de cada modo de acoplamiento por su valor de enum.
+	const tooltipByVariant: Record<string, string> = {
+		[SpanDetailVariant.DIALOG]: t('trace_dock_floating', {
+			defaultValue: 'Open as floating panel',
+		}),
+		[SpanDetailVariant.DOCKED]: t('trace_dock_bottom', {
+			defaultValue: 'Dock at the bottom',
+		}),
+		[SpanDetailVariant.DOCKED_RIGHT]: t('trace_dock_right', {
+			defaultValue: 'Dock on the right',
+		}),
+	};
 	return (
 		<TooltipProvider>
 			<ToggleGroup
@@ -65,7 +79,7 @@ function DockModeSwitcher({
 							</span>
 						</TooltipTrigger>
 						<TooltipContent className={tooltipClassName}>
-							{option.tooltip}
+							{tooltipByVariant[option.value] || option.tooltip}
 						</TooltipContent>
 					</TooltipRoot>
 				))}
