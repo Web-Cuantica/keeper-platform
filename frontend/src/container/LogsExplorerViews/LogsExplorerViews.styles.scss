@@ -112,6 +112,27 @@
 					display: flex;
 					align-items: center;
 					gap: 8px;
+
+					.logs-total-count {
+						display: flex;
+						align-items: center;
+						gap: 4px;
+						padding: 2px 8px;
+						border-radius: 4px;
+						background: var(--bg-ink-300, rgba(255, 255, 255, 0.04));
+						font-size: 12px;
+						line-height: 16px;
+						white-space: nowrap;
+
+						.logs-total-count__label {
+							color: var(--l2-foreground, #8c8c8c);
+						}
+
+						.logs-total-count__value {
+							font-weight: 600;
+							color: var(--robin-400, #4e74f8);
+						}
+					}
 				}
 
 				.tab-options-right {

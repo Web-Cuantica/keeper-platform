@@ -326,6 +326,7 @@
   "svcmap_select_env": "Select Environment/s",
   "svcmap_search_attrs": "Search and Filter based on resource attributes.",
   "svcmap_filter_tooltip": "Currently, service map supports filtering of {{keys}} only, in resource attributes",
+  "logs_total": "Total",
   "qf_clear_all": "Clear All",
   "qf_collapse_filters": "Collapse Filters",
   "qf_duration": "Duration",

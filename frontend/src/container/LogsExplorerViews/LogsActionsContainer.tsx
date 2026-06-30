@@ -16,6 +16,8 @@ import { LOGS_REQUIRED_COLUMNS } from 'container/OptionsMenu/constants';
 import { ArrowUp10, Minus, Play } from '@signozhq/icons';
 import { DataSource, StringOperators } from 'types/common/queryBuilder';
 
+import LogsTotalCount from './LogsTotalCount';
+
 function LogsActionsContainer({
 	listQuery,
 	selectedPanelType,
@@ -91,6 +93,7 @@ function LogsActionsContainer({
 							>
 								Live Tail
 							</Button>
+							<LogsTotalCount />
 						</>
 					)}
 				</div>

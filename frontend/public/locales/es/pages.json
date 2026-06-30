@@ -326,6 +326,7 @@
   "svcmap_select_env": "Selecciona ambiente(s)",
   "svcmap_search_attrs": "Busca y filtra por atributos de recurso.",
   "svcmap_filter_tooltip": "Por ahora, el mapa de servicios solo permite filtrar por {{keys}} en los atributos de recurso.",
+  "logs_total": "Total",
   "qf_clear_all": "Limpiar todo",
   "qf_collapse_filters": "Colapsar filtros",
   "qf_duration": "Duración",
