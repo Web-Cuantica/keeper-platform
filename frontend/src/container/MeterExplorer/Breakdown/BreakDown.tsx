@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 // eslint-disable-next-line no-restricted-imports
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -68,8 +69,29 @@ const sections: MetricSection[] = [
 	},
 ];
 
+// Mapeo de títulos de sección (inglés del builder) → clave i18n del namespace 'pages'.
+const SECTION_TITLE_KEYS: Record<string, string> = {
+	Total: 'meter_section_total',
+	Logs: 'meter_section_logs',
+	Traces: 'meter_section_traces',
+	Metrics: 'meter_section_metrics',
+};
+
+// Mapeo de títulos de panel (inglés del builder en graphs.ts) → clave i18n.
+const PANEL_TITLE_KEYS: Record<string, string> = {
+	'Total size of log records ingested': 'meter_panel_total_log_size',
+	'Total size of spans ingested': 'meter_panel_total_span_size',
+	'Total metric datapoints ingested': 'meter_panel_total_metric_dp',
+	'Count of log records ingested': 'meter_panel_log_count',
+	'Size of log records ingested': 'meter_panel_log_size',
+	'Count of spans ingested': 'meter_panel_span_count',
+	'Size of spans ingested': 'meter_panel_span_size',
+	'Count of metric datapoints ingested': 'meter_panel_metric_count',
+};
+
 function Section(section: MetricSection): JSX.Element {
 	const isDarkMode = useIsDarkMode();
+	const { t } = useTranslation('pages');
 	const { title, graphs } = section;
 	const history = useHistory();
 	const { pathname } = useLocation();
@@ -96,25 +118,41 @@ function Section(section: MetricSection): JSX.Element {
 	return (
 		<div className="meter-column-graph">
 			<CardContainer className="row-card" isDarkMode={isDarkMode}>
-				<Typography.Text className="section-title">{title}</Typography.Text>
+				<Typography.Text className="section-title">
+					{SECTION_TITLE_KEYS[title]
+						? t(SECTION_TITLE_KEYS[title], { defaultValue: title })
+						: title}
+				</Typography.Text>
 			</CardContainer>
 			<div className="meter-page-grid">
-				{graphs.map((widget) => (
-					<Card
-						key={widget?.id}
-						isDarkMode={isDarkMode}
-						$panelType={PANEL_TYPES.BAR}
-						className="meter-graph"
-					>
-						<GridCard widget={widget} onDragSelect={onDragSelect} version="v5" />
-					</Card>
-				))}
+				{graphs.map((widget) => {
+					// Traducimos el título del panel (definido en inglés en graphs.ts) en render.
+					const panelKey = PANEL_TITLE_KEYS[widget?.title];
+					const translatedWidget = panelKey
+						? { ...widget, title: t(panelKey, { defaultValue: widget.title }) }
+						: widget;
+					return (
+						<Card
+							key={widget?.id}
+							isDarkMode={isDarkMode}
+							$panelType={PANEL_TYPES.BAR}
+							className="meter-graph"
+						>
+							<GridCard
+								widget={translatedWidget}
+								onDragSelect={onDragSelect}
+								version="v5"
+							/>
+						</Card>
+					);
+				})}
 			</div>
 		</div>
 	);
 }
 
 function BreakDown(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { isCloudUser } = useGetTenantLicense();
 	const { maxTime, minTime } = useSelector<AppState, GlobalReducer>(
 		(state) => state.globalTime,
@@ -142,15 +180,20 @@ function BreakDown(): JSX.Element {
 						onClose={(): void => {
 							setLocalStorageApi(LOCALSTORAGE.DISSMISSED_COST_METER_INFO, 'true');
 						}}
-						message="Billing is calculated in UTC. To match your meter data with billing, select full-day ranges in UTC time (00:00 – 23:59 UTC). 
-						For example, if you’re in PT, for the billing of Jan 1, select your time range as Dec 31, 4:00 PM – Jan 1, 3:59 PM PT."
+						message={t('meter_banner_billing', {
+							defaultValue:
+								'Billing is calculated in UTC. To match your meter data with billing, select full-day ranges in UTC time (00:00 – 23:59 UTC). For example, if you’re in PT, for the billing of Jan 1, select your time range as Dec 31, 4:00 PM – Jan 1, 3:59 PM PT.',
+						})}
 					/>
 				)}
 				{isCloudUser && isDateBeforeAugust22nd2025(minTime) && (
 					<Alert
 						type="warning"
 						showIcon
-						message="Meter module data is accurate only from 22nd August 2025, 00:00 UTC onwards. Data before this time was collected during the beta phase and may be inaccurate."
+						message={t('meter_banner_beta', {
+							defaultValue:
+								'Meter module data is accurate only from 22nd August 2025, 00:00 UTC onwards. Data before this time was collected during the beta phase and may be inaccurate.',
+						})}
 					/>
 				)}
 
@@ -161,15 +204,18 @@ function BreakDown(): JSX.Element {
 						closable
 						message={
 							<>
-								Meter metrics data is aggregated over 1 hour period. Please select time
-								range accordingly.&nbsp;
+								{t('meter_banner_short_range', {
+									defaultValue:
+										'Meter metrics data is aggregated over 1 hour period. Please select time range accordingly.',
+								})}
+								&nbsp;
 								<a
 									href="https://signoz.io/docs/cost-meter/overview/#accessing-cost-meter"
 									rel="noopener noreferrer"
 									target="_blank"
 									style={{ textDecoration: 'underline' }}
 								>
-									Learn more
+									{t('meter_banner_learn_more', { defaultValue: 'Learn more' })}
 								</a>
 								.
 							</>

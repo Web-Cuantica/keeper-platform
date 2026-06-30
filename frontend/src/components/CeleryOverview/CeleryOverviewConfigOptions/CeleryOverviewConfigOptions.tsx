@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Row, Select, Spin } from 'antd';
 import {
@@ -126,29 +127,30 @@ FilterSelect.defaultProps = {
 };
 
 function CeleryOverviewConfigOptions(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const selectConfigs: SelectOptionConfig[] = [
 		{
-			placeholder: 'Service Name',
+			placeholder: t('mq_filter_service', { defaultValue: 'Service Name' }),
 			queryParam: QueryParams.service,
 			filterType: 'serviceName',
 		},
 		{
-			placeholder: 'Span Name',
+			placeholder: t('mq_filter_span', { defaultValue: 'Span Name' }),
 			queryParam: QueryParams.spanName,
 			filterType: 'name',
 		},
 		{
-			placeholder: 'Msg System',
+			placeholder: t('mq_filter_msgsystem', { defaultValue: 'Msg System' }),
 			queryParam: QueryParams.msgSystem,
 			filterType: 'messaging.system',
 		},
 		{
-			placeholder: 'Destination',
+			placeholder: t('mq_filter_destination', { defaultValue: 'Destination' }),
 			queryParam: QueryParams.destination,
 			filterType: ['messaging.destination.name', 'messaging.destination'],
 		},
 		{
-			placeholder: 'Kind',
+			placeholder: t('mq_filter_kind', { defaultValue: 'Kind' }),
 			queryParam: QueryParams.kindString,
 			filterType: 'kind_string',
 		},

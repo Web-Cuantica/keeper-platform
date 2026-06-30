@@ -106,9 +106,11 @@ function ServiceMap(props: ServiceMapProps): JSX.Element {
 				suffixIcon={
 					<TextToolTip
 						{...{
-							text: `Currently, service map supports filtering of ${whilelistedKeys.join(
-								', ',
-							)} only, in resource attributes`,
+							text: t('svcmap_filter_tooltip', {
+								keys: whilelistedKeys.join(', '),
+								defaultValue:
+									'Currently, service map supports filtering of {{keys}} only, in resource attributes',
+							}),
 						}}
 					/>
 				}

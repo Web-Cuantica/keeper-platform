@@ -1,4 +1,5 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { SolidXCircle } from '@signozhq/icons';
 import { Button, Select, Spin } from 'antd';
 import useResourceAttribute, {
@@ -24,6 +25,7 @@ import './ResourceAttributesFilter.styles.scss';
 function ResourceAttributesFilter({
 	suffixIcon,
 }: ResourceAttributesFilterProps): JSX.Element | null {
+	const { t } = useTranslation('pages');
 	const {
 		queries,
 		staging,
@@ -91,7 +93,9 @@ function ResourceAttributesFilter({
 					showSearch
 					mode="multiple"
 					value={selectedEnvironments}
-					placeholder="Select Environment/s"
+					placeholder={t('svcmap_select_env', {
+							defaultValue: 'Select Environment/s',
+						})}
 					data-testid="resource-environment-filter"
 					style={{ minWidth: 200, height: 34 }}
 					onChange={handleEnvironmentChange}
@@ -119,7 +123,10 @@ function ResourceAttributesFilter({
 					<Select
 						getPopupContainer={popupContainer}
 						placeholder={
-							!isEmpty && 'Search and Filter based on resource attributes.'
+							!isEmpty &&
+							t('svcmap_search_attrs', {
+								defaultValue: 'Search and Filter based on resource attributes.',
+							})
 						}
 						onChange={handleChange}
 						bordered={false}

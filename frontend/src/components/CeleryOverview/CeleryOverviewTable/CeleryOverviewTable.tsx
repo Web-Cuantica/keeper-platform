@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 // eslint-disable-next-line no-restricted-imports
 import { useSelector } from 'react-redux';
@@ -146,7 +147,10 @@ const getColumnSearchProps = (
 			.includes((value as string).toLowerCase()),
 });
 
-function getColumns(data: RowData[]): TableColumnsType<RowData> {
+function getColumns(
+	data: RowData[],
+	t: (key: string, options?: Record<string, unknown>) => string,
+): TableColumnsType<RowData> {
 	if (data?.length === 0) {
 		return [];
 	}
@@ -159,7 +163,7 @@ function getColumns(data: RowData[]): TableColumnsType<RowData> {
 
 	return [
 		{
-			title: 'SERVICE NAME',
+			title: t('mq_col_service', { defaultValue: 'SERVICE NAME' }),
 			dataIndex: 'service_name',
 			key: 'service_name',
 			ellipsis: {
@@ -172,7 +176,7 @@ function getColumns(data: RowData[]): TableColumnsType<RowData> {
 			fixed: 'left',
 		},
 		{
-			title: 'SPAN NAME',
+			title: t('mq_col_span', { defaultValue: 'SPAN NAME' }),
 			dataIndex: 'span_name',
 			key: 'span_name',
 			ellipsis: {
@@ -184,7 +188,7 @@ function getColumns(data: RowData[]): TableColumnsType<RowData> {
 			render: tooltipRender,
 		},
 		{
-			title: 'MESSAGING SYSTEM',
+			title: t('mq_col_msgsystem', { defaultValue: 'MESSAGING SYSTEM' }),
 			dataIndex: 'messaging_system',
 			key: 'messaging_system',
 			ellipsis: {
@@ -196,7 +200,7 @@ function getColumns(data: RowData[]): TableColumnsType<RowData> {
 			render: tooltipRender,
 		},
 		{
-			title: 'DESTINATION',
+			title: t('mq_col_destination', { defaultValue: 'DESTINATION' }),
 			dataIndex: 'destination',
 			key: 'destination',
 			ellipsis: {
@@ -208,7 +212,7 @@ function getColumns(data: RowData[]): TableColumnsType<RowData> {
 				String(a.destination).localeCompare(String(b.destination)),
 		},
 		{
-			title: 'KIND',
+			title: t('mq_col_kind', { defaultValue: 'KIND' }),
 			dataIndex: 'kind_string',
 			key: 'kind_string',
 			ellipsis: {
@@ -220,7 +224,7 @@ function getColumns(data: RowData[]): TableColumnsType<RowData> {
 			render: tooltipRender,
 		},
 		{
-			title: 'ERROR %',
+			title: t('mq_col_error', { defaultValue: 'ERROR %' }),
 			dataIndex: 'error_percentage',
 			key: 'error_percentage',
 			ellipsis: {
@@ -235,7 +239,7 @@ function getColumns(data: RowData[]): TableColumnsType<RowData> {
 			render: ProgressRender,
 		},
 		{
-			title: 'LATENCY (P95) in ms',
+			title: t('mq_col_latency', { defaultValue: 'LATENCY (P95) in ms' }),
 			dataIndex: 'p95_latency',
 			key: 'p95_latency',
 			ellipsis: {
@@ -250,7 +254,7 @@ function getColumns(data: RowData[]): TableColumnsType<RowData> {
 			render: formatNumericValue,
 		},
 		{
-			title: 'THROUGHPUT (ops/s)',
+			title: t('mq_col_throughput', { defaultValue: 'THROUGHPUT (ops/s)' }),
 			dataIndex: 'throughput',
 			key: 'throughput',
 			ellipsis: {
@@ -358,6 +362,7 @@ export default function CeleryOverviewTable({
 }: {
 	onRowClick: (record: RowData) => void;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [tableData, setTableData] = useState<RowData[]>([]);
 
 	const { minTime, maxTime } = useSelector<AppState, GlobalReducer>(
@@ -424,7 +429,7 @@ export default function CeleryOverviewTable({
 	const columns = useMemo(
 		() =>
 			getDraggedColumns<RowData>(
-				getColumns(tableData).map((item) => ({
+				getColumns(tableData, t).map((item) => ({
 					...item,
 					...getColumnSearchProps(
 						searchInput,
@@ -506,7 +511,9 @@ export default function CeleryOverviewTable({
 	return (
 		<div className="celery-overview-table-container">
 			<Input.Search
-				placeholder="Search across all columns"
+				placeholder={t('mq_search_all_columns', {
+					defaultValue: 'Search across all columns',
+				})}
 				onChange={(e): void => setSearchText(e.target.value)}
 				value={searchText}
 				allowClear
@@ -525,7 +532,11 @@ export default function CeleryOverviewTable({
 					),
 				}}
 				locale={{
-					emptyText: isLoading ? null : <Typography.Text>No data</Typography.Text>,
+					emptyText: isLoading ? null : (
+					<Typography.Text>
+						{t('mq_no_data', { defaultValue: 'No data' })}
+					</Typography.Text>
+				),
 				}}
 				scroll={{ x: 'max-content' }}
 				showSorterTooltip
