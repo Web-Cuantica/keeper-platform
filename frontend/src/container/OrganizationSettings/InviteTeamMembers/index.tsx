@@ -33,7 +33,9 @@ function InviteTeamMembers({ form, onFinish }: Props): JSX.Element {
 										rules={[
 											{
 												required: true,
-												message: requireErrorMessage('Email'),
+												message: requireErrorMessage(
+													t('pages:set_email', { defaultValue: 'Email' }),
+												),
 												type: 'email',
 											},
 										]}

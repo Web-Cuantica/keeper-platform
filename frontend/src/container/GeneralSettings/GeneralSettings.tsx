@@ -192,13 +192,15 @@ function GeneralSettings({
 		(type: TTTLType) => {
 			if (!setRetentionPermission) {
 				notifications.error({
-					message: `Sorry you don't have permission to make these changes`,
+					message: t('pages:set_no_permission_changes', {
+						defaultValue: `Sorry you don't have permission to make these changes`,
+					}),
 				});
 				return;
 			}
 			onModalToggleHandler(type);
 		},
-		[setRetentionPermission, notifications],
+		[setRetentionPermission, notifications, t],
 	);
 
 	const s3Enabled = useMemo(
@@ -667,9 +669,13 @@ function GeneralSettings({
 	return (
 		<div className="general-settings-page">
 			<div className="general-settings-header">
-				<span className="general-settings-title">Workspace</span>
+				<span className="general-settings-title">
+					{t('pages:set_workspace_title', { defaultValue: 'Workspace' })}
+				</span>
 				<span className="general-settings-subtitle">
-					Manage your workspace settings.
+					{t('pages:set_workspace_subtitle', {
+						defaultValue: 'Manage your workspace settings.',
+					})}
 				</span>
 			</div>
 
@@ -690,7 +696,9 @@ function GeneralSettings({
 
 			<div className="retention-controls-container">
 				<div className="retention-controls-header">
-					<span className="retention-controls-header-label">Retention Controls</span>
+					<span className="retention-controls-header-label">
+						{t('pages:set_retention_controls', { defaultValue: 'Retention Controls' })}
+					</span>
 				</div>
 				{renderConfig}
 			</div>
@@ -700,7 +708,9 @@ function GeneralSettings({
 					{!isCloudUserVal && (
 						<TextToolTip
 							{...{
-								text: `More details on how to set retention period`,
+								text: t('pages:set_retention_more_details', {
+									defaultValue: `More details on how to set retention period`,
+								}),
 								url: 'https://signoz.io/docs/userguide/retention-period/',
 							}}
 						/>

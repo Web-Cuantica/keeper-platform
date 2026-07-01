@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 // eslint-disable-next-line no-restricted-imports
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -79,6 +80,7 @@ function DateTimeSelection({
 	showRecentlyUsed = true,
 }: Props): JSX.Element {
 	const [formSelector] = Form.useForm();
+	const { t } = useTranslation('pages');
 	const { safeNavigate } = useSafeNavigate();
 	const navigationType = useNavigationType(); // Returns 'POP' for back/forward navigation
 	const dispatch = useDispatch();
@@ -181,7 +183,12 @@ function DateTimeSelection({
 		searchStartTime,
 	]);
 
-	const [options, setOptions] = useState(getOptions(location.pathname));
+	// Las opciones se calculan en render (useMemo) con `t` ya disponible,
+	// para que las etiquetas queden traducidas y no se congelen en inglés.
+	const options = useMemo(() => getOptions(t, location.pathname), [
+		t,
+		location.pathname,
+	]);
 	const [refreshButtonHidden, setRefreshButtonHidden] = useState<boolean>(false);
 	const [customDateTimeVisible, setCustomDTPickerVisible] =
 		useState<boolean>(false);
@@ -260,23 +267,38 @@ function DateTimeSelection({
 		const monthsDiff = currentTime.diff(lastRefresh, 'months');
 
 		if (monthsDiff > 0) {
-			return `Refreshed ${monthsDiff} months ago`;
+			return t('pages:dt_refreshed_months_ago', {
+				defaultValue: 'Refreshed {{count}} months ago',
+				count: monthsDiff,
+			});
 		}
 
 		if (daysDiff > 0) {
-			return `Refreshed ${daysDiff} days ago`;
+			return t('pages:dt_refreshed_days_ago', {
+				defaultValue: 'Refreshed {{count}} days ago',
+				count: daysDiff,
+			});
 		}
 
 		if (hoursDiff > 0) {
-			return `Refreshed ${hoursDiff} hrs ago`;
+			return t('pages:dt_refreshed_hrs_ago', {
+				defaultValue: 'Refreshed {{count}} hrs ago',
+				count: hoursDiff,
+			});
 		}
 
 		if (minutedDiff > 0) {
-			return `Refreshed ${minutedDiff} mins ago`;
+			return t('pages:dt_refreshed_mins_ago', {
+				defaultValue: 'Refreshed {{count}} mins ago',
+				count: minutedDiff,
+			});
 		}
 
-		return `Refreshed ${secondsDiff} sec ago`;
-	}, [maxTime, minTime, selectedTime]);
+		return t('pages:dt_refreshed_sec_ago', {
+			defaultValue: 'Refreshed {{count}} sec ago',
+			count: secondsDiff,
+		});
+	}, [maxTime, minTime, selectedTime, t]);
 
 	const getUpdatedCompositeQuery = useCallback((): string => {
 		let updatedCompositeQuery = cloneDeep(currentQuery);
@@ -613,9 +635,6 @@ function DateTimeSelection({
 
 		const time = getDefaultTime(currentRoute);
 
-		const currentOptions = getOptions(currentRoute);
-		setOptions(currentOptions);
-
 		const updatedTime = getCustomOrIntervalTime(time, currentRoute);
 
 		const [preStartTime = 0, preEndTime = 0] = getTime() || [];
@@ -680,10 +699,15 @@ function DateTimeSelection({
 						type="default"
 						className="reset-button"
 						onClick={handleReset}
-						title={`Reset to ${defaultRelativeTime}`}
+						title={
+							t('pages:dt_reset_to', {
+								defaultValue: 'Reset to {{time}}',
+								time: defaultRelativeTime,
+							}) as string
+						}
 						icon={<Undo size={14} />}
 					>
-						Reset
+						{t('pages:dt_reset', { defaultValue: 'Reset' })}
 					</Button>
 				</FormItem>
 			)}

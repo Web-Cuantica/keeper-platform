@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useCopyToClipboard } from 'react-use';
 import logEvent from 'api/common/logEvent';
 import ROUTES from 'constants/routes';
@@ -33,6 +34,7 @@ const ANALYTICS = {
 } as const;
 
 function MCPServerSettings(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { user } = useAppContext();
 	const [, copyToClipboard] = useCopyToClipboard();
 
@@ -71,14 +73,22 @@ function MCPServerSettings(): JSX.Element {
 	const handleCopySnippet = useCallback(
 		(clientKey: string, snippet: string) => {
 			if (!endpoint) {
-				toast.warning('Enter your Cloud region before copying');
+				toast.warning(
+					t('intg_mcp_enter_cloud_region', {
+						defaultValue: 'Enter your Cloud region before copying',
+					}),
+				);
 				return;
 			}
 			copyToClipboard(snippet);
-			toast.success('Snippet copied to clipboard');
+			toast.success(
+				t('intg_mcp_snippet_copied', {
+					defaultValue: 'Snippet copied to clipboard',
+				}),
+			);
 			void logEvent(ANALYTICS.SNIPPET_COPIED, { client: clientKey });
 		},
-		[endpoint, copyToClipboard],
+		[endpoint, copyToClipboard, t],
 	);
 
 	const handleCreateServiceAccount = useCallback(() => {
@@ -93,9 +103,13 @@ function MCPServerSettings(): JSX.Element {
 			return;
 		}
 		copyToClipboard(instanceUrl);
-		toast.success('Instance URL copied to clipboard');
+		toast.success(
+			t('intg_mcp_instance_url_copied', {
+				defaultValue: 'Instance URL copied to clipboard',
+			}),
+		);
 		void logEvent(ANALYTICS.INSTANCE_URL_COPIED, {});
-	}, [copyToClipboard, instanceUrl, isLoadingHosts]);
+	}, [copyToClipboard, instanceUrl, isLoadingHosts, t]);
 
 	const handleDocsLinkClick = useCallback((target: string) => {
 		void logEvent(ANALYTICS.DOCS_LINK_CLICKED, { target });
@@ -111,7 +125,12 @@ function MCPServerSettings(): JSX.Element {
 	}, []);
 
 	if (isConfigLoading) {
-		return <Spinner tip="Loading..." height="70vh" />;
+		return (
+			<Spinner
+				tip={t('intg_mcp_loading', { defaultValue: 'Loading...' })}
+				height="70vh"
+			/>
+		);
 	}
 
 	if (!endpoint) {
@@ -121,11 +140,14 @@ function MCPServerSettings(): JSX.Element {
 	return (
 		<div className="mcp-settings" data-testid="mcp-settings">
 			<header className="mcp-settings__header">
-				<h1 className="mcp-settings__header-title">SigNoz MCP Server</h1>
+				<h1 className="mcp-settings__header-title">
+					{t('intg_mcp_server_title', { defaultValue: 'SigNoz MCP Server' })}
+				</h1>
 				<p className="mcp-settings__header-subtitle">
-					Connect AI assistants like Claude, Cursor, VS Code, and Codex to your
-					SigNoz data via the Model Context Protocol. Authenticate from your MCP
-					client with a service-account API key.
+					{t('intg_mcp_server_subtitle', {
+						defaultValue:
+							'Connect AI assistants like Claude, Cursor, VS Code, and Codex to your SigNoz data via the Model Context Protocol. Authenticate from your MCP client with a service-account API key.',
+					})}
 				</p>
 			</header>
 
@@ -134,12 +156,13 @@ function MCPServerSettings(): JSX.Element {
 					<Badge color="secondary" variant="default">
 						1
 					</Badge>
-					Configure your client
+					{t('intg_mcp_configure_client', { defaultValue: 'Configure your client' })}
 				</h3>
 				<p className="mcp-settings__card-description">
-					Add SigNoz to your MCP client. Use a one-click install where available, or
-					copy the config for manual setup. On first connect, the client will open a
-					SigNoz authorization page - use the instance URL and API key from step 2.
+					{t('intg_mcp_configure_client_desc', {
+						defaultValue:
+							'Add SigNoz to your MCP client. Use a one-click install where available, or copy the config for manual setup. On first connect, the client will open a SigNoz authorization page - use the instance URL and API key from step 2.',
+					})}
 				</p>
 				<ClientTabs
 					endpoint={endpoint}

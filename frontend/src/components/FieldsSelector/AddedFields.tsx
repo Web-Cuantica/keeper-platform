@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
 	closestCenter,
 	DndContext,
@@ -34,6 +35,7 @@ function SortableField({
 	allowDrag: boolean;
 	isRequired: boolean;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { attributes, listeners, setNodeRef, transform, transition } =
 		useSortable({ id: field.key as string });
 
@@ -63,7 +65,7 @@ function SortableField({
 					size="sm"
 					onClick={(): void => onRemove(field)}
 				>
-					Remove
+					{t('cmp_fields_selector_remove', { defaultValue: 'Remove' })}
 				</Button>
 			)}
 		</div>
@@ -85,6 +87,7 @@ function AddedFields({
 	maxFields,
 	requiredFields = [],
 }: AddedFieldsProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const sensors = useSensors(useSensor(PointerSensor));
 
 	// Contract: caller (FieldsSelector) normalizes `fields` so every entry has
@@ -116,10 +119,17 @@ function AddedFields({
 	return (
 		<div className={cx(styles.section, styles.sectionAdded)}>
 			<div className={styles.sectionHeader}>
-				<span>ADDED FIELDS</span>
+				<span>
+					{t('cmp_fields_selector_added_fields', {
+						defaultValue: 'ADDED FIELDS',
+					})}
+				</span>
 				{maxFields !== undefined && (
 					<Typography.Text size="sm" weight="medium" color="muted">
-						Max Allowed: {maxFields}
+						{t('cmp_fields_selector_max_allowed', {
+							defaultValue: 'Max Allowed: {{count}}',
+							count: maxFields,
+						})}
 					</Typography.Text>
 				)}
 			</div>
@@ -131,7 +141,11 @@ function AddedFields({
 						onDragEnd={handleDragEnd}
 					>
 						{filteredFields.length === 0 ? (
-							<div className={styles.noValues}>No values found</div>
+							<div className={styles.noValues}>
+								{t('cmp_fields_selector_no_values', {
+									defaultValue: 'No values found',
+								})}
+							</div>
 						) : (
 							<SortableContext
 								items={fields.map((f) => f.key as string)}

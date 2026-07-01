@@ -74,7 +74,9 @@ function AlertChannels(): JSX.Element {
 					<Tooltip
 						title={
 							!addNewChannelPermission
-								? 'Ask an admin to create alert channel'
+								? t('pages:al_ch_tooltip_ask_admin', {
+										defaultValue: 'Ask an admin to create alert channel',
+								  })
 								: undefined
 						}
 					>

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Modal } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
 import { Calendar, Info } from '@signozhq/icons';
@@ -15,13 +16,14 @@ export function ScheduleList({
 	schedule,
 	currentTimezone,
 }: IScheduleListProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	if (schedule && schedule.length > 0) {
 		return (
 			<div className="schedule-preview" data-testid="schedule-preview">
 				<div className="schedule-preview-header">
 					<Calendar size={16} />
 					<Typography.Text className="schedule-preview-title">
-						Schedule Preview
+						{t('al_v2_schedule_preview', { defaultValue: 'Schedule Preview' })}
 					</Typography.Text>
 				</div>
 				<div className="schedule-preview-list">
@@ -64,7 +66,10 @@ export function ScheduleList({
 		<div className="no-schedule" data-testid="no-schedule">
 			<Info size={32} />
 			<Typography.Text>
-				Please fill the relevant information to generate a schedule
+				{t('al_v2_fill_info_schedule', {
+					defaultValue:
+						'Please fill the relevant information to generate a schedule',
+				})}
 			</Typography.Text>
 		</div>
 	);

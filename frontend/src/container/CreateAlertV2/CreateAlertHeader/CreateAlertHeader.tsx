@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@signozhq/ui/button';
 import { Input } from '@signozhq/ui/input';
 import logEvent from 'api/common/logEvent';
@@ -18,6 +19,7 @@ import LabelsInput from './LabelsInput';
 import './styles.scss';
 
 function CreateAlertHeader(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { alertState, setAlertState, isEditMode } = useCreateAlertState();
 	const alertRuleContext = useAlertRuleOptional();
 
@@ -39,11 +41,14 @@ function CreateAlertHeader(): JSX.Element {
 	const validateLabelsKey = useCallback(
 		(key: string): string | null => {
 			if (groupByLabels.includes(key)) {
-				return `Cannot use ${key} as a key`;
+				return t('al_v2_labels_key_not_allowed', {
+					defaultValue: 'Cannot use {{key}} as a key',
+					key,
+				});
 			}
 			return null;
 		},
-		[groupByLabels],
+		[groupByLabels, t],
 	);
 
 	const handleSwitchToClassicExperience = useCallback(() => {
@@ -60,7 +65,9 @@ function CreateAlertHeader(): JSX.Element {
 		>
 			{!isEditMode && (
 				<div className="alert-header__tab-bar">
-					<div className="alert-header__tab">New Alert Rule</div>
+					<div className="alert-header__tab">
+						{t('al_v2_new_alert_rule', { defaultValue: 'New Alert Rule' })}
+					</div>
 					<Button
 						prefix={<RotateCcw size={12} />}
 						onClick={handleSwitchToClassicExperience}
@@ -68,7 +75,9 @@ function CreateAlertHeader(): JSX.Element {
 						color="secondary"
 						size="sm"
 					>
-						Switch to Classic Experience
+						{t('al_v2_switch_classic', {
+							defaultValue: 'Switch to Classic Experience',
+						})}
 					</Button>
 				</div>
 			)}
@@ -84,7 +93,9 @@ function CreateAlertHeader(): JSX.Element {
 						}
 					}}
 					className="alert-header__input title"
-					placeholder="Enter alert rule name"
+					placeholder={t('al_v2_alert_name_placeholder', {
+						defaultValue: 'Enter alert rule name',
+					})}
 					data-testid="alert-name-input"
 				/>
 				<LabelsInput

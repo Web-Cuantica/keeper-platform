@@ -1,11 +1,9 @@
 import type { KeyboardEvent, MouseEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import { TooltipSimple } from '@signozhq/ui/tooltip';
 import { CloudintegrationtypesServiceDashboardDTO } from 'api/generated/services/sigNoz.schemas';
 import { useSafeNavigate } from 'hooks/useSafeNavigate';
 import { openInNewTab } from 'utils/navigation';
-
-const DISABLED_TOOLTIP =
-	'Enable metrics collection for this service to view this dashboard.';
 
 function DashboardCard({
 	dashboard,
@@ -14,6 +12,11 @@ function DashboardCard({
 	dashboard: CloudintegrationtypesServiceDashboardDTO;
 	isInteractive: boolean;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
+	const disabledTooltip = t('intg_dashboard_disabled_tooltip', {
+		defaultValue:
+			'Enable metrics collection for this service to view this dashboard.',
+	});
 	const dashboardId = dashboard.integrationDashboard?.dashboardId;
 	const isClickable = Boolean(dashboardId) && isInteractive;
 	const dashboardUrl = dashboardId ? `/dashboard/${dashboardId}` : '';
@@ -59,7 +62,7 @@ function DashboardCard({
 	);
 
 	if (!dashboardId) {
-		return <TooltipSimple title={DISABLED_TOOLTIP}>{card}</TooltipSimple>;
+		return <TooltipSimple title={disabledTooltip}>{card}</TooltipSimple>;
 	}
 
 	return card;

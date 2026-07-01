@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMutation } from 'react-query';
 import { Button, Modal, Skeleton, Tooltip } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
@@ -44,6 +45,7 @@ function IntegrationDetailHeader(
 		onUnInstallSuccess,
 		setActiveDetailTab,
 	} = props;
+	const { t } = useTranslation('pages');
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const { notifications } = useNotifications();
@@ -166,7 +168,12 @@ function IntegrationDetailHeader(
 						showModal();
 					}}
 				>
-					{isConnectionStateNotInstalled ? `Connect ${title}` : `Test Connection`}
+					{isConnectionStateNotInstalled
+						? t('intg_connect_title', {
+								defaultValue: 'Connect {{title}}',
+								title,
+						  })
+						: t('intg_test_connection', { defaultValue: 'Test Connection' })}
 				</Button>
 			</div>
 
@@ -179,8 +186,11 @@ function IntegrationDetailHeader(
 				open={isModalOpen}
 				title={
 					isConnectionStateNotInstalled
-						? `Connect ${title}`
-						: `Test ${title} Connection`
+						? t('intg_connect_title', { defaultValue: 'Connect {{title}}', title })
+						: t('intg_test_title_connection', {
+								defaultValue: 'Test {{title}} Connection',
+								title,
+						  })
 				}
 				onCancel={handleCancel}
 				footer={
@@ -205,9 +215,13 @@ function IntegrationDetailHeader(
 						>
 							{isConnectionStatePending
 								? isConnectionStateNotInstalled
-									? 'Show Configuration Steps'
-									: 'I have already configured'
-								: 'I understand'}
+									? t('intg_show_config_steps', {
+											defaultValue: 'Show Configuration Steps',
+									  })
+									: t('intg_already_configured', {
+											defaultValue: 'I have already configured',
+									  })
+								: t('intg_i_understand', { defaultValue: 'I understand' })}
 						</Button>
 						{isConnectionStatePending && (
 							<Button
@@ -227,8 +241,12 @@ function IntegrationDetailHeader(
 								className="configureBtn"
 							>
 								{isConnectionStateNotInstalled
-									? 'I have already configured'
-									: 'Show Configuration Steps'}
+									? t('intg_already_configured', {
+											defaultValue: 'I have already configured',
+									  })
+									: t('intg_show_config_steps', {
+											defaultValue: 'Show Configuration Steps',
+									  })}
 							</Button>
 						)}
 					</div>
@@ -243,7 +261,7 @@ function IntegrationDetailHeader(
 						<>
 							<div className="data-info">
 								<Typography.Text className="last-data">
-									Last recieved from
+									{t('intg_last_received_from', { defaultValue: 'Last recieved from' })}
 								</Typography.Text>
 								<div className="connection-line" />
 								<Tooltip
@@ -258,7 +276,7 @@ function IntegrationDetailHeader(
 							</div>
 							<div className="data-info">
 								<Typography.Text className="last-data">
-									Last recieved at
+									{t('intg_last_received_at', { defaultValue: 'Last recieved at' })}
 								</Typography.Text>
 								<div className="connection-line" />
 								<Tooltip
@@ -291,26 +309,33 @@ function IntegrationDetailHeader(
 					) : connectionState === ConnectionStates.TestingConnection ? (
 						<div className="data-test-connection">
 							<div className="last-data">
-								We have not received data from your {title} Instance yet. You need to
-								manually configure your {title} instance to start sending data to
-								SigNoz.
+								{t('intg_no_data_yet_testing', {
+									defaultValue:
+										'We have not received data from your {{title}} Instance yet. You need to manually configure your {{title}} instance to start sending data to SigNoz.',
+									title,
+								})}
 							</div>
 							<div className="last-data">
-								If you have already configured your resources to send data, sit tight
-								and wait for the data to flow in, Or else, see the steps to configure
-								your resources to start sending data.
+								{t('intg_already_configured_wait', {
+									defaultValue:
+										'If you have already configured your resources to send data, sit tight and wait for the data to flow in, Or else, see the steps to configure your resources to start sending data.',
+								})}
 							</div>
 						</div>
 					) : isConnectionStateNotInstalled ? (
 						<div className="data-test-connection">
 							<div className="last-data">
-								You would need to manually configure your {title} instance to start
-								sending data to SigNoz.
+								{t('intg_need_manual_config', {
+									defaultValue:
+										'You would need to manually configure your {{title}} instance to start sending data to SigNoz.',
+									title,
+								})}
 							</div>
 							<div className="last-data">
-								If you have already configured your resources to send data, sit tight
-								and wait for the data to flow in, Or else, see the steps to configure
-								your resources to start sending data.
+								{t('intg_already_configured_wait', {
+									defaultValue:
+										'If you have already configured your resources to send data, sit tight and wait for the data to flow in, Or else, see the steps to configure your resources to start sending data.',
+								})}
 							</div>
 						</div>
 					) : null}

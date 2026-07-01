@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useCopyToClipboard } from 'react-use';
 import { Button, Col, Popover, Row, Select, Space } from 'antd';
 import { DropdownMenuSimple, type MenuProps } from '@signozhq/ui/dropdown-menu';
@@ -36,6 +37,7 @@ function ExplorerCard({
 	sourcepage,
 	children,
 }: ExplorerCardProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [, setCopyUrl] = useCopyToClipboard();
 	const { notifications } = useNotifications();
@@ -43,7 +45,9 @@ function ExplorerCard({
 	const onCopyUrlHandler = (): void => {
 		setCopyUrl(window.location.href);
 		notifications.success({
-			message: 'Copied to clipboard',
+			message: t('cmp_copied_to_clipboard', {
+				defaultValue: 'Copied to clipboard',
+			}),
 		});
 	};
 
@@ -129,7 +133,9 @@ function ExplorerCard({
 			{
 				onSuccess: () => {
 					notifications.success({
-						message: 'View Updated Successfully',
+						message: t('cmp_view_updated_success', {
+							defaultValue: 'View Updated Successfully',
+						}),
 					});
 					refetchAllView();
 				},

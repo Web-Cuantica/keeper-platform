@@ -1,3 +1,4 @@
+import type { TFunction } from 'i18next';
 import ROUTES from 'constants/routes';
 
 import { CustomTimeType, Option, Time, TimeFrame } from './types';
@@ -129,11 +130,65 @@ export const getDefaultOption = (route: string): Time => {
 	return Options[2].value;
 };
 
-export const getOptions = (routes: string): Option[] => {
+// Versiones traducidas de las listas de opciones.
+// Se construyen en tiempo de render recibiendo la función `t`, para que el
+// namespace 'pages' (asíncrono) ya esté cargado; nunca deben calcularse en useState.
+
+export const getTranslatedOptions = (t: TFunction): Option[] => [
+	{ value: '5m', label: t('pages:dt_last_5_minutes', { defaultValue: 'Last 5 minutes' }) },
+	{ value: '15m', label: t('pages:dt_last_15_minutes', { defaultValue: 'Last 15 minutes' }) },
+	{ value: '30m', label: t('pages:dt_last_30_minutes', { defaultValue: 'Last 30 minutes' }) },
+	{ value: '1h', label: t('pages:dt_last_1_hour', { defaultValue: 'Last 1 hour' }) },
+	{ value: '6h', label: t('pages:dt_last_6_hours', { defaultValue: 'Last 6 hours' }) },
+	{ value: '1d', label: t('pages:dt_last_1_day', { defaultValue: 'Last 1 day' }) },
+	{ value: '3d', label: t('pages:dt_last_3_days', { defaultValue: 'Last 3 days' }) },
+	{ value: '1w', label: t('pages:dt_last_1_week', { defaultValue: 'Last 1 week' }) },
+	{ value: '1month', label: t('pages:dt_last_1_month', { defaultValue: 'Last 1 month' }) },
+	{ value: 'custom', label: t('pages:dt_custom_date_range', { defaultValue: 'Custom Date Range' }) },
+];
+
+export const getTranslatedRelativeDurationOptions = (t: TFunction): Option[] => [
+	{ value: '5m', label: t('pages:dt_last_5_minutes', { defaultValue: 'Last 5 minutes' }) },
+	{ value: '15m', label: t('pages:dt_last_15_minutes', { defaultValue: 'Last 15 minutes' }) },
+	{ value: '30m', label: t('pages:dt_last_30_minutes', { defaultValue: 'Last 30 minutes' }) },
+	{ value: '1h', label: t('pages:dt_last_1_hour', { defaultValue: 'Last 1 hour' }) },
+	{ value: '6h', label: t('pages:dt_last_6_hour', { defaultValue: 'Last 6 hour' }) },
+	{ value: '1d', label: t('pages:dt_last_1_day', { defaultValue: 'Last 1 day' }) },
+	{ value: '3d', label: t('pages:dt_last_3_days', { defaultValue: 'Last 3 days' }) },
+	{ value: '1w', label: t('pages:dt_last_1_week', { defaultValue: 'Last 1 week' }) },
+	{ value: '1month', label: t('pages:dt_last_1_month', { defaultValue: 'Last 1 month' }) },
+];
+
+export const getTranslatedRelativeDurationSuggestionOptions = (
+	t: TFunction,
+): Option[] => [
+	{ value: '3h', label: t('pages:dt_last_3_hours', { defaultValue: 'Last 3 hours' }) },
+	{ value: '4d', label: t('pages:dt_last_4_days', { defaultValue: 'Last 4 days' }) },
+	{ value: '6w', label: t('pages:dt_last_6_weeks', { defaultValue: 'Last 6 weeks' }) },
+	{ value: '12h', label: t('pages:dt_last_12_hours', { defaultValue: 'Last 12 hours' }) },
+	{ value: '10d', label: t('pages:dt_last_10_days', { defaultValue: 'Last 10 days' }) },
+	{ value: '2w', label: t('pages:dt_last_2_weeks', { defaultValue: 'Last 2 weeks' }) },
+	{ value: '2months', label: t('pages:dt_last_2_months', { defaultValue: 'Last 2 months' }) },
+	{ value: '1d', label: t('pages:dt_today', { defaultValue: 'today' }) },
+];
+
+export const getTranslatedFixedDurationSuggestionOptions = (
+	t: TFunction,
+): Option[] => [
+	{ value: '45m', label: t('pages:dt_last_45_mins', { defaultValue: 'Last 45 mins' }) },
+	{ value: '12h', label: t('pages:dt_last_12_hours', { defaultValue: 'Last 12 hours' }) },
+	{ value: '10d', label: t('pages:dt_last_10_days', { defaultValue: 'Last 10 days' }) },
+	{ value: '2w', label: t('pages:dt_last_2_weeks', { defaultValue: 'Last 2 weeks' }) },
+	{ value: '2months', label: t('pages:dt_last_2_months', { defaultValue: 'Last 2 months' }) },
+	{ value: '1d', label: t('pages:dt_today', { defaultValue: 'today' }) },
+];
+
+// Devuelve las opciones (ya traducidas) según la ruta actual.
+export const getOptions = (t: TFunction, routes: string): Option[] => {
 	if (routes === ROUTES.SERVICE_MAP) {
-		return RelativeDurationOptions;
+		return getTranslatedRelativeDurationOptions(t);
 	}
-	return Options;
+	return getTranslatedOptions(t);
 };
 
 export const routesToHideBreadCrumbs = [ROUTES.SUPPORT, ROUTES.ALL_DASHBOARD];

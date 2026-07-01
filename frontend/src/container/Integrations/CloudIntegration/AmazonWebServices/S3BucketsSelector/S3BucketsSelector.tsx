@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Select, Skeleton } from 'antd';
 import { useListAccounts } from 'api/generated/services/cloudintegration';
 import { INTEGRATION_TYPES } from 'container/Integrations/constants';
@@ -24,6 +25,7 @@ function S3BucketsSelector({
 	initialBucketsByRegion = {},
 	disabled: isSelectorDisabled = false,
 }: S3BucketsSelectorProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const cloudAccountId = useUrlQuery().get('cloudAccountId');
 	const { data: listAccountsResponse, isLoading } = useListAccounts({
 		cloudProvider: INTEGRATION_TYPES.AWS,
@@ -102,7 +104,11 @@ function S3BucketsSelector({
 
 	return (
 		<div className="s3-buckets-selector">
-			<div className="s3-buckets-selector-title">Select S3 Buckets by Region</div>
+			<div className="s3-buckets-selector-title">
+				{t('intg_select_s3_buckets', {
+					defaultValue: 'Select S3 Buckets by Region',
+				})}
+			</div>
 			<div className="s3-buckets-selector-content">
 				{allRegions.map((region) => {
 					const isRegionUnavailable = isRegionDisabled(region);
@@ -113,15 +119,20 @@ function S3BucketsSelector({
 								<div className="s3-buckets-selector-region-label">{region}</div>
 								{isRegionUnavailable && (
 									<div className="s3-buckets-selector-region-help">
-										Region disabled in account settings; S3 buckets here will not be
-										synced.
+										{t('intg_region_disabled_help', {
+											defaultValue:
+												'Region disabled in account settings; S3 buckets here will not be synced.',
+										})}
 									</div>
 								)}
 							</div>
 							<div className="s3-buckets-selector-region-select">
 								<Select
 									mode="tags"
-									placeholder={`Enter S3 bucket names for ${region}`}
+									placeholder={t('intg_enter_s3_buckets', {
+										defaultValue: 'Enter S3 bucket names for {{region}}',
+										region,
+									})}
 									value={bucketsByRegion[region] || []}
 									onChange={(value): void => handleRegionBucketsChange(region, value)}
 									tokenSeparators={[',']}

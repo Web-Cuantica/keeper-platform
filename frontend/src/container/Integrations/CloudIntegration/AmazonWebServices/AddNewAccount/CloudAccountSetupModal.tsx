@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Color } from '@signozhq/design-tokens';
 import { Button } from '@signozhq/ui/button';
 import { DrawerWrapper } from '@signozhq/ui/drawer';
@@ -17,6 +18,7 @@ import './CloudAccountSetupModal.style.scss';
 function CloudAccountSetupModal({
 	onClose,
 }: IntegrationModalProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const {
 		form,
 		modalState,
@@ -94,7 +96,9 @@ function CloudAccountSetupModal({
 					modalState === ModalStateEnum.WAITING
 				}
 			>
-				Launch Cloud Formation Template
+				{t('intg_launch_cf_template', {
+					defaultValue: 'Launch Cloud Formation Template',
+				})}
 			</Button>
 		</div>
 	);
@@ -107,10 +111,12 @@ function CloudAccountSetupModal({
 	const getModalConfig = useCallback(() => {
 		const viewConfigs = {
 			[ActiveViewEnum.FORM]: {
-				title: 'Add AWS Account',
+				title: t('intg_add_aws_account', { defaultValue: 'Add AWS Account' }),
 				okText: (
 					<div className="cloud-account-setup-form__submit-button-content">
-						Launch Cloud Formation Template{' '}
+						{t('intg_launch_cf_template', {
+							defaultValue: 'Launch Cloud Formation Template',
+						})}{' '}
 						<SquareArrowOutUpRight size={17} color={Color.BG_VANILLA_100} />
 					</div>
 				),
@@ -120,8 +126,13 @@ function CloudAccountSetupModal({
 				cancelButtonProps: { style: { display: 'none' } },
 			},
 			[ActiveViewEnum.SELECT_REGIONS]: {
-				title: 'Which regions do you want to monitor?',
-				okText: `Confirm Selection (${getSelectedRegionsCount()})`,
+				title: t('intg_which_regions_monitor', {
+					defaultValue: 'Which regions do you want to monitor?',
+				}),
+				okText: t('intg_confirm_selection', {
+					defaultValue: 'Confirm Selection ({{count}})',
+					count: getSelectedRegionsCount(),
+				}),
 				onOk: (): void => setActiveView(ActiveViewEnum.FORM),
 				isLoading: isLoading || isGeneratingUrl,
 				cancelButtonProps: { style: { display: 'block' } },
@@ -138,6 +149,7 @@ function CloudAccountSetupModal({
 		isGeneratingUrl,
 		activeView,
 		setActiveView,
+		t,
 	]);
 
 	const modalConfig = getModalConfig();

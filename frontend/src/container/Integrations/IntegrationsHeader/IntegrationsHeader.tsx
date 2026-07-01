@@ -1,4 +1,5 @@
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { Button } from '@signozhq/ui/button';
 import { DialogWrapper } from '@signozhq/ui/dialog';
@@ -20,6 +21,7 @@ interface IntegrationsHeaderProps {
 }
 
 function IntegrationsHeader(props: IntegrationsHeaderProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const history = useHistory();
 	const { user } = useAppContext();
 
@@ -49,43 +51,61 @@ function IntegrationsHeader(props: IntegrationsHeaderProps): JSX.Element {
 			});
 
 			if (response.statusCode === 200) {
-				toast.success('Integration Request Submitted', {
-					position: 'top-right',
-				});
+				toast.success(
+					t('intg_request_submitted', {
+						defaultValue: 'Integration Request Submitted',
+					}),
+					{
+						position: 'top-right',
+					},
+				);
 				setRequestedIntegrationName('');
 				setIsRequestIntegrationDialogOpen(false);
 				setIsSubmittingRequestForIntegration(false);
 			} else {
-				toast.error(response.error || 'Something went wrong', {
-					position: 'top-right',
-				});
+				toast.error(
+					response.error ||
+						t('intg_something_went_wrong', { defaultValue: 'Something went wrong' }),
+					{
+						position: 'top-right',
+					},
+				);
 
 				setIsSubmittingRequestForIntegration(false);
 			}
 		} catch (error) {
-			toast.error('Something went wrong', {
-				position: 'top-right',
-			});
+			toast.error(
+				t('intg_something_went_wrong', { defaultValue: 'Something went wrong' }),
+				{
+					position: 'top-right',
+				},
+			);
 			setIsSubmittingRequestForIntegration(false);
 		}
 	};
 
 	return (
 		<div className="integrations-header">
-			<Typography.Title className="title">Integrations</Typography.Title>
+			<Typography.Title className="title">
+				{t('intg_title', { defaultValue: 'Integrations' })}
+			</Typography.Title>
 			<Flex
 				justify="space-between"
 				align="center"
 				className="integrations-header__subrow"
 			>
 				<Typography.Text className="subtitle">
-					Manage integrations for this workspace.
+					{t('intg_subtitle', {
+						defaultValue: 'Manage integrations for this workspace.',
+					})}
 				</Typography.Text>
 			</Flex>
 
 			<div className="integrations-search-request-container">
 				<Input
-					placeholder="Search for an integration..."
+					placeholder={t('intg_search_placeholder', {
+						defaultValue: 'Search for an integration...',
+					})}
 					value={searchQuery}
 					onChange={(e: ChangeEvent<HTMLInputElement>): void =>
 						onSearchChange(e.target.value)
@@ -98,21 +118,27 @@ function IntegrationsHeader(props: IntegrationsHeaderProps): JSX.Element {
 					prefix={<Cable size={14} />}
 					onClick={(): void => setIsRequestIntegrationDialogOpen(true)}
 				>
-					Request Integration
+					{t('intg_request_integration', { defaultValue: 'Request Integration' })}
 				</Button>
 
 				<DialogWrapper
 					className="request-integration-dialog"
-					title="Request New Integration"
+					title={t('intg_request_new_integration', {
+						defaultValue: 'Request New Integration',
+					})}
 					open={isRequestIntegrationDialogOpen}
 					onOpenChange={setIsRequestIntegrationDialogOpen}
 				>
 					<div className="request-integration-form">
 						<div className="request-integration-form-title">
-							Which integration are you looking for?
+							{t('intg_which_looking_for', {
+								defaultValue: 'Which integration are you looking for?',
+							})}
 						</div>
 						<Input
-							placeholder="Enter integration name..."
+							placeholder={t('intg_enter_name_placeholder', {
+								defaultValue: 'Enter integration name...',
+							})}
 							value={requestedIntegrationName}
 							onChange={(e: ChangeEvent<HTMLInputElement>): void => {
 								setRequestedIntegrationName(e.target.value);
@@ -139,7 +165,7 @@ function IntegrationsHeader(props: IntegrationsHeaderProps): JSX.Element {
 								requestedIntegrationName?.trim().length === 0
 							}
 						>
-							Submit
+							{t('intg_submit', { defaultValue: 'Submit' })}
 						</Button>
 					</div>
 				</DialogWrapper>
@@ -150,7 +176,9 @@ function IntegrationsHeader(props: IntegrationsHeaderProps): JSX.Element {
 						color="primary"
 						onClick={(): void => history.push(ROUTES.GET_STARTED_WITH_CLOUD)}
 					>
-						<span>View 150+ Data Sources</span>
+						<span>
+							{t('intg_view_data_sources', { defaultValue: 'View 150+ Data Sources' })}
+						</span>
 						<ArrowRight size={14} />
 					</Button>
 				)}

@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@signozhq/ui/button';
 import { toast } from '@signozhq/ui/sonner';
 import { Form, Modal } from 'antd';
@@ -57,6 +58,7 @@ interface CreateOrEditProps {
 }
 
 function CreateOrEdit(props: CreateOrEditProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { isCreate, record, onClose } = props;
 	const [form] = Form.useForm<FormValues>();
 	const [authnProvider, setAuthnProvider] = useState<
@@ -181,7 +183,11 @@ function CreateOrEdit(props: CreateOrEditProps): JSX.Element {
 				},
 				{
 					onSuccess: () => {
-						toast.success('Domain created successfully');
+						toast.success(
+							t('set_domain_created_success', {
+								defaultValue: 'Domain created successfully',
+							}),
+						);
 						onClose();
 					},
 					onError: handleError,
@@ -208,7 +214,11 @@ function CreateOrEdit(props: CreateOrEditProps): JSX.Element {
 				},
 				{
 					onSuccess: () => {
-						toast.success('Domain updated successfully');
+						toast.success(
+							t('set_domain_updated_success', {
+								defaultValue: 'Domain updated successfully',
+							}),
+						);
 						onClose();
 					},
 					onError: handleError,
@@ -227,6 +237,7 @@ function CreateOrEdit(props: CreateOrEditProps): JSX.Element {
 		onClose,
 		record,
 		updateAuthDomain,
+		t,
 	]);
 
 	const onBackHandler = useCallback((): void => {
@@ -263,12 +274,12 @@ function CreateOrEdit(props: CreateOrEditProps): JSX.Element {
 						<section className="action-buttons">
 							{isCreate && (
 								<Button onClick={onBackHandler} variant="solid" color="secondary">
-									Back
+									{t('set_back', { defaultValue: 'Back' })}
 								</Button>
 							)}
 							{!isCreate && (
 								<Button onClick={onClose} variant="solid" color="secondary">
-									Cancel
+									{t('set_cancel', { defaultValue: 'Cancel' })}
 								</Button>
 							)}
 							<Button
@@ -277,7 +288,7 @@ function CreateOrEdit(props: CreateOrEditProps): JSX.Element {
 								color="primary"
 								loading={isCreating || isUpdating}
 							>
-								Save Changes
+								{t('set_save_changes', { defaultValue: 'Save Changes' })}
 							</Button>
 						</section>
 					</div>

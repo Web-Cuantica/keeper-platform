@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Input, Tooltip } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
 import { Info } from '@signozhq/icons';
@@ -5,6 +6,7 @@ import { Info } from '@signozhq/icons';
 import { useCreateAlertState } from '../context';
 
 function NotificationMessage(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { notificationSettings, setNotificationSettings } =
 		useCreateAlertState();
 
@@ -54,14 +56,26 @@ function NotificationMessage(): JSX.Element {
 			<div className="notification-message-header">
 				<div className="notification-message-header-content">
 					<Typography.Text className="notification-message-header-title">
-						Notification Message
-						<Tooltip title="Customize the message content sent in alert notifications. Template variables like {{alertname}}, {{value}}, and {{threshold}} will be replaced with actual values when the alert fires.">
+						{t('al_v2_notification_message', {
+							defaultValue: 'Notification Message',
+						})}
+						<Tooltip
+							title={t('al_v2_notification_message_tooltip', {
+								defaultValue:
+									'Customize the message content sent in alert notifications. Template variables like {{alertname}}, {{value}}, and {{threshold}} will be replaced with actual values when the alert fires.',
+								alertname: '{{alertname}}',
+								value: '{{value}}',
+								threshold: '{{threshold}}',
+							})}
+						>
 							<Info size={16} />
 						</Tooltip>
 					</Typography.Text>
 					<Typography.Text className="notification-message-header-description">
-						Custom message content for alert notifications. Use template variables to
-						include dynamic information.
+						{t('al_v2_notification_message_desc', {
+							defaultValue:
+								'Custom message content for alert notifications. Use template variables to include dynamic information.',
+						})}
 					</Typography.Text>
 				</div>
 				<div className="notification-message-header-actions">
@@ -82,7 +96,9 @@ function NotificationMessage(): JSX.Element {
 						payload: e.target.value,
 					})
 				}
-				placeholder="Enter notification message..."
+				placeholder={t('al_v2_enter_notification_message', {
+					defaultValue: 'Enter notification message...',
+				})}
 			/>
 		</div>
 	);

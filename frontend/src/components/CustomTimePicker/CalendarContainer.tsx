@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Calendar } from '@signozhq/ui/calendar';
 import { Button } from 'antd';
 import { DATE_TIME_FORMATS } from 'constants/dateTimeFormats';
@@ -19,6 +20,7 @@ function CalendarContainer({
 	onApply: () => void;
 }): JSX.Element {
 	const { timezone } = useTimezone();
+	const { t } = useTranslation('pages');
 
 	// this is to override the default behavior of the shadcn calendar component
 	// if a range is already selected, clicking on a date will reset selection and set the new date as the start date
@@ -83,7 +85,7 @@ function CalendarContainer({
 						onClick={onCancel}
 						icon={<X size={12} />}
 					>
-						Cancel
+						{t('pages:dt_cancel', { defaultValue: 'Cancel' })}
 					</Button>
 					<Button
 						type="primary"
@@ -91,7 +93,7 @@ function CalendarContainer({
 						onClick={onApply}
 						icon={<Check size={12} />}
 					>
-						Apply
+						{t('pages:dt_apply', { defaultValue: 'Apply' })}
 					</Button>
 				</div>
 			</div>

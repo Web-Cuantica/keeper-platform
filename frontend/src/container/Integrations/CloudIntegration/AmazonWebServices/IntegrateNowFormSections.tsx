@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Color } from '@signozhq/design-tokens';
 import { Form, Select } from 'antd';
 import { ChevronDown } from '@signozhq/icons';
@@ -17,21 +18,35 @@ function RegionDeploymentSection({
 	handleRegionChange: (value: string) => void;
 	isFormDisabled: boolean;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	return (
 		<div className="cloud-account-setup-form__form-group">
 			<div className="cloud-account-setup-form__title">
-				Where should we deploy the SigNoz Cloud stack?
+				{t('intg_deploy_cloud_stack_title', {
+					defaultValue: 'Where should we deploy the SigNoz Cloud stack?',
+				})}
 			</div>
 			<div className="cloud-account-setup-form__description">
-				Choose the AWS region for CloudFormation stack deployment
+				{t('intg_deploy_cloud_stack_desc', {
+					defaultValue: 'Choose the AWS region for CloudFormation stack deployment',
+				})}
 			</div>
 			<Form.Item
 				name="region"
-				rules={[{ required: true, message: 'Please select a region' }]}
+				rules={[
+					{
+						required: true,
+						message: t('intg_select_region_required', {
+							defaultValue: 'Please select a region',
+						}),
+					},
+				]}
 				className="cloud-account-setup-form__form-item"
 			>
 				<Select
-					placeholder="e.g. US East (N. Virginia)"
+					placeholder={t('intg_region_placeholder_aws', {
+						defaultValue: 'e.g. US East (N. Virginia)',
+					})}
 					suffixIcon={<ChevronDown size={16} color={Color.BG_VANILLA_400} />}
 					className="cloud-account-setup-form__select integrations-select"
 					onChange={handleRegionChange}
@@ -60,14 +75,19 @@ function MonitoringRegionsSection({
 	setSelectedRegions: Dispatch<SetStateAction<string[]>>;
 	setIncludeAllRegions: Dispatch<SetStateAction<boolean>>;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	return (
 		<div className="cloud-account-setup-form__form-group">
 			<div className="cloud-account-setup-form__title">
-				Which regions do you want to monitor?
+				{t('intg_which_regions_monitor', {
+					defaultValue: 'Which regions do you want to monitor?',
+				})}
 			</div>
 			<div className="cloud-account-setup-form__description">
-				Choose only the regions you want SigNoz to monitor. You can enable all at
-				once, or pick specific ones:
+				{t('intg_choose_regions_desc', {
+					defaultValue:
+						'Choose only the regions you want SigNoz to monitor. You can enable all at once, or pick specific ones:',
+				})}
 			</div>
 
 			<RegionSelector
@@ -80,12 +100,14 @@ function MonitoringRegionsSection({
 }
 
 function ComplianceNote(): JSX.Element {
+	const { t } = useTranslation('pages');
 	return (
 		<div className="cloud-account-setup-form__form-group">
 			<div className="cloud-account-setup-form__note">
-				Note: Some organizations may require the CloudFormation stack to be deployed
-				in the same region as their primary infrastructure for compliance or latency
-				reasons.
+				{t('intg_compliance_note', {
+					defaultValue:
+						'Note: Some organizations may require the CloudFormation stack to be deployed in the same region as their primary infrastructure for compliance or latency reasons.',
+				})}
 			</div>
 		</div>
 	);

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@signozhq/ui/button';
 import { Tabs } from '@signozhq/ui/tabs';
 import LearnMore from 'components/LearnMore/LearnMore';
@@ -28,6 +29,7 @@ function ClientTabs({
 	onInstallClick,
 	onDocsLinkClick,
 }: ClientTabsProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const items = useMemo(
 		() =>
 			MCP_CLIENTS.map((client: McpClient) => {
@@ -37,7 +39,12 @@ function ClientTabs({
 				const installHref =
 					client.installUrl && endpoint ? client.installUrl(endpoint) : null;
 
-				const installLabel = client.installLabel ?? `Add to ${client.label}`;
+				const installLabel =
+					client.installLabel ??
+					t('intg_mcp_add_to_client', {
+						defaultValue: 'Add to {{client}}',
+						client: client.label,
+					});
 
 				return {
 					key: client.key,
@@ -48,7 +55,10 @@ function ClientTabs({
 								<div className="mcp-client-tabs__endpoint-value mcp-client-tabs__snippet">
 									<pre className="mcp-client-tabs__snippet-pre">{snippet}</pre>
 									<CopyIconButton
-										ariaLabel={`Copy ${client.label} config`}
+										ariaLabel={t('intg_mcp_copy_client_config_aria', {
+											defaultValue: 'Copy {{client}} config',
+											client: client.label,
+										})}
 										disabled={!endpoint}
 										onCopy={(): void => onCopySnippet(client.key, snippet)}
 									/>
@@ -60,13 +70,19 @@ function ClientTabs({
 											{endpoint || ENDPOINT_PLACEHOLDER}
 										</pre>
 										<CopyIconButton
-											ariaLabel="Copy MCP endpoint"
+											ariaLabel={t('intg_mcp_copy_endpoint_aria', {
+												defaultValue: 'Copy MCP endpoint',
+											})}
 											disabled={!endpoint}
 											onCopy={(): void => onCopySnippet(client.key, endpoint)}
 										/>
 									</div>
 									<p className="mcp-client-tabs__instructions">
-										{client.instructions ?? ''}
+										{client.instructions
+											? t(`intg_mcp_instructions_${client.key}`, {
+													defaultValue: client.instructions,
+											  })
+											: ''}
 									</p>
 								</>
 							)}
@@ -96,13 +112,18 @@ function ClientTabs({
 										</Button>
 									)}
 									<span className="mcp-client-tabs__helper-text">
-										Or copy the config below for manual setup.
+										{t('intg_mcp_or_copy_config', {
+											defaultValue: 'Or copy the config below for manual setup.',
+										})}
 									</span>
 								</div>
 							)}
 
 							<LearnMore
-								text={`${client.label} setup docs`}
+								text={t('intg_mcp_client_setup_docs', {
+									defaultValue: '{{client}} setup docs',
+									client: client.label,
+								})}
 								url={docsUrl(client.docsPath)}
 								onClick={(): void => onDocsLinkClick(`client-${client.key}`)}
 							/>
@@ -111,7 +132,7 @@ function ClientTabs({
 				};
 			}),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[endpoint, onCopySnippet, onInstallClick, onDocsLinkClick],
+		[endpoint, onCopySnippet, onInstallClick, onDocsLinkClick, t],
 	);
 
 	return (

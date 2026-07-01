@@ -67,7 +67,13 @@ function SelectAlertType({ onSelect }: SelectAlertTypeProps): JSX.Element {
 					<AlertTypeCard
 						key={option.selection}
 						title={option.title}
-						extra={option.isBeta ? <Badge color="robin">Beta</Badge> : undefined}
+						extra={
+							option.isBeta ? (
+								<Badge color="robin">
+									{t('pages:al_badge_beta', { defaultValue: 'Beta' })}
+								</Badge>
+							) : undefined
+						}
 						onClick={(e): void => {
 							onSelect(option.selection, isModifierKeyPressed(e));
 						}}
@@ -81,7 +87,9 @@ function SelectAlertType({ onSelect }: SelectAlertTypeProps): JSX.Element {
 								handleRedirection(option.selection);
 							}}
 						>
-							Click here to see how to create a sample alert.
+							{t('pages:al_sample_alert_link', {
+								defaultValue: 'Click here to see how to create a sample alert.',
+							})}
 						</Typography.Link>{' '}
 					</AlertTypeCard>
 				))}

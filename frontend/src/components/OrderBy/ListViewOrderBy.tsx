@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import { Select, Spin } from 'antd';
 import { getKeySuggestions } from 'api/querySuggestions/getKeySuggestions';
@@ -13,11 +14,16 @@ interface ListViewOrderByProps {
 	dataSource: DataSource;
 }
 
-// Loader component for the dropdown when loading or no results
+// Componente Loader para el dropdown al cargar o cuando no hay resultados
 function Loader({ isLoading }: { isLoading: boolean }): JSX.Element {
+	const { t } = useTranslation('pages');
 	return (
 		<div className="order-by-loading-container">
-			{isLoading ? <Spin size="default" /> : 'No results found'}
+			{isLoading ? (
+				<Spin size="default" />
+			) : (
+				t('cmp_order_by_no_results', { defaultValue: 'No results found' })
+			)}
 		</div>
 	);
 }
@@ -27,6 +33,7 @@ function ListViewOrderBy({
 	onChange,
 	dataSource,
 }: ListViewOrderByProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [searchInput, setSearchInput] = useState('');
 	const [debouncedInput, setDebouncedInput] = useState('');
 	const [selectOptions, setSelectOptions] = useState<
@@ -102,7 +109,9 @@ function ListViewOrderBy({
 			onChange={onChange}
 			onSearch={handleSearch}
 			notFoundContent={<Loader isLoading={isLoading} />}
-			placeholder="Select a field"
+			placeholder={
+				t('cmp_order_by_select_field', { defaultValue: 'Select a field' }) as string
+			}
 			style={{ width: 200 }}
 			options={selectOptions}
 			filterOption={(input, option): boolean =>

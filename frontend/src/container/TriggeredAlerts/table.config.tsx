@@ -1,3 +1,4 @@
+import type { TFunction } from 'i18next';
 import { BellDot } from '@signozhq/icons';
 import { Badge } from '@signozhq/ui/badge';
 import { SEVERITY_BADGE_COLORS } from 'components/Alerts/constants';
@@ -12,11 +13,12 @@ import { GroupTagsCell } from 'container/TriggeredAlerts/components/GroupTagsCel
 
 export function getAlertColumns(
 	formatTimezoneAdjustedTimestamp: (date: string, format: string) => string,
+	t: TFunction,
 ): TableColumnDef<Alert>[] {
 	return [
 		{
 			id: 'status',
-			header: 'Status',
+			header: t('al_col_status', { defaultValue: 'Status' }) as string,
 			accessorFn: (row) => row.status?.state,
 			width: { fixed: '100px' },
 			enableSort: false,
@@ -30,7 +32,7 @@ export function getAlertColumns(
 		},
 		{
 			id: 'alertName',
-			header: 'Alert Name',
+			header: t('al_col_alert_name', { defaultValue: 'Alert Name' }) as string,
 			accessorFn: (row) => row.labels?.alertname ?? '',
 			width: { default: '100%' },
 			enableSort: true,
@@ -46,7 +48,7 @@ export function getAlertColumns(
 		},
 		{
 			id: 'severity',
-			header: 'Severity',
+			header: t('al_col_severity', { defaultValue: 'Severity' }) as string,
 			accessorFn: (row) => row.labels?.severity ?? '',
 			width: { fixed: '120px' },
 			enableSort: true,
@@ -70,7 +72,7 @@ export function getAlertColumns(
 		},
 		{
 			id: 'firingSince',
-			header: 'Firing Since',
+			header: t('al_col_firing_since', { defaultValue: 'Firing Since' }) as string,
 			accessorKey: 'startsAt',
 			width: { min: 280, default: 280 },
 			enableSort: true,
@@ -85,7 +87,7 @@ export function getAlertColumns(
 		},
 		{
 			id: 'labels',
-			header: 'Labels',
+			header: t('al_col_labels', { defaultValue: 'Labels' }) as string,
 			accessorKey: 'labels',
 			width: { default: '100%' },
 			enableMove: false,
@@ -106,15 +108,18 @@ export function getAlertColumns(
 	];
 }
 
-export const groupedColumns: TableColumnDef<GroupedAlert>[] = [
-	{
-		id: 'groupTags',
-		header: (): JSX.Element => (
-			<div className={styles.groupHeader}>
-				<BellDot size={14} />
-				<span>Group</span>
-			</div>
-		),
+export function getGroupedColumns(
+	t: TFunction,
+): TableColumnDef<GroupedAlert>[] {
+	return [
+		{
+			id: 'groupTags',
+			header: (): JSX.Element => (
+				<div className={styles.groupHeader}>
+					<BellDot size={14} />
+					<span>{t('al_col_group', { defaultValue: 'Group' })}</span>
+				</div>
+			),
 		accessorFn: (row) => row.groupKey,
 		width: { default: '100%' },
 		enableRemove: false,
@@ -132,7 +137,7 @@ export const groupedColumns: TableColumnDef<GroupedAlert>[] = [
 	},
 	{
 		id: 'alertCount',
-		header: 'Alerts',
+		header: t('al_col_alerts', { defaultValue: 'Alerts' }) as string,
 		accessorFn: (row) => row.alerts.length,
 		width: { min: 80, default: 100 },
 		enableMove: false,
@@ -140,4 +145,5 @@ export const groupedColumns: TableColumnDef<GroupedAlert>[] = [
 			<TanStackTable.Text>{String(value)}</TanStackTable.Text>
 		),
 	},
-];
+	];
+}

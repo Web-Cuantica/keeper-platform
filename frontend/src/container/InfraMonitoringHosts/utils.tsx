@@ -1,4 +1,5 @@
 import React from 'react';
+import type { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { Color } from '@signozhq/design-tokens';
 import { Tooltip } from 'antd';
@@ -112,6 +113,7 @@ export const HostsQuickFiltersConfig: IQuickFiltersConfig[] = [
 
 export function getHostsQuickFiltersConfig(
 	dotMetricsEnabled: boolean,
+	t: TFunction,
 ): IQuickFiltersConfig[] {
 	const hostNameKey = dotMetricsEnabled ? 'host.name' : 'host_name';
 	const osTypeKey = dotMetricsEnabled ? 'os.type' : 'os_type';
@@ -126,7 +128,7 @@ export function getHostsQuickFiltersConfig(
 	return [
 		{
 			type: FiltersType.CHECKBOX,
-			title: 'Host Name',
+			title: t('pages:infra_filter_host_name', { defaultValue: 'Host Name' }),
 			attributeKey: {
 				key: hostNameKey,
 				dataType: DataTypes.String,
@@ -139,7 +141,7 @@ export function getHostsQuickFiltersConfig(
 		},
 		{
 			type: FiltersType.CHECKBOX,
-			title: 'OS Type',
+			title: t('pages:infra_filter_os_type', { defaultValue: 'OS Type' }),
 			attributeKey: {
 				key: osTypeKey,
 				dataType: DataTypes.String,
@@ -152,7 +154,7 @@ export function getHostsQuickFiltersConfig(
 		},
 		{
 			type: FiltersType.CHECKBOX,
-			title: 'Environment',
+			title: t('pages:infra_filter_environment', { defaultValue: 'Environment' }),
 			attributeKey: {
 				key: environmentKey,
 				dataType: DataTypes.String,

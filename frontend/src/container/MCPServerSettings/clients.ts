@@ -39,7 +39,6 @@ export const MCP_CLIENTS: McpClient[] = [
 			const config = b64url(JSON.stringify({ url: endpoint }));
 			return `cursor://anysphere.cursor-deeplink/mcp/install?name=SigNoz&config=${config}`;
 		},
-		installLabel: 'Add to Cursor',
 	},
 	{
 		key: 'claude-code',
@@ -74,7 +73,6 @@ export const MCP_CLIENTS: McpClient[] = [
 			);
 			return `vscode:mcp/install?${payload}`;
 		},
-		installLabel: 'Add to VS Code',
 	},
 	{
 		key: 'claude-desktop',

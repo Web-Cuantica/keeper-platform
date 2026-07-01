@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Input, Select, Tooltip } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
 import { Info } from '@signozhq/icons';
@@ -13,6 +14,7 @@ import './styles.scss';
 import '../AdvancedOptionItem/styles.scss';
 
 function EvaluationCadence(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { advancedOptions, setAdvancedOptions } = useCreateAlertState();
 
 	const [
@@ -45,13 +47,21 @@ function EvaluationCadence(): JSX.Element {
 			<div className="advanced-option-item evaluation-cadence-item">
 				<div className="advanced-option-item-left-content">
 					<Typography.Text className="advanced-option-item-title">
-						How often to check
-						<Tooltip title="Controls how frequently the alert evaluates your conditions. For most alerts, 1-5 minutes is sufficient.">
+						{t('al_v2_how_often_check', { defaultValue: 'How often to check' })}
+						<Tooltip
+							title={t('al_v2_how_often_check_tooltip', {
+								defaultValue:
+									'Controls how frequently the alert evaluates your conditions. For most alerts, 1-5 minutes is sufficient.',
+							})}
+						>
 							<Info data-testid="evaluation-cadence-tooltip-icon" size={16} />
 						</Tooltip>
 					</Typography.Text>
 					<Typography.Text className="advanced-option-item-description">
-						How frequently this alert checks your data. Default: Every 1 minute
+						{t('al_v2_how_often_check_desc', {
+							defaultValue:
+								'How frequently this alert checks your data. Default: Every 1 minute',
+						})}
 					</Typography.Text>
 				</div>
 				{isCustomScheduleButtonVisible && (
@@ -62,7 +72,7 @@ function EvaluationCadence(): JSX.Element {
 						<Input.Group className="advanced-option-item-input-group">
 							<Input
 								type="number"
-								placeholder="Enter time"
+								placeholder={t('al_v2_enter_time', { defaultValue: 'Enter time' })}
 								style={{ width: 180 }}
 								value={advancedOptions.evaluationCadence.default.value}
 								onChange={(value): void =>
@@ -81,7 +91,9 @@ function EvaluationCadence(): JSX.Element {
 							/>
 							<Select
 								options={ADVANCED_OPTIONS_TIME_UNIT_OPTIONS}
-								placeholder="Select time unit"
+								placeholder={t('al_v2_select_time_unit', {
+									defaultValue: 'Select time unit',
+								})}
 								style={{ width: 120 }}
 								value={advancedOptions.evaluationCadence.default.timeUnit}
 								onChange={(value): void =>

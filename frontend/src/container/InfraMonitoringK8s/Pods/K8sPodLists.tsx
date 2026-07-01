@@ -1,4 +1,5 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { InfraMonitoringEvents } from 'constants/events';
 import { FeatureKeys } from 'constants/features';
 import { useAppContext } from 'providers/App/App';
@@ -18,9 +19,9 @@ import {
 	podWidgetInfo,
 } from './constants';
 import {
+	getK8sPodColumnsConfig,
 	getK8sPodItemKey,
 	getK8sPodRowKey,
-	k8sPodColumnsConfig,
 } from './table.config';
 
 function K8sPodsList({
@@ -28,6 +29,8 @@ function K8sPodsList({
 }: {
 	controlListPrefix?: React.ReactNode;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
+	const k8sPodColumnsConfig = useMemo(() => getK8sPodColumnsConfig(t), [t]);
 	const { featureFlags } = useAppContext();
 	const dotMetricsEnabled =
 		featureFlags?.find((flag) => flag.name === FeatureKeys.DOT_METRICS_ENABLED)

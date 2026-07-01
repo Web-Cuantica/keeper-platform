@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQueryClient } from 'react-query';
 import { Button } from '@signozhq/ui/button';
 import { DrawerWrapper } from '@signozhq/ui/drawer';
@@ -28,6 +29,7 @@ function AccountSettingsModal({
 	account,
 	setActiveAccount,
 }: AccountSettingsModalProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const {
 		form,
 		isLoading,
@@ -79,10 +81,12 @@ function AccountSettingsModal({
 					<div className="account-settings-modal__body-account-info">
 						<div className="account-settings-modal__body-account-info-connected-account-details">
 							<div className="account-settings-modal__body-account-info-connected-account-details-title">
-								Connected Account details
+								{t('intg_connected_account_details', {
+									defaultValue: 'Connected Account details',
+								})}
 							</div>
 							<div className="account-settings-modal__body-account-info-connected-account-details-account-id">
-								AWS Account:{' '}
+								{t('intg_aws_account_label', { defaultValue: 'AWS Account:' })}{' '}
 								<span className="account-settings-modal__body-account-info-connected-account-details-account-id-account-id">
 									{account?.providerAccountId}
 								</span>
@@ -92,10 +96,14 @@ function AccountSettingsModal({
 
 					<div className="account-settings-modal__body-region-selector">
 						<div className="account-settings-modal__body-region-selector-title">
-							Which regions do you want to monitor?
+							{t('intg_which_regions_monitor', {
+								defaultValue: 'Which regions do you want to monitor?',
+							})}
 						</div>
 						<div className="account-settings-modal__body-region-selector-description">
-							Choose only the regions you want SigNoz to monitor.
+							{t('intg_choose_regions_short', {
+								defaultValue: 'Choose only the regions you want SigNoz to monitor.',
+							})}
 						</div>
 
 						<RegionSelector
@@ -114,6 +122,7 @@ function AccountSettingsModal({
 		account?.providerAccountId,
 		setSelectedRegions,
 		setIncludeAllRegions,
+		t,
 	]);
 
 	const handleDrawerOpenChange = useCallback(
@@ -141,7 +150,7 @@ function AccountSettingsModal({
 				loading={isLoading}
 				prefix={<Save size={14} />}
 			>
-				Update Changes
+				{t('intg_update_changes', { defaultValue: 'Update Changes' })}
 			</Button>
 		</div>
 	);
@@ -150,7 +159,7 @@ function AccountSettingsModal({
 		<DrawerWrapper
 			open={true}
 			className="account-settings-modal"
-			title="Account Settings"
+			title={t('intg_account_settings', { defaultValue: 'Account Settings' })}
 			direction="right"
 			showCloseButton
 			onOpenChange={handleDrawerOpenChange}

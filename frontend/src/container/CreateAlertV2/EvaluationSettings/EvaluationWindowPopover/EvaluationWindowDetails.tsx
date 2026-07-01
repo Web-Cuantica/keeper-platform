@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Input } from '@signozhq/ui/input';
 import { Select } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
@@ -17,6 +18,7 @@ function EvaluationWindowDetails({
 	evaluationWindow,
 	setEvaluationWindow,
 }: IEvaluationWindowDetailsProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const currentHourOptions = useMemo(() => {
 		const options = [];
 		for (let i = 0; i < 60; i++) {
@@ -123,12 +125,18 @@ function EvaluationWindowDetails({
 				</Typography.Text>
 				<Typography.Text>{displayText}</Typography.Text>
 				<div className="select-group">
-					<Typography.Text>STARTING AT MINUTE</Typography.Text>
+					<Typography.Text>
+						{t('al_v2_starting_at_minute', {
+							defaultValue: 'STARTING AT MINUTE',
+						})}
+					</Typography.Text>
 					<Select
 						options={currentHourOptions}
 						value={evaluationWindow.startingAt.number || null}
 						onChange={handleNumberChange}
-						placeholder="Select starting at"
+						placeholder={t('al_v2_select_starting_at', {
+							defaultValue: 'Select starting at',
+						})}
 						data-testid="evaluation-window-details-starting-at-select"
 					/>
 				</div>
@@ -144,19 +152,25 @@ function EvaluationWindowDetails({
 				</Typography.Text>
 				<Typography.Text>{displayText}</Typography.Text>
 				<div className="select-group time-select-group">
-					<Typography.Text>STARTING AT</Typography.Text>
+					<Typography.Text>
+						{t('al_v2_starting_at', { defaultValue: 'STARTING AT' })}
+					</Typography.Text>
 					<TimeInput
 						value={evaluationWindow.startingAt.time}
 						onChange={handleTimeChange}
 					/>
 				</div>
 				<div className="select-group">
-					<Typography.Text>SELECT TIMEZONE</Typography.Text>
+					<Typography.Text>
+						{t('al_v2_select_timezone_label', { defaultValue: 'SELECT TIMEZONE' })}
+					</Typography.Text>
 					<Select
 						options={TIMEZONE_DATA}
 						value={evaluationWindow.startingAt.timezone || null}
 						onChange={handleTimezoneChange}
-						placeholder="Select timezone"
+						placeholder={t('al_v2_select_timezone', {
+							defaultValue: 'Select timezone',
+						})}
 						data-testid="evaluation-window-details-timezone-select"
 					/>
 				</div>
@@ -172,29 +186,39 @@ function EvaluationWindowDetails({
 				</Typography.Text>
 				<Typography.Text>{displayText}</Typography.Text>
 				<div className="select-group">
-					<Typography.Text>STARTING ON DAY</Typography.Text>
+					<Typography.Text>
+						{t('al_v2_starting_on_day', { defaultValue: 'STARTING ON DAY' })}
+					</Typography.Text>
 					<Select
 						options={currentMonthOptions}
 						value={evaluationWindow.startingAt.number || null}
 						onChange={handleNumberChange}
-						placeholder="Select starting at"
+						placeholder={t('al_v2_select_starting_at', {
+							defaultValue: 'Select starting at',
+						})}
 						data-testid="evaluation-window-details-starting-at-select"
 					/>
 				</div>
 				<div className="select-group time-select-group">
-					<Typography.Text>STARTING AT</Typography.Text>
+					<Typography.Text>
+						{t('al_v2_starting_at', { defaultValue: 'STARTING AT' })}
+					</Typography.Text>
 					<TimeInput
 						value={evaluationWindow.startingAt.time}
 						onChange={handleTimeChange}
 					/>
 				</div>
 				<div className="select-group">
-					<Typography.Text>SELECT TIMEZONE</Typography.Text>
+					<Typography.Text>
+						{t('al_v2_select_timezone_label', { defaultValue: 'SELECT TIMEZONE' })}
+					</Typography.Text>
 					<Select
 						options={TIMEZONE_DATA}
 						value={evaluationWindow.startingAt.timezone || null}
 						onChange={handleTimezoneChange}
-						placeholder="Select timezone"
+						placeholder={t('al_v2_select_timezone', {
+							defaultValue: 'Select timezone',
+						})}
 						data-testid="evaluation-window-details-timezone-select"
 					/>
 				</div>
@@ -207,26 +231,34 @@ function EvaluationWindowDetails({
 			<Typography.Text>
 				{getRollingWindowDescription(evaluationWindow.timeframe)}
 			</Typography.Text>
-			<Typography.Text>Specify custom duration</Typography.Text>
+			<Typography.Text>
+				{t('al_v2_specify_custom_duration', {
+					defaultValue: 'Specify custom duration',
+				})}
+			</Typography.Text>
 			<Typography.Text>{displayText}</Typography.Text>
 			<div className="select-group">
-				<Typography.Text>VALUE</Typography.Text>
+				<Typography.Text>
+					{t('al_v2_label_value', { defaultValue: 'VALUE' })}
+				</Typography.Text>
 				<Input
 					name="value"
 					type="number"
 					value={evaluationWindow.startingAt.number}
 					onChange={(e): void => handleNumberChange(e.target.value)}
-					placeholder="Enter value"
+					placeholder={t('al_v2_enter_value_input', { defaultValue: 'Enter value' })}
 					data-testid="evaluation-window-details-custom-rolling-window-duration-input"
 				/>
 			</div>
 			<div className="select-group time-select-group">
-				<Typography.Text>UNIT</Typography.Text>
+				<Typography.Text>
+					{t('al_v2_label_unit', { defaultValue: 'UNIT' })}
+				</Typography.Text>
 				<Select
 					options={ADVANCED_OPTIONS_TIME_UNIT_OPTIONS}
 					value={evaluationWindow.startingAt.unit || null}
 					onChange={handleUnitChange}
-					placeholder="Select unit"
+					placeholder={t('al_v2_select_unit', { defaultValue: 'Select unit' })}
 					data-testid="evaluation-window-details-custom-rolling-window-unit-select"
 				/>
 			</div>

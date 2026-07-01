@@ -19,7 +19,7 @@ function Delete({ notifications, id }: DeleteProps): JSX.Element {
 			});
 
 			notifications.success({
-				message: 'Success',
+				message: t('pages:al_ch_toast_success', { defaultValue: 'Success' }),
 				description: t('channel_delete_success'),
 			});
 			// Invalidate and refetch
@@ -41,7 +41,7 @@ function Delete({ notifications, id }: DeleteProps): JSX.Element {
 			type="link"
 			onClick={onClickHandler}
 		>
-			Delete
+			{t('pages:al_ch_btn_delete', { defaultValue: 'Delete' })}
 		</Button>
 	);
 }

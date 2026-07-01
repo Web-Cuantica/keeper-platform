@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Checkbox } from '@signozhq/ui/checkbox';
 import { useRegionSelection } from 'hooks/integration/aws/useRegionSelection';
 import { regions } from 'utils/regions';
@@ -14,6 +15,7 @@ export function RegionSelector({
 	setSelectedRegions: Dispatch<SetStateAction<string[]>>;
 	setIncludeAllRegions: Dispatch<SetStateAction<boolean>>;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { allRegionIds, handleSelectAll, handleRegionSelect } =
 		useRegionSelection({
 			selectedRegions,
@@ -34,7 +36,7 @@ export function RegionSelector({
 					value={allSelected ? true : someSelected ? 'indeterminate' : false}
 					onChange={(checked): void => handleSelectAll(checked === true)}
 				>
-					Select All Regions
+					{t('intg_select_all_regions', { defaultValue: 'Select All Regions' })}
 				</Checkbox>
 			</div>
 

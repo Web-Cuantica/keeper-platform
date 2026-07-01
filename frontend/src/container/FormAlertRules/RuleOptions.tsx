@@ -209,7 +209,9 @@ function RuleOptions({
 			value={alertDef.condition.algorithm}
 			onChange={onChangeAlgorithm}
 		>
-			<Select.Option value="standard">Standard</Select.Option>
+			<Select.Option value="standard">
+				{t('pages:al_algorithm_standard', { defaultValue: 'Standard' })}
+			</Select.Option>
 		</InlineSelect>
 	);
 
@@ -243,9 +245,15 @@ function RuleOptions({
 			value={alertDef.condition.seasonality}
 			onChange={onChangeSeasonality}
 		>
-			<Select.Option value="hourly">Hourly</Select.Option>
-			<Select.Option value="daily">Daily</Select.Option>
-			<Select.Option value="weekly">Weekly</Select.Option>
+			<Select.Option value="hourly">
+				{t('pages:al_seasonality_hourly', { defaultValue: 'Hourly' })}
+			</Select.Option>
+			<Select.Option value="daily">
+				{t('pages:al_seasonality_daily', { defaultValue: 'Daily' })}
+			</Select.Option>
+			<Select.Option value="weekly">
+				{t('pages:al_seasonality_weekly', { defaultValue: 'Weekly' })}
+			</Select.Option>
 		</InlineSelect>
 	);
 
@@ -262,7 +270,9 @@ function RuleOptions({
 					value={alertDef.condition.selectedQueryName}
 					onChange={onChangeSelectedQueryName}
 				/>
-				<Typography.Text>is</Typography.Text>
+				<Typography.Text>
+					{t('pages:al_text_is', { defaultValue: 'is' })}
+				</Typography.Text>
 				{renderCompareOps()} {t('text_condition2')} {renderMatchOpts()}{' '}
 				{t('text_condition3')} {renderEvalWindows()}
 			</Typography.Text>
@@ -282,7 +292,9 @@ function RuleOptions({
 					value={alertDef.condition.selectedQueryName}
 					onChange={onChangeSelectedQueryName}
 				/>
-				<Typography.Text>is</Typography.Text>
+				<Typography.Text>
+					{t('pages:al_text_is', { defaultValue: 'is' })}
+				</Typography.Text>
 				{renderCompareOps()} {t('text_condition2')} {renderMatchOpts()}
 				{t('text_condition3')} {renderPromEvalWindows()}
 			</Typography.Text>
@@ -333,14 +345,25 @@ function RuleOptions({
 					onChange={onChangeSelectedQueryName}
 				/>
 				{t('text_condition3')} {renderEvalWindows()}
-				<Typography.Text>is</Typography.Text>
+				<Typography.Text>
+					{t('pages:al_text_is', { defaultValue: 'is' })}
+				</Typography.Text>
 				{renderDeviationOpts()}
-				<Typography.Text>deviations</Typography.Text>
+				<Typography.Text>
+					{t('pages:al_text_deviations', { defaultValue: 'deviations' })}
+				</Typography.Text>
 				{renderCompareOps()}
-				<Typography.Text>the predicted data</Typography.Text>
+				<Typography.Text>
+					{t('pages:al_text_the_predicted_data', {
+						defaultValue: 'the predicted data',
+					})}
+				</Typography.Text>
 				{renderMatchOpts()}
-				using the {renderAlgorithms()} algorithm with {renderSeasonality()}{' '}
-				seasonality
+				{t('pages:al_text_using_the', { defaultValue: 'using the' })}{' '}
+				{renderAlgorithms()}{' '}
+				{t('pages:al_text_algorithm_with', { defaultValue: 'algorithm with' })}{' '}
+				{renderSeasonality()}{' '}
+				{t('pages:al_text_seasonality', { defaultValue: 'seasonality' })}
 			</Typography.Text>
 		</Form.Item>
 	);

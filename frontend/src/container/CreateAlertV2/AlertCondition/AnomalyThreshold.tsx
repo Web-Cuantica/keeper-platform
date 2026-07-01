@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Select } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
 import { useQueryBuilder } from 'hooks/queryBuilder/useQueryBuilder';
@@ -30,6 +31,7 @@ function AnomalyThreshold({
 	isErrorChannels,
 	refreshChannels,
 }: AnomalyAndThresholdProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { user } = useAppContext();
 	const {
 		thresholdState,
@@ -69,7 +71,9 @@ function AnomalyThreshold({
 				{/* Sentence 1 */}
 				<div className="alert-condition-sentence">
 					<Typography.Text data-testid="notification-text" className="sentence-text">
-						Send notification when the observed value for
+						{t('al_v2_anomaly_observed_value', {
+							defaultValue: 'Send notification when the observed value for',
+						})}
 					</Typography.Text>
 					<Select
 						value={thresholdState.selectedQuery}
@@ -86,7 +90,7 @@ function AnomalyThreshold({
 						data-testid="evaluation-window-text"
 						className="sentence-text"
 					>
-						during the last
+						{t('al_v2_during_the_last', { defaultValue: 'during the last' })}
 					</Typography.Text>
 					<Select
 						value={thresholdState.evaluationWindow}
@@ -103,7 +107,7 @@ function AnomalyThreshold({
 				<div className="alert-condition-sentence">
 					{/* Sentence 2 */}
 					<Typography.Text data-testid="threshold-text" className="sentence-text">
-						is
+						{t('al_v2_sentence_is', { defaultValue: 'is' })}
 					</Typography.Text>
 					<Select
 						value={thresholdState.thresholds[0].thresholdValue}
@@ -118,7 +122,7 @@ function AnomalyThreshold({
 						options={deviationOptions}
 					/>
 					<Typography.Text data-testid="deviations-text" className="sentence-text">
-						deviations
+						{t('al_v2_deviations', { defaultValue: 'deviations' })}
 					</Typography.Text>
 					<Select
 						value={
@@ -138,7 +142,7 @@ function AnomalyThreshold({
 						data-testid="predicted-data-text"
 						className="sentence-text"
 					>
-						the predicted data
+						{t('al_v2_predicted_data', { defaultValue: 'the predicted data' })}
 					</Typography.Text>
 					<Select
 						value={
@@ -158,7 +162,7 @@ function AnomalyThreshold({
 				{/* Sentence 3 */}
 				<div className="alert-condition-sentence">
 					<Typography.Text data-testid="using-the-text" className="sentence-text">
-						using the
+						{t('al_v2_using_the', { defaultValue: 'using the' })}
 					</Typography.Text>
 					<Select
 						value={thresholdState.algorithm}
@@ -175,7 +179,7 @@ function AnomalyThreshold({
 						data-testid="algorithm-with-text"
 						className="sentence-text"
 					>
-						algorithm with
+						{t('al_v2_algorithm_with', { defaultValue: 'algorithm with' })}
 					</Typography.Text>
 					<Select
 						value={thresholdState.seasonality}
@@ -194,7 +198,7 @@ function AnomalyThreshold({
 								data-testid="seasonality-text"
 								className="sentence-text"
 							>
-								seasonality to
+								{t('al_v2_seasonality_to', { defaultValue: 'seasonality to' })}
 							</Typography.Text>
 							<Select
 								value={thresholdState.thresholds[0].channels}
@@ -207,11 +211,16 @@ function AnomalyThreshold({
 									label: channel.name,
 								}))}
 								mode="multiple"
-								placeholder="Select notification channels"
+								placeholder={t('al_v2_select_channels', {
+									defaultValue: 'Select notification channels',
+								})}
 								showSearch
 								maxTagCount={2}
 								maxTagPlaceholder={(omittedValues): string =>
-									`+${omittedValues.length} more`
+									t('al_v2_tag_more', {
+										defaultValue: `+${omittedValues.length} more`,
+										count: omittedValues.length,
+									})
 								}
 								maxTagTextLength={10}
 								filterOption={(input, option): boolean =>
@@ -229,7 +238,7 @@ function AnomalyThreshold({
 						</>
 					) : (
 						<Typography.Text data-testid="seasonality-text" className="sentence-text">
-							seasonality
+							{t('al_v2_seasonality', { defaultValue: 'seasonality' })}
 						</Typography.Text>
 					)}
 				</div>

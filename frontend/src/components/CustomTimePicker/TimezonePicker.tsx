@@ -5,6 +5,7 @@ import {
 	useEffect,
 	useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Color } from '@signozhq/design-tokens';
 import { Input } from '@signozhq/ui/input';
 import logEvent from 'api/common/logEvent';
@@ -41,6 +42,7 @@ function SearchBar({
 	setActiveView,
 	isOpenedFromFooter = false,
 }: SearchBarProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const handleKeyDown = useCallback(
 		(e: React.KeyboardEvent): void => {
 			if (e.key === 'Escape') {
@@ -66,7 +68,11 @@ function SearchBar({
 				<Input
 					type="text"
 					className="timezone-picker__input"
-					placeholder="Search timezones..."
+					placeholder={
+						t('pages:dt_search_timezones', {
+							defaultValue: 'Search timezones...',
+						}) as string
+					}
 					value={value}
 					onChange={(e): void => onChange(e.target.value)}
 					onKeyDown={handleKeyDown}

@@ -1,3 +1,4 @@
+import type { TFunction } from 'i18next';
 import { Tooltip } from 'antd';
 import { TableColumnDef } from 'components/TanStackTableView';
 import TanStackTable from 'components/TanStackTableView';
@@ -25,12 +26,18 @@ export function getK8sStatefulSetItemKey(
 	return statefulSet.meta.k8s_statefulset_name;
 }
 
-export const k8sStatefulSetsColumnsConfig: TableColumnDef<K8sStatefulSetsData>[] =
+export const getK8sStatefulSetsColumnsConfig = (
+	t: TFunction,
+): TableColumnDef<K8sStatefulSetsData>[] =>
 	[
 		{
 			id: 'statefulSetGroup',
 			header: (): React.ReactNode => (
-				<EntityGroupHeader title="STATEFULSET GROUP" />
+				<EntityGroupHeader
+					title={t('pages:infra_col_statefulset_group', {
+						defaultValue: 'STATEFULSET GROUP',
+					})}
+				/>
 			),
 			accessorFn: (row): string => row.meta.k8s_statefulset_name || '',
 			width: { min: 210 },
@@ -54,7 +61,9 @@ export const k8sStatefulSetsColumnsConfig: TableColumnDef<K8sStatefulSetsData>[]
 			id: 'statefulsetName',
 			header: (): React.ReactNode => (
 				<EntityGroupHeader
-					title="StatefulSet Name"
+					title={t('pages:infra_col_statefulset_name', {
+						defaultValue: 'StatefulSet Name',
+					})}
 					icon={<ArrowUpDown data-hide-expanded="true" size={14} />}
 				/>
 			),
@@ -76,7 +85,9 @@ export const k8sStatefulSetsColumnsConfig: TableColumnDef<K8sStatefulSetsData>[]
 		},
 		{
 			id: 'namespaceName',
-			header: 'Namespace Name',
+			header: t('pages:infra_col_namespace_name', {
+				defaultValue: 'Namespace Name',
+			}),
 			accessorFn: (row): string => row.meta.k8s_namespace_name || '',
 			width: { default: 150 },
 			enableSort: false,
@@ -92,7 +103,7 @@ export const k8sStatefulSetsColumnsConfig: TableColumnDef<K8sStatefulSetsData>[]
 		},
 		{
 			id: 'available_pods',
-			header: 'Available',
+			header: t('pages:infra_col_available', { defaultValue: 'Available' }),
 			accessorFn: (row): number => row.availablePods,
 			width: { min: 100, default: 140 },
 			enableSort: true,
@@ -112,7 +123,7 @@ export const k8sStatefulSetsColumnsConfig: TableColumnDef<K8sStatefulSetsData>[]
 		},
 		{
 			id: 'desired_pods',
-			header: 'Desired',
+			header: t('pages:infra_col_desired', { defaultValue: 'Desired' }),
 			accessorFn: (row): number => row.desiredPods,
 			width: { min: 100, default: 140 },
 			enableSort: true,
@@ -132,7 +143,9 @@ export const k8sStatefulSetsColumnsConfig: TableColumnDef<K8sStatefulSetsData>[]
 		},
 		{
 			id: 'cpu_request',
-			header: 'CPU Req Usage (%)',
+			header: t('pages:infra_col_cpu_req_usage', {
+				defaultValue: 'CPU Req Usage (%)',
+			}),
 			accessorFn: (row): number => row.cpuRequest,
 			width: { min: 200, default: 200 },
 			enableSort: true,
@@ -152,7 +165,9 @@ export const k8sStatefulSetsColumnsConfig: TableColumnDef<K8sStatefulSetsData>[]
 		},
 		{
 			id: 'cpu_limit',
-			header: 'CPU Limit Usage (%)',
+			header: t('pages:infra_col_cpu_limit_usage', {
+				defaultValue: 'CPU Limit Usage (%)',
+			}),
 			accessorFn: (row): number => row.cpuLimit,
 			width: { min: 200, default: 200 },
 			enableSort: true,
@@ -172,7 +187,9 @@ export const k8sStatefulSetsColumnsConfig: TableColumnDef<K8sStatefulSetsData>[]
 		},
 		{
 			id: 'cpu',
-			header: 'CPU Usage (cores)',
+			header: t('pages:infra_col_cpu_usage_cores', {
+				defaultValue: 'CPU Usage (cores)',
+			}),
 			accessorFn: (row): number => row.cpuUsage,
 			width: { min: 190 },
 			enableSort: true,
@@ -193,7 +210,9 @@ export const k8sStatefulSetsColumnsConfig: TableColumnDef<K8sStatefulSetsData>[]
 		},
 		{
 			id: 'memory_request',
-			header: 'Mem Req Usage (%)',
+			header: t('pages:infra_col_mem_req_usage', {
+				defaultValue: 'Mem Req Usage (%)',
+			}),
 			accessorFn: (row): number => row.memoryRequest,
 			width: { min: 190 },
 			enableSort: true,
@@ -213,7 +232,9 @@ export const k8sStatefulSetsColumnsConfig: TableColumnDef<K8sStatefulSetsData>[]
 		},
 		{
 			id: 'memory_limit',
-			header: 'Mem Limit Usage (%)',
+			header: t('pages:infra_col_mem_limit_usage', {
+				defaultValue: 'Mem Limit Usage (%)',
+			}),
 			accessorFn: (row): number => row.memoryLimit,
 			width: { min: 180 },
 			enableSort: true,
@@ -233,7 +254,9 @@ export const k8sStatefulSetsColumnsConfig: TableColumnDef<K8sStatefulSetsData>[]
 		},
 		{
 			id: 'memory',
-			header: 'Mem Usage (WSS)',
+			header: t('pages:infra_col_mem_usage_wss', {
+				defaultValue: 'Mem Usage (WSS)',
+			}),
 			accessorFn: (row): number => row.memoryUsage,
 			width: { min: 160 },
 			enableSort: true,

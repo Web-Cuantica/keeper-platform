@@ -1,4 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Color } from '@signozhq/design-tokens';
 import {
 	ChevronDown,
@@ -29,14 +30,18 @@ import RenderConnectionFields from '../../AmazonWebServices/RegionForm/RenderCon
 
 import '../../AmazonWebServices/AddNewAccount/CloudAccountSetupModal.style.scss';
 
-const AZURE_CLI_DESC =
-	'Paste the following command if you have Azure CLI setup locally on your machine or use BASH CloudShell on Azure portal with above mentioned permissions.';
-const AZURE_POWERSHELL_DESC =
-	'Paste the following command in PowerShell CloudShell on Azure portal, you can switch to PowerShell on Azure portal.';
-
 function CloudAccountSetupModal({
 	onClose,
 }: IntegrationModalProps): JSX.Element {
+	const { t } = useTranslation('pages');
+	const azureCliDesc = t('intg_azure_cli_desc', {
+		defaultValue:
+			'Paste the following command if you have Azure CLI setup locally on your machine or use BASH CloudShell on Azure portal with above mentioned permissions.',
+	});
+	const azurePowershellDesc = t('intg_azure_powershell_desc', {
+		defaultValue:
+			'Paste the following command in PowerShell CloudShell on Azure portal, you can switch to PowerShell on Azure portal.',
+	});
 	const {
 		form,
 		modalState,
@@ -104,8 +109,11 @@ function CloudAccountSetupModal({
 										/>
 									}
 								/>
-								Waiting for Azure account connection, retrying in{' '}
-								<span className="retry-time">10</span> secs...
+								{t('intg_azure_waiting_connection_prefix', {
+									defaultValue: 'Waiting for Azure account connection, retrying in',
+								})}{' '}
+								<span className="retry-time">10</span>{' '}
+								{t('intg_secs_suffix', { defaultValue: 'secs...' })}
 							</div>
 						}
 						type="info"
@@ -121,8 +129,10 @@ function CloudAccountSetupModal({
 					<Callout
 						title={
 							<div className="cloud-account-setup-form__alert-message">
-								We couldn&apos;t establish a connection to your Azure account. Please
-								try again
+								{t('intg_azure_connection_error', {
+									defaultValue:
+										"We couldn't establish a connection to your Azure account. Please try again",
+								})}
 							</div>
 						}
 						type="error"
@@ -132,7 +142,7 @@ function CloudAccountSetupModal({
 		}
 
 		return null;
-	}, [modalState]);
+	}, [modalState, t]);
 
 	const footer = (
 		<div className="cloud-account-setup-modal__footer">
@@ -144,7 +154,9 @@ function CloudAccountSetupModal({
 					onClick={handleSubmit}
 					loading={isLoading}
 				>
-					Generate Azure Setup Commands
+					{t('intg_generate_azure_commands', {
+						defaultValue: 'Generate Azure Setup Commands',
+					})}
 				</Button>
 			)}
 		</div>
@@ -161,14 +173,14 @@ function CloudAccountSetupModal({
 			}}
 			direction="right"
 			showCloseButton
-			title="Add Azure Account"
+			title={t('intg_add_azure_account', { defaultValue: 'Add Azure Account' })}
 			width="wide"
 			footer={footer}
 		>
 			<div className="cloud-account-setup-modal__content">
 				<div className="cloud-account-setup-prerequisites">
 					<div className="cloud-account-setup-prerequisites__title">
-						Prerequisites
+						{t('intg_prerequisites', { defaultValue: 'Prerequisites' })}
 					</div>
 
 					<ul className="cloud-account-setup-prerequisites__list">
@@ -177,8 +189,10 @@ function CloudAccountSetupModal({
 								—
 							</span>{' '}
 							<span className="cloud-account-setup-prerequisites__list-item-text">
-								Ensure that you&apos;re logged in to the Azure workspace which you want
-								to monitor.
+								{t('intg_azure_prereq_logged_in', {
+									defaultValue:
+										"Ensure that you're logged in to the Azure workspace which you want to monitor.",
+								})}
 							</span>
 						</li>
 						<li className="cloud-account-setup-prerequisites__list-item">
@@ -186,11 +200,13 @@ function CloudAccountSetupModal({
 								—
 							</span>{' '}
 							<span className="cloud-account-setup-prerequisites__list-item-text">
-								Ensure that you either have the{' '}
+								{t('intg_azure_prereq_owner_prefix', {
+									defaultValue: 'Ensure that you either have the',
+								})}{' '}
 								<span className="cloud-account-setup-prerequisites__list-item-highlight">
 									Owner
 								</span>{' '}
-								role OR
+								{t('intg_azure_prereq_owner_suffix', { defaultValue: 'role OR' })}
 							</span>
 						</li>
 						<li className="cloud-account-setup-prerequisites__list-item">
@@ -198,15 +214,15 @@ function CloudAccountSetupModal({
 								—
 							</span>{' '}
 							<span className="cloud-account-setup-prerequisites__list-item-text">
-								Both the{' '}
+								{t('intg_azure_prereq_both_prefix', { defaultValue: 'Both the' })}{' '}
 								<span className="cloud-account-setup-prerequisites__list-item-highlight">
 									Contributor
 								</span>{' '}
-								and{' '}
+								{t('intg_azure_prereq_and', { defaultValue: 'and' })}{' '}
 								<span className="cloud-account-setup-prerequisites__list-item-highlight">
 									user access admin
 								</span>{' '}
-								roles
+								{t('intg_azure_prereq_roles', { defaultValue: 'roles' })}
 							</span>
 						</li>
 					</ul>
@@ -226,20 +242,22 @@ function CloudAccountSetupModal({
 						/>
 
 						<span className="cloud-account-setup-how-it-works-accordion__title-text">
-							How it works?
+							{t('intg_how_it_works', { defaultValue: 'How it works?' })}
 						</span>
 					</div>
 					{isHowItWorksOpen && (
 						<div className="cloud-account-setup-how-it-works-accordion__description">
 							<div className="cloud-account-setup-how-it-works-accordion__description-item">
-								SigNoz will create new resource-group to manage the resources required
-								for this integration. The following steps will create a User-Assigned
-								Managed Identity with the necessary permissions and follows the
-								Principle of Least Privilege.
+								{t('intg_azure_how_it_works_1', {
+									defaultValue:
+										'SigNoz will create new resource-group to manage the resources required for this integration. The following steps will create a User-Assigned Managed Identity with the necessary permissions and follows the Principle of Least Privilege.',
+								})}
 							</div>
 							<div className="cloud-account-setup-how-it-works__description-item">
-								Once the Integration template is deployed, you can enable the services
-								you want to monitor right here in Signoz dashboard.
+								{t('intg_azure_how_it_works_2', {
+									defaultValue:
+										'Once the Integration template is deployed, you can enable the services you want to monitor right here in Signoz dashboard.',
+								})}
 							</div>
 						</div>
 					)}
@@ -254,18 +272,31 @@ function CloudAccountSetupModal({
 					<div className="cloud-account-setup-form__content">
 						<div className="cloud-account-setup-form__form-group">
 							<div className="cloud-account-setup-form__title">
-								Where should we deploy the SigNoz collector resources?
+								{t('intg_deploy_collector_title', {
+									defaultValue: 'Where should we deploy the SigNoz collector resources?',
+								})}
 							</div>
 							<div className="cloud-account-setup-form__description">
-								Choose the Azure region for deployment.
+								{t('intg_azure_choose_region_desc', {
+									defaultValue: 'Choose the Azure region for deployment.',
+								})}
 							</div>
 							<Form.Item
 								name="region"
-								rules={[{ required: true, message: 'Please select a region' }]}
+								rules={[
+									{
+										required: true,
+										message: t('intg_select_region_required', {
+											defaultValue: 'Please select a region',
+										}),
+									},
+								]}
 								className="cloud-account-setup-form__form-item"
 							>
 								<Select
-									placeholder="e.g. East US"
+									placeholder={t('intg_region_placeholder_azure', {
+										defaultValue: 'e.g. East US',
+									})}
 									options={AZURE_REGIONS.map((region) => ({
 										label: `${region.label} (${region.value})`,
 										value: region.value,
@@ -278,10 +309,14 @@ function CloudAccountSetupModal({
 
 						<div className="cloud-account-setup-form__form-group">
 							<div className="cloud-account-setup-form__title">
-								Which resource groups do you want to monitor?
+								{t('intg_which_resource_groups', {
+									defaultValue: 'Which resource groups do you want to monitor?',
+								})}
 							</div>
 							<div className="cloud-account-setup-form__description">
-								Add one or more Azure resource group names.
+								{t('intg_add_resource_groups_desc', {
+									defaultValue: 'Add one or more Azure resource group names.',
+								})}
 							</div>
 							<Form.Item
 								name="resourceGroups"
@@ -290,14 +325,18 @@ function CloudAccountSetupModal({
 										required: true,
 										type: 'array',
 										min: 1,
-										message: 'Please add at least one resource group',
+										message: t('intg_add_resource_group_required', {
+											defaultValue: 'Please add at least one resource group',
+										}),
 									},
 								]}
 								className="cloud-account-setup-form__form-item"
 							>
 								<Select
 									mode="tags"
-									placeholder="e.g. prod-platform-rg"
+									placeholder={t('intg_resource_group_placeholder', {
+										defaultValue: 'e.g. prod-platform-rg',
+									})}
 									tokenSeparators={[',']}
 									disabled={modalState === ModalStateEnum.WAITING}
 								/>
@@ -314,10 +353,10 @@ function CloudAccountSetupModal({
 							<div className="cloud-account-setup-form__code-block-tabs-container">
 								<div className="cloud-account-setup-form__code-block-tabs-header">
 									<div className="cloud-account-setup-form__code-block-tabs-header-title">
-										Deploy Agent
+										{t('intg_deploy_agent', { defaultValue: 'Deploy Agent' })}
 									</div>
 									<div className="cloud-account-setup-form__code-block-tabs-header-description">
-										{activeTab === 'cli' ? AZURE_CLI_DESC : AZURE_POWERSHELL_DESC}
+										{activeTab === 'cli' ? azureCliDesc : azurePowershellDesc}
 									</div>
 								</div>
 								<Tabs
@@ -349,8 +388,10 @@ function CloudAccountSetupModal({
 
 						{modalState === ModalStateEnum.WAITING && (
 							<div className="cloud-account-setup-status-message">
-								After running the command, return here and wait for automatic connection
-								detection.
+								{t('intg_after_running_command', {
+									defaultValue:
+										'After running the command, return here and wait for automatic connection detection.',
+								})}
 							</div>
 						)}
 					</div>

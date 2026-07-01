@@ -1,3 +1,4 @@
+import type { TFunction } from 'i18next';
 import { Tooltip } from 'antd';
 import { TableColumnDef } from 'components/TanStackTableView';
 import TanStackTable from 'components/TanStackTableView';
@@ -21,12 +22,17 @@ export function getK8sDeploymentItemKey(
 	return deployment.meta.k8s_deployment_name;
 }
 
-export const k8sDeploymentsColumnsConfig: TableColumnDef<K8sDeploymentsData>[] =
-	[
+export const getK8sDeploymentsColumnsConfig = (
+	t: TFunction,
+): TableColumnDef<K8sDeploymentsData>[] => [
 		{
 			id: 'deploymentGroup',
 			header: (): React.ReactNode => (
-				<EntityGroupHeader title="DEPLOYMENT GROUP" />
+				<EntityGroupHeader
+					title={t('pages:infra_col_deployment_group', {
+						defaultValue: 'DEPLOYMENT GROUP',
+					})}
+				/>
 			),
 			accessorFn: (row): string => row.meta.k8s_deployment_name || '',
 			width: { min: 220 },
@@ -50,7 +56,9 @@ export const k8sDeploymentsColumnsConfig: TableColumnDef<K8sDeploymentsData>[] =
 			id: 'deploymentName',
 			header: (): React.ReactNode => (
 				<EntityGroupHeader
-					title="Deployment Name"
+					title={t('pages:infra_col_deployment_name', {
+						defaultValue: 'Deployment Name',
+					})}
 					icon={<Computer data-hide-expanded="true" size={14} />}
 				/>
 			),
@@ -72,7 +80,9 @@ export const k8sDeploymentsColumnsConfig: TableColumnDef<K8sDeploymentsData>[] =
 		},
 		{
 			id: 'namespaceName',
-			header: 'Namespace Name',
+			header: t('pages:infra_col_namespace_name', {
+				defaultValue: 'Namespace Name',
+			}),
 			accessorFn: (row): string => row.meta.k8s_namespace_name || '',
 			width: { default: 220 },
 			enableSort: false,
@@ -83,7 +93,7 @@ export const k8sDeploymentsColumnsConfig: TableColumnDef<K8sDeploymentsData>[] =
 		},
 		{
 			id: 'available_pods',
-			header: 'Available',
+			header: t('pages:infra_col_available', { defaultValue: 'Available' }),
 			accessorFn: (row): number => row.availablePods,
 			width: { min: 100 },
 			enableSort: false,
@@ -104,7 +114,7 @@ export const k8sDeploymentsColumnsConfig: TableColumnDef<K8sDeploymentsData>[] =
 		},
 		{
 			id: 'desired_pods',
-			header: 'Desired',
+			header: t('pages:infra_col_desired', { defaultValue: 'Desired' }),
 			accessorFn: (row): number => row.desiredPods,
 			width: { min: 80 },
 			enableSort: false,
@@ -125,7 +135,9 @@ export const k8sDeploymentsColumnsConfig: TableColumnDef<K8sDeploymentsData>[] =
 		},
 		{
 			id: 'cpu_request',
-			header: 'CPU Req Usage (%)',
+			header: t('pages:infra_col_cpu_req_usage', {
+				defaultValue: 'CPU Req Usage (%)',
+			}),
 			accessorFn: (row): number => row.cpuRequest,
 			width: { min: 210 },
 			enableSort: true,
@@ -145,7 +157,9 @@ export const k8sDeploymentsColumnsConfig: TableColumnDef<K8sDeploymentsData>[] =
 		},
 		{
 			id: 'cpu_limit',
-			header: 'CPU Limit Usage (%)',
+			header: t('pages:infra_col_cpu_limit_usage', {
+				defaultValue: 'CPU Limit Usage (%)',
+			}),
 			accessorFn: (row): number => row.cpuLimit,
 			width: { min: 210 },
 			enableSort: true,
@@ -165,7 +179,9 @@ export const k8sDeploymentsColumnsConfig: TableColumnDef<K8sDeploymentsData>[] =
 		},
 		{
 			id: 'cpu',
-			header: 'CPU Usage (cores)',
+			header: t('pages:infra_col_cpu_usage_cores', {
+				defaultValue: 'CPU Usage (cores)',
+			}),
 			accessorFn: (row): number => row.cpuUsage,
 			width: { min: 210 },
 			enableSort: true,
@@ -185,7 +201,9 @@ export const k8sDeploymentsColumnsConfig: TableColumnDef<K8sDeploymentsData>[] =
 		},
 		{
 			id: 'memory_request',
-			header: 'Mem Req Usage (%)',
+			header: t('pages:infra_col_mem_req_usage', {
+				defaultValue: 'Mem Req Usage (%)',
+			}),
 			accessorFn: (row): number => row.memoryRequest,
 			width: { min: 210 },
 			enableSort: true,
@@ -205,7 +223,9 @@ export const k8sDeploymentsColumnsConfig: TableColumnDef<K8sDeploymentsData>[] =
 		},
 		{
 			id: 'memory_limit',
-			header: 'Mem Limit Usage (%)',
+			header: t('pages:infra_col_mem_limit_usage', {
+				defaultValue: 'Mem Limit Usage (%)',
+			}),
 			accessorFn: (row): number => row.memoryLimit,
 			width: { min: 210 },
 			enableSort: true,
@@ -225,7 +245,9 @@ export const k8sDeploymentsColumnsConfig: TableColumnDef<K8sDeploymentsData>[] =
 		},
 		{
 			id: 'memory',
-			header: 'Mem Usage (WSS)',
+			header: t('pages:infra_col_mem_usage_wss', {
+				defaultValue: 'Mem Usage (WSS)',
+			}),
 			accessorFn: (row): number => row.memoryUsage,
 			width: { min: 140 },
 			enableSort: true,

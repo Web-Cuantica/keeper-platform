@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Callout } from '@signozhq/ui/callout';
 import ClickHouseQueryBuilder from 'container/NewWidget/LeftContainer/QuerySection/QueryBuilder/ClickHouse/query';
 import { useQueryBuilder } from 'hooks/queryBuilder/useQueryBuilder';
@@ -24,6 +25,7 @@ interface ChQuerySectionProps {
 }
 
 function ChQuerySection({ alertType }: ChQuerySectionProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { currentQuery } = useQueryBuilder();
 	const docLink = ALERT_TYPE_DOC_LINK[alertType];
 	const showAgentSkill = ALERT_TYPES_WITH_AGENT_SKILL.includes(alertType);
@@ -38,13 +40,17 @@ function ChQuerySection({ alertType }: ChQuerySectionProps): JSX.Element {
 						title={
 							<span>
 								<a href={docLink} target="_blank" rel="noopener">
-									Learn to write faster, optimized queries
+									{t('al_learn_faster_queries', {
+										defaultValue: 'Learn to write faster, optimized queries',
+									})}
 								</a>
 								{showAgentSkill && (
 									<>
-										{' · Using AI? '}
+										{` · ${t('al_using_ai', { defaultValue: 'Using AI?' })} `}
 										<a href={DOCLINKS.AGENT_SKILL_INSTALL} target="_blank" rel="noopener">
-											Install the SigNoz ClickHouse query agent skill
+											{t('al_install_agent_skill', {
+												defaultValue: 'Install the SigNoz ClickHouse query agent skill',
+											})}
 										</a>
 									</>
 								)}

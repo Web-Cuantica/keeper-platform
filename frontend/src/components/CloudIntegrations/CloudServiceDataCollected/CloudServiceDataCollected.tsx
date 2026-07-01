@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Table } from 'antd';
 import {
 	CloudintegrationtypesCollectedLogAttributeDTO,
@@ -14,21 +15,22 @@ function CloudServiceDataCollected({
 	logsData: CloudintegrationtypesCollectedLogAttributeDTO[] | null | undefined;
 	metricsData: CloudintegrationtypesCollectedMetricDTO[] | null | undefined;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const logsColumns = [
 		{
-			title: 'NAME',
+			title: t('intg_col_name_upper', { defaultValue: 'NAME' }),
 			dataIndex: 'name',
 			key: 'name',
 			width: '30%',
 		},
 		{
-			title: 'PATH',
+			title: t('intg_col_path_upper', { defaultValue: 'PATH' }),
 			dataIndex: 'path',
 			key: 'path',
 			width: '40%',
 		},
 		{
-			title: 'FACET TYPE',
+			title: t('intg_col_facet_type', { defaultValue: 'FACET TYPE' }),
 			dataIndex: 'type',
 			key: 'type',
 			width: '30%',
@@ -37,19 +39,19 @@ function CloudServiceDataCollected({
 
 	const metricsColumns = [
 		{
-			title: 'NAME',
+			title: t('intg_col_name_upper', { defaultValue: 'NAME' }),
 			dataIndex: 'name',
 			key: 'name',
 			width: '40%',
 		},
 		{
-			title: 'UNIT',
+			title: t('intg_col_unit_upper', { defaultValue: 'UNIT' }),
 			dataIndex: 'unit',
 			key: 'unit',
 			width: '30%',
 		},
 		{
-			title: 'TYPE',
+			title: t('intg_col_type_upper', { defaultValue: 'TYPE' }),
 			dataIndex: 'type',
 			key: 'type',
 			width: '30%',

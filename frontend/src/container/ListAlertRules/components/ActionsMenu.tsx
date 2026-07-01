@@ -85,7 +85,9 @@ function ActionsMenu({
 		toast.promise(
 			createRule({
 				...rule,
-				alert: `${rule.alert} - Copy`,
+				alert: `${rule.alert} - ${t('pages:al_clone_copy_suffix', {
+					defaultValue: 'Copy',
+				})}`,
 			} as RuletypesPostableRuleDTO).then(async (response) => {
 				await invalidateListRules(queryClient);
 				const newRule = response.data;
@@ -114,7 +116,7 @@ function ActionsMenu({
 				position: 'top-right',
 			},
 		);
-	}, [rule, queryClient, onEdit, t]);
+	}, [rule, queryClient, onEdit, t]); // t ya está incluido para el sufijo "Copy"
 
 	const handleDelete = useCallback((): void => {
 		alertActionLogEvent(ALERT_ACTIONS.DELETE, rule);

@@ -48,8 +48,14 @@ function ChannelSelect({
 
 	if (hasError) {
 		notifications.error({
-			message: error?.getErrorCode?.() || 'Error',
-			description: error?.getErrorMessage?.() || 'Something went wrong',
+			message:
+				error?.getErrorCode?.() ||
+				t('pages:al_notification_error', { defaultValue: 'Error' }),
+			description:
+				error?.getErrorMessage?.() ||
+				t('pages:al_something_went_wrong', {
+					defaultValue: 'Something went wrong',
+				}),
 		});
 	}
 
@@ -67,7 +73,9 @@ function ChannelSelect({
 				<Select.Option key="add-new-channel" value="add-new-channel">
 					<StyledCreateChannelOption>
 						<Plus size="md" />
-						Create a new channel
+						{t('pages:al_create_new_channel', {
+							defaultValue: 'Create a new channel',
+						})}
 					</StyledCreateChannelOption>
 				</Select.Option>,
 			);

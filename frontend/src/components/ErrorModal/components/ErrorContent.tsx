@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Color } from '@signozhq/design-tokens';
 import { Button } from 'antd';
 import ErrorIcon from 'assets/Error';
@@ -20,6 +21,7 @@ interface ErrorContentProps {
 }
 
 function ErrorContent({ error, icon }: ErrorContentProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const {
 		url: errorUrl,
 		errors: errorMessages,
@@ -31,7 +33,11 @@ function ErrorContent({ error, icon }: ErrorContentProps): JSX.Element {
 				url: undefined,
 				errors: [],
 				code: error.code || 500,
-				message: error.message || 'Something went wrong',
+				message:
+					error.message ||
+					t('cmp_error_something_went_wrong', {
+						defaultValue: 'Something went wrong',
+					}),
 			};
 	return (
 		<section className="error-content">
@@ -57,7 +63,7 @@ function ErrorContent({ error, icon }: ErrorContentProps): JSX.Element {
 								data-testid="error-docs-button"
 							>
 								<BookOpenText size={14} />
-								Open Docs
+								{t('cmp_error_open_docs', { defaultValue: 'Open Docs' })}
 							</Button>
 						</div>
 					)}
@@ -69,7 +75,9 @@ function ErrorContent({ error, icon }: ErrorContentProps): JSX.Element {
 							badgeKey={
 								<div className="error-content__message-badge-label">
 									<div className="error-content__message-badge-label-dot" />
-									<div className="error-content__message-badge-label-text">MESSAGES</div>
+									<div className="error-content__message-badge-label-text">
+										{t('cmp_error_messages', { defaultValue: 'MESSAGES' })}
+									</div>
 								</div>
 							}
 							badgeValue={errorMessages.length.toString()}
@@ -98,7 +106,11 @@ function ErrorContent({ error, icon }: ErrorContentProps): JSX.Element {
 								color={Color.BG_VANILLA_100}
 								className="error-content__scroll-hint-icon"
 							/>
-							<span className="error-content__scroll-hint-text">Scroll for more</span>
+							<span className="error-content__scroll-hint-text">
+								{t('cmp_error_scroll_for_more', {
+									defaultValue: 'Scroll for more',
+								})}
+							</span>
 						</div>
 					)}
 				</div>

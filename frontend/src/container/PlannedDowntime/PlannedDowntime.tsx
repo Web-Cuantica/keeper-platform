@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { Plus, Search } from '@signozhq/icons';
 import { Color } from '@signozhq/design-tokens';
@@ -34,6 +35,7 @@ import './PlannedDowntime.styles.scss';
 dayjs.locale('en');
 
 export function PlannedDowntime(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const {
 		data: alertsData,
 		isError,
@@ -122,19 +124,26 @@ export function PlannedDowntime(): JSX.Element {
 			deleteId: deleteData?.id,
 			hideDeleteDowntimeScheduleModal,
 			clearSearch,
+			t,
 		});
 	};
 
 	return (
 		<div className="planned-downtime-container">
 			<div className="planned-downtime-content">
-				<Typography.Title className="title">Planned Downtime</Typography.Title>
+				<Typography.Title className="title">
+					{t('al_pd_title', { defaultValue: 'Planned Downtime' })}
+				</Typography.Title>
 				<Typography.Text className="subtitle">
-					Create and manage planned downtimes.
+					{t('al_pd_subtitle', {
+						defaultValue: 'Create and manage planned downtimes.',
+					})}
 				</Typography.Text>
 				<Flex className="toolbar">
 					<Input
-						placeholder="Search for a planned downtime..."
+						placeholder={t('al_pd_search_placeholder', {
+							defaultValue: 'Search for a planned downtime...',
+						})}
 						prefix={<Search size={12} color={Color.BG_VANILLA_400} />}
 						value={searchValue}
 						onChange={handleSearch}
@@ -142,7 +151,10 @@ export function PlannedDowntime(): JSX.Element {
 					<Tooltip
 						title={
 							user?.role === USER_ROLES.VIEWER
-								? 'You need edit permissions to create a planned downtime'
+								? t('al_pd_viewer_no_permission', {
+										defaultValue:
+											'You need edit permissions to create a planned downtime',
+									})
 								: ''
 						}
 					>
@@ -158,7 +170,7 @@ export function PlannedDowntime(): JSX.Element {
 						>
 							<Flex align="center" gap={4}>
 								<Plus size={16} />
-								New downtime
+								{t('al_pd_new_downtime', { defaultValue: 'New downtime' })}
 							</Flex>
 						</Button>
 					</Tooltip>

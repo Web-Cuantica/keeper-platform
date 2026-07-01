@@ -1,3 +1,4 @@
+import type { TFunction } from 'i18next';
 import { Tooltip } from 'antd';
 import { TableColumnDef } from 'components/TanStackTableView';
 import TanStackTable from 'components/TanStackTableView';
@@ -23,10 +24,18 @@ export function getK8sVolumeItemKey(volume: K8sVolumesData): string {
 	return volume.persistentVolumeClaimName;
 }
 
-export const k8sVolumesColumnsConfig: TableColumnDef<K8sVolumesData>[] = [
+export const getK8sVolumesColumnsConfig = (
+	t: TFunction,
+): TableColumnDef<K8sVolumesData>[] => [
 	{
 		id: 'volumeGroup',
-		header: (): React.ReactNode => <EntityGroupHeader title="VOLUME GROUP" />,
+		header: (): React.ReactNode => (
+			<EntityGroupHeader
+				title={t('pages:infra_col_volume_group', {
+					defaultValue: 'VOLUME GROUP',
+				})}
+			/>
+		),
 		accessorFn: (row): string => row.persistentVolumeClaimName || '',
 		width: { min: 300 },
 		enableSort: false,
@@ -49,7 +58,7 @@ export const k8sVolumesColumnsConfig: TableColumnDef<K8sVolumesData>[] = [
 		id: 'pvcName',
 		header: (): React.ReactNode => (
 			<EntityGroupHeader
-				title="PVC Name"
+				title={t('pages:infra_col_pvc_name', { defaultValue: 'PVC Name' })}
 				icon={<HardDrive data-hide-expanded="true" size={14} />}
 			/>
 		),
@@ -71,7 +80,9 @@ export const k8sVolumesColumnsConfig: TableColumnDef<K8sVolumesData>[] = [
 	},
 	{
 		id: 'namespaceName',
-		header: 'Namespace Name',
+		header: t('pages:infra_col_namespace_name', {
+			defaultValue: 'Namespace Name',
+		}),
 		accessorFn: (row): string => row.meta.k8s_namespace_name || '',
 		width: { min: 220 },
 		enableSort: false,
@@ -86,7 +97,7 @@ export const k8sVolumesColumnsConfig: TableColumnDef<K8sVolumesData>[] = [
 	},
 	{
 		id: 'capacity',
-		header: 'Capacity',
+		header: t('pages:infra_col_capacity', { defaultValue: 'Capacity' }),
 		accessorFn: (row): number => row.volumeCapacity,
 		width: { min: 140 },
 		enableSort: true,
@@ -105,7 +116,7 @@ export const k8sVolumesColumnsConfig: TableColumnDef<K8sVolumesData>[] = [
 	},
 	{
 		id: 'usage',
-		header: 'Used',
+		header: t('pages:infra_col_used', { defaultValue: 'Used' }),
 		accessorFn: (row): number => row.volumeUsage,
 		width: { min: 140 },
 		enableSort: true,
@@ -124,7 +135,7 @@ export const k8sVolumesColumnsConfig: TableColumnDef<K8sVolumesData>[] = [
 	},
 	{
 		id: 'available',
-		header: 'Available',
+		header: t('pages:infra_col_available', { defaultValue: 'Available' }),
 		accessorFn: (row): number => row.volumeAvailable,
 		width: { min: 140 },
 		enableSort: true,
@@ -143,7 +154,7 @@ export const k8sVolumesColumnsConfig: TableColumnDef<K8sVolumesData>[] = [
 	},
 	{
 		id: 'inodes',
-		header: 'Inodes',
+		header: t('pages:infra_col_inodes', { defaultValue: 'Inodes' }),
 		accessorFn: (row): number => row.volumeInodes,
 		width: { min: 140 },
 		enableSort: true,
@@ -162,7 +173,7 @@ export const k8sVolumesColumnsConfig: TableColumnDef<K8sVolumesData>[] = [
 	},
 	{
 		id: 'inodesUsed',
-		header: 'Inodes Used',
+		header: t('pages:infra_col_inodes_used', { defaultValue: 'Inodes Used' }),
 		accessorFn: (row): number => row.volumeInodesUsed,
 		width: { min: 160 },
 		enableSort: true,
@@ -181,7 +192,7 @@ export const k8sVolumesColumnsConfig: TableColumnDef<K8sVolumesData>[] = [
 	},
 	{
 		id: 'inodesFree',
-		header: 'Inodes Free',
+		header: t('pages:infra_col_inodes_free', { defaultValue: 'Inodes Free' }),
 		accessorFn: (row): number => row.volumeInodesFree,
 		width: { min: 160 },
 		enableSort: true,

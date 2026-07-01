@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { generatePath, useLocation } from 'react-router-dom';
 import { TablePaginationConfig, TableProps } from 'antd';
@@ -101,6 +102,7 @@ export const useAlertHistoryQueryParams = (): {
 };
 export const useRouteTabUtils = (): { routes: TabRoutes[] } => {
 	const urlQuery = useUrlQuery();
+	const { t } = useTranslation('pages');
 
 	const getRouteUrl = (tab: AlertDetailsTab): string => {
 		let route = '';
@@ -131,7 +133,7 @@ export const useRouteTabUtils = (): { routes: TabRoutes[] } => {
 			name: (
 				<div className="tab-item">
 					<Table size={14} />
-					Overview
+					{t('al_tab_overview', { defaultValue: 'Overview' })}
 				</div>
 			),
 			route: getRouteUrl(AlertDetailsTab.OVERVIEW),
@@ -142,7 +144,7 @@ export const useRouteTabUtils = (): { routes: TabRoutes[] } => {
 			name: (
 				<div className="tab-item">
 					<History size={14} />
-					History
+					{t('al_tab_history', { defaultValue: 'History' })}
 					<BetaTag />
 				</div>
 			),
@@ -400,6 +402,7 @@ export const useAlertRuleStatusToggle = ({
 } => {
 	const { alertRuleState, setAlertRuleState } = useAlertRule();
 	const { notifications } = useNotifications();
+	const { t } = useTranslation('pages');
 
 	const queryClient = useQueryClient();
 	const { showErrorModal } = useErrorModal();
@@ -414,9 +417,14 @@ export const useAlertRuleStatusToggle = ({
 				invalidateGetRuleByID(queryClient, { id: ruleId });
 				queryClient.refetchQueries([REACT_QUERY_KEY.ALERT_RULE_DETAILS, ruleId]);
 				notifications.success({
-					message: `Alert has been ${
-						data.data.state === 'disabled' ? 'disabled' : 'enabled'
-					}.`,
+					message:
+						data.data.state === 'disabled'
+							? t('al_toast_alert_disabled', {
+									defaultValue: 'Alert has been disabled.',
+								})
+							: t('al_toast_alert_enabled', {
+									defaultValue: 'Alert has been enabled.',
+								}),
 				});
 			},
 			onError: (error) => {
@@ -448,6 +456,7 @@ export const useAlertRuleDuplicate = ({
 	handleAlertDuplicate: () => void;
 } => {
 	const { notifications } = useNotifications();
+	const { t } = useTranslation('pages');
 
 	const params = useUrlQuery();
 
@@ -462,7 +471,7 @@ export const useAlertRuleDuplicate = ({
 		{
 			onSuccess: async () => {
 				notifications.success({
-					message: `Success`,
+					message: t('al_toast_success', { defaultValue: 'Success' }),
 				});
 
 				const { data: allAlertsData } = await refetch();
@@ -483,7 +492,12 @@ export const useAlertRuleDuplicate = ({
 
 	const handleAlertDuplicate = (): void => {
 		const args = {
-			data: { ...alertDetails, alert: alertDetails.alert?.concat(' - Copy') },
+			data: {
+				...alertDetails,
+				alert: alertDetails.alert?.concat(
+					` - ${t('al_copy_suffix', { defaultValue: 'Copy' })}`,
+				),
+			},
 		};
 		duplicateAlert(args);
 	};
@@ -504,6 +518,7 @@ export const useAlertRuleUpdate = ({
 } => {
 	const { notifications } = useNotifications();
 	const { showErrorModal } = useErrorModal();
+	const { t } = useTranslation('pages');
 	const queryClient = useQueryClient();
 
 	const { mutate: updateAlertRule, isLoading } = useMutation(
@@ -523,7 +538,11 @@ export const useAlertRuleUpdate = ({
 					});
 				}
 				void invalidateListRules(queryClient);
-				notifications.success({ message: 'Alert renamed successfully' });
+				notifications.success({
+					message: t('al_toast_alert_renamed', {
+						defaultValue: 'Alert renamed successfully',
+					}),
+				});
 			},
 			onError: (error) => {
 				setAlertRuleName(alertDetails.alert);
@@ -553,6 +572,7 @@ export const useAlertRuleDelete = ({
 } => {
 	const { notifications } = useNotifications();
 	const { showErrorModal } = useErrorModal();
+	const { t } = useTranslation('pages');
 
 	const { mutate: deleteAlert } = useMutation(
 		[REACT_QUERY_KEY.REMOVE_ALERT_RULE, ruleId],
@@ -560,7 +580,7 @@ export const useAlertRuleDelete = ({
 		{
 			onSuccess: async () => {
 				notifications.success({
-					message: `Success`,
+					message: t('al_toast_success', { defaultValue: 'Success' }),
 				});
 
 				history.push(ROUTES.LIST_ALL_ALERT);

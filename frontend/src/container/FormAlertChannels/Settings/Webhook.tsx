@@ -52,7 +52,9 @@ function WebhookSettings({ setSelectedConfig }: WebhookProps): JSX.Element {
 			</Form.Item>
 			<Form.Item
 				name="password"
-				label="Password (optional)"
+				label={t('pages:al_ch_field_webhook_password', {
+					defaultValue: 'Password (optional)',
+				})}
 				help={t('help_webhook_password')}
 			>
 				<Input

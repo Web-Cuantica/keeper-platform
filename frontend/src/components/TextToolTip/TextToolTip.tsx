@@ -1,4 +1,5 @@
 import { ReactNode, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { blue, grey } from '@ant-design/colors';
 import { CircleHelp } from '@signozhq/icons';
 import { Tooltip } from 'antd';
@@ -17,6 +18,7 @@ function TextToolTip({
 	filledIcon,
 	outlinedIcon,
 }: TextToolTipProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const isDarkMode = useIsDarkMode();
 
 	const onClickHandler = (
@@ -37,12 +39,12 @@ function TextToolTip({
 						rel="noopener noreferrer"
 						target="_blank"
 					>
-						{urlText || 'here'}
+						{urlText || t('cmp_text_tooltip_here', { defaultValue: 'here' })}
 					</a>
 				)}
 			</div>
 		),
-		[text, url, urlText],
+		[text, url, urlText, t],
 	);
 
 	const iconStyle = useMemo(

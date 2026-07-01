@@ -1,4 +1,5 @@
 import React, { ReactNode, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { UseQueryResult } from 'react-query';
 import { Color } from '@signozhq/design-tokens';
 import { Collapse, Flex, Space, Table, TableProps, Tooltip } from 'antd';
@@ -142,6 +143,7 @@ export function CollapseListContent({
 	updated_by_name?: string;
 	alertOptions?: DefaultOptionType[];
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const renderItems = (title: string, value: ReactNode): JSX.Element => (
 		<div className="render-item-collapse-list">
 			<Typography>{title}</Typography>
@@ -154,7 +156,7 @@ export function CollapseListContent({
 	return (
 		<Flex vertical>
 			{renderItems(
-				'Created by',
+				t('al_pd_created_by', { defaultValue: 'Created by' }),
 				created_by_name ? (
 					<Flex gap={8}>
 						<Typography>{created_by_name}</Typography>
@@ -165,7 +167,7 @@ export function CollapseListContent({
 				),
 			)}
 			{renderItems(
-				'Created on',
+				t('al_pd_created_on', { defaultValue: 'Created on' }),
 				created_at ? (
 					<Typography>{`${formatDateTime(created_at)}`}</Typography>
 				) : (
@@ -174,14 +176,17 @@ export function CollapseListContent({
 			)}
 			{updated_at &&
 				renderItems(
-					'Updated on',
+					t('al_pd_updated_on', { defaultValue: 'Updated on' }),
 					<Typography>{`${formatDateTime(updated_at)}`}</Typography>,
 				)}
 			{updated_by_name &&
-				renderItems('Updated by', <Typography>{updated_by_name}</Typography>)}
+				renderItems(
+					t('al_pd_updated_by', { defaultValue: 'Updated by' }),
+					<Typography>{updated_by_name}</Typography>,
+				)}
 
 			{renderItems(
-				'Timeframe',
+				t('al_pd_timeframe', { defaultValue: 'Timeframe' }),
 				schedule?.startTime ? (
 					<Typography>{`${startTime} ⎯ ${endTime}`}</Typography>
 				) : (
@@ -189,12 +194,15 @@ export function CollapseListContent({
 				),
 			)}
 			{renderItems(
-				'Timezone',
+				t('al_pd_timezone', { defaultValue: 'Timezone' }),
 				<Typography>{schedule?.timezone || '-'}</Typography>,
 			)}
-			{renderItems('Repeats', <Typography>{recurrenceInfo(schedule)}</Typography>)}
 			{renderItems(
-				'Alerts silenced',
+				t('al_pd_repeats_label', { defaultValue: 'Repeats' }),
+				<Typography>{recurrenceInfo(schedule, t)}</Typography>,
+			)}
+			{renderItems(
+				t('al_pd_alerts_silenced', { defaultValue: 'Alerts silenced' }),
 				alertOptions?.length ? (
 					<AlertRuleTags
 						closable={false}
@@ -203,7 +211,7 @@ export function CollapseListContent({
 					/>
 				) : (
 					<Badge className="all-alerts-tag" color="vanilla">
-						All alert rules
+						{t('al_pd_all_alert_rules', { defaultValue: 'All alert rules' })}
 					</Badge>
 				),
 			)}
@@ -235,11 +243,14 @@ export function CustomCollapseList(
 		handleDeleteDowntime,
 		setEditMode,
 	} = props;
+	const { t } = useTranslation('pages');
 
 	const scheduleTime = schedule?.startTime
 		? dayjs(schedule.startTime).tz(schedule.timezone)
 		: createdAt || '';
-	const formattedDateAndTime = `Start time ⎯ ${formatDateTime(scheduleTime)} ${schedule?.timezone}`;
+	const formattedDateAndTime = `${t('al_pd_start_time', {
+		defaultValue: 'Start time',
+	})} ⎯ ${formatDateTime(scheduleTime)} ${schedule?.timezone}`;
 
 	return (
 		<>
@@ -250,7 +261,11 @@ export function CustomCollapseList(
 							duration={
 								schedule?.recurrence?.duration
 									? schedule.recurrence.duration
-									: getDuration(schedule?.startTime || '', schedule?.endTime || '')
+									: getDuration(
+											schedule?.startTime || '',
+											schedule?.endTime || '',
+											t,
+										)
 							}
 							name={defaultTo(name, '')}
 							handleEdit={() => {
@@ -308,9 +323,10 @@ export function PlannedDowntimeList({
 	setEditMode: React.Dispatch<React.SetStateAction<boolean>>;
 	searchValue: string | number;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const columns: TableProps<DowntimeSchedulesTableData>['columns'] = [
 		{
-			title: 'Downtime',
+			title: t('al_pd_col_downtime', { defaultValue: 'Downtime' }) as string,
 			key: 'downtime',
 			render: (data: DowntimeSchedulesTableData): JSX.Element =>
 				CustomCollapseList({

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Callout } from '@signozhq/ui/callout';
 import { Spin } from 'antd';
 import { LoaderCircle } from '@signozhq/icons';
@@ -9,6 +10,7 @@ function AlertMessage({
 }: {
 	modalState: ModalStateEnum;
 }): JSX.Element | null {
+	const { t } = useTranslation('pages');
 	switch (modalState) {
 		case ModalStateEnum.WAITING:
 			return (
@@ -23,8 +25,11 @@ function AlertMessage({
 									/>
 								}
 							/>
-							Waiting for connection, retrying in{' '}
-							<span className="retry-time">10</span> secs...
+							{t('intg_waiting_connection_prefix', {
+								defaultValue: 'Waiting for connection, retrying in',
+							})}{' '}
+							<span className="retry-time">10</span>{' '}
+							{t('intg_secs_suffix', { defaultValue: 'secs...' })}
 						</div>
 					}
 					type="info"
@@ -36,7 +41,9 @@ function AlertMessage({
 				<Callout
 					title={
 						<div className="cloud-account-setup-form__alert-message">
-							{`We couldn't establish a connection to your AWS account. Please try again`}
+							{t('intg_aws_connection_error', {
+								defaultValue: `We couldn't establish a connection to your AWS account. Please try again`,
+							})}
 						</div>
 					}
 					type="error"

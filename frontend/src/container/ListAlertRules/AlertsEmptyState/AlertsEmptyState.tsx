@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Divider } from '@signozhq/ui/divider';
 import { Plus, RefreshCw } from '@signozhq/icons';
@@ -15,7 +15,7 @@ import { isModifierKeyPressed } from 'utils/app';
 import alertEmojiUrl from '@/assets/Icons/alert_emoji.svg';
 
 import AlertInfoCard from './AlertInfoCard';
-import { ALERT_CARDS, ALERT_INFO_LINKS } from './alertLinks';
+import { getAlertCards, getAlertInfoLinks } from './alertLinks';
 import InfoLinkText from './InfoLinkText';
 
 import styles from './AlertsEmptyState.module.scss';
@@ -49,6 +49,9 @@ export function AlertsEmptyState({
 	);
 
 	const [loading, setLoading] = useState(false);
+
+	const alertInfoLinks = useMemo(() => getAlertInfoLinks(t), [t]);
+	const alertCards = useMemo(() => getAlertCards(t), [t]);
 
 	const onClickNewAlertHandler = useCallback(
 		(e: React.MouseEvent) => {
@@ -135,7 +138,7 @@ export function AlertsEmptyState({
 							/>
 						</div>
 
-						{ALERT_INFO_LINKS.map((info) => {
+						{alertInfoLinks.map((info) => {
 							const logEventTriggered = (): void =>
 								alertLogEvents(
 									'Alert: Tutorial doc link clicked',
@@ -165,7 +168,7 @@ export function AlertsEmptyState({
 					</Divider>
 				</div>
 
-				{ALERT_CARDS.map((card) => {
+				{alertCards.map((card) => {
 					const logEventTriggered = (): void =>
 						alertLogEvents(
 							'Alert: Sample alert link clicked',

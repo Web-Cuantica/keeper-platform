@@ -188,12 +188,17 @@ function BasicInfo({
 
 				<FormItemMedium
 					name="alert_all_configured_channels"
-					label="Alert all the configured channels"
+					label={t('pages:al_alert_all_channels', {
+						defaultValue: 'Alert all the configured channels',
+					})}
 				>
 					<Tooltip
 						title={
 							noChannels
-								? 'No channels. Ask an admin to create a notification channel'
+								? t('pages:al_no_channels_ask_admin', {
+										defaultValue:
+											'No channels. Ask an admin to create a notification channel',
+									})
 								: undefined
 						}
 						placement="right"
@@ -211,13 +216,18 @@ function BasicInfo({
 					<Tooltip
 						title={
 							noChannels && !addNewChannelPermission
-								? 'No channels. Ask an admin to create a notification channel'
+								? t('pages:al_no_channels_ask_admin', {
+										defaultValue:
+											'No channels. Ask an admin to create a notification channel',
+									})
 								: undefined
 						}
 						placement="right"
 					>
 						<FormItemMedium
-							label="Notification Channels"
+							label={t('pages:al_notification_channels', {
+								defaultValue: 'Notification Channels',
+							})}
 							name="notification_channels"
 							required
 							rules={[
@@ -248,7 +258,9 @@ function BasicInfo({
 					<Tooltip
 						title={
 							!addNewChannelPermission
-								? 'Ask an admin to create a notification channel'
+								? t('pages:al_ask_admin_create_channel', {
+										defaultValue: 'Ask an admin to create a notification channel',
+									})
 								: undefined
 						}
 						placement="right"
@@ -260,7 +272,9 @@ function BasicInfo({
 						>
 							<Flex align="center" justify="center">
 								<Plus size="md" />
-								Create a notification channel
+								{t('pages:al_create_notification_channel', {
+									defaultValue: 'Create a notification channel',
+								})}
 							</Flex>
 						</Button>
 					</Tooltip>

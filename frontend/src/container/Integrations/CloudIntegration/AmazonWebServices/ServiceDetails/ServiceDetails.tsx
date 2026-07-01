@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useQueryClient } from 'react-query';
 import { Button } from '@signozhq/ui/button';
 import { toast } from '@signozhq/ui/sonner';
@@ -115,6 +116,7 @@ function ServiceDetails({
 }: {
 	type: IntegrationType;
 }): JSX.Element | null {
+	const { t } = useTranslation('pages');
 	const urlQuery = useUrlQuery();
 	const cloudAccountId = urlQuery.get('cloudAccountId');
 	const serviceId = urlQuery.get('service');
@@ -368,7 +370,9 @@ function ServiceDetails({
 							<div className="aws-service-details-overview-configuration-logs">
 								<div className="aws-service-details-overview-configuration-title">
 									<div className="aws-service-details-overview-configuration-title-text">
-										<span>Log Collection</span>
+										<span>
+											{t('intg_log_collection', { defaultValue: 'Log Collection' })}
+										</span>
 									</div>
 									<div className="configuration-action">
 										<Controller<ServiceConfigFormValues, 'logsEnabled'>
@@ -409,7 +413,9 @@ function ServiceDetails({
 							<div className="aws-service-details-overview-configuration-metrics">
 								<div className="aws-service-details-overview-configuration-title">
 									<div className="aws-service-details-overview-configuration-title-text">
-										<span>Metric Collection</span>
+										<span>
+											{t('intg_metric_collection', { defaultValue: 'Metric Collection' })}
+										</span>
 									</div>
 									<div className="configuration-action">
 										<Controller<ServiceConfigFormValues, 'metricsEnabled'>
@@ -440,7 +446,7 @@ function ServiceDetails({
 									className="discard-btn"
 									type="button"
 								>
-									Discard
+									{t('intg_discard', { defaultValue: 'Discard' })}
 								</Button>
 								<Button
 									variant="solid"
@@ -452,7 +458,7 @@ function ServiceDetails({
 									loading={isUpdatingServiceConfig}
 									disabled={isS3SyncBucketsMissing || isUpdatingServiceConfig}
 								>
-									Save
+									{t('intg_save', { defaultValue: 'Save' })}
 								</Button>
 							</div>
 						)}
@@ -492,12 +498,12 @@ function ServiceDetails({
 					{
 						children: renderOverview(),
 						key: 'overview',
-						label: 'Overview',
+						label: t('intg_tab_overview', { defaultValue: 'Overview' }),
 					},
 					{
 						children: renderDataCollected(),
 						key: 'data-collected',
-						label: 'Data Collected',
+						label: t('intg_tab_data_collected', { defaultValue: 'Data Collected' }),
 					},
 				]}
 				variant="secondary"

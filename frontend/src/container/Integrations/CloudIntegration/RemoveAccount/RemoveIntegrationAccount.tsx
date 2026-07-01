@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@signozhq/ui/button';
 import { Modal } from 'antd/lib';
 import logEvent from 'api/common/logEvent';
@@ -22,6 +23,7 @@ function RemoveIntegrationAccount({
 	accountId: string;
 	onRemoveIntegrationAccountSuccess: () => void;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { notifications } = useNotifications();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -69,16 +71,18 @@ function RemoveIntegrationAccount({
 				onClick={handleDisconnect}
 				disabled={isRemoveIntegrationLoading}
 			>
-				Disconnect
+				{t('intg_disconnect', { defaultValue: 'Disconnect' })}
 			</Button>
 
 			<Modal
 				className="remove-integration-account-modal"
 				open={isModalOpen}
-				title="Remove integration"
+				title={t('intg_remove_integration_modal_title', {
+					defaultValue: 'Remove integration',
+				})}
 				onOk={handleOk}
 				onCancel={handleCancel}
-				okText="Remove Account"
+				okText={t('intg_remove_account', { defaultValue: 'Remove Account' })}
 				okButtonProps={{
 					danger: true,
 					loading: isRemoveIntegrationLoading,
@@ -86,24 +90,29 @@ function RemoveIntegrationAccount({
 			>
 				{cloudProvider === INTEGRATION_TYPES.AWS ? (
 					<>
-						Removing this account will remove all components created for sending
-						telemetry to SigNoz in your AWS account within the next ~15 minutes
-						(cloudformation stacks named signoz-integration-telemetry-collection in
-						enabled regions). <br />
+						{t('intg_remove_aws_account_body_1', {
+							defaultValue:
+								'Removing this account will remove all components created for sending telemetry to SigNoz in your AWS account within the next ~15 minutes (cloudformation stacks named signoz-integration-telemetry-collection in enabled regions).',
+						})}{' '}
 						<br />
-						After that, you can delete the cloudformation stack that was created
-						manually when connecting this account.
+						<br />
+						{t('intg_remove_aws_account_body_2', {
+							defaultValue:
+								'After that, you can delete the cloudformation stack that was created manually when connecting this account.',
+						})}
 					</>
 				) : (
 					<>
-						Removing this account will remove all components created for sending
-						telemetry to SigNoz in your Azure subscription within the next ~15 minutes
-						(deployment stack named signoz-integration-telemetry will be deleted
-						automatically). <br />
+						{t('intg_remove_azure_account_body_1', {
+							defaultValue:
+								'Removing this account will remove all components created for sending telemetry to SigNoz in your Azure subscription within the next ~15 minutes (deployment stack named signoz-integration-telemetry will be deleted automatically).',
+						})}{' '}
 						<br />
-						After that, you have to manually delete &apos;signoz-integration&apos;
-						deployment stack that was created while connecting this account (Takes ~20
-						minutes to delete).
+						<br />
+						{t('intg_remove_azure_account_body_2', {
+							defaultValue:
+								"After that, you have to manually delete 'signoz-integration' deployment stack that was created while connecting this account (Takes ~20 minutes to delete).",
+						})}
 					</>
 				)}
 			</Modal>

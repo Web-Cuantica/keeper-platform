@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Table } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
 import { BarChart, ScrollText } from '@signozhq/icons';
@@ -10,20 +11,21 @@ interface DataCollectedProps {
 }
 
 function DataCollected(props: DataCollectedProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { logsData, metricsData } = props;
 	const logsColumns = [
 		{
-			title: 'Name',
+			title: t('intg_col_name', { defaultValue: 'Name' }),
 			dataIndex: 'name',
 			key: 'name',
 		},
 		{
-			title: 'Path',
+			title: t('intg_col_path', { defaultValue: 'Path' }),
 			dataIndex: 'path',
 			key: 'path',
 		},
 		{
-			title: 'Type',
+			title: t('intg_col_type', { defaultValue: 'Type' }),
 			dataIndex: 'type',
 			key: 'type',
 		},
@@ -31,17 +33,17 @@ function DataCollected(props: DataCollectedProps): JSX.Element {
 
 	const metricsColumns = [
 		{
-			title: 'Name',
+			title: t('intg_col_name', { defaultValue: 'Name' }),
 			dataIndex: 'name',
 			key: 'name',
 		},
 		{
-			title: 'Type',
+			title: t('intg_col_type', { defaultValue: 'Type' }),
 			dataIndex: 'type',
 			key: 'type',
 		},
 		{
-			title: 'Unit',
+			title: t('intg_col_unit', { defaultValue: 'Unit' }),
 			dataIndex: 'unit',
 			key: 'unit',
 		},

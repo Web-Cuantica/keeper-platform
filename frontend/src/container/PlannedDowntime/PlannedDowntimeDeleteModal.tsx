@@ -1,4 +1,5 @@
 import { SetStateAction } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Modal } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
 import { Trash2, X } from '@signozhq/icons';
@@ -23,13 +24,18 @@ export function PlannedDowntimeDeleteModal(
 		onDeleteHandler,
 		downtimeSchedule,
 	} = props;
+	const { t } = useTranslation('pages');
 	const hideDeleteScheduleModal = (): void => {
 		setIsDeleteModalOpen(false);
 	};
 	return (
 		<Modal
 			className="delete-schedule-modal"
-			title={<span className="title">Delete Schedule</span>}
+			title={
+				<span className="title">
+					{t('al_pd_delete_title', { defaultValue: 'Delete Schedule' })}
+				</span>
+			}
 			open={isDeleteModalOpen}
 			closable={false}
 			onCancel={hideDeleteScheduleModal}
@@ -40,7 +46,7 @@ export function PlannedDowntimeDeleteModal(
 					className="cancel-btn"
 					icon={<X size={16} />}
 				>
-					Cancel
+					{t('al_pd_cancel', { defaultValue: 'Cancel' })}
 				</Button>,
 				<Button
 					key="submit"
@@ -49,12 +55,16 @@ export function PlannedDowntimeDeleteModal(
 					className="delete-btn"
 					disabled={isDeleteLoading}
 				>
-					Delete Schedule
+					{t('al_pd_delete_schedule', { defaultValue: 'Delete Schedule' })}
 				</Button>,
 			]}
 		>
 			<Typography.Text className="delete-text">
-				{`Are you sure you want to delete - ${downtimeSchedule} schedule? Deleting a schedule is irreversible and cannot be undone.`}
+				{t('al_pd_delete_confirm', {
+					defaultValue:
+						'Are you sure you want to delete - {{schedule}} schedule? Deleting a schedule is irreversible and cannot be undone.',
+					schedule: downtimeSchedule,
+				})}
 			</Typography.Text>
 		</Modal>
 	);

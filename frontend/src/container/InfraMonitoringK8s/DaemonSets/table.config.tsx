@@ -1,3 +1,4 @@
+import type { TFunction } from 'i18next';
 import { Tooltip } from 'antd';
 import { TableColumnDef } from 'components/TanStackTableView';
 import TanStackTable from 'components/TanStackTableView';
@@ -23,10 +24,18 @@ export function getK8sDaemonSetItemKey(daemonSet: K8sDaemonSetsData): string {
 	return daemonSet.meta.k8s_daemonset_name;
 }
 
-export const k8sDaemonSetsColumnsConfig: TableColumnDef<K8sDaemonSetsData>[] = [
+export const getK8sDaemonSetsColumnsConfig = (
+	t: TFunction,
+): TableColumnDef<K8sDaemonSetsData>[] => [
 	{
 		id: 'daemonSetGroup',
-		header: (): React.ReactNode => <EntityGroupHeader title="DAEMONSET GROUP" />,
+		header: (): React.ReactNode => (
+			<EntityGroupHeader
+				title={t('pages:infra_col_daemonset_group', {
+					defaultValue: 'DAEMONSET GROUP',
+				})}
+			/>
+		),
 		accessorFn: (row): string => row.meta.k8s_daemonset_name || '',
 		width: { min: 300 },
 		enableSort: false,
@@ -49,7 +58,9 @@ export const k8sDaemonSetsColumnsConfig: TableColumnDef<K8sDaemonSetsData>[] = [
 		id: 'daemonsetName',
 		header: (): React.ReactNode => (
 			<EntityGroupHeader
-				title="DaemonSet Name"
+				title={t('pages:infra_col_daemonset_name', {
+					defaultValue: 'DaemonSet Name',
+				})}
 				icon={<Group data-hide-expanded="true" size={14} />}
 			/>
 		),
@@ -71,7 +82,9 @@ export const k8sDaemonSetsColumnsConfig: TableColumnDef<K8sDaemonSetsData>[] = [
 	},
 	{
 		id: 'namespaceName',
-		header: 'Namespace Name',
+		header: t('pages:infra_col_namespace_name', {
+			defaultValue: 'Namespace Name',
+		}),
 		accessorFn: (row): string => row.meta.k8s_namespace_name || '',
 		width: { default: 100 },
 		enableSort: false,
@@ -86,7 +99,7 @@ export const k8sDaemonSetsColumnsConfig: TableColumnDef<K8sDaemonSetsData>[] = [
 	},
 	{
 		id: 'available_nodes',
-		header: 'Available',
+		header: t('pages:infra_col_available', { defaultValue: 'Available' }),
 		accessorFn: (row): number => row.availableNodes,
 		width: { min: 140 },
 		enableSort: true,
@@ -105,7 +118,7 @@ export const k8sDaemonSetsColumnsConfig: TableColumnDef<K8sDaemonSetsData>[] = [
 	},
 	{
 		id: 'desired_nodes',
-		header: 'Desired',
+		header: t('pages:infra_col_desired', { defaultValue: 'Desired' }),
 		accessorFn: (row): number => row.desiredNodes,
 		width: { min: 140 },
 		enableSort: true,
@@ -124,7 +137,9 @@ export const k8sDaemonSetsColumnsConfig: TableColumnDef<K8sDaemonSetsData>[] = [
 	},
 	{
 		id: 'cpu_request',
-		header: 'CPU Req Usage (%)',
+		header: t('pages:infra_col_cpu_req_usage', {
+			defaultValue: 'CPU Req Usage (%)',
+		}),
 		accessorFn: (row): number => row.cpuRequest,
 		width: { min: 200, default: 200 },
 		enableSort: true,
@@ -143,7 +158,9 @@ export const k8sDaemonSetsColumnsConfig: TableColumnDef<K8sDaemonSetsData>[] = [
 	},
 	{
 		id: 'cpu_limit',
-		header: 'CPU Limit Usage (%)',
+		header: t('pages:infra_col_cpu_limit_usage', {
+			defaultValue: 'CPU Limit Usage (%)',
+		}),
 		accessorFn: (row): number => row.cpuLimit,
 		width: { min: 200, default: 200 },
 		enableSort: true,
@@ -162,7 +179,9 @@ export const k8sDaemonSetsColumnsConfig: TableColumnDef<K8sDaemonSetsData>[] = [
 	},
 	{
 		id: 'cpu',
-		header: 'CPU Usage (cores)',
+		header: t('pages:infra_col_cpu_usage_cores', {
+			defaultValue: 'CPU Usage (cores)',
+		}),
 		accessorFn: (row): number => row.cpuUsage,
 		width: { min: 190 },
 		enableSort: true,
@@ -182,7 +201,9 @@ export const k8sDaemonSetsColumnsConfig: TableColumnDef<K8sDaemonSetsData>[] = [
 	},
 	{
 		id: 'memory_request',
-		header: 'Mem Req Usage (%)',
+		header: t('pages:infra_col_mem_req_usage', {
+			defaultValue: 'Mem Req Usage (%)',
+		}),
 		accessorFn: (row): number => row.memoryRequest,
 		width: { min: 190 },
 		enableSort: true,
@@ -202,7 +223,9 @@ export const k8sDaemonSetsColumnsConfig: TableColumnDef<K8sDaemonSetsData>[] = [
 	},
 	{
 		id: 'memory_limit',
-		header: 'Mem Limit Usage (%)',
+		header: t('pages:infra_col_mem_limit_usage', {
+			defaultValue: 'Mem Limit Usage (%)',
+		}),
 		accessorFn: (row): number => row.memoryLimit,
 		width: { min: 180 },
 		enableSort: true,
@@ -221,7 +244,9 @@ export const k8sDaemonSetsColumnsConfig: TableColumnDef<K8sDaemonSetsData>[] = [
 	},
 	{
 		id: 'memory',
-		header: 'Mem Usage (WSS)',
+		header: t('pages:infra_col_mem_usage_wss', {
+			defaultValue: 'Mem Usage (WSS)',
+		}),
 		accessorFn: (row): number => row.memoryUsage,
 		width: { min: 160 },
 		enableSort: true,

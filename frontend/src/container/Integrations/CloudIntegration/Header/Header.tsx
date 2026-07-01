@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Button } from '@signozhq/ui/button';
 import Breadcrumb from 'antd/es/breadcrumb';
@@ -8,6 +9,7 @@ import { Blocks, LifeBuoy } from '@signozhq/icons';
 import './Header.styles.scss';
 
 function Header({ type }: { type: IntegrationType }): JSX.Element {
+	const { t } = useTranslation('pages');
 	return (
 		<div className="cloud-header">
 			<div className="cloud-header__navigation">
@@ -19,7 +21,9 @@ function Header({ type }: { type: IntegrationType }): JSX.Element {
 								<Link to={ROUTES.INTEGRATIONS}>
 									<span className="cloud-header__breadcrumb-link">
 										<Blocks size={16} color="var(--l2-foreground)" />
-										<span className="cloud-header__breadcrumb-title">Integrations</span>
+										<span className="cloud-header__breadcrumb-title">
+											{t('intg_title', { defaultValue: 'Integrations' })}
+										</span>
 									</span>
 								</Link>
 							),
@@ -45,7 +49,7 @@ function Header({ type }: { type: IntegrationType }): JSX.Element {
 						}}
 						prefix={<LifeBuoy size={12} />}
 					>
-						Get Help
+						{t('intg_get_help', { defaultValue: 'Get Help' })}
 					</Button>
 				</div>
 			)}

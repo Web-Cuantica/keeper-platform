@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Callout } from '@signozhq/ui/callout';
 import getLocalStorageApi from 'api/browser/localstorage/get';
@@ -13,6 +14,7 @@ import { USER_ROLES } from 'types/roles';
 import './LicenseRowDismissible.styles.scss';
 
 function LicenseRowDismissibleCallout(): JSX.Element | null {
+	const { t } = useTranslation('pages');
 	const [isCalloutDismissed, setIsCalloutDismissed] = useState<boolean>(
 		() =>
 			getLocalStorageApi(LOCALSTORAGE.LICENSE_KEY_CALLOUT_DISMISSED) === 'true',
@@ -49,26 +51,36 @@ function LicenseRowDismissibleCallout(): JSX.Element | null {
 			className="license-key-callout"
 		>
 			<div className="license-key-callout__description">
-				This is <strong>NOT</strong> your ingestion or Service account key.
+				{t('set_license_callout_prefix', { defaultValue: 'This is' })}{' '}
+				<strong>{t('set_license_callout_not', { defaultValue: 'NOT' })}</strong>{' '}
+				{t('set_license_callout_desc', {
+					defaultValue: 'your ingestion or Service account key.',
+				})}
 				{(hasServiceAccountsAccess || hasIngestionAccess) && (
 					<>
 						{' '}
-						Find your{' '}
+						{t('set_license_callout_find_your', { defaultValue: 'Find your' })}{' '}
 						{hasServiceAccountsAccess && (
 							<Link
 								to={ROUTES.SERVICE_ACCOUNTS_SETTINGS}
 								className="license-key-callout__link"
 							>
-								Service account here
+								{t('set_license_callout_service_account_link', {
+									defaultValue: 'Service account here',
+								})}
 							</Link>
 						)}
-						{hasServiceAccountsAccess && hasIngestionAccess && ' and '}
+						{hasServiceAccountsAccess &&
+							hasIngestionAccess &&
+							` ${t('set_license_callout_and', { defaultValue: 'and' })} `}
 						{hasIngestionAccess && (
 							<Link
 								to={ROUTES.INGESTION_SETTINGS}
 								className="license-key-callout__link"
 							>
-								Ingestion key here
+								{t('set_license_callout_ingestion_link', {
+									defaultValue: 'Ingestion key here',
+								})}
 							</Link>
 						)}
 						.

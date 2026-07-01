@@ -59,11 +59,13 @@ function EditRules(): JSX.Element {
 	useEffect(() => {
 		if (!isValidRuleId) {
 			notifications.error({
-				message: 'Rule Id is required',
+				message: t('pages:al_rule_id_required', {
+					defaultValue: 'Rule Id is required',
+				}),
 			});
 			safeNavigate(ROUTES.LIST_ALL_ALERT);
 		}
-	}, [isValidRuleId, ruleId, notifications, safeNavigate]);
+	}, [isValidRuleId, ruleId, notifications, safeNavigate, t]);
 
 	const ruleData: RuletypesRuleDTO | undefined = data?.data;
 
@@ -84,7 +86,9 @@ function EditRules(): JSX.Element {
 					<p className="content">{errorMsg || t('something_went_wrong')}</p>
 					<div className="btn-container">
 						<Button type="default" size="large" onClick={clickHandler}>
-							Return to Alerts Page
+							{t('pages:al_return_to_alerts_page', {
+								defaultValue: 'Return to Alerts Page',
+							})}
 						</Button>
 					</div>
 				</Card>
@@ -93,7 +97,11 @@ function EditRules(): JSX.Element {
 	}
 
 	if (isLoading || isRefetching || !ruleData) {
-		return <Spinner tip="Loading Rules..." />;
+		return (
+			<Spinner
+				tip={t('pages:al_loading_rules', { defaultValue: 'Loading Rules...' })}
+			/>
+		);
 	}
 
 	let initialV2AlertValue: PostableAlertRuleV2 | null = null;

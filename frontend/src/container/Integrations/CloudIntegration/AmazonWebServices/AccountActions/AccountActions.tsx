@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom-v5-compat';
 import { Color } from '@signozhq/design-tokens';
 import { Button } from '@signozhq/ui/button';
@@ -46,6 +47,7 @@ function AccountActionsRenderer({
 	onIntegrationModalOpen: () => void;
 	onAccountSettingsModalOpen: () => void;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	if (isLoading) {
 		return (
 			<div className="hero-section__actions-with-account">
@@ -62,7 +64,9 @@ function AccountActionsRenderer({
 						<Dot size={24} color={Color.BG_FOREST_500} />
 					</div>
 
-					<div className="account-selector-label">Account:</div>
+					<div className="account-selector-label">
+						{t('intg_account_label', { defaultValue: 'Account:' })}
+					</div>
 
 					<span className="account-selector">
 						<Select
@@ -72,7 +76,10 @@ function AccountActionsRenderer({
 								[type.toLowerCase()]: type,
 							})}
 							popupMatchSelectWidth={false}
-							placeholder={`Select ${type} Account`}
+							placeholder={t('intg_select_account', {
+								defaultValue: 'Select {{type}} Account',
+								type,
+							})}
 							suffixIcon={<ChevronDown size={16} color={Color.BG_VANILLA_400} />}
 							onChange={onAccountChange}
 						/>
@@ -86,7 +93,7 @@ function AccountActionsRenderer({
 						prefix={<PencilLine size={14} />}
 						onClick={onAccountSettingsModalOpen}
 					>
-						Edit Account
+						{t('intg_edit_account', { defaultValue: 'Edit Account' })}
 					</Button>
 
 					<Button
@@ -96,7 +103,7 @@ function AccountActionsRenderer({
 						onClick={onIntegrationModalOpen}
 						prefix={<Plus size={14} />}
 					>
-						Add New Account
+						{t('intg_add_new_account', { defaultValue: 'Add New Account' })}
 					</Button>
 				</div>
 			</div>
@@ -110,7 +117,7 @@ function AccountActionsRenderer({
 			onClick={onIntegrationModalOpen}
 			size="sm"
 		>
-			Integrate Now
+			{t('intg_integrate_now', { defaultValue: 'Integrate Now' })}
 		</Button>
 	);
 }

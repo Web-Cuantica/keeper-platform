@@ -44,7 +44,9 @@ function InviteUserModal(props: InviteUserModalProps): JSX.Element {
 						});
 
 						notifications.success({
-							message: 'Invite sent successfully',
+							message: t('pages:set_invite_sent_success', {
+								defaultValue: 'Invite sent successfully',
+							}),
 						});
 					} catch (error) {
 						notifications.error({

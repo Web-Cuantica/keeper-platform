@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button } from '@signozhq/ui/button';
 import { TooltipSimple, TooltipProvider } from '@signozhq/ui/tooltip';
 import { Copy } from '@signozhq/icons';
@@ -14,9 +15,12 @@ function CopyIconButton({
 	onCopy,
 	disabled = false,
 }: CopyIconButtonProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const tooltipTitle = disabled
-		? 'Enter your Cloud region first'
-		: 'Copy to clipboard';
+		? t('intg_mcp_enter_cloud_region_first', {
+				defaultValue: 'Enter your Cloud region first',
+		  })
+		: t('intg_mcp_copy_to_clipboard', { defaultValue: 'Copy to clipboard' });
 
 	return (
 		<TooltipProvider>

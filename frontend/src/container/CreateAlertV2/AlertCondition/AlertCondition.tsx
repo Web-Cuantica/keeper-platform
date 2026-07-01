@@ -1,4 +1,5 @@
 import { useQuery } from 'react-query';
+import { useTranslation } from 'react-i18next';
 import { Button, Tooltip } from 'antd';
 import getAllChannels from 'api/channels/getAll';
 import classNames from 'classnames';
@@ -13,11 +14,11 @@ import AdvancedOptions from '../EvaluationSettings/AdvancedOptions';
 import Stepper from '../Stepper';
 import AlertThreshold from './AlertThreshold';
 import AnomalyThreshold from './AnomalyThreshold';
-import { ANOMALY_TAB_TOOLTIP, THRESHOLD_TAB_TOOLTIP } from './constants';
 
 import './styles.scss';
 
 function AlertCondition(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { alertType, setAlertType } = useCreateAlertState();
 
 	const {
@@ -36,7 +37,7 @@ function AlertCondition(): JSX.Element {
 
 	const tabs = [
 		{
-			label: 'Threshold',
+			label: t('al_v2_tab_threshold', { defaultValue: 'Threshold' }),
 			icon: <ChartLine size={14} data-testid="threshold-view" />,
 			value: AlertTypes.METRICS_BASED_ALERT,
 		},
@@ -61,14 +62,24 @@ function AlertCondition(): JSX.Element {
 
 	const getTabTooltip = (tab: { value: AlertTypes }): string => {
 		if (tab.value === AlertTypes.ANOMALY_BASED_ALERT) {
-			return ANOMALY_TAB_TOOLTIP;
+			return t('al_v2_anomaly_tab_tooltip', {
+				defaultValue:
+					'An alert is triggered whenever the metric deviates from an expected pattern.',
+			});
 		}
-		return THRESHOLD_TAB_TOOLTIP;
+		return t('al_v2_threshold_tab_tooltip', {
+			defaultValue: 'An alert is triggered when the metric crosses a threshold.',
+		});
 	};
 
 	return (
 		<div className="alert-condition-container">
-			<Stepper stepNumber={2} label="Set alert conditions" />
+			<Stepper
+				stepNumber={2}
+				label={t('al_v2_step_condition', {
+					defaultValue: 'Set alert conditions',
+				})}
+			/>
 			<div className="alert-condition">
 				<div className="alert-condition-tabs">
 					{tabs.map((tab) => (

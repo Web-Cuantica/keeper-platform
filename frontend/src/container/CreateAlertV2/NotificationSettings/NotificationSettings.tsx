@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Input } from '@signozhq/ui/input';
 import { Select } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
@@ -15,15 +16,20 @@ import NotificationMessage from './NotificationMessage';
 import './styles.scss';
 
 function NotificationSettings(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { notificationSettings, setNotificationSettings } =
 		useCreateAlertState();
 
 	const repeatNotificationsInput = (
 		<div className="repeat-notifications-input">
-			<Typography.Text>Every</Typography.Text>
+			<Typography.Text>
+				{t('al_v2_renotify_every', { defaultValue: 'Every' })}
+			</Typography.Text>
 			<Input
 				value={notificationSettings.reNotification.value}
-				placeholder="Enter time interval..."
+				placeholder={t('al_v2_enter_time_interval', {
+					defaultValue: 'Enter time interval...',
+				})}
 				disabled={!notificationSettings.reNotification.enabled}
 				type="number"
 				onChange={(e): void => {
@@ -41,7 +47,7 @@ function NotificationSettings(): JSX.Element {
 			/>
 			<Select
 				value={notificationSettings.reNotification.unit || null}
-				placeholder="Select unit"
+				placeholder={t('al_v2_select_unit', { defaultValue: 'Select unit' })}
 				disabled={!notificationSettings.reNotification.enabled}
 				options={RE_NOTIFICATION_TIME_UNIT_OPTIONS}
 				onChange={(value): void => {
@@ -57,11 +63,15 @@ function NotificationSettings(): JSX.Element {
 				}}
 				data-testid="repeat-notifications-unit-select"
 			/>
-			<Typography.Text>while</Typography.Text>
+			<Typography.Text>
+				{t('al_v2_renotify_while', { defaultValue: 'while' })}
+			</Typography.Text>
 			<Select
 				mode="multiple"
 				value={notificationSettings.reNotification.conditions || null}
-				placeholder="Select conditions"
+				placeholder={t('al_v2_select_conditions', {
+					defaultValue: 'Select conditions',
+				})}
 				disabled={!notificationSettings.reNotification.enabled}
 				options={RE_NOTIFICATION_CONDITION_OPTIONS}
 				onChange={(value): void => {
@@ -82,14 +92,27 @@ function NotificationSettings(): JSX.Element {
 
 	return (
 		<div className="notification-settings-container">
-			<Stepper stepNumber={3} label="Notification settings" />
+			<Stepper
+				stepNumber={3}
+				label={t('al_v2_step_notification', {
+					defaultValue: 'Notification settings',
+				})}
+			/>
 			<NotificationMessage />
 			<div className="notification-settings-content">
 				<MultipleNotifications />
 				<AdvancedOptionItem
-					title="Repeat notifications"
-					description="Send periodic notifications while the alert condition remains active."
-					tooltipText="Continue sending periodic notifications while the alert condition persists. Useful for ensuring critical alerts aren't missed during long-running incidents. Configure how often to repeat and under what conditions."
+					title={t('al_v2_repeat_notifications', {
+						defaultValue: 'Repeat notifications',
+					})}
+					description={t('al_v2_repeat_notifications_desc', {
+						defaultValue:
+							'Send periodic notifications while the alert condition remains active.',
+					})}
+					tooltipText={t('al_v2_repeat_notifications_tooltip', {
+						defaultValue:
+							"Continue sending periodic notifications while the alert condition persists. Useful for ensuring critical alerts aren't missed during long-running incidents. Configure how often to repeat and under what conditions.",
+					})}
 					input={repeatNotificationsInput}
 					onToggle={(): void => {
 						setNotificationSettings({

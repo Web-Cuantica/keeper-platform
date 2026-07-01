@@ -1,3 +1,4 @@
+import type { TFunction } from 'i18next';
 import { Tooltip } from 'antd';
 import { TableColumnDef } from 'components/TanStackTableView';
 import TanStackTable from 'components/TanStackTableView';
@@ -19,10 +20,17 @@ export function getK8sPodItemKey(pod: K8sPodsData): string {
 	return pod.podUID;
 }
 
-export const k8sPodColumnsConfig: TableColumnDef<K8sPodsData>[] = [
+// Columnas construidas en render con `t` para traducir encabezados (nunca en useState).
+export const getK8sPodColumnsConfig = (
+	t: TFunction,
+): TableColumnDef<K8sPodsData>[] => [
 	{
 		id: 'podGroup',
-		header: (): React.ReactNode => <EntityGroupHeader title="POD GROUP" />,
+		header: (): React.ReactNode => (
+			<EntityGroupHeader
+				title={t('pages:infra_col_pod_group', { defaultValue: 'POD GROUP' })}
+			/>
+		),
 		accessorFn: (row): string => row.meta.k8s_pod_name || '',
 		width: { min: 300 },
 		enableSort: false,
@@ -45,7 +53,7 @@ export const k8sPodColumnsConfig: TableColumnDef<K8sPodsData>[] = [
 		id: 'podName',
 		header: (): React.ReactNode => (
 			<EntityGroupHeader
-				title="Pod Name"
+				title={t('pages:infra_col_pod_name', { defaultValue: 'Pod Name' })}
 				icon={<Container data-hide-expanded="true" size={14} />}
 			/>
 		),
@@ -67,7 +75,9 @@ export const k8sPodColumnsConfig: TableColumnDef<K8sPodsData>[] = [
 	},
 	{
 		id: 'cpu_request',
-		header: 'CPU Req Usage (%)',
+		header: t('pages:infra_col_cpu_req_usage', {
+			defaultValue: 'CPU Req Usage (%)',
+		}),
 		accessorFn: (row): number => row.podCPURequest,
 		width: { min: 210 },
 		enableSort: true,
@@ -86,7 +96,9 @@ export const k8sPodColumnsConfig: TableColumnDef<K8sPodsData>[] = [
 	},
 	{
 		id: 'cpu_limit',
-		header: 'CPU Limit Usage (%)',
+		header: t('pages:infra_col_cpu_limit_usage', {
+			defaultValue: 'CPU Limit Usage (%)',
+		}),
 		accessorFn: (row): number => row.podCPULimit,
 		width: { min: 210 },
 		enableSort: true,
@@ -105,7 +117,9 @@ export const k8sPodColumnsConfig: TableColumnDef<K8sPodsData>[] = [
 	},
 	{
 		id: 'cpu',
-		header: 'CPU Usage (cores)',
+		header: t('pages:infra_col_cpu_usage_cores', {
+			defaultValue: 'CPU Usage (cores)',
+		}),
 		accessorFn: (row): number => row.podCPU,
 		width: { min: 210 },
 		enableSort: true,
@@ -124,7 +138,9 @@ export const k8sPodColumnsConfig: TableColumnDef<K8sPodsData>[] = [
 	},
 	{
 		id: 'memory_request',
-		header: 'Mem Req Usage (%)',
+		header: t('pages:infra_col_mem_req_usage', {
+			defaultValue: 'Mem Req Usage (%)',
+		}),
 		accessorFn: (row): number => row.podMemoryRequest,
 		width: { min: 210 },
 		enableSort: true,
@@ -143,7 +159,9 @@ export const k8sPodColumnsConfig: TableColumnDef<K8sPodsData>[] = [
 	},
 	{
 		id: 'memory_limit',
-		header: 'Mem Limit Usage (%)',
+		header: t('pages:infra_col_mem_limit_usage', {
+			defaultValue: 'Mem Limit Usage (%)',
+		}),
 		accessorFn: (row): number => row.podMemoryLimit,
 		width: { min: 210 },
 		enableSort: true,
@@ -162,7 +180,9 @@ export const k8sPodColumnsConfig: TableColumnDef<K8sPodsData>[] = [
 	},
 	{
 		id: 'memory',
-		header: 'Mem Usage (WSS)',
+		header: t('pages:infra_col_mem_usage_wss', {
+			defaultValue: 'Mem Usage (WSS)',
+		}),
 		accessorFn: (row): number => row.podMemory,
 		width: { min: 210, default: '100%' },
 		enableSort: true,
@@ -181,7 +201,7 @@ export const k8sPodColumnsConfig: TableColumnDef<K8sPodsData>[] = [
 	},
 	{
 		id: 'namespace',
-		header: 'Namespace',
+		header: t('pages:infra_col_namespace', { defaultValue: 'Namespace' }),
 		accessorFn: (row): string => row.meta.k8s_namespace_name || '',
 		width: { default: 100 },
 		enableSort: false,
@@ -192,7 +212,7 @@ export const k8sPodColumnsConfig: TableColumnDef<K8sPodsData>[] = [
 	},
 	{
 		id: 'node',
-		header: 'Node',
+		header: t('pages:infra_col_node', { defaultValue: 'Node' }),
 		accessorFn: (row): string => row.meta.k8s_node_name || '',
 		width: { default: 100 },
 		enableSort: false,
@@ -203,7 +223,7 @@ export const k8sPodColumnsConfig: TableColumnDef<K8sPodsData>[] = [
 	},
 	{
 		id: 'cluster',
-		header: 'Cluster',
+		header: t('pages:infra_col_cluster', { defaultValue: 'Cluster' }),
 		accessorFn: (row): string => row.meta.k8s_cluster_name || '',
 		width: { default: 100 },
 		enableSort: false,

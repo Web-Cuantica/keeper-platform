@@ -1,3 +1,4 @@
+import type { TFunction } from 'i18next';
 import { Tooltip } from 'antd';
 import { TableColumnDef } from 'components/TanStackTableView';
 import TanStackTable from 'components/TanStackTableView';
@@ -19,10 +20,16 @@ export function getK8sJobItemKey(job: K8sJobsData): string {
 	return job.meta.k8s_job_name;
 }
 
-export const k8sJobsColumnsConfig: TableColumnDef<K8sJobsData>[] = [
+export const getK8sJobsColumnsConfig = (
+	t: TFunction,
+): TableColumnDef<K8sJobsData>[] => [
 	{
 		id: 'jobGroup',
-		header: (): React.ReactNode => <EntityGroupHeader title="JOB GROUP" />,
+		header: (): React.ReactNode => (
+			<EntityGroupHeader
+				title={t('pages:infra_col_job_group', { defaultValue: 'JOB GROUP' })}
+			/>
+		),
 		accessorFn: (row): string => row.meta.k8s_job_name || '',
 		width: { min: 270 },
 		enableSort: false,
@@ -45,7 +52,7 @@ export const k8sJobsColumnsConfig: TableColumnDef<K8sJobsData>[] = [
 		id: 'jobName',
 		header: (): React.ReactNode => (
 			<EntityGroupHeader
-				title="Job Name"
+				title={t('pages:infra_col_job_name', { defaultValue: 'Job Name' })}
 				icon={<Bolt data-hide-expanded="true" size={14} />}
 			/>
 		),
@@ -67,7 +74,9 @@ export const k8sJobsColumnsConfig: TableColumnDef<K8sJobsData>[] = [
 	},
 	{
 		id: 'namespaceName',
-		header: 'Namespace Name',
+		header: t('pages:infra_col_namespace_name', {
+			defaultValue: 'Namespace Name',
+		}),
 		accessorFn: (row): string => row.meta.k8s_namespace_name || '',
 		width: { default: 150 },
 		enableSort: false,
@@ -82,7 +91,7 @@ export const k8sJobsColumnsConfig: TableColumnDef<K8sJobsData>[] = [
 	},
 	{
 		id: 'successful_pods',
-		header: 'Successful',
+		header: t('pages:infra_col_successful', { defaultValue: 'Successful' }),
 		accessorFn: (row): number => row.successfulPods,
 		width: { min: 120 },
 		enableSort: true,
@@ -101,7 +110,7 @@ export const k8sJobsColumnsConfig: TableColumnDef<K8sJobsData>[] = [
 	},
 	{
 		id: 'failed_pods',
-		header: 'Failed',
+		header: t('pages:infra_col_failed', { defaultValue: 'Failed' }),
 		accessorFn: (row): number => row.failedPods,
 		width: { min: 100 },
 		enableSort: true,
@@ -120,7 +129,9 @@ export const k8sJobsColumnsConfig: TableColumnDef<K8sJobsData>[] = [
 	},
 	{
 		id: 'desired_successful_pods',
-		header: 'Desired Successful',
+		header: t('pages:infra_col_desired_successful', {
+			defaultValue: 'Desired Successful',
+		}),
 		accessorFn: (row): number => row.desiredSuccessfulPods,
 		width: { min: 160 },
 		enableSort: true,
@@ -139,7 +150,7 @@ export const k8sJobsColumnsConfig: TableColumnDef<K8sJobsData>[] = [
 	},
 	{
 		id: 'active_pods',
-		header: 'Active',
+		header: t('pages:infra_col_active_count', { defaultValue: 'Active' }),
 		accessorFn: (row): number => row.activePods,
 		width: { min: 100 },
 		enableSort: true,
@@ -158,7 +169,9 @@ export const k8sJobsColumnsConfig: TableColumnDef<K8sJobsData>[] = [
 	},
 	{
 		id: 'cpu_request',
-		header: 'CPU Req Usage (%)',
+		header: t('pages:infra_col_cpu_req_usage', {
+			defaultValue: 'CPU Req Usage (%)',
+		}),
 		accessorFn: (row): number => row.cpuRequest,
 		width: { min: 200, default: 200 },
 		enableSort: true,
@@ -177,7 +190,9 @@ export const k8sJobsColumnsConfig: TableColumnDef<K8sJobsData>[] = [
 	},
 	{
 		id: 'cpu_limit',
-		header: 'CPU Limit Usage (%)',
+		header: t('pages:infra_col_cpu_limit_usage', {
+			defaultValue: 'CPU Limit Usage (%)',
+		}),
 		accessorFn: (row): number => row.cpuLimit,
 		width: { min: 200, default: 200 },
 		enableSort: true,
@@ -196,7 +211,9 @@ export const k8sJobsColumnsConfig: TableColumnDef<K8sJobsData>[] = [
 	},
 	{
 		id: 'cpu',
-		header: 'CPU Usage (cores)',
+		header: t('pages:infra_col_cpu_usage_cores', {
+			defaultValue: 'CPU Usage (cores)',
+		}),
 		accessorFn: (row): number => row.cpuUsage,
 		width: { min: 190 },
 		enableSort: true,
@@ -215,7 +232,9 @@ export const k8sJobsColumnsConfig: TableColumnDef<K8sJobsData>[] = [
 	},
 	{
 		id: 'memory_request',
-		header: 'Mem Req Usage (%)',
+		header: t('pages:infra_col_mem_req_usage', {
+			defaultValue: 'Mem Req Usage (%)',
+		}),
 		accessorFn: (row): number => row.memoryRequest,
 		width: { min: 190 },
 		enableSort: true,
@@ -234,7 +253,9 @@ export const k8sJobsColumnsConfig: TableColumnDef<K8sJobsData>[] = [
 	},
 	{
 		id: 'memory_limit',
-		header: 'Mem Limit Usage (%)',
+		header: t('pages:infra_col_mem_limit_usage', {
+			defaultValue: 'Mem Limit Usage (%)',
+		}),
 		accessorFn: (row): number => row.memoryLimit,
 		width: { min: 180 },
 		enableSort: true,
@@ -253,7 +274,9 @@ export const k8sJobsColumnsConfig: TableColumnDef<K8sJobsData>[] = [
 	},
 	{
 		id: 'memory',
-		header: 'Mem Usage (WSS)',
+		header: t('pages:infra_col_mem_usage_wss', {
+			defaultValue: 'Mem Usage (WSS)',
+		}),
 		accessorFn: (row): number => row.memoryUsage,
 		width: { min: 160 },
 		enableSort: true,

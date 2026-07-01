@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from '@signozhq/ui/sonner';
 import { Button } from '@signozhq/ui/button';
 import { Input } from '@signozhq/ui/input';
@@ -50,6 +51,7 @@ function FieldsSelectorContent({
 	height,
 	defaultPosition,
 }: FieldsSelectorContentProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const resolvedHeight =
 		height ?? window.innerHeight - DEFAULT_PANEL_HEIGHT_OFFSET;
 	const resolvedPosition = defaultPosition ?? {
@@ -91,11 +93,14 @@ function FieldsSelectorContent({
 
 	const handleSave = useCallback((): void => {
 		onFieldsChange(draftFields);
-		toast.success('Saved successfully', {
-			position: 'top-right',
-		});
+		toast.success(
+			t('cmp_fields_selector_saved', { defaultValue: 'Saved successfully' }),
+			{
+				position: 'top-right',
+			},
+		);
 		onClose();
-	}, [draftFields, onFieldsChange, onClose]);
+	}, [draftFields, onFieldsChange, onClose, t]);
 
 	const handleDiscard = useCallback((): void => {
 		setDraftFields(fields);
@@ -134,7 +139,11 @@ function FieldsSelectorContent({
 						className={styles.searchInput}
 						type="text"
 						value={inputValue}
-						placeholder="Search for a field..."
+						placeholder={
+							t('cmp_fields_selector_search_placeholder', {
+								defaultValue: 'Search for a field...',
+							}) as string
+						}
 						onChange={handleInputChange}
 					/>
 				</section>
@@ -163,7 +172,7 @@ function FieldsSelectorContent({
 							onClick={handleDiscard}
 							prefix={<X width={14} height={14} />}
 						>
-							Discard
+							{t('cmp_fields_selector_discard', { defaultValue: 'Discard' })}
 						</Button>
 						<Button
 							variant="solid"
@@ -171,7 +180,9 @@ function FieldsSelectorContent({
 							onClick={handleSave}
 							prefix={<Check width={14} height={14} />}
 						>
-							Save changes
+							{t('cmp_fields_selector_save_changes', {
+								defaultValue: 'Save changes',
+							})}
 						</Button>
 					</div>
 				)}

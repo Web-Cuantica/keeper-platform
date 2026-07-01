@@ -1,4 +1,5 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { InfraMonitoringEvents } from 'constants/events';
 import { FeatureKeys } from 'constants/features';
 import { useAppContext } from 'providers/App/App';
@@ -20,7 +21,7 @@ import {
 import {
 	getK8sClusterItemKey,
 	getK8sClusterRowKey,
-	k8sClustersColumnsConfig,
+	getK8sClustersColumnsConfig,
 } from './table.config';
 
 function K8sClustersList({
@@ -28,6 +29,11 @@ function K8sClustersList({
 }: {
 	controlListPrefix?: React.ReactNode;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
+	const k8sClustersColumnsConfig = useMemo(
+		() => getK8sClustersColumnsConfig(t),
+		[t],
+	);
 	const { featureFlags } = useAppContext();
 	const dotMetricsEnabled =
 		featureFlags?.find((flag) => flag.name === FeatureKeys.DOT_METRICS_ENABLED)

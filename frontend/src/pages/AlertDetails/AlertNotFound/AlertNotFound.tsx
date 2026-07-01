@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
 import ROUTES from 'constants/routes';
@@ -19,6 +20,7 @@ interface AlertNotFoundProps {
 }
 
 function AlertNotFound({ isTestAlert }: AlertNotFoundProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { isCloudUser: isCloudUserVal } = useGetTenantLicense();
 	const { safeNavigate } = useSafeNavigate();
 
@@ -35,12 +37,19 @@ function AlertNotFound({ isTestAlert }: AlertNotFoundProps): JSX.Element {
 			<section className="description">
 				<img src={noDataUrl} alt="no-data" className="not-found-img" />
 				<Typography.Text className="not-found-text">
-					Uh-oh! We couldn&apos;t find the given alert rule.
+					{t('al_nf_title', {
+						defaultValue: "Uh-oh! We couldn't find the given alert rule.",
+					})}
 				</Typography.Text>
 				<Typography.Text className="not-found-text">
 					{isTestAlert
-						? 'This can happen in the following scenario -'
-						: 'This can happen in either of the following scenarios -'}
+						? t('al_nf_scenario_single', {
+								defaultValue: 'This can happen in the following scenario -',
+							})
+						: t('al_nf_scenario_multiple', {
+								defaultValue:
+									'This can happen in either of the following scenarios -',
+							})}
 				</Typography.Text>
 			</section>
 			<section className="reasons">
@@ -49,13 +58,19 @@ function AlertNotFound({ isTestAlert }: AlertNotFoundProps): JSX.Element {
 						<div className="reason">
 							<img src={constructionUrl} alt="no-data" className="construction-img" />
 							<Typography.Text className="text">
-								The alert rule link is incorrect, please verify it once.
+								{t('al_nf_reason_incorrect_link', {
+									defaultValue:
+										'The alert rule link is incorrect, please verify it once.',
+								})}
 							</Typography.Text>
 						</div>
 						<div className="reason">
 							<img src={broomUrl} alt="no-data" className="broom-img" />
 							<Typography.Text className="text">
-								The alert rule you&apos;re trying to check has been deleted.
+								{t('al_nf_reason_deleted', {
+									defaultValue:
+										"The alert rule you're trying to check has been deleted.",
+								})}
 							</Typography.Text>
 						</div>
 					</>
@@ -64,16 +79,20 @@ function AlertNotFound({ isTestAlert }: AlertNotFoundProps): JSX.Element {
 					<div className="reason">
 						<img src={broomUrl} alt="no-data" className="broom-img" />
 						<Typography.Text className="text">
-							You clicked on the Alert notification link received when testing a new
-							Alert rule. Once the alert rule is saved, future notifications will link
-							to actual alerts.
+							{t('al_nf_reason_test_alert', {
+								defaultValue:
+									'You clicked on the Alert notification link received when testing a new Alert rule. Once the alert rule is saved, future notifications will link to actual alerts.',
+							})}
 						</Typography.Text>
 					</div>
 				)}
 			</section>
 			<section className="none-of-above">
 				<Typography.Text className="text">
-					If you feel the issue is none of the above, please contact support.
+					{t('al_nf_none_of_above', {
+						defaultValue:
+							'If you feel the issue is none of the above, please contact support.',
+					})}
 				</Typography.Text>
 				<div className="action-btns">
 					<Button
@@ -81,14 +100,14 @@ function AlertNotFound({ isTestAlert }: AlertNotFoundProps): JSX.Element {
 						icon={<List size={14} />}
 						onClick={checkAllRulesHandler}
 					>
-						Check all rules
+						{t('al_nf_check_all_rules', { defaultValue: 'Check all rules' })}
 					</Button>
 					<Button
 						className="action-btn"
 						icon={<LifeBuoy size={14} />}
 						onClick={contactSupportHandler}
 					>
-						Contact Support
+						{t('al_nf_contact_support', { defaultValue: 'Contact Support' })}
 					</Button>
 				</div>
 			</section>

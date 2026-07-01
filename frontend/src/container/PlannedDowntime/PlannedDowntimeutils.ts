@@ -12,6 +12,7 @@ import type { ErrorType } from 'api/generatedAPIInstance';
 import { AxiosError } from 'axios';
 import { DATE_TIME_FORMATS } from 'constants/dateTimeFormats';
 import dayjs, { Dayjs } from 'dayjs';
+import type { TFunction } from 'i18next';
 import { isEmpty } from 'lodash-es';
 import APIError from 'types/api/error';
 
@@ -20,9 +21,10 @@ type DateTimeString = string | null | undefined;
 export const getDuration = (
 	startTime: DateTimeString,
 	endTime: DateTimeString,
+	t?: TFunction,
 ): string => {
 	if (!startTime || !endTime) {
-		return 'N/A';
+		return t ? t('al_pd_na', { defaultValue: 'N/A' }) : 'N/A';
 	}
 
 	const start = dayjs(startTime);
@@ -33,9 +35,19 @@ export const getDuration = (
 	const hours = Math.floor(durationMs / (1000 * 60 * 60));
 
 	if (minutes < 60) {
-		return `${minutes} min`;
+		return t
+			? t('al_pd_duration_minutes', {
+					defaultValue: '{{count}} min',
+					count: minutes,
+				})
+			: `${minutes} min`;
 	}
-	return `${hours} hours`;
+	return t
+		? t('al_pd_duration_hours', {
+				defaultValue: '{{count}} hours',
+				count: hours,
+			})
+		: `${hours} hours`;
 };
 
 export const formatDateTime = (
@@ -67,13 +79,15 @@ export const getAlertOptionsFromIds = (
 
 export const recurrenceInfo = (
 	schedule?: AlertmanagertypesScheduleDTO | null,
+	t?: TFunction,
 ): string => {
+	const noText = t ? t('al_pd_no', { defaultValue: 'No' }) : 'No';
 	if (!schedule) {
-		return 'No';
+		return noText;
 	}
 	const { startTime, endTime, timezone, recurrence } = schedule;
 	if (!recurrence) {
-		return 'No';
+		return noText;
 	}
 
 	const { duration, repeatOn, repeatType } = recurrence;
@@ -82,12 +96,25 @@ export const recurrenceInfo = (
 		? formatDateTime(startTime, timezone)
 		: '';
 	const formattedEndTime = endTime
-		? `to ${formatDateTime(endTime, timezone)}`
+		? `${t ? t('al_pd_to', { defaultValue: 'to' }) : 'to'} ${formatDateTime(
+				endTime,
+				timezone,
+			)}`
 		: '';
-	const weeklyRepeatString = repeatOn ? `on ${repeatOn.join(', ')}` : '';
-	const durationString = duration ? `- Duration: ${duration}` : '';
+	const weeklyRepeatString = repeatOn
+		? `${t ? t('al_pd_on', { defaultValue: 'on' }) : 'on'} ${repeatOn.join(', ')}`
+		: '';
+	const durationString = duration
+		? `- ${
+				t ? t('al_pd_duration_label', { defaultValue: 'Duration' }) : 'Duration'
+			}: ${duration}`
+		: '';
 
-	return `Repeats - ${repeatType} ${weeklyRepeatString} from ${formattedStartTime} ${formattedEndTime} ${durationString}`;
+	return `${
+		t ? t('al_pd_repeats', { defaultValue: 'Repeats' }) : 'Repeats'
+	} - ${repeatType} ${weeklyRepeatString} ${
+		t ? t('al_pd_from', { defaultValue: 'from' }) : 'from'
+	} ${formattedStartTime} ${formattedEndTime} ${durationString}`;
 };
 
 export const defaultInitialValues: Partial<AlertmanagertypesPlannedMaintenanceDTO> =
@@ -117,6 +144,7 @@ type DeleteDowntimeScheduleProps = {
 	deleteId?: string;
 	hideDeleteDowntimeScheduleModal: () => void;
 	clearSearch: () => void;
+	t: TFunction;
 };
 
 export const deleteDowntimeHandler = ({
@@ -127,10 +155,15 @@ export const deleteDowntimeHandler = ({
 	clearSearch,
 	notifications,
 	showErrorModal,
+	t,
 }: DeleteDowntimeScheduleProps): void => {
 	if (!deleteId) {
 		console.error('Unable to delete, please provide correct deleteId');
-		notifications.error({ message: 'Something went wrong' });
+		notifications.error({
+			message: t('al_pd_something_went_wrong', {
+				defaultValue: 'Something went wrong',
+			}),
+		});
 	} else {
 		deleteDowntimeScheduleAsync(
 			{ pathParams: { id: String(deleteId) } },
@@ -139,7 +172,9 @@ export const deleteDowntimeHandler = ({
 					hideDeleteDowntimeScheduleModal();
 					clearSearch();
 					notifications.success({
-						message: 'Downtime schedule Deleted Successfully',
+						message: t('al_pd_delete_success', {
+							defaultValue: 'Downtime schedule Deleted Successfully',
+						}),
 					});
 					refetchAllSchedules();
 				},
@@ -163,6 +198,30 @@ export const recurrenceOptions = {
 	monthly: { label: 'Monthly', value: 'monthly' },
 };
 
+// Opciones de recurrencia con labels traducidos (values intactos para comparaciones)
+export const getRecurrenceOptions = (
+	t: TFunction,
+): typeof recurrenceOptions => ({
+	doesNotRepeat: {
+		label: t('al_pd_recurrence_does_not_repeat', {
+			defaultValue: 'Does not repeat',
+		}),
+		value: 'does-not-repeat',
+	},
+	daily: {
+		label: t('al_pd_recurrence_daily', { defaultValue: 'Daily' }),
+		value: 'daily',
+	},
+	weekly: {
+		label: t('al_pd_recurrence_weekly', { defaultValue: 'Weekly' }),
+		value: 'weekly',
+	},
+	monthly: {
+		label: t('al_pd_recurrence_monthly', { defaultValue: 'Monthly' }),
+		value: 'monthly',
+	},
+});
+
 export const recurrenceWeeklyOptions = {
 	monday: { label: 'Monday', value: 'monday' },
 	tuesday: { label: 'Tuesday', value: 'tuesday' },
@@ -172,6 +231,40 @@ export const recurrenceWeeklyOptions = {
 	saturday: { label: 'Saturday', value: 'saturday' },
 	sunday: { label: 'Sunday', value: 'sunday' },
 };
+
+// Días de la semana con labels traducidos (values intactos)
+export const getRecurrenceWeeklyOptions = (
+	t: TFunction,
+): typeof recurrenceWeeklyOptions => ({
+	monday: {
+		label: t('al_pd_weekday_monday', { defaultValue: 'Monday' }),
+		value: 'monday',
+	},
+	tuesday: {
+		label: t('al_pd_weekday_tuesday', { defaultValue: 'Tuesday' }),
+		value: 'tuesday',
+	},
+	wednesday: {
+		label: t('al_pd_weekday_wednesday', { defaultValue: 'Wednesday' }),
+		value: 'wednesday',
+	},
+	thursday: {
+		label: t('al_pd_weekday_thursday', { defaultValue: 'Thursday' }),
+		value: 'thursday',
+	},
+	friday: {
+		label: t('al_pd_weekday_friday', { defaultValue: 'Friday' }),
+		value: 'friday',
+	},
+	saturday: {
+		label: t('al_pd_weekday_saturday', { defaultValue: 'Saturday' }),
+		value: 'saturday',
+	},
+	sunday: {
+		label: t('al_pd_weekday_sunday', { defaultValue: 'Sunday' }),
+		value: 'sunday',
+	},
+});
 interface DurationInfo {
 	value: number;
 	unit: string;
@@ -217,6 +310,17 @@ export const recurrenceOptionWithSubmenu: Option[] = [
 	recurrenceOptions.weekly,
 	recurrenceOptions.monthly,
 ];
+
+// Opciones del select de recurrencia con labels traducidos
+export const getRecurrenceOptionWithSubmenu = (t: TFunction): Option[] => {
+	const options = getRecurrenceOptions(t);
+	return [
+		options.doesNotRepeat,
+		options.daily,
+		options.weekly,
+		options.monthly,
+	];
+};
 
 export const isScheduleRecurring = (
 	schedule?: AlertmanagertypesPlannedMaintenanceDTO['schedule'] | null,

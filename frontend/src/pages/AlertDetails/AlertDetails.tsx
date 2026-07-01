@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { Divider } from '@signozhq/ui/divider';
 import logEvent from 'api/common/logEvent';
@@ -25,6 +26,7 @@ import { useGetAlertRuleDetails, useRouteTabUtils } from './hooks';
 import './AlertDetails.styles.scss';
 
 function AlertDetails(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { pathname } = useLocation();
 	const { routes } = useRouteTabUtils();
 	const params = useUrlQuery();
@@ -43,13 +45,19 @@ function AlertDetails(): JSX.Element {
 			return alertTitle;
 		}
 		if (isTestAlert) {
-			return 'Test Alert';
+			return t('al_test_alert', { defaultValue: 'Test Alert' });
 		}
 		if (isLoading) {
 			return document.title;
 		}
-		return 'Alert Not Found';
-	}, [alertRuleName, alertDetailsResponse?.data?.alert, isTestAlert, isLoading]);
+		return t('al_alert_not_found', { defaultValue: 'Alert Not Found' });
+	}, [
+		alertRuleName,
+		alertDetailsResponse?.data?.alert,
+		isTestAlert,
+		isLoading,
+		t,
+	]);
 
 	useEffect(() => {
 		document.title = getDocumentTitle;
@@ -98,7 +106,10 @@ function AlertDetails(): JSX.Element {
 				<AlertBreadcrumb
 					className="alert-details__breadcrumb"
 					items={[
-						{ title: 'Alert Rules', route: ROUTES.LIST_ALL_ALERT },
+						{
+							title: t('al_alert_rules', { defaultValue: 'Alert Rules' }),
+							route: ROUTES.LIST_ALL_ALERT,
+						},
 						{ title: ruleId, isLast: true },
 					]}
 				/>

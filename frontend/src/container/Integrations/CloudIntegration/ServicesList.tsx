@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom-v5-compat';
 import { Skeleton } from 'antd';
 import {
@@ -22,6 +23,7 @@ function ServicesList({
 	cloudAccountId,
 	type,
 }: ServicesListProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const urlQuery = useUrlQuery();
 	const navigate = useNavigate();
 	const isAccountConnected = Boolean(cloudAccountId);
@@ -117,7 +119,7 @@ function ServicesList({
 					alt="no-services-found"
 					className="empty-state-svg"
 				/>{' '}
-				No services found
+				{t('intg_no_services_found', { defaultValue: 'No services found' })}
 			</div>
 		);
 	}
@@ -154,13 +156,13 @@ function ServicesList({
 				<div className="aws-services-list-view-sidebar-content">
 					<div className="aws-services-enabled">
 						<div className="aws-services-list-view-sidebar-content-header">
-							Enabled
+							{t('intg_enabled', { defaultValue: 'Enabled' })}
 						</div>
 						{enabledServices.map((service) => renderServiceItem(service))}
 
 						{isEnabledServicesEmpty && (
 							<div className="aws-services-list-view-sidebar-content-item-empty-message">
-								No enabled services
+								{t('intg_no_enabled_services', { defaultValue: 'No enabled services' })}
 							</div>
 						)}
 					</div>
@@ -168,7 +170,7 @@ function ServicesList({
 					{!isNotEnabledServicesEmpty && (
 						<div className="aws-services-not-enabled">
 							<div className="aws-services-list-view-sidebar-content-header">
-								Not Enabled
+								{t('intg_not_enabled', { defaultValue: 'Not Enabled' })}
 							</div>
 							{notEnabledServices.map((service) => renderServiceItem(service))}
 						</div>

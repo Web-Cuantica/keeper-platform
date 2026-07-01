@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@signozhq/ui/button';
 import { Skeleton } from 'antd';
 import cx from 'classnames';
@@ -31,6 +32,7 @@ function OtherFields({
 	onAdd,
 	isAtLimit,
 }: OtherFieldsProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { data, isFetching } = useGetQueryKeySuggestions(
 		{
 			signal,
@@ -69,7 +71,11 @@ function OtherFields({
 	if (isFetching) {
 		return (
 			<div className={cx(styles.section, styles.sectionOther)}>
-				<div className={styles.sectionHeader}>OTHER FIELDS</div>
+				<div className={styles.sectionHeader}>
+					{t('cmp_fields_selector_other_fields', {
+						defaultValue: 'OTHER FIELDS',
+					})}
+				</div>
 				<div className={styles.otherList}>
 					{Array.from({ length: 5 }).map((_, i) => (
 						<div
@@ -87,12 +93,20 @@ function OtherFields({
 
 	return (
 		<div className={cx(styles.section, styles.sectionOther)}>
-			<div className={styles.sectionHeader}>OTHER FIELDS</div>
+			<div className={styles.sectionHeader}>
+				{t('cmp_fields_selector_other_fields', {
+					defaultValue: 'OTHER FIELDS',
+				})}
+			</div>
 			<div className={styles.otherList}>
 				<OverlayScrollbar>
 					<>
 						{otherFields.length === 0 ? (
-							<div className={styles.noValues}>No values found</div>
+							<div className={styles.noValues}>
+								{t('cmp_fields_selector_no_values', {
+									defaultValue: 'No values found',
+								})}
+							</div>
 						) : (
 							otherFields.map((attr) => (
 								<div
@@ -108,7 +122,7 @@ function OtherFields({
 											size="sm"
 											onClick={(): void => onAdd(attr)}
 										>
-											Add
+											{t('cmp_fields_selector_add', { defaultValue: 'Add' })}
 										</Button>
 									)}
 								</div>

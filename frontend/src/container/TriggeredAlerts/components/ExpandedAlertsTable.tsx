@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import TanStackTable, {
 	SortState,
 	TableColumnDef,
@@ -25,6 +26,7 @@ function ExpandedAlertsTable({
 	onRowClickNewTab,
 	isLoading,
 }: ExpandedAlertsTableProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [page, setPage] = useState(1);
 	const [orderBy, setOrderBy] = useState<SortState | null>(null);
 
@@ -68,7 +70,7 @@ function ExpandedAlertsTable({
 					defaultPage: page,
 					defaultLimit: EXPANDED_PAGE_SIZE,
 					showTotalCount: true,
-					totalCountLabel: 'Alerts',
+					totalCountLabel: t('al_col_alerts', { defaultValue: 'Alerts' }),
 					showPageSize: false,
 					onPageChange: handlePageChange,
 				}}

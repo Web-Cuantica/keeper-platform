@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Plus, Trash2, X } from '@signozhq/icons';
 import { Button } from '@signozhq/ui/button';
 import { toast } from '@signozhq/ui/sonner';
@@ -33,6 +34,7 @@ export const SSOType = new Map<string, string>([
 ]);
 
 function AuthDomain(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [record, setRecord] = useState<AuthtypesGettableAuthDomainDTO>();
 	const [addDomain, setAddDomain] = useState<boolean>(false);
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -74,7 +76,11 @@ function AuthDomain(): JSX.Element {
 			{ pathParams: { id: activeDomain.id } },
 			{
 				onSuccess: () => {
-					toast.success('Domain deleted successfully');
+					toast.success(
+						t('set_domain_deleted_success', {
+							defaultValue: 'Domain deleted successfully',
+						}),
+					);
 					void refetchAuthDomainListResponse();
 					hideDeleteModal();
 				},
@@ -94,6 +100,7 @@ function AuthDomain(): JSX.Element {
 
 		refetchAuthDomainListResponse,
 		showErrorModal,
+		t,
 	]);
 
 	const formattedError = useMemo(() => {
@@ -113,14 +120,16 @@ function AuthDomain(): JSX.Element {
 	const columns: ColumnsType<AuthtypesGettableAuthDomainDTO> = useMemo(
 		() => [
 			{
-				title: 'Domain',
+				title: t('set_auth_col_domain', { defaultValue: 'Domain' }) as string,
 				dataIndex: 'name',
 				key: 'name',
 				width: 100,
 				render: (val): JSX.Element => <span>{val}</span>,
 			},
 			{
-				title: 'Enforce SSO',
+				title: t('set_auth_col_enforce_sso', {
+					defaultValue: 'Enforce SSO',
+				}) as string,
 				dataIndex: ['config', 'ssoEnabled'],
 				key: 'ssoEnabled',
 				width: 80,
@@ -132,7 +141,9 @@ function AuthDomain(): JSX.Element {
 				),
 			},
 			{
-				title: 'IDP Initiated SSO URL',
+				title: t('set_auth_col_idp_sso_url', {
+					defaultValue: 'IDP Initiated SSO URL',
+				}) as string,
 				dataIndex: 'relayState',
 				key: 'relayState',
 				width: 80,
@@ -147,7 +158,7 @@ function AuthDomain(): JSX.Element {
 				},
 			},
 			{
-				title: 'Action',
+				title: t('set_auth_col_action', { defaultValue: 'Action' }) as string,
 				dataIndex: 'action',
 				key: 'action',
 				width: 100,
@@ -158,26 +169,29 @@ function AuthDomain(): JSX.Element {
 							onClick={(): void => setRecord(record)}
 							variant="link"
 						>
-							Configure {SSOType.get(record.config?.ssoType || '')}
+							{t('set_auth_configure', { defaultValue: 'Configure' })}{' '}
+							{SSOType.get(record.config?.ssoType || '')}
 						</Button>
 						<Button
 							className="auth-domain-list-action-link delete"
 							onClick={(): void => showDeleteModal(record)}
 							variant="link"
 						>
-							Delete
+							{t('set_auth_delete', { defaultValue: 'Delete' })}
 						</Button>
 					</section>
 				),
 			},
 		],
-		[showDeleteModal],
+		[showDeleteModal, t],
 	);
 
 	return (
 		<div className="auth-domain">
 			<section className="auth-domain-header">
-				<h3 className="auth-domain-title">Authenticated Domains</h3>
+				<h3 className="auth-domain-title">
+					{t('set_authenticated_domains', { defaultValue: 'Authenticated Domains' })}
+				</h3>
 				<Button
 					prefix={<Plus size="md" />}
 					onClick={(): void => {
@@ -187,7 +201,7 @@ function AuthDomain(): JSX.Element {
 					size="sm"
 					color="primary"
 				>
-					Add Domain
+					{t('set_add_domain', { defaultValue: 'Add Domain' })}
 				</Button>
 			</section>
 			{formattedError && <ErrorContent error={formattedError} />}
@@ -217,7 +231,11 @@ function AuthDomain(): JSX.Element {
 
 			<Modal
 				className="delete-ingestion-key-modal"
-				title={<span className="title">Delete Domain</span>}
+				title={
+					<span className="title">
+						{t('set_delete_domain', { defaultValue: 'Delete Domain' })}
+					</span>
+				}
 				open={isDeleteModalOpen}
 				closable
 				onCancel={hideDeleteModal}
@@ -229,7 +247,7 @@ function AuthDomain(): JSX.Element {
 						className="cancel-btn"
 						prefix={<X size={16} />}
 					>
-						Cancel
+						{t('set_cancel', { defaultValue: 'Cancel' })}
 					</Button>,
 					<Button
 						key="submit"
@@ -238,13 +256,18 @@ function AuthDomain(): JSX.Element {
 						className="delete-btn"
 						loading={isLoading}
 					>
-						Delete Domain
+						{t('set_delete_domain', { defaultValue: 'Delete Domain' })}
 					</Button>,
 				]}
 			>
 				<p className="delete-text">
-					Are you sure you want to delete the domain{' '}
-					<strong>{activeDomain?.name}</strong>? This action cannot be undone.
+					{t('set_delete_domain_confirm_prefix', {
+						defaultValue: 'Are you sure you want to delete the domain',
+					})}{' '}
+					<strong>{activeDomain?.name}</strong>?{' '}
+					{t('set_delete_domain_confirm_suffix', {
+						defaultValue: 'This action cannot be undone.',
+					})}
 				</p>
 			</Modal>
 		</div>

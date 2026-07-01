@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Popover, Tooltip } from 'antd';
 import { RadioGroup, RadioGroupItem } from '@signozhq/ui/radio-group';
 import { Typography } from '@signozhq/ui/typography';
@@ -24,6 +25,7 @@ export default function DownloadOptionsMenu({
 	dataSource,
 	selectedColumns,
 }: DownloadOptionsMenuProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [exportFormat, setExportFormat] = useState<string>(DownloadFormats.CSV);
 	const [rowLimit, setRowLimit] = useState<number>(DownloadRowCounts.TEN_K);
 	const [columnsScope, setColumnsScope] = useState<string>(
@@ -59,11 +61,17 @@ export default function DownloadOptionsMenu({
 			<div
 				className="export-options-container"
 				role="dialog"
-				aria-label="Export options"
+				aria-label={
+					t('cmp_download_export_options', {
+						defaultValue: 'Export options',
+					}) as string
+				}
 				aria-modal="true"
 			>
 				<div className="export-format">
-					<Typography.Text className="title">FORMAT</Typography.Text>
+					<Typography.Text className="title">
+						{t('cmp_download_format', { defaultValue: 'FORMAT' })}
+					</Typography.Text>
 					<RadioGroup value={exportFormat} onChange={setExportFormat}>
 						<RadioGroupItem value={DownloadFormats.CSV}>csv</RadioGroupItem>
 						<RadioGroupItem value={DownloadFormats.JSONL}>jsonl</RadioGroupItem>
@@ -73,7 +81,11 @@ export default function DownloadOptionsMenu({
 				<div className="horizontal-line" />
 
 				<div className="row-limit">
-					<Typography.Text className="title">Number of Rows</Typography.Text>
+					<Typography.Text className="title">
+						{t('cmp_download_number_of_rows', {
+							defaultValue: 'Number of Rows',
+						})}
+					</Typography.Text>
 					<RadioGroup
 						value={String(rowLimit)}
 						onChange={(value): void => setRowLimit(Number(value))}
@@ -95,11 +107,15 @@ export default function DownloadOptionsMenu({
 						<div className="horizontal-line" />
 
 						<div className="columns-scope">
-							<Typography.Text className="title">Columns</Typography.Text>
+							<Typography.Text className="title">
+								{t('cmp_download_columns', { defaultValue: 'Columns' })}
+							</Typography.Text>
 							<RadioGroup value={columnsScope} onChange={setColumnsScope}>
-								<RadioGroupItem value={DownloadColumnsScopes.ALL}>All</RadioGroupItem>
+								<RadioGroupItem value={DownloadColumnsScopes.ALL}>
+									{t('cmp_download_columns_all', { defaultValue: 'All' })}
+								</RadioGroupItem>
 								<RadioGroupItem value={DownloadColumnsScopes.SELECTED}>
-									Selected
+									{t('cmp_download_columns_selected', { defaultValue: 'Selected' })}
 								</RadioGroupItem>
 							</RadioGroup>
 						</div>
@@ -114,7 +130,7 @@ export default function DownloadOptionsMenu({
 					disabled={isDownloading}
 					loading={isDownloading}
 				>
-					Export
+					{t('cmp_download_export', { defaultValue: 'Export' })}
 				</Button>
 			</div>
 		),
@@ -125,6 +141,7 @@ export default function DownloadOptionsMenu({
 			isDownloading,
 			handleExport,
 			dataSource,
+			t,
 		],
 	);
 
@@ -138,7 +155,10 @@ export default function DownloadOptionsMenu({
 			onOpenChange={setIsPopoverOpen}
 			rootClassName="download-popover"
 		>
-			<Tooltip title="Download" placement="top">
+			<Tooltip
+				title={t('cmp_download_tooltip', { defaultValue: 'Download' })}
+				placement="top"
+			>
 				<Button
 					className="periscope-btn ghost"
 					icon={

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 // eslint-disable-next-line no-restricted-imports
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
@@ -39,6 +40,32 @@ function AutoRefresh({
 		(state) => state.globalTime,
 	);
 	const { pathname } = useLocation();
+	const { t } = useTranslation('pages');
+
+	// Traduce la etiqueta del intervalo por su `key` sin alterar la constante
+	// (que se usa para la lógica de filtro/selección con los valores en inglés).
+	const getIntervalLabel = useCallback(
+		(key: string, fallback: string): string => {
+			const labelKeyMap: Record<string, string> = {
+				'5s': 'dt_interval_5_seconds',
+				'10s': 'dt_interval_10_seconds',
+				'30s': 'dt_interval_30_seconds',
+				'1m': 'dt_interval_1_minute',
+				'5m': 'dt_interval_5_minutes',
+				'10m': 'dt_interval_10_minutes',
+				'30m': 'dt_interval_30_minutes',
+				'1h': 'dt_interval_1_hour',
+				'2h': 'dt_interval_2_hours',
+				'1d': 'dt_interval_1_day',
+			};
+			const i18nKey = labelKeyMap[key];
+			if (!i18nKey) {
+				return fallback;
+			}
+			return t(`pages:${i18nKey}`, { defaultValue: fallback });
+		},
+		[t],
+	);
 
 	const isDisabled = useMemo(
 		() =>
@@ -172,10 +199,10 @@ function AutoRefresh({
 						disabled={isDisabled}
 						className="auto-refresh-checkbox"
 					>
-						Auto Refresh
+						{t('pages:dt_auto_refresh', { defaultValue: 'Auto Refresh' })}
 					</Checkbox>
 					<Typography.Text disabled={isDisabled} className="refresh-interval-text">
-						Refresh Interval
+						{t('pages:dt_refresh_interval', { defaultValue: 'Refresh Interval' })}
 					</Typography.Text>
 					{refreshIntervalOptions
 						.filter((e) => e.label !== 'off')
@@ -188,7 +215,7 @@ function AutoRefresh({
 									onChangeHandler(option.key);
 								}}
 							>
-								{option.label}
+								{getIntervalLabel(option.key, option.label)}
 								{option.key === selectedOption && <Check size={14} />}
 							</Button>
 						))}
@@ -196,7 +223,11 @@ function AutoRefresh({
 			}
 		>
 			<ButtonContainer
-				title="Set auto refresh"
+				title={
+					t('pages:dt_set_auto_refresh', {
+						defaultValue: 'Set auto refresh',
+					}) as string
+				}
 				type={showAutoRefreshBtnPrimary ? 'primary' : 'default'}
 			>
 				<ChevronDown size={14} />

@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useQueryClient } from 'react-query';
 import { Button } from '@signozhq/ui/button';
 import { DrawerWrapper } from '@signozhq/ui/drawer';
@@ -24,6 +25,7 @@ function AccountSettingsModal({
 	account,
 	setActiveAccount,
 }: AccountSettingsModalProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const {
 		form,
 		isLoading,
@@ -45,7 +47,7 @@ function AccountSettingsModal({
 		<DrawerWrapper
 			open={true}
 			className="account-settings-modal"
-			title="Account Settings"
+			title={t('intg_account_settings', { defaultValue: 'Account Settings' })}
 			direction="right"
 			showCloseButton
 			onOpenChange={(open): void => {
@@ -75,7 +77,7 @@ function AccountSettingsModal({
 						loading={isLoading}
 						prefix={<Save size={14} />}
 					>
-						Update Changes
+						{t('intg_update_changes', { defaultValue: 'Update Changes' })}
 					</Button>
 				</div>
 			}
@@ -91,10 +93,14 @@ function AccountSettingsModal({
 					<div className="account-settings-modal__body-account-info">
 						<div className="account-settings-modal__body-account-info-connected-account-details">
 							<div className="account-settings-modal__body-account-info-connected-account-details-title">
-								Connected Account details
+								{t('intg_connected_account_details', {
+									defaultValue: 'Connected Account details',
+								})}
 							</div>
 							<div className="account-settings-modal__body-account-info-connected-account-details-account-id">
-								Azure Subscription:{' '}
+								{t('intg_azure_subscription_label', {
+									defaultValue: 'Azure Subscription:',
+								})}{' '}
 								<span className="account-settings-modal__body-account-info-connected-account-details-account-id-account-id">
 									{account?.providerAccountId}
 								</span>
@@ -105,7 +111,7 @@ function AccountSettingsModal({
 					{azureConfig?.deployment_region && (
 						<div className="account-settings-modal__body-region-selector">
 							<div className="account-settings-modal__body-region-selector-title">
-								Deployment region
+								{t('intg_deployment_region', { defaultValue: 'Deployment region' })}
 							</div>
 							<div className="account-settings-modal__body-region-selector-description">
 								{azureConfig.deployment_region}
@@ -115,10 +121,12 @@ function AccountSettingsModal({
 
 					<div className="account-settings-modal__body-region-selector">
 						<div className="account-settings-modal__body-region-selector-title">
-							Resource groups
+							{t('intg_resource_groups', { defaultValue: 'Resource groups' })}
 						</div>
 						<div className="account-settings-modal__body-region-selector-description">
-							Update the resource groups that should be monitored.
+							{t('intg_update_resource_groups_desc', {
+								defaultValue: 'Update the resource groups that should be monitored.',
+							})}
 						</div>
 
 						<Form.Item
@@ -128,7 +136,9 @@ function AccountSettingsModal({
 									required: true,
 									type: 'array',
 									min: 1,
-									message: 'Please add at least one resource group',
+									message: t('intg_add_resource_group_required', {
+										defaultValue: 'Please add at least one resource group',
+									}),
 								},
 							]}
 						>

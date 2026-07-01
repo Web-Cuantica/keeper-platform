@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Style } from '@signozhq/design-tokens';
 import { CircleHelp } from '@signozhq/icons';
 import { Callout } from '@signozhq/ui/callout';
@@ -18,6 +19,7 @@ function ConfigureOIDCAuthnProvider({
 }: {
 	isCreate: boolean;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const form = Form.useFormInstance();
 
 	const [expandedSection, setExpandedSection] = useState<ExpandedSection>(null);
@@ -33,18 +35,24 @@ function ConfigureOIDCAuthnProvider({
 	return (
 		<div className="authn-provider">
 			<section className="authn-provider__header">
-				<h3 className="authn-provider__title">Edit OIDC Authentication</h3>
+				<h3 className="authn-provider__title">
+					{t('set_auth_oidc_edit_title', {
+						defaultValue: 'Edit OIDC Authentication',
+					})}
+				</h3>
 				<p className="authn-provider__description">
-					Configure OpenID Connect Single Sign-On with your Identity Provider. Read
-					the{' '}
+					{t('set_auth_oidc_edit_desc_prefix', {
+						defaultValue:
+							'Configure OpenID Connect Single Sign-On with your Identity Provider. Read the',
+					})}{' '}
 					<a
 						href="https://signoz.io/docs/userguide/sso-authentication"
 						target="_blank"
 						rel="noreferrer"
 					>
-						docs
+						{t('set_auth_docs_link', { defaultValue: 'docs' })}
 					</a>{' '}
-					for more information.
+					{t('set_auth_for_more_info', { defaultValue: 'for more information.' })}
 				</p>
 			</section>
 
@@ -53,8 +61,13 @@ function ConfigureOIDCAuthnProvider({
 				<div className="authn-provider__left">
 					<div className="authn-provider__field-group">
 						<label className="authn-provider__label" htmlFor="oidc-domain">
-							Domain
-							<Tooltip title="The email domain for users who should use SSO (e.g., `example.com` for users with `@example.com` emails)">
+							{t('set_auth_field_domain', { defaultValue: 'Domain' })}
+							<Tooltip
+								title={t('set_auth_tooltip_domain', {
+									defaultValue:
+										'The email domain for users who should use SSO (e.g., `example.com` for users with `@example.com` emails)',
+								})}
+							>
 								<CircleHelp size={14} color={Style.L3_FOREGROUND} cursor="help" />
 							</Tooltip>
 						</label>
@@ -62,7 +75,13 @@ function ConfigureOIDCAuthnProvider({
 							name="name"
 							className="authn-provider__form-item"
 							rules={[
-								{ required: true, message: 'Domain is required', whitespace: true },
+								{
+									required: true,
+									message: t('set_auth_domain_required', {
+										defaultValue: 'Domain is required',
+									}),
+									whitespace: true,
+								},
 							]}
 						>
 							<Input id="oidc-domain" disabled={!isCreate} />
@@ -71,8 +90,13 @@ function ConfigureOIDCAuthnProvider({
 
 					<div className="authn-provider__field-group">
 						<label className="authn-provider__label" htmlFor="oidc-issuer">
-							Issuer URL
-							<Tooltip title='The URL identifier for the OIDC provider. For example: "https://accounts.google.com" or "https://login.salesforce.com".'>
+							{t('set_auth_field_issuer_url', { defaultValue: 'Issuer URL' })}
+							<Tooltip
+								title={t('set_auth_tooltip_issuer_url', {
+									defaultValue:
+										'The URL identifier for the OIDC provider. For example: "https://accounts.google.com" or "https://login.salesforce.com".',
+								})}
+							>
 								<CircleHelp size={14} color={Style.L3_FOREGROUND} cursor="help" />
 							</Tooltip>
 						</label>
@@ -80,7 +104,13 @@ function ConfigureOIDCAuthnProvider({
 							name={['oidcConfig', 'issuer']}
 							className="authn-provider__form-item"
 							rules={[
-								{ required: true, message: 'Issuer URL is required', whitespace: true },
+								{
+									required: true,
+									message: t('set_auth_issuer_url_required', {
+										defaultValue: 'Issuer URL is required',
+									}),
+									whitespace: true,
+								},
 							]}
 						>
 							<Input id="oidc-issuer" />
@@ -89,8 +119,13 @@ function ConfigureOIDCAuthnProvider({
 
 					<div className="authn-provider__field-group">
 						<label className="authn-provider__label" htmlFor="oidc-issuer-alias">
-							Issuer Alias
-							<Tooltip title="Optional: Override the issuer URL from .well-known/openid-configuration for providers like Azure or Oracle IDCS.">
+							{t('set_auth_field_issuer_alias', { defaultValue: 'Issuer Alias' })}
+							<Tooltip
+								title={t('set_auth_tooltip_issuer_alias', {
+									defaultValue:
+										'Optional: Override the issuer URL from .well-known/openid-configuration for providers like Azure or Oracle IDCS.',
+								})}
+							>
 								<CircleHelp size={14} color={Style.L3_FOREGROUND} cursor="help" />
 							</Tooltip>
 						</label>
@@ -104,8 +139,12 @@ function ConfigureOIDCAuthnProvider({
 
 					<div className="authn-provider__field-group">
 						<label className="authn-provider__label" htmlFor="oidc-client-id">
-							Client ID
-							<Tooltip title="The application's client ID from your OIDC provider.">
+							{t('set_auth_field_client_id', { defaultValue: 'Client ID' })}
+							<Tooltip
+								title={t('set_auth_tooltip_oidc_client_id', {
+									defaultValue: "The application's client ID from your OIDC provider.",
+								})}
+							>
 								<CircleHelp size={14} color={Style.L3_FOREGROUND} cursor="help" />
 							</Tooltip>
 						</label>
@@ -113,7 +152,13 @@ function ConfigureOIDCAuthnProvider({
 							name={['oidcConfig', 'clientId']}
 							className="authn-provider__form-item"
 							rules={[
-								{ required: true, message: 'Client ID is required', whitespace: true },
+								{
+									required: true,
+									message: t('set_auth_client_id_required', {
+										defaultValue: 'Client ID is required',
+									}),
+									whitespace: true,
+								},
 							]}
 						>
 							<Input id="oidc-client-id" />
@@ -122,8 +167,12 @@ function ConfigureOIDCAuthnProvider({
 
 					<div className="authn-provider__field-group">
 						<label className="authn-provider__label" htmlFor="oidc-client-secret">
-							Client Secret
-							<Tooltip title="The application's client secret from your OIDC provider.">
+							{t('set_auth_field_client_secret', { defaultValue: 'Client Secret' })}
+							<Tooltip
+								title={t('set_auth_tooltip_oidc_client_secret', {
+									defaultValue: "The application's client secret from your OIDC provider.",
+								})}
+							>
 								<CircleHelp size={14} color={Style.L3_FOREGROUND} cursor="help" />
 							</Tooltip>
 						</label>
@@ -133,7 +182,9 @@ function ConfigureOIDCAuthnProvider({
 							rules={[
 								{
 									required: true,
-									message: 'Client Secret is required',
+									message: t('set_auth_client_secret_required', {
+										defaultValue: 'Client Secret is required',
+									}),
 									whitespace: true,
 								},
 							]}
@@ -157,10 +208,16 @@ function ConfigureOIDCAuthnProvider({
 									);
 								}}
 							>
-								Skip Email Verification
+								{t('set_auth_skip_email_verification', {
+									defaultValue: 'Skip Email Verification',
+								})}
 							</Checkbox>
 						</Form.Item>
-						<Tooltip title='Whether to skip email verification. Defaults to "false"'>
+						<Tooltip
+							title={t('set_auth_tooltip_skip_email_verification', {
+								defaultValue: 'Whether to skip email verification. Defaults to "false"',
+							})}
+						>
 							<CircleHelp size={14} color={Style.L3_FOREGROUND} cursor="help" />
 						</Tooltip>
 					</div>
@@ -177,16 +234,24 @@ function ConfigureOIDCAuthnProvider({
 									form.setFieldValue(['oidcConfig', 'getUserInfo'], checked);
 								}}
 							>
-								Get User Info
+								{t('set_auth_get_user_info', { defaultValue: 'Get User Info' })}
 							</Checkbox>
 						</Form.Item>
-						<Tooltip title="Use the userinfo endpoint to get additional claims. Useful when providers return thin ID tokens.">
+						<Tooltip
+							title={t('set_auth_tooltip_get_user_info', {
+								defaultValue:
+									'Use the userinfo endpoint to get additional claims. Useful when providers return thin ID tokens.',
+							})}
+						>
 							<CircleHelp size={14} color={Style.L3_FOREGROUND} cursor="help" />
 						</Tooltip>
 					</div>
 					<div className="authn-provider__callout-wrapper">
 						<Callout type="warning" size="small" showIcon className="callout">
-							OIDC won&apos;t be enabled unless you enter all the attributes above
+							{t('set_auth_oidc_callout', {
+								defaultValue:
+									"OIDC won't be enabled unless you enter all the attributes above",
+							})}
 						</Callout>
 					</div>
 				</div>

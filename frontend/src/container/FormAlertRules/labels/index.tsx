@@ -121,7 +121,7 @@ function LabelSelect({
 
 	const handleClearAll = (): void => {
 		Modal.confirm({
-			title: 'Confirm',
+			title: t('pages:al_confirm_title', { defaultValue: 'Confirm' }),
 			icon: <CircleAlert size="md" />,
 			content: t('remove_label_confirm'),
 			onOk() {
@@ -136,10 +136,15 @@ function LabelSelect({
 	};
 	const renderPlaceholder = useCallback((): string => {
 		if (step === 'LabelKey') {
-			return 'Enter a label key then press ENTER.';
+			return t('pages:al_placeholder_enter_label_key', {
+				defaultValue: 'Enter a label key then press ENTER.',
+			});
 		}
 		if (step === 'LabelValue') {
-			return `Enter a value for label key(${staging[0]}) then press ENTER.`;
+			return t('pages:al_placeholder_enter_label_value', {
+				defaultValue: `Enter a value for label key(${staging[0]}) then press ENTER.`,
+				labelKey: staging[0],
+			});
 		}
 		return t('placeholder_label_key_pair');
 	}, [t, step, staging]);

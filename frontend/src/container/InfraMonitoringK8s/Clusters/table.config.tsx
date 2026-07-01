@@ -1,3 +1,4 @@
+import type { TFunction } from 'i18next';
 import { Tooltip } from 'antd';
 import { TableColumnDef } from 'components/TanStackTableView';
 import TanStackTable from 'components/TanStackTableView';
@@ -31,10 +32,18 @@ export const getK8sClustersListQuery = (): K8sClustersListPayload => ({
 	orderBy: { columnName: 'cpu', order: 'desc' },
 });
 
-export const k8sClustersColumnsConfig: TableColumnDef<K8sClusterData>[] = [
+export const getK8sClustersColumnsConfig = (
+	t: TFunction,
+): TableColumnDef<K8sClusterData>[] => [
 	{
 		id: 'clusterGroup',
-		header: (): React.ReactNode => <EntityGroupHeader title="CLUSTER GROUP" />,
+		header: (): React.ReactNode => (
+			<EntityGroupHeader
+				title={t('pages:infra_col_cluster_group', {
+					defaultValue: 'CLUSTER GROUP',
+				})}
+			/>
+		),
 		accessorFn: (row): string => row.meta.k8s_cluster_name || '',
 		width: { min: 300 },
 		enableSort: false,
@@ -57,7 +66,7 @@ export const k8sClustersColumnsConfig: TableColumnDef<K8sClusterData>[] = [
 		id: 'clusterName',
 		header: (): React.ReactNode => (
 			<EntityGroupHeader
-				title="Cluster Name"
+				title={t('pages:infra_col_cluster_name', { defaultValue: 'Cluster Name' })}
 				icon={<Boxes data-hide-expanded="true" size={14} />}
 			/>
 		),
@@ -79,7 +88,9 @@ export const k8sClustersColumnsConfig: TableColumnDef<K8sClusterData>[] = [
 	},
 	{
 		id: 'cpu',
-		header: 'CPU Usage (cores)',
+		header: t('pages:infra_col_cpu_usage_cores', {
+			defaultValue: 'CPU Usage (cores)',
+		}),
 		accessorFn: (row): number => row.cpuUsage,
 		width: { min: 220 },
 		enableSort: true,
@@ -98,7 +109,9 @@ export const k8sClustersColumnsConfig: TableColumnDef<K8sClusterData>[] = [
 	},
 	{
 		id: 'cpu_allocatable',
-		header: 'CPU Alloc (cores)',
+		header: t('pages:infra_col_cpu_alloc_cores', {
+			defaultValue: 'CPU Alloc (cores)',
+		}),
 		accessorFn: (row): number => row.cpuAllocatable,
 		width: { min: 220 },
 		enableSort: true,
@@ -117,7 +130,9 @@ export const k8sClustersColumnsConfig: TableColumnDef<K8sClusterData>[] = [
 	},
 	{
 		id: 'memory',
-		header: 'Memory Usage (WSS)',
+		header: t('pages:infra_col_memory_usage_wss_full', {
+			defaultValue: 'Memory Usage (WSS)',
+		}),
 		accessorFn: (row): number => row.memoryUsage,
 		width: { min: 220 },
 		enableSort: true,
@@ -136,7 +151,9 @@ export const k8sClustersColumnsConfig: TableColumnDef<K8sClusterData>[] = [
 	},
 	{
 		id: 'memory_allocatable',
-		header: 'Memory Allocatable',
+		header: t('pages:infra_col_memory_allocatable', {
+			defaultValue: 'Memory Allocatable',
+		}),
 		accessorFn: (row): number => row.memoryAllocatable,
 		width: { min: 220 },
 		enableSort: true,

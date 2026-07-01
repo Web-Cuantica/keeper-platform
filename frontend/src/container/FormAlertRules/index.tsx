@@ -429,7 +429,7 @@ function FormAlertRules({
 
 		if (!currentQuery.promql || currentQuery.promql.length === 0) {
 			notifications.error({
-				message: 'Error',
+				message: t('pages:al_notification_error', { defaultValue: 'Error' }),
 				description: t('promql_required'),
 			});
 			return false;
@@ -438,7 +438,7 @@ function FormAlertRules({
 		currentQuery.promql.forEach((item) => {
 			if (item.query === '') {
 				notifications.error({
-					message: 'Error',
+					message: t('pages:al_notification_error', { defaultValue: 'Error' }),
 					description: t('promql_required'),
 				});
 				retval = false;
@@ -459,7 +459,7 @@ function FormAlertRules({
 			currentQuery.clickhouse_sql.length === 0
 		) {
 			notifications.error({
-				message: 'Error',
+				message: t('pages:al_notification_error', { defaultValue: 'Error' }),
 				description: t('chquery_required'),
 			});
 			return false;
@@ -468,7 +468,7 @@ function FormAlertRules({
 		currentQuery.clickhouse_sql.forEach((item) => {
 			if (item.query === '') {
 				notifications.error({
-					message: 'Error',
+					message: t('pages:al_notification_error', { defaultValue: 'Error' }),
 					description: t('chquery_required'),
 				});
 				retval = false;
@@ -488,7 +488,7 @@ function FormAlertRules({
 			currentQuery.builder.queryData?.length === 0
 		) {
 			notifications.error({
-				message: 'Error',
+				message: t('pages:al_notification_error', { defaultValue: 'Error' }),
 				description: t('condition_required'),
 			});
 			return false;
@@ -500,7 +500,7 @@ function FormAlertRules({
 			!alertDef.condition?.target
 		) {
 			notifications.error({
-				message: 'Error',
+				message: t('pages:al_notification_error', { defaultValue: 'Error' }),
 				description: t('target_missing'),
 			});
 			return false;
@@ -600,7 +600,7 @@ function FormAlertRules({
 			};
 
 			notifications.success({
-				message: 'Success',
+				message: t('pages:al_notification_success', { defaultValue: 'Success' }),
 				description: logData.statusMessage,
 			});
 
@@ -669,13 +669,13 @@ function FormAlertRules({
 
 			if (response.data?.alertCount === 0) {
 				notifications.error({
-					message: 'Error',
+					message: t('pages:al_notification_error', { defaultValue: 'Error' }),
 					description: t('no_alerts_found'),
 				});
 				statusResponse = { status: 'failed', message: t('no_alerts_found') };
 			} else {
 				notifications.success({
-					message: 'Success',
+					message: t('pages:al_notification_success', { defaultValue: 'Success' }),
 					description: t('rule_test_fired'),
 				});
 				statusResponse = { status: 'success', message: t('rule_test_fired') };
@@ -803,11 +803,13 @@ function FormAlertRules({
 	const tabs = [
 		{
 			value: AlertDetectionTypes.THRESHOLD_ALERT,
-			label: 'Threshold Alert',
+			label: t('pages:al_tab_threshold_alert', { defaultValue: 'Threshold Alert' }),
 		},
 		{
 			value: AlertDetectionTypes.ANOMALY_DETECTION_ALERT,
-			label: 'Anomaly Detection Alert',
+			label: t('pages:al_tab_anomaly_detection_alert', {
+				defaultValue: 'Anomaly Detection Alert',
+			}),
 			isBeta: true,
 		},
 	];
@@ -858,15 +860,23 @@ function FormAlertRules({
 							<BellDot size={14} />
 
 							{alertDef.alertType === AlertTypes.ANOMALY_BASED_ALERT &&
-								'Anomaly Detection Alert'}
+								t('pages:al_type_title_anomaly', {
+									defaultValue: 'Anomaly Detection Alert',
+								})}
 							{alertDef.alertType === AlertTypes.METRICS_BASED_ALERT &&
-								'Metrics Based Alert'}
+								t('pages:al_type_title_metrics', {
+									defaultValue: 'Metrics Based Alert',
+								})}
 							{alertDef.alertType === AlertTypes.LOGS_BASED_ALERT &&
-								'Logs Based Alert'}
+								t('pages:al_type_title_logs', { defaultValue: 'Logs Based Alert' })}
 							{alertDef.alertType === AlertTypes.TRACES_BASED_ALERT &&
-								'Traces Based Alert'}
+								t('pages:al_type_title_traces', {
+									defaultValue: 'Traces Based Alert',
+								})}
 							{alertDef.alertType === AlertTypes.EXCEPTIONS_BASED_ALERT &&
-								'Exceptions Based Alert'}
+								t('pages:al_type_title_exceptions', {
+									defaultValue: 'Exceptions Based Alert',
+								})}
 						</Typography.Title>
 					</div>
 
@@ -875,7 +885,7 @@ function FormAlertRules({
 						onClick={(): void => handleRedirection(alertDef.alertType as AlertTypes)}
 						icon={<ExternalLink size={14} />}
 					>
-						Alert Setup Guide
+						{t('pages:al_alert_setup_guide', { defaultValue: 'Alert Setup Guide' })}
 					</Button>
 				</div>
 
@@ -1002,7 +1012,7 @@ function FormAlertRules({
 				onOpenChange={setIsConfirmSaveOpen}
 				title={t('confirm_save_title')}
 				titleIcon={<CircleAlert size={14} />}
-				confirmText="OK"
+				confirmText={t('pages:al_confirm_ok', { defaultValue: 'OK' }) as string}
 				confirmColor="primary"
 				onConfirm={async (): Promise<boolean> => {
 					await saveRule();

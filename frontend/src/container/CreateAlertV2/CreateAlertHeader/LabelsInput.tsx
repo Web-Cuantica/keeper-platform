@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { X } from '@signozhq/icons';
 import { useNotifications } from 'hooks/useNotifications';
 
@@ -9,6 +10,7 @@ function LabelsInput({
 	onLabelsChange,
 	validateLabelsKey,
 }: LabelsInputProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { notifications } = useNotifications();
 	const [inputState, setInputState] = useState<LabelInputState>({
 		key: '',
@@ -35,7 +37,9 @@ function LabelsInput({
 						if (key.trim() && value.trim()) {
 							if (labels[key.trim()]) {
 								notifications.error({
-									message: 'Label with this key already exists',
+									message: t('al_v2_label_key_exists', {
+										defaultValue: 'Label with this key already exists',
+									}),
 								});
 								return;
 							}
@@ -133,7 +137,10 @@ function LabelsInput({
 							<button
 								type="button"
 								className="labels-input__remove-button"
-								aria-label={`Remove label ${key}`}
+								aria-label={t('al_v2_remove_label', {
+									defaultValue: 'Remove label {{key}}',
+									key,
+								})}
 								onClick={(): void => handleRemoveLabel(key)}
 							>
 								<X size="md" />
@@ -150,7 +157,7 @@ function LabelsInput({
 					onClick={handleAddLabelsClick}
 					data-testid="alert-add-label-button"
 				>
-					+ Add labels
+					{t('al_v2_add_labels', { defaultValue: '+ Add labels' })}
 				</button>
 			) : (
 				<div className="labels-input__input-container">
@@ -162,7 +169,11 @@ function LabelsInput({
 						onKeyDown={handleKeyDown}
 						onBlur={handleBlur}
 						className="labels-input__input"
-						placeholder={inputState.isKeyInput ? 'Enter key' : 'Enter value'}
+						placeholder={
+							inputState.isKeyInput
+								? t('al_v2_enter_key', { defaultValue: 'Enter key' })
+								: t('al_v2_enter_value', { defaultValue: 'Enter value' })
+						}
 						data-testid="alert-add-label-input"
 					/>
 				</div>

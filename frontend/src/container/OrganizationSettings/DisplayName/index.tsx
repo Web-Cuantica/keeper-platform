@@ -85,11 +85,17 @@ function DisplayName({ index, id: orgId }: DisplayNameProps): JSX.Element {
 			autoComplete="off"
 		>
 			<div className="form-field">
-				<label htmlFor="displayName">Display name</label>
+				<label htmlFor="displayName">
+					{t('pages:set_display_name', { defaultValue: 'Display name' })}
+				</label>
 				<Controller
 					name="displayName"
 					control={control}
-					rules={{ required: requireErrorMessage('Display name') }}
+					rules={{
+						required: requireErrorMessage(
+							t('pages:set_display_name', { defaultValue: 'Display name' }),
+						),
+					}}
 					render={({ field, fieldState }): JSX.Element => (
 						<>
 							<Input
@@ -113,7 +119,7 @@ function DisplayName({ index, id: orgId }: DisplayNameProps): JSX.Element {
 					type="primary"
 					htmlType="submit"
 				>
-					Submit
+					{t('pages:set_submit', { defaultValue: 'Submit' })}
 				</Button>
 			</div>
 		</form>

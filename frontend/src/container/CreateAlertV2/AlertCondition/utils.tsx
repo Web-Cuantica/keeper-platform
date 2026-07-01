@@ -1,7 +1,9 @@
+import { useTranslation } from 'react-i18next';
 import { Button, Flex, SelectProps } from 'antd';
 import { Switch } from '@signozhq/ui/switch';
 import { Typography } from '@signozhq/ui/typography';
 import type { BaseOptionType, DefaultOptionType } from 'antd/es/select';
+import type { TFunction } from 'i18next';
 import { getInvolvedQueriesInTraceOperator } from 'components/QueryBuilderV2/QueryV2/TraceOperator/utils/utils';
 import { YAxisSource } from 'components/YAxisUnitSelector/types';
 import { getYAxisCategories } from 'components/YAxisUnitSelector/utils';
@@ -203,22 +205,29 @@ function TooltipExample({
 	thresholdValue: number;
 	matchType: AlertThresholdMatchType;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	return (
 		<div className="tooltip-example">
-			<strong>Example:</strong>
+			<strong>{t('al_v2_tooltip_example', { defaultValue: 'Example:' })}</strong>
 			<br />
-			Say, For a 5-minute window (configured in Evaluation settings), 1 min
-			aggregation interval (set up in query) → 5{' '}
+			{t('al_v2_tooltip_example_intro', {
+				defaultValue:
+					'Say, For a 5-minute window (configured in Evaluation settings), 1 min aggregation interval (set up in query) → 5',
+			})}{' '}
 			{matchType === AlertThresholdMatchType.IN_TOTAL
-				? 'error counts'
-				: 'data points'}
+				? t('al_v2_tooltip_error_counts', { defaultValue: 'error counts' })
+				: t('al_v2_tooltip_data_points', { defaultValue: 'data points' })}
 			: [{dataPoints.join(', ')}]<br />
-			With threshold {operatorSymbol} {thresholdValue}: {children}
+			{t('al_v2_tooltip_with_threshold', {
+				defaultValue: 'With threshold',
+			})}{' '}
+			{operatorSymbol} {thresholdValue}: {children}
 		</div>
 	);
 }
 
 function TooltipLink(): JSX.Element {
+	const { t } = useTranslation('pages');
 	return (
 		<div className="tooltip-link">
 			<a
@@ -227,7 +236,7 @@ function TooltipLink(): JSX.Element {
 				rel="noopener noreferrer"
 				className="tooltip-link-text"
 			>
-				Learn more
+				{t('al_v2_learn_more', { defaultValue: 'Learn more' })}
 			</a>
 		</div>
 	);
@@ -236,6 +245,7 @@ function TooltipLink(): JSX.Element {
 export const getMatchTypeTooltip = (
 	matchType: AlertThresholdMatchType,
 	operator: AlertThresholdOperator,
+	t: TFunction,
 ): React.ReactNode => {
 	const operatorSymbol = getTooltipOperatorSymbol(operator);
 	const operatorWord = getOperatorWord(operator);
@@ -262,9 +272,15 @@ export const getMatchTypeTooltip = (
 			return (
 				<TooltipContent>
 					<div className="tooltip-description">
-						Data is aggregated at each interval within your evaluation window,
-						creating multiple data points. This option triggers if <span>ANY</span> of
-						those aggregated data points crosses the threshold.
+						{t('al_v2_match_at_least_once_desc_pre', {
+							defaultValue:
+								'Data is aggregated at each interval within your evaluation window, creating multiple data points. This option triggers if',
+						})}{' '}
+						<span>{t('al_v2_emphasis_any', { defaultValue: 'ANY' })}</span>{' '}
+						{t('al_v2_match_at_least_once_desc_post', {
+							defaultValue:
+								'of those aggregated data points crosses the threshold.',
+						})}
 					</div>
 					<TooltipExample
 						dataPoints={dataPoints}
@@ -272,8 +288,12 @@ export const getMatchTypeTooltip = (
 						thresholdValue={thresholdValue}
 						matchType={matchType}
 					>
-						Alert triggers ({getMatchingPointsCount()} points {operatorWord}{' '}
-						{thresholdValue})
+						{t('al_v2_alert_triggers_points', {
+							defaultValue: 'Alert triggers ({{count}} points {{operatorWord}} {{value}})',
+							count: getMatchingPointsCount(),
+							operatorWord,
+							value: thresholdValue,
+						})}
 					</TooltipExample>
 					<TooltipLink />
 				</TooltipContent>
@@ -283,9 +303,14 @@ export const getMatchTypeTooltip = (
 			return (
 				<TooltipContent>
 					<div className="tooltip-description">
-						Data is aggregated at each interval within your evaluation window,
-						creating multiple data points. This option triggers if <span>ALL</span>{' '}
-						aggregated data points cross the threshold.
+						{t('al_v2_match_all_time_desc_pre', {
+							defaultValue:
+								'Data is aggregated at each interval within your evaluation window, creating multiple data points. This option triggers if',
+						})}{' '}
+						<span>{t('al_v2_emphasis_all', { defaultValue: 'ALL' })}</span>{' '}
+						{t('al_v2_match_all_time_desc_post', {
+							defaultValue: 'aggregated data points cross the threshold.',
+						})}
 					</div>
 					<TooltipExample
 						dataPoints={dataPoints}
@@ -293,8 +318,16 @@ export const getMatchTypeTooltip = (
 						thresholdValue={thresholdValue}
 						matchType={matchType}
 					>
-						Alert triggers (all points {operatorWord} {thresholdValue})<br />
-						If any point was {thresholdValue}, no alert would fire
+						{t('al_v2_alert_triggers_all_points', {
+							defaultValue: 'Alert triggers (all points {{operatorWord}} {{value}})',
+							operatorWord,
+							value: thresholdValue,
+						})}
+						<br />
+						{t('al_v2_alert_no_fire_if_point', {
+							defaultValue: 'If any point was {{value}}, no alert would fire',
+							value: thresholdValue,
+						})}
 					</TooltipExample>
 					<TooltipLink />
 				</TooltipContent>
@@ -307,9 +340,15 @@ export const getMatchTypeTooltip = (
 			return (
 				<TooltipContent>
 					<div className="tooltip-description">
-						Data is aggregated at each interval within your evaluation window,
-						creating multiple data points. This option triggers if the{' '}
-						<span>AVERAGE</span> of all aggregated data points crosses the threshold.
+						{t('al_v2_match_average_desc_pre', {
+							defaultValue:
+								'Data is aggregated at each interval within your evaluation window, creating multiple data points. This option triggers if the',
+						})}{' '}
+						<span>{t('al_v2_emphasis_average', { defaultValue: 'AVERAGE' })}</span>{' '}
+						{t('al_v2_match_average_desc_post', {
+							defaultValue:
+								'of all aggregated data points crosses the threshold.',
+						})}
 					</div>
 					<TooltipExample
 						dataPoints={dataPoints}
@@ -317,7 +356,10 @@ export const getMatchTypeTooltip = (
 						thresholdValue={thresholdValue}
 						matchType={matchType}
 					>
-						Alert triggers (average = {average})
+						{t('al_v2_alert_triggers_average', {
+							defaultValue: 'Alert triggers (average = {{value}})',
+							value: average,
+						})}
 					</TooltipExample>
 					<TooltipLink />
 				</TooltipContent>
@@ -329,9 +371,15 @@ export const getMatchTypeTooltip = (
 			return (
 				<TooltipContent>
 					<div className="tooltip-description">
-						Data is aggregated at each interval within your evaluation window,
-						creating multiple data points. This option triggers if the{' '}
-						<span>SUM</span> of all aggregated data points crosses the threshold.
+						{t('al_v2_match_total_desc_pre', {
+							defaultValue:
+								'Data is aggregated at each interval within your evaluation window, creating multiple data points. This option triggers if the',
+						})}{' '}
+						<span>{t('al_v2_emphasis_sum', { defaultValue: 'SUM' })}</span>{' '}
+						{t('al_v2_match_total_desc_post', {
+							defaultValue:
+								'of all aggregated data points crosses the threshold.',
+						})}
 					</div>
 					<TooltipExample
 						dataPoints={dataPoints}
@@ -339,7 +387,10 @@ export const getMatchTypeTooltip = (
 						thresholdValue={thresholdValue}
 						matchType={matchType}
 					>
-						Alert triggers (total = {total})
+						{t('al_v2_alert_triggers_total', {
+							defaultValue: 'Alert triggers (total = {{value}})',
+							value: total,
+						})}
 					</TooltipExample>
 					<TooltipLink />
 				</TooltipContent>
@@ -351,9 +402,16 @@ export const getMatchTypeTooltip = (
 			return (
 				<TooltipContent>
 					<div className="tooltip-description">
-						Data is aggregated at each interval within your evaluation window,
-						creating multiple data points. This option triggers based on the{' '}
-						<span>MOST RECENT</span> aggregated data point only.
+						{t('al_v2_match_last_desc_pre', {
+							defaultValue:
+								'Data is aggregated at each interval within your evaluation window, creating multiple data points. This option triggers based on the',
+						})}{' '}
+						<span>
+							{t('al_v2_emphasis_most_recent', { defaultValue: 'MOST RECENT' })}
+						</span>{' '}
+						{t('al_v2_match_last_desc_post', {
+							defaultValue: 'aggregated data point only.',
+						})}
 					</div>
 					<TooltipExample
 						dataPoints={dataPoints}
@@ -361,7 +419,10 @@ export const getMatchTypeTooltip = (
 						thresholdValue={thresholdValue}
 						matchType={matchType}
 					>
-						Alert triggers (last point = {lastPoint})
+						{t('al_v2_alert_triggers_last', {
+							defaultValue: 'Alert triggers (last point = {{value}})',
+							value: lastPoint,
+						})}
 					</TooltipExample>
 					<TooltipLink />
 				</TooltipContent>
@@ -380,13 +441,16 @@ export function NotificationChannelsNotFoundContent({
 	user: IUser;
 	refreshChannels: () => void;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	return (
 		<Flex justify="space-between">
 			<Flex gap={4} align="center">
-				<Typography.Text>No channels yet.</Typography.Text>
+				<Typography.Text>
+					{t('al_v2_no_channels_yet', { defaultValue: 'No channels yet.' })}
+				</Typography.Text>
 				{user?.role === USER_ROLES.ADMIN ? (
 					<Typography.Text>
-						Create one
+						{t('al_v2_create_one', { defaultValue: 'Create one' })}
 						<Button
 							style={{ padding: '0 4px' }}
 							type="link"
@@ -394,15 +458,19 @@ export function NotificationChannelsNotFoundContent({
 								openInNewTab(ROUTES.CHANNELS_NEW);
 							}}
 						>
-							here.
+							{t('al_v2_create_one_here', { defaultValue: 'here.' })}
 						</Button>
 					</Typography.Text>
 				) : (
-					<Typography.Text>Please ask your admin to create one.</Typography.Text>
+					<Typography.Text>
+						{t('al_v2_ask_admin_channels', {
+							defaultValue: 'Please ask your admin to create one.',
+						})}
+					</Typography.Text>
 				)}
 			</Flex>
 			<Button type="text" onClick={refreshChannels}>
-				Refresh
+				{t('al_v2_refresh', { defaultValue: 'Refresh' })}
 			</Button>
 		</Flex>
 	);
@@ -412,11 +480,18 @@ export function RoutingPolicyBanner({
 	notificationSettings,
 	setNotificationSettings,
 }: RoutingPolicyBannerProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { safeNavigate } = useSafeNavigate();
 	return (
 		<div className="routing-policies-info-banner">
 			<Typography.Text>
-				Use <strong>Routing Policies</strong> for dynamic routing
+				{t('al_v2_use_routing_policies_pre', { defaultValue: 'Use' })}{' '}
+				<strong>
+					{t('al_v2_routing_policies', { defaultValue: 'Routing Policies' })}
+				</strong>{' '}
+				{t('al_v2_use_routing_policies_post', {
+					defaultValue: 'for dynamic routing',
+				})}
 			</Typography.Text>
 			<div className="routing-policies-info-banner-right">
 				<Switch
@@ -435,7 +510,9 @@ export function RoutingPolicyBanner({
 					data-testid="view-routing-policies-button"
 					onClick={(): void => safeNavigate(ROUTING_POLICIES_ROUTE)}
 				>
-					View Routing Policies
+					{t('al_v2_view_routing_policies', {
+						defaultValue: 'View Routing Policies',
+					})}
 					<ArrowRight size={14} />
 				</Button>
 			</div>

@@ -88,16 +88,20 @@ function QuerySection({
 
 	const anomalyDisabledTooltip = (url: string): JSX.Element => (
 		<span>
-			Coming soon for anomaly detection.{' '}
+			{t('pages:al_anomaly_coming_soon', {
+				defaultValue: 'Coming soon for anomaly detection.',
+			})}{' '}
 			<Typography.Link
 				href={url}
 				target="_blank"
 				rel="noopener noreferrer"
 				style={{ color: 'inherit', textDecoration: 'underline' }}
 			>
-				Leave a thumbs-up
+				{t('pages:al_anomaly_thumbs_up', { defaultValue: 'Leave a thumbs-up' })}
 			</Typography.Link>{' '}
-			to help us prioritize!
+			{t('pages:al_anomaly_help_prioritize', {
+				defaultValue: 'to help us prioritize!',
+			})}
 		</span>
 	);
 
@@ -124,7 +128,9 @@ function QuerySection({
 				>
 					<Button className="nav-btns" disabled={isAnomalyDetection}>
 						<Terminal size={14} />
-						<Typography.Text>ClickHouse Query</Typography.Text>
+						<Typography.Text>
+							{t('pages:al_clickhouse_query', { defaultValue: 'ClickHouse Query' })}
+						</Typography.Text>
 					</Button>
 				</Tooltip>
 			),
@@ -164,7 +170,9 @@ function QuerySection({
 					>
 						<Button className="nav-btns" disabled={isAnomalyDetection}>
 							<Terminal size={14} />
-							<Typography.Text>ClickHouse Query</Typography.Text>
+							<Typography.Text>
+								{t('pages:al_clickhouse_query', { defaultValue: 'ClickHouse Query' })}
+							</Typography.Text>
 						</Button>
 					</Tooltip>
 				),
@@ -192,7 +200,7 @@ function QuerySection({
 				disabled: isAnomalyDetection,
 			},
 		],
-		[isDarkMode, isAnomalyDetection, anomalyDisabledTooltip],
+		[isDarkMode, isAnomalyDetection, anomalyDisabledTooltip, t],
 	);
 
 	const { registerShortcut, deregisterShortcut } = useKeyboardHotkeys();

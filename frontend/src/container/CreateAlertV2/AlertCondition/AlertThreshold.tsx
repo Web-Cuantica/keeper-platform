@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Select, Tooltip } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
 import classNames from 'classnames';
@@ -41,6 +42,7 @@ function AlertThreshold({
 	isErrorChannels,
 	refreshChannels,
 }: AnomalyAndThresholdProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const {
 		alertState,
 		thresholdState,
@@ -145,7 +147,7 @@ function AlertThreshold({
 			...option,
 			label: (
 				<Tooltip
-					title={getMatchTypeTooltip(option.value, normalizedOperator)}
+					title={getMatchTypeTooltip(option.value, normalizedOperator, t)}
 					placement="left"
 					overlayClassName="copyable-tooltip"
 					overlayStyle={{
@@ -229,7 +231,9 @@ function AlertThreshold({
 			<div className="alert-condition-sentences">
 				<div className="alert-condition-sentence">
 					<Typography.Text className="sentence-text">
-						Send a notification when
+						{t('al_v2_send_notification_when', {
+							defaultValue: 'Send a notification when',
+						})}
 					</Typography.Text>
 					<Select
 						value={thresholdState.selectedQuery}
@@ -238,7 +242,9 @@ function AlertThreshold({
 						options={queryNames}
 						data-testid="alert-threshold-query-select"
 					/>
-					<Typography.Text className="sentence-text">is</Typography.Text>
+					<Typography.Text className="sentence-text">
+						{t('al_v2_sentence_is', { defaultValue: 'is' })}
+					</Typography.Text>
 					<Select
 						value={
 							(normalizeOperator(thresholdState.operator) ??
@@ -255,7 +261,7 @@ function AlertThreshold({
 						data-testid="alert-threshold-operator-select"
 					/>
 					<Typography.Text className="sentence-text">
-						the threshold(s)
+						{t('al_v2_the_thresholds', { defaultValue: 'the threshold(s)' })}
 					</Typography.Text>
 					<Select
 						value={
@@ -273,7 +279,8 @@ function AlertThreshold({
 						data-testid="alert-threshold-match-type-select"
 					/>
 					<Typography.Text className="sentence-text">
-						during the <EvaluationSettings />
+						{t('al_v2_during_the', { defaultValue: 'during the' })}{' '}
+						<EvaluationSettings />
 					</Typography.Text>
 				</div>
 			</div>
@@ -300,7 +307,7 @@ function AlertThreshold({
 					className="add-threshold-btn"
 					data-testid="add-threshold-button"
 				>
-					Add Threshold
+					{t('al_v2_add_threshold', { defaultValue: 'Add Threshold' })}
 				</Button>
 			</div>
 

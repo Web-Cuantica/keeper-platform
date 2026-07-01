@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Form, Tabs, TabsProps } from 'antd';
 import logEvent from 'api/common/logEvent';
 import ConfigureIcon from 'assets/AlertHistory/ConfigureIcon';
@@ -19,12 +20,13 @@ import { AlertTypes } from 'types/api/alerts/alertTypes';
 import { AlertDef } from 'types/api/alerts/def';
 
 import { ALERT_TYPE_VS_SOURCE_MAPPING } from './config';
-import { ALERTS_VALUES_MAP, ALERT_TYPE_BREADCRUMB_TITLE } from './defaults';
+import { ALERTS_VALUES_MAP } from './defaults';
 import SelectAlertType from './SelectAlertType';
 
 import './CreateAlertRule.styles.scss';
 
 function CreateRules(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [formInstance] = Form.useForm();
 	const compositeQuery = useGetCompositeQueryParam();
 	const queryParams = useUrlQuery();
@@ -38,6 +40,31 @@ function CreateRules(): JSX.Element {
 
 	const isTypeSelectionMode =
 		!alertTypeFromURL && !ruleTypeFromURL && !compositeQuery;
+
+	// Títulos traducidos del breadcrumb por tipo de alerta
+	const alertTypeBreadcrumbTitle = useMemo(
+		(): Record<AlertTypes, string> => ({
+			[AlertTypes.ANOMALY_BASED_ALERT]: t('al_breadcrumb_anomaly_based_alert', {
+				defaultValue: 'Anomaly-Based Alert',
+			}),
+			[AlertTypes.METRICS_BASED_ALERT]: t('al_breadcrumb_metric_based_alert', {
+				defaultValue: 'Metric-Based Alert',
+			}),
+			[AlertTypes.LOGS_BASED_ALERT]: t('al_breadcrumb_log_based_alert', {
+				defaultValue: 'Log-Based Alert',
+			}),
+			[AlertTypes.TRACES_BASED_ALERT]: t('al_breadcrumb_traces_based_alert', {
+				defaultValue: 'Traces-Based Alert',
+			}),
+			[AlertTypes.EXCEPTIONS_BASED_ALERT]: t(
+				'al_breadcrumb_exceptions_based_alert',
+				{
+					defaultValue: 'Exceptions-Based Alert',
+				},
+			),
+		}),
+		[t],
+	);
 
 	useEffect(() => {
 		if (isTypeSelectionMode) {
@@ -128,7 +155,7 @@ function CreateRules(): JSX.Element {
 			label: (
 				<div className="periscope-tab top-level-tab">
 					<GalleryVerticalEnd size={14} />
-					Triggered Alerts
+					{t('al_tab_triggered_alerts', { defaultValue: 'Triggered Alerts' })}
 				</div>
 			),
 			key: AlertListTabs.TRIGGERED_ALERTS,
@@ -138,7 +165,7 @@ function CreateRules(): JSX.Element {
 			label: (
 				<div className="periscope-tab top-level-tab">
 					<Pyramid size={14} />
-					Alert Rules
+					{t('al_tab_alert_rules', { defaultValue: 'Alert Rules' })}
 				</div>
 			),
 			key: AlertListTabs.ALERT_RULES,
@@ -150,19 +177,33 @@ function CreateRules(): JSX.Element {
 							isTypeSelectionMode
 								? [
 										{
-											title: 'Alert Rules',
+											title: t('al_breadcrumb_alert_rules', {
+												defaultValue: 'Alert Rules',
+											}),
 											route: `${ROUTES.LIST_ALL_ALERT}?tab=${AlertListTabs.ALERT_RULES}`,
 										},
-										{ title: 'Select Alert Type', isLast: true },
+										{
+											title: t('al_breadcrumb_select_alert_type', {
+												defaultValue: 'Select Alert Type',
+											}),
+											isLast: true,
+										},
 									]
 								: [
 										{
-											title: 'Alert Rules',
+											title: t('al_breadcrumb_alert_rules', {
+												defaultValue: 'Alert Rules',
+											}),
 											route: `${ROUTES.LIST_ALL_ALERT}?tab=${AlertListTabs.ALERT_RULES}`,
 										},
-										{ title: 'Select Alert Type', route: ROUTES.ALERTS_NEW },
 										{
-											title: ALERT_TYPE_BREADCRUMB_TITLE[alertType],
+											title: t('al_breadcrumb_select_alert_type', {
+												defaultValue: 'Select Alert Type',
+											}),
+											route: ROUTES.ALERTS_NEW,
+										},
+										{
+											title: alertTypeBreadcrumbTitle[alertType],
 											isLast: true,
 										},
 									]
@@ -176,7 +217,7 @@ function CreateRules(): JSX.Element {
 			label: (
 				<div className="periscope-tab top-level-tab">
 					<ConfigureIcon width={14} height={14} />
-					Configuration
+					{t('al_tab_configuration', { defaultValue: 'Configuration' })}
 				</div>
 			),
 			key: AlertListTabs.CONFIGURATION,

@@ -1,3 +1,4 @@
+import type { TFunction } from 'i18next';
 import { Tooltip } from 'antd';
 import { TableColumnDef } from 'components/TanStackTableView';
 import TanStackTable from 'components/TanStackTableView';
@@ -27,10 +28,16 @@ export const getK8sNodesListQuery = (): K8sNodesListPayload => ({
 	orderBy: { columnName: 'cpu', order: 'desc' },
 });
 
-export const k8sNodesColumnsConfig: TableColumnDef<K8sNodeData>[] = [
+export const getK8sNodesColumnsConfig = (
+	t: TFunction,
+): TableColumnDef<K8sNodeData>[] => [
 	{
 		id: 'nodeGroup',
-		header: (): React.ReactNode => <EntityGroupHeader title="NODE GROUP" />,
+		header: (): React.ReactNode => (
+			<EntityGroupHeader
+				title={t('pages:infra_col_node_group', { defaultValue: 'NODE GROUP' })}
+			/>
+		),
 		accessorFn: (row): string => row.meta.k8s_node_name || '',
 		width: { min: 300 },
 		enableSort: false,
@@ -53,7 +60,7 @@ export const k8sNodesColumnsConfig: TableColumnDef<K8sNodeData>[] = [
 		id: 'nodeName',
 		header: (): React.ReactNode => (
 			<EntityGroupHeader
-				title="Node Name"
+				title={t('pages:infra_col_node_name', { defaultValue: 'Node Name' })}
 				icon={<Workflow data-hide-expanded="true" size={14} />}
 			/>
 		),
@@ -75,7 +82,7 @@ export const k8sNodesColumnsConfig: TableColumnDef<K8sNodeData>[] = [
 	},
 	{
 		id: 'clusterName',
-		header: 'Cluster Name',
+		header: t('pages:infra_col_cluster_name', { defaultValue: 'Cluster Name' }),
 		accessorFn: (row): string => row.meta.k8s_cluster_name || '',
 		width: { min: 150, default: 150 },
 		enableSort: false,
@@ -85,7 +92,9 @@ export const k8sNodesColumnsConfig: TableColumnDef<K8sNodeData>[] = [
 	},
 	{
 		id: 'cpu',
-		header: 'CPU Usage (cores)',
+		header: t('pages:infra_col_cpu_usage_cores', {
+			defaultValue: 'CPU Usage (cores)',
+		}),
 		accessorFn: (row): number => row.nodeCPUUsage,
 		width: { min: 200, default: 200 },
 		enableSort: true,
@@ -104,7 +113,9 @@ export const k8sNodesColumnsConfig: TableColumnDef<K8sNodeData>[] = [
 	},
 	{
 		id: 'cpu_allocatable',
-		header: 'CPU Alloc (cores)',
+		header: t('pages:infra_col_cpu_alloc_cores', {
+			defaultValue: 'CPU Alloc (cores)',
+		}),
 		accessorFn: (row): number => row.nodeCPUAllocatable,
 		width: { min: 200, default: 200 },
 		enableSort: true,
@@ -123,7 +134,9 @@ export const k8sNodesColumnsConfig: TableColumnDef<K8sNodeData>[] = [
 	},
 	{
 		id: 'memory',
-		header: 'Memory Usage (WSS)',
+		header: t('pages:infra_col_memory_usage_wss_full', {
+			defaultValue: 'Memory Usage (WSS)',
+		}),
 		accessorFn: (row): number => row.nodeMemoryUsage,
 		width: { min: 240, default: 240 },
 		enableSort: true,
@@ -142,7 +155,9 @@ export const k8sNodesColumnsConfig: TableColumnDef<K8sNodeData>[] = [
 	},
 	{
 		id: 'memory_allocatable',
-		header: 'Memory Allocatable',
+		header: t('pages:infra_col_memory_allocatable', {
+			defaultValue: 'Memory Allocatable',
+		}),
 		accessorFn: (row): number => row.nodeMemoryAllocatable,
 		width: { min: 240, default: 240 },
 		enableSort: true,

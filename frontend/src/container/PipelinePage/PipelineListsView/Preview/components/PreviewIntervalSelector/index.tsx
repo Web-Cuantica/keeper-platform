@@ -1,6 +1,7 @@
 import { Select } from 'antd';
-import { RelativeDurationOptions } from 'container/TopNav/DateTimeSelectionV2/constants';
+import { getTranslatedRelativeDurationOptions } from 'container/TopNav/DateTimeSelectionV2/constants';
 import { Time } from 'container/TopNav/DateTimeSelectionV2/types';
+import { useTranslation } from 'react-i18next';
 import { TagFilter } from 'types/api/queryBuilder/queryBuilderData';
 
 import LogsCountInInterval from './components/LogsCountInInterval';
@@ -12,6 +13,7 @@ function PreviewIntervalSelector({
 	value,
 	onChange,
 }: PreviewIntervalSelectorProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const onSelectInterval = (value: unknown): void => onChange(value as Time);
 
 	const isEmptyFilter = (previewFilter?.items?.length || 0) < 1;
@@ -23,7 +25,7 @@ function PreviewIntervalSelector({
 			)}
 			<div>
 				<Select value={value} onSelect={onSelectInterval}>
-					{RelativeDurationOptions.map(({ value, label }) => (
+					{getTranslatedRelativeDurationOptions(t).map(({ value, label }) => (
 						<Select.Option key={value + label} value={value}>
 							{label}
 						</Select.Option>

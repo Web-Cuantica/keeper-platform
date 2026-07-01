@@ -315,14 +315,22 @@ function ChartPreview({
 
 				<div className="threshold-alert-uplot-chart-container">
 					{queryResponse.isLoading && (
-						<Spinner size="large" tip="Loading..." height="100%" />
+						<Spinner
+							size="large"
+							tip={t('pages:al_loading', { defaultValue: 'Loading...' })}
+							height="100%"
+						/>
 					)}
 					{(queryResponse?.isError || queryResponse?.error) && !isCancelled && (
 						<ErrorInPlace error={queryResponse.error as APIError} />
 					)}
 
 					{isCancelled && !queryResponse.isLoading && !hasResultData && (
-						<QueryCancelledPlaceholder subText='Click "Run Query" to load the chart preview.' />
+						<QueryCancelledPlaceholder
+							subText={t('pages:al_run_query_to_load_preview', {
+								defaultValue: 'Click "Run Query" to load the chart preview.',
+							})}
+						/>
 					)}
 
 					{chartDataAvailable && !isAnomalyDetectionAlert && (

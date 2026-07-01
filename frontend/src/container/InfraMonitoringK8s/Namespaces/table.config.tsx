@@ -1,3 +1,4 @@
+import type { TFunction } from 'i18next';
 import { Tooltip } from 'antd';
 import TanStackTable, { TableColumnDef } from 'components/TanStackTableView';
 import { ExpandButtonWrapper } from 'container/InfraMonitoringK8s/components';
@@ -26,10 +27,18 @@ export const getK8sNamespacesListQuery = (): K8sNamespacesListPayload => ({
 	orderBy: { columnName: 'cpu', order: 'desc' },
 });
 
-export const k8sNamespacesColumnsConfig: TableColumnDef<K8sNamespacesData>[] = [
+export const getK8sNamespacesColumnsConfig = (
+	t: TFunction,
+): TableColumnDef<K8sNamespacesData>[] => [
 	{
 		id: 'namespaceGroup',
-		header: (): React.ReactNode => <EntityGroupHeader title="NAMESPACE GROUP" />,
+		header: (): React.ReactNode => (
+			<EntityGroupHeader
+				title={t('pages:infra_col_namespace_group', {
+					defaultValue: 'NAMESPACE GROUP',
+				})}
+			/>
+		),
 		accessorFn: (row): string => row.meta.k8s_namespace_name || '',
 		width: { min: 300 },
 		enableSort: false,
@@ -52,7 +61,9 @@ export const k8sNamespacesColumnsConfig: TableColumnDef<K8sNamespacesData>[] = [
 		id: 'namespaceName',
 		header: (): React.ReactNode => (
 			<EntityGroupHeader
-				title="Namespace Name"
+				title={t('pages:infra_col_namespace_name', {
+					defaultValue: 'Namespace Name',
+				})}
 				icon={<FilePenLine data-hide-expanded="true" size={14} />}
 			/>
 		),
@@ -74,7 +85,9 @@ export const k8sNamespacesColumnsConfig: TableColumnDef<K8sNamespacesData>[] = [
 	},
 	{
 		id: 'clusterName',
-		header: 'Cluster Name',
+		header: t('pages:infra_col_cluster_name', {
+			defaultValue: 'Cluster Name',
+		}),
 		accessorFn: (row): string => row.meta.k8s_cluster_name || '',
 		width: { default: 150 },
 		enableSort: false,
@@ -84,7 +97,9 @@ export const k8sNamespacesColumnsConfig: TableColumnDef<K8sNamespacesData>[] = [
 	},
 	{
 		id: 'cpu',
-		header: 'CPU Usage (cores)',
+		header: t('pages:infra_col_cpu_usage_cores', {
+			defaultValue: 'CPU Usage (cores)',
+		}),
 		accessorFn: (row): number => row.cpuUsage,
 		width: { min: 220 },
 		enableSort: true,
@@ -103,7 +118,9 @@ export const k8sNamespacesColumnsConfig: TableColumnDef<K8sNamespacesData>[] = [
 	},
 	{
 		id: 'memory',
-		header: 'Mem Usage (WSS)',
+		header: t('pages:infra_col_mem_usage_wss', {
+			defaultValue: 'Mem Usage (WSS)',
+		}),
 		accessorFn: (row): number => row.memoryUsage,
 		width: { min: 220 },
 		enableSort: true,

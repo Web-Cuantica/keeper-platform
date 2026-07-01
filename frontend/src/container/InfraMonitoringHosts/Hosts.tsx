@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Tooltip } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
@@ -32,9 +32,9 @@ import {
 	hostWidgetInfo,
 } from './constants';
 import {
+	getHostColumnsConfig,
 	getHostItemKey,
 	getHostRowKey,
-	hostColumnsConfig,
 } from './table.config';
 import { getHostsQuickFiltersConfig } from './utils';
 
@@ -43,6 +43,8 @@ import { ArrowUpToLine, Filter } from '@signozhq/icons';
 
 function Hosts(): JSX.Element {
 	const { t } = useTranslation('pages');
+	// Columnas traducidas en render; se memoizan por `t` para no recalcular en cada render.
+	const hostColumnsConfig = useMemo(() => getHostColumnsConfig(t), [t]);
 	const [showFilters, setShowFilters] = useState(true);
 	const [, setCurrentPage] = useInfraMonitoringPageListing();
 	const [urlFilters, setUrlFilters] = useInfraMonitoringFiltersK8s();
@@ -160,7 +162,7 @@ function Hosts(): JSX.Element {
 							</div>
 							<QuickFilters
 								source={QuickFiltersSource.INFRA_MONITORING}
-								config={getHostsQuickFiltersConfig(dotMetricsEnabled)}
+								config={getHostsQuickFiltersConfig(dotMetricsEnabled, t)}
 								handleFilterVisibilityChange={handleFilterVisibilityChange}
 								onFilterChange={handleQuickFiltersChange}
 							/>

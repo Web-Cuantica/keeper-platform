@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@signozhq/ui/button';
 import { toast } from '@signozhq/ui/sonner';
 import { Tooltip } from 'antd';
@@ -27,6 +28,7 @@ import {
 import { useQueryClient } from 'react-query';
 
 function Footer(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const {
 		alertType,
 		alertState: basicAlertState,
@@ -100,11 +102,18 @@ function Footer(): JSX.Element {
 				onSuccess: (response) => {
 					if (response.data?.alertCount === 0) {
 						toast.error(
-							'No alerts found during the evaluation. This happens when rule condition is unsatisfied. You may adjust the rule threshold and retry.',
+							t('al_v2_toast_no_alerts_found', {
+								defaultValue:
+									'No alerts found during the evaluation. This happens when rule condition is unsatisfied. You may adjust the rule threshold and retry.',
+							}),
 						);
 						return;
 					}
-					toast.success('Test notification sent successfully');
+					toast.success(
+						t('al_v2_toast_test_sent', {
+							defaultValue: 'Test notification sent successfully',
+						}),
+					);
 				},
 				onError: handleApiError,
 			},
@@ -118,6 +127,8 @@ function Footer(): JSX.Element {
 		notificationSettings,
 		currentQuery,
 		testAlertRule,
+		handleApiError,
+		t,
 	]);
 
 	const queryClient = useQueryClient();
@@ -142,7 +153,11 @@ function Footer(): JSX.Element {
 						void invalidateGetRuleByID(queryClient, { id: ruleId });
 						void invalidateListRules(queryClient);
 
-						toast.success('Alert rule updated successfully');
+						toast.success(
+							t('al_v2_toast_updated', {
+								defaultValue: 'Alert rule updated successfully',
+							}),
+						);
 						safeNavigate('/alerts');
 					},
 					onError: handleApiError,
@@ -153,7 +168,11 @@ function Footer(): JSX.Element {
 				{ data: toPostableRuleDTO(payload) },
 				{
 					onSuccess: () => {
-						toast.success('Alert rule created successfully');
+						toast.success(
+							t('al_v2_toast_created', {
+								defaultValue: 'Alert rule created successfully',
+							}),
+						);
 						safeNavigate('/alerts');
 					},
 					onError: handleApiError,
@@ -174,6 +193,8 @@ function Footer(): JSX.Element {
 		createAlertRule,
 		safeNavigate,
 		handleApiError,
+		queryClient,
+		t,
 	]);
 
 	const disableButtons =
@@ -192,7 +213,7 @@ function Footer(): JSX.Element {
 				) : (
 					<Check data-testid="save-alert-rule-check-icon" size={14} />
 				)}
-				Save Alert Rule
+				{t('al_v2_btn_save_alert_rule', { defaultValue: 'Save Alert Rule' })}
 			</Button>
 		);
 		if (alertValidationMessage) {
@@ -209,6 +230,7 @@ function Footer(): JSX.Element {
 		handleSaveAlert,
 		isCreatingAlertRule,
 		isUpdatingAlertRule,
+		t,
 	]);
 
 	const testAlertButton = useMemo(() => {
@@ -224,7 +246,7 @@ function Footer(): JSX.Element {
 				) : (
 					<Send data-testid="test-notification-send-icon" size={14} />
 				)}
-				Test Notification
+				{t('al_v2_btn_test_notification', { defaultValue: 'Test Notification' })}
 			</Button>
 		);
 		if (alertValidationMessage) {
@@ -240,6 +262,7 @@ function Footer(): JSX.Element {
 		disableButtons,
 		handleTestNotification,
 		isTestingAlertRule,
+		t,
 	]);
 
 	return (
@@ -250,7 +273,7 @@ function Footer(): JSX.Element {
 				onClick={handleDiscard}
 				disabled={disableButtons}
 			>
-				<X size={14} /> Discard
+				<X size={14} /> {t('al_v2_btn_discard', { defaultValue: 'Discard' })}
 			</Button>
 			<div className="button-group">
 				{testAlertButton}

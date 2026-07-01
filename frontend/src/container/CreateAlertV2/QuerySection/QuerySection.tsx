@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useQueryClient } from 'react-query';
+import { useTranslation } from 'react-i18next';
 import { Button } from 'antd';
 import classNames from 'classnames';
 import { YAxisSource } from 'components/YAxisUnitSelector/types';
@@ -28,6 +29,7 @@ import { buildAlertDefForChartPreview } from './utils';
 import './styles.scss';
 
 function QuerySection(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const {
 		currentQuery,
 		stagedQuery,
@@ -108,22 +110,22 @@ function QuerySection(): JSX.Element {
 
 	const tabs = [
 		{
-			label: 'Metrics',
+			label: t('al_v2_tab_metrics', { defaultValue: 'Metrics' }),
 			icon: <BarChart size={14} data-testid="metrics-view" />,
 			value: AlertTypes.METRICS_BASED_ALERT,
 		},
 		{
-			label: 'Logs',
+			label: t('al_v2_tab_logs', { defaultValue: 'Logs' }),
 			icon: <ScrollText size={14} data-testid="logs-view" />,
 			value: AlertTypes.LOGS_BASED_ALERT,
 		},
 		{
-			label: 'Traces',
+			label: t('al_v2_tab_traces', { defaultValue: 'Traces' }),
 			icon: <DraftingCompass size={14} data-testid="traces-view" />,
 			value: AlertTypes.TRACES_BASED_ALERT,
 		},
 		{
-			label: 'Exceptions',
+			label: t('al_v2_tab_exceptions', { defaultValue: 'Exceptions' }),
 			icon: <FileText size={14} data-testid="exceptions-view" />,
 			value: AlertTypes.EXCEPTIONS_BASED_ALERT,
 		},
@@ -131,7 +133,10 @@ function QuerySection(): JSX.Element {
 
 	return (
 		<div className="query-section">
-			<Stepper stepNumber={1} label="Define the query" />
+			<Stepper
+				stepNumber={1}
+				label={t('al_v2_step_query', { defaultValue: 'Define the query' })}
+			/>
 			<ChartPreview
 				alertDef={alertDef}
 				source={source}

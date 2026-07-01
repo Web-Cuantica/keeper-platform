@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button, Tabs, TabsProps } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
 import ConfigureIcon from 'assets/Integrations/ConfigureIcon';
@@ -20,6 +21,7 @@ interface IntegrationDetailContentProps {
 function IntegrationDetailContent(
 	props: IntegrationDetailContentProps,
 ): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { activeDetailTab, integrationData, integrationId, setActiveDetailTab } =
 		props;
 	const items: TabsProps['items'] = [
@@ -31,7 +33,9 @@ function IntegrationDetailContent(
 					className="integration-tab-btns"
 					icon={<CableCar size={14} />}
 				>
-					<Typography.Text className="typography">Overview</Typography.Text>
+					<Typography.Text className="typography">
+						{t('intg_tab_overview', { defaultValue: 'Overview' })}
+					</Typography.Text>
 				</Button>
 			),
 			children: (
@@ -50,7 +54,9 @@ function IntegrationDetailContent(
 					className="integration-tab-btns"
 					icon={<ConfigureIcon />}
 				>
-					<Typography.Text className="typography">Configure</Typography.Text>
+					<Typography.Text className="typography">
+						{t('intg_tab_configure', { defaultValue: 'Configure' })}
+					</Typography.Text>
 				</Button>
 			),
 			children: (
@@ -68,7 +74,9 @@ function IntegrationDetailContent(
 					className="integration-tab-btns"
 					icon={<Group size={14} />}
 				>
-					<Typography.Text className="typography">Data Collected</Typography.Text>
+					<Typography.Text className="typography">
+						{t('intg_tab_data_collected', { defaultValue: 'Data Collected' })}
+					</Typography.Text>
 				</Button>
 			),
 			children: (

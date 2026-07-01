@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Select, Tooltip } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
 import { useQueryBuilder } from 'hooks/queryBuilder/useQueryBuilder';
@@ -8,6 +9,7 @@ import { ALL_SELECTED_VALUE } from '../constants';
 import { useCreateAlertState } from '../context';
 
 function MultipleNotifications(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { notificationSettings, setNotificationSettings } =
 		useCreateAlertState();
 	const { currentQuery } = useQueryBuilder();
@@ -36,7 +38,7 @@ function MultipleNotifications(): JSX.Element {
 		if (options.length > 0) {
 			return [
 				{
-					label: 'All',
+					label: t('al_v2_group_by_all', { defaultValue: 'All' }),
 					value: ALL_SELECTED_VALUE,
 					'data-testid': 'multiple-notifications-select-option',
 				},
@@ -44,7 +46,7 @@ function MultipleNotifications(): JSX.Element {
 			];
 		}
 		return options;
-	}, [currentQuery.builder.queryData, isAllOptionSelected]);
+	}, [currentQuery.builder.queryData, isAllOptionSelected, t]);
 
 	const isMultipleNotificationsEnabled = spaceAggregationOptions.length > 0;
 
@@ -71,20 +73,29 @@ function MultipleNotifications(): JSX.Element {
 
 	const groupByDescription = useMemo(() => {
 		if (isAllOptionSelected) {
-			return 'All = grouping of alerts is disabled';
+			return t('al_v2_group_by_all_disabled', {
+				defaultValue: 'All = grouping of alerts is disabled',
+			});
 		}
 		if (notificationSettings.multipleNotifications?.length) {
-			return `Alerts with same ${notificationSettings.multipleNotifications?.join(
-				', ',
-			)} will be grouped`;
+			return t('al_v2_group_by_same_fields', {
+				defaultValue: 'Alerts with same {{fields}} will be grouped',
+				fields: notificationSettings.multipleNotifications?.join(', '),
+			});
 		}
-		return 'Empty = all matching alerts combined into one notification';
-	}, [isAllOptionSelected, notificationSettings.multipleNotifications]);
+		return t('al_v2_group_by_empty', {
+			defaultValue: 'Empty = all matching alerts combined into one notification',
+		});
+	}, [isAllOptionSelected, notificationSettings.multipleNotifications, t]);
 
 	const multipleNotificationsInput = useMemo(() => {
 		const placeholder = isMultipleNotificationsEnabled
-			? 'Select fields to group by (optional)'
-			: 'No grouping fields available';
+			? t('al_v2_select_group_by_fields', {
+					defaultValue: 'Select fields to group by (optional)',
+			  })
+			: t('al_v2_no_grouping_fields', {
+					defaultValue: 'No grouping fields available',
+			  });
 		let input = (
 			<div>
 				<Select
@@ -107,7 +118,12 @@ function MultipleNotifications(): JSX.Element {
 		);
 		if (!isMultipleNotificationsEnabled) {
 			input = (
-				<Tooltip title="Add 'Group by' fields to your query to enable alert grouping">
+				<Tooltip
+					title={t('al_v2_add_group_by_tooltip', {
+						defaultValue:
+							"Add 'Group by' fields to your query to enable alert grouping",
+					})}
+				>
 					{input}
 				</Tooltip>
 			);
@@ -119,19 +135,28 @@ function MultipleNotifications(): JSX.Element {
 		notificationSettings.multipleNotifications,
 		onSelectChange,
 		spaceAggregationOptions,
+		t,
 	]);
 
 	return (
 		<div className="multiple-notifications-container">
 			<div className="multiple-notifications-header">
 				<Typography.Text className="multiple-notifications-header-title">
-					Group alerts by{' '}
-					<Tooltip title="Group similar alerts together to reduce notification volume. Leave empty to combine all matching alerts into one notification without grouping.">
+					{t('al_v2_group_alerts_by', { defaultValue: 'Group alerts by' })}{' '}
+					<Tooltip
+						title={t('al_v2_group_alerts_by_tooltip', {
+							defaultValue:
+								'Group similar alerts together to reduce notification volume. Leave empty to combine all matching alerts into one notification without grouping.',
+						})}
+					>
 						<Info size={16} />
 					</Tooltip>
 				</Typography.Text>
 				<Typography.Text className="multiple-notifications-header-description">
-					Combine alerts with the same field values into a single notification.
+					{t('al_v2_group_alerts_by_desc', {
+						defaultValue:
+							'Combine alerts with the same field values into a single notification.',
+					})}
 				</Typography.Text>
 			</div>
 			{multipleNotificationsInput}

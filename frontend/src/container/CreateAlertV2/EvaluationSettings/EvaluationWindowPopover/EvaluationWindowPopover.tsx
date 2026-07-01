@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
 import classNames from 'classnames';
@@ -21,6 +22,7 @@ function EvaluationWindowPopover({
 	evaluationWindow,
 	setEvaluationWindow,
 }: IEvaluationWindowPopoverProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { containerRef, firstItemRef } =
 		useKeyboardNavigationForEvaluationWindowPopover({
 			onSelect: (value: string, sectionId: string): void => {
@@ -98,7 +100,9 @@ function EvaluationWindowPopover({
 					<Typography.Text>
 						{getRollingWindowDescription(evaluationWindow.timeframe)}
 					</Typography.Text>
-					<Button type="link">Read the docs</Button>
+					<Button type="link">
+						{t('al_v2_read_the_docs', { defaultValue: 'Read the docs' })}
+					</Button>
 				</div>
 			);
 		}
@@ -112,7 +116,9 @@ function EvaluationWindowPopover({
 					<Typography.Text>
 						{getCumulativeWindowDescription(evaluationWindow.timeframe)}
 					</Typography.Text>
-					<Button type="link">Read the docs</Button>
+					<Button type="link">
+						{t('al_v2_read_the_docs', { defaultValue: 'Read the docs' })}
+					</Button>
 				</div>
 			);
 		}
@@ -130,11 +136,13 @@ function EvaluationWindowPopover({
 			className="evaluation-window-popover"
 			ref={containerRef}
 			role="menu"
-			aria-label="Evaluation window options"
+			aria-label={t('al_v2_evaluation_window_options', {
+				defaultValue: 'Evaluation window options',
+			})}
 		>
 			<div className="evaluation-window-content">
 				{renderEvaluationWindowContent(
-					'EVALUATION WINDOW',
+					t('al_v2_evaluation_window', { defaultValue: 'EVALUATION WINDOW' }),
 					EVALUATION_WINDOW_TYPE,
 					evaluationWindow.windowType,
 					(value: string): void =>
@@ -145,7 +153,7 @@ function EvaluationWindowPopover({
 					'window-type',
 				)}
 				{renderEvaluationWindowContent(
-					'TIMEFRAME',
+					t('al_v2_timeframe', { defaultValue: 'TIMEFRAME' }),
 					EVALUATION_WINDOW_TIMEFRAME[evaluationWindow.windowType],
 					evaluationWindow.timeframe,
 					(value: string): void =>
