@@ -59,6 +59,12 @@
 					padding: 10px;
 					width: 100%;
 					box-sizing: border-box;
+					// Fondo + borde para que cada panel se aprecie como tarjeta y no
+					// se funda con el fondo oscuro. Tokens del tema (dark y light).
+					background-color: var(--l2-background);
+					border: 1px solid var(--l1-border);
+					border-radius: 6px;
+					box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
 				}
 			}
 		}

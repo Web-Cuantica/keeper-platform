@@ -61,7 +61,7 @@ export default function NavItem({
 			{showIcon && <div className="nav-item-active-marker" />}
 			<div className={cx('nav-item-data', isBeta ? 'beta-tag' : '')}>
 				{showIcon && (
-					<div className={cx('nav-item-icon', isEarlyAccess ? 'noz-wave' : '')}>
+					<div className={cx('nav-item-icon', isEarlyAccess ? 'noz-wave' : '')} data-item-key={item.itemKey}>
 						{icon}
 					</div>
 				)}

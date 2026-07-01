@@ -119,3 +119,56 @@
 		padding-right: 0;
 	}
 }
+
+// Colores de marca por sección del nav. Los iconos (lucide vía @signozhq/icons)
+// usan currentColor, así que basta con fijar `color` en el contenedor del icono.
+// Tabla central por itemKey: fácil de ajustar sin tocar menuItems.tsx. El color
+// se mantiene también en hover/activo (regla directa sobre el icono).
+.nav-item-icon[data-item-key='home'] {
+	color: #64748b;
+}
+.nav-item-icon[data-item-key='services'] {
+	color: #3b82f6;
+}
+.nav-item-icon[data-item-key='logs'] {
+	color: #10b981;
+}
+.nav-item-icon[data-item-key='traces'] {
+	color: #8b5cf6;
+}
+.nav-item-icon[data-item-key='infrastructure'] {
+	color: #06b6d4;
+}
+.nav-item-icon[data-item-key='dashboards'] {
+	color: #6366f1;
+}
+.nav-item-icon[data-item-key='metrics'] {
+	color: #f59e0b;
+}
+.nav-item-icon[data-item-key='exceptions'] {
+	color: #ef4444;
+}
+.nav-item-icon[data-item-key='external-apis'] {
+	color: #14b8a6;
+}
+.nav-item-icon[data-item-key='alerts'] {
+	color: #f97316;
+}
+.nav-item-icon[data-item-key='meter-explorer'] {
+	color: #22c55e;
+}
+.nav-item-icon[data-item-key='messaging-queues'] {
+	color: #a855f7;
+}
+.nav-item-icon[data-item-key='service-map'] {
+	color: #ec4899;
+}
+.nav-item-icon[data-item-key='integrations'] {
+	color: #0ea5e9;
+}
+.nav-item-icon[data-item-key='billing'] {
+	color: #84cc16;
+}
+.nav-item-icon[data-item-key='settings'] {
+	color: #64748b;
+}

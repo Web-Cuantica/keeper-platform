@@ -116,12 +116,15 @@
 					.logs-total-count {
 						display: flex;
 						align-items: center;
-						gap: 4px;
-						padding: 2px 8px;
-						border-radius: 4px;
-						background: var(--bg-ink-300, rgba(255, 255, 255, 0.04));
-						font-size: 12px;
-						line-height: 16px;
+						gap: 6px;
+						padding: 4px 12px;
+						border-radius: 6px;
+						// Fondo translúcido neutro: se ve bien en dark Y en light (antes usaba
+						// --bg-ink-300, un gris fijo oscuro que en modo claro se veía mal).
+						background: rgba(128, 128, 128, 0.12);
+						border: 1px solid rgba(128, 128, 128, 0.2);
+						font-size: 14px;
+						line-height: 20px;
 						white-space: nowrap;
 
 						.logs-total-count__label {
@@ -129,7 +132,8 @@
 						}
 
 						.logs-total-count__value {
-							font-weight: 600;
+							font-weight: 700;
+							font-size: 15px;
 							color: var(--robin-400, #4e74f8);
 						}
 					}
