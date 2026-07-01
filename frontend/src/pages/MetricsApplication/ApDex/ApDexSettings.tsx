@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { X } from '@signozhq/icons';
 import { Card, InputNumber } from 'antd';
 import Spinner from 'components/Spinner';
@@ -30,6 +31,7 @@ function ApDexSettings({
 	data,
 	refetchGetApDexSetting,
 }: ApDexSettingsProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [thresholdValue, setThresholdValue] = useState(() => {
 		if (data) {
 			return data.data[0].threshold;
@@ -53,18 +55,18 @@ function ApDexSettings({
 	if (isLoading) {
 		return (
 			<Typography.Text style={{ color: themeColors.white }}>
-				<Spinner height="5vh" tip="Loading..." />
+				<Spinner height="5vh" tip={t('svc_apdex_loading', { defaultValue: 'Loading...' })} />
 			</Typography.Text>
 		);
 	}
 
 	return (
 		<Card
-			title={APPLICATION_SETTINGS}
+			title={t('svc_apdex_title', { defaultValue: APPLICATION_SETTINGS })}
 			extra={<X size="lg" onClick={handlePopOverClose} />}
 			actions={[
 				<SaveAndCancelContainer key="SaveAndCancelContainer">
-					<Button onClick={handlePopOverClose}>Cancel</Button>
+					<Button onClick={handlePopOverClose}>{t('svc_apdex_cancel', { defaultValue: 'Cancel' })}</Button>
 					<SaveButton
 						onClick={onSaveApDexSettings({
 							handlePopOverClose,
@@ -77,19 +79,21 @@ function ApDexSettings({
 						type="primary"
 						loading={isApDexLoading}
 					>
-						Save
+						{t('svc_apdex_save', { defaultValue: 'Save' })}
 					</SaveButton>
 				</SaveAndCancelContainer>,
 			]}
 		>
 			<AppDexThresholdContainer>
 				<Typography>
-					Apdex threshold (in seconds){' '}
+					{t('svc_apdex_threshold', {
+						defaultValue: 'Apdex threshold (in seconds)',
+					})}{' '}
 					<TextToolTip
-						text={apDexToolTipText}
+						text={t('svc_apdex_tooltip', { defaultValue: apDexToolTipText })}
 						url={apDexToolTipUrl}
 						useFilledIcon={false}
-						urlText={apDexToolTipUrlText}
+						urlText={t('svc_apdex_tooltip_url', { defaultValue: apDexToolTipUrlText })}
 					/>
 				</Typography>
 				<InputNumber
