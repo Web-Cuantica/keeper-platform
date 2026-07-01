@@ -60,7 +60,11 @@ function HomeChecklist({
 
 				{completedChecklistItems.map((item) => (
 					<div key={item.id} className="completed-checklist-item">
-						<div className="completed-checklist-item-title">{item.title}</div>
+						<div className="completed-checklist-item-title">
+							{t(`steps_item_${item.id.toLowerCase()}`, {
+								defaultValue: item.title,
+							})}
+						</div>
 					</div>
 				))}
 			</div>
@@ -81,11 +85,17 @@ function HomeChecklist({
 									index === 0 && !item.isSkipped && !item.completed ? 'active' : ''
 								} ${isLoading ? 'loading' : ''}`}
 							>
-								<div className="whats-next-checklist-item-title">{item.title}</div>
+								<div className="whats-next-checklist-item-title">
+									{t(`steps_item_${item.id.toLowerCase()}`, {
+										defaultValue: item.title,
+									})}
+								</div>
 
 								<div className="whats-next-checklist-item-content">
 									<div className="whats-next-checklist-item-description">
-										{item.description}
+										{t(`steps_item_${item.id.toLowerCase()}_desc`, {
+											defaultValue: item.description,
+										})}
 									</div>
 
 									{user?.role !== USER_ROLES.VIEWER && (
