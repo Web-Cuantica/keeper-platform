@@ -66,6 +66,8 @@ import {
 	List,
 	MousePointerClick,
 	PackagePlus,
+	PanelLeftClose,
+	PanelLeftOpen,
 	ScrollText,
 	X,
 } from '@signozhq/icons';
@@ -131,7 +133,13 @@ function SortableFilter({ item }: { item: SidebarItem }): JSX.Element {
 }
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
-function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
+function SideNav({
+	isPinned,
+	onToggleSidebar,
+}: {
+	isPinned: boolean;
+	onToggleSidebar?: () => void;
+}): JSX.Element {
 	const { openCmdK } = useCmdK();
 	const { t, i18n } = useTranslation('sidenav');
 	const { pathname, search } = useLocation();
@@ -1049,6 +1057,33 @@ function SideNav({ isPinned }: { isPinned: boolean }): JSX.Element {
 									style={{ filter: isDarkMode ? 'invert(1)' : 'none' }}
 								/>
 							</div>
+
+							{onToggleSidebar && (
+								<Tooltip
+									title={t('ui_toggle_sidebar', {
+										defaultValue: 'Contraer o expandir el menú (Shift+B)',
+									})}
+									placement="right"
+								>
+									<button
+										type="button"
+										className="sidenav-collapse-btn"
+										aria-label={t('ui_toggle_sidebar', {
+											defaultValue: 'Contraer o expandir el menú',
+										})}
+										onClick={(e): void => {
+											e.stopPropagation();
+											onToggleSidebar();
+										}}
+									>
+										{isPinned ? (
+											<PanelLeftClose size={16} />
+										) : (
+											<PanelLeftOpen size={16} />
+										)}
+									</button>
+								</Tooltip>
+							)}
 
 							{(licenseTag || currentVersion) && (
 								<div

@@ -30,6 +30,33 @@
 		background: transparent;
 	}
 
+	// Botón para contraer/expandir el menú (equivale a Shift+B). Va a la derecha
+	// del header (order+margin) y se recorta solo cuando el nav está colapsado.
+	.sidenav-collapse-btn {
+		order: 9;
+		margin-left: auto;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 26px;
+		height: 26px;
+		flex-shrink: 0;
+		padding: 0;
+		border: none;
+		background: transparent;
+		border-radius: 4px;
+		color: var(--l2-foreground);
+		cursor: pointer;
+		transition:
+			background 0.1s ease,
+			color 0.1s ease;
+
+		&:hover {
+			background: var(--l1-background-hover);
+			color: var(--l1-foreground);
+		}
+	}
+
 	.brand-company-meta {
 		display: flex;
 		align-items: center;

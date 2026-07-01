@@ -30,6 +30,7 @@
   "section_identity_access": "Identity & Access",
   "section_authentication": "Authentication",
   "ui_help_support": "Help & Support",
+  "ui_toggle_sidebar": "Collapse or expand the menu (Shift+B)",
   "ui_shortcuts": "SHORTCUTS",
   "ui_more": "MORE",
   "ui_no_shortcuts": "You have not added any shortcuts yet.",

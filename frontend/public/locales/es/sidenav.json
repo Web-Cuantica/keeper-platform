@@ -30,6 +30,7 @@
   "section_identity_access": "Identidad y acceso",
   "section_authentication": "Autenticación",
   "ui_help_support": "Ayuda y soporte",
+  "ui_toggle_sidebar": "Contraer o expandir el menú (Shift+B)",
   "ui_shortcuts": "ACCESOS DIRECTOS",
   "ui_more": "MÁS",
   "ui_no_shortcuts": "Aún no has agregado accesos directos.",

@@ -867,7 +867,7 @@ function AppLayout(props: AppLayoutProps): JSX.Element {
 					)}
 				>
 					{isToDisplayLayout && !renderFullScreen && (
-						<SideNav isPinned={isSideNavPinned} />
+						<SideNav isPinned={isSideNavPinned} onToggleSidebar={handleToggleSidebar} />
 					)}
 					<div
 						className={cx('app-content', {
