@@ -12,6 +12,19 @@ receivers:
         endpoint: 0.0.0.0:4317
       http:
         endpoint: 0.0.0.0:4318
+  # Métricas del host (VPS de Keeper): CPU/RAM/disco/red. Lee el sistema real
+  # montado en /hostfs (ver volumen en docker-compose). Alimenta Infraestructura.
+  hostmetrics:
+    collection_interval: 30s
+    root_path: /hostfs
+    scrapers:
+      cpu: {}
+      load: {}
+      memory: {}
+      disk: {}
+      filesystem: {}
+      network: {}
+      paging: {}
   prometheus:
     config:
       global:
@@ -35,6 +48,8 @@ processors:
   resourcedetection:
     # Using OTEL_RESOURCE_ATTRIBUTES envvar, env detector adds custom labels.
     detectors: [env, system]
+    # override:false → el host.name=signoz-host del env NO lo pisa el detector system.
+    override: false
     timeout: 2s
   signozspanmetrics/delta:
     metrics_exporter: signozclickhousemetrics
@@ -101,8 +116,8 @@ service:
       processors: [signozspanmetrics/delta, batch]
       exporters: [clickhousetraces, metadataexporter, signozmeter]
     metrics:
-      receivers: [otlp]
-      processors: [batch]
+      receivers: [otlp, hostmetrics]
+      processors: [resourcedetection, batch]
       exporters: [signozclickhousemetrics, metadataexporter, signozmeter]
     metrics/prometheus:
       receivers: [prometheus]

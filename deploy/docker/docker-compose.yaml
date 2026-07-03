@@ -144,6 +144,9 @@ services:
     volumes:
       - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
       - ../common/signoz/otel-collector-opamp-config.yaml:/etc/manager-config.yaml
+      # Sistema de archivos del host en solo-lectura para el receiver hostmetrics
+      # (root_path:/hostfs). Alimenta Infraestructura con métricas del VPS.
+      - /:/hostfs:ro
     environment:
       - OTEL_RESOURCE_ATTRIBUTES=host.name=signoz-host,os.type=linux
       - LOW_CARDINAL_EXCEPTION_GROUPING=false
