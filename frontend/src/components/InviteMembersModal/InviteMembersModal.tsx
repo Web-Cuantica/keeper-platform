@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Style } from '@signozhq/design-tokens';
 import { ChevronDown, Plus, Trash2, X } from '@signozhq/icons';
 import { Button } from '@signozhq/ui/button';
@@ -29,7 +30,7 @@ interface InviteRow {
 export interface InviteMembersModalProps {
 	open: boolean;
 	onClose: () => void;
-	onComplete?: () => void;
+	onComplete?: (invitedEmails: string[]) => void;
 }
 
 const EMPTY_ROW = (): InviteRow => ({ id: uuid(), email: '', role: '' });
@@ -43,6 +44,7 @@ function InviteMembersModal({
 	onComplete,
 }: InviteMembersModalProps): JSX.Element {
 	const { showErrorModal, isErrorModalVisible } = useErrorModal();
+	const { t } = useTranslation('pages');
 
 	const [rows, setRows] = useState<InviteRow[]>(() => [
 		EMPTY_ROW(),
@@ -72,12 +74,19 @@ function InviteMembersModal({
 
 	const getValidationErrorMessage = (): string => {
 		if (hasInvalidEmails && hasInvalidRoles) {
-			return 'Please enter valid emails and select roles for team members';
+			return t('mbr_val_emails_roles', {
+				defaultValue:
+					'Please enter valid emails and select roles for team members',
+			});
 		}
 		if (hasInvalidEmails) {
-			return 'Please enter valid emails for team members';
+			return t('mbr_val_emails', {
+				defaultValue: 'Please enter valid emails for team members',
+			});
 		}
-		return 'Please select roles for team members';
+		return t('mbr_val_roles', {
+			defaultValue: 'Please select roles for team members',
+		});
 	};
 
 	const validateAllUsers = useCallback((): boolean => {
@@ -201,22 +210,25 @@ function InviteMembersModal({
 					})),
 				});
 			}
-			toast.success('Invites sent successfully', { position: 'top-right' });
+			toast.success(
+				t('mbr_invites_sent', { defaultValue: 'Invites sent successfully' }),
+				{ position: 'top-right' },
+			);
 			resetAndClose();
-			onComplete?.();
+			onComplete?.(touchedRows.map((row) => row.email.trim()));
 		} catch (err) {
 			showErrorModal(err as APIError);
 		} finally {
 			setIsSubmitting(false);
 		}
-	}, [validateAllUsers, rows, resetAndClose, onComplete, showErrorModal]);
+	}, [validateAllUsers, rows, resetAndClose, onComplete, showErrorModal, t]);
 
 	const touchedRows = rows.filter(isRowTouched);
 	const isSubmitDisabled = isSubmitting || touchedRows.length === 0;
 
 	return (
 		<DialogWrapper
-			title="Invite Team Members"
+			title={t('mbr_invite_title', { defaultValue: 'Invite Team Members' })}
 			open={open}
 			onOpenChange={(isOpen): void => {
 				if (!isOpen) {
@@ -231,8 +243,12 @@ function InviteMembersModal({
 			<div className="invite-members-modal__content">
 				<div className="invite-members-modal__table">
 					<div className="invite-members-modal__table-header">
-						<div className="table-header-cell email-header">Email address</div>
-						<div className="table-header-cell role-header">Roles</div>
+						<div className="table-header-cell email-header">
+							{t('mbr_email_address', { defaultValue: 'Email address' })}
+						</div>
+						<div className="table-header-cell role-header">
+							{t('mbr_roles', { defaultValue: 'Roles' })}
+						</div>
 						<div className="table-header-cell action-header" />
 					</div>
 					<div className="invite-members-modal__container">
@@ -242,7 +258,9 @@ function InviteMembersModal({
 									<div className="team-member-cell email-cell">
 										<Input
 											type="email"
-											placeholder="john@signoz.io"
+											placeholder={t('mbr_email_placeholder', {
+												defaultValue: 'john@company.com',
+											})}
 											value={row.email}
 											onChange={(e): void => updateEmail(row.id, e.target.value)}
 											className="team-member-email-input"
@@ -250,7 +268,11 @@ function InviteMembersModal({
 											autoComplete="email"
 										/>
 										{emailValidity[row.id] === false && row.email.trim() !== '' && (
-											<span className="email-error-message">Invalid email address</span>
+											<span className="email-error-message">
+												{t('mbr_invalid_email', {
+													defaultValue: 'Invalid email address',
+												})}
+											</span>
 										)}
 									</div>
 									<div className="team-member-cell role-cell">
@@ -258,7 +280,9 @@ function InviteMembersModal({
 											value={row.role || undefined}
 											onChange={(role): void => updateRole(row.id, role as ROLES)}
 											className="team-member-role-select"
-											placeholder="Select roles"
+											placeholder={t('mbr_select_roles', {
+												defaultValue: 'Select roles',
+											})}
 											suffixIcon={<ChevronDown size={14} />}
 											getPopupContainer={popupContainer}
 										>
@@ -273,7 +297,7 @@ function InviteMembersModal({
 												variant="ghost"
 												color="destructive"
 												onClick={(): void => removeRow(row.id)}
-												aria-label="Remove row"
+												aria-label={t('mbr_remove_row', { defaultValue: 'Remove row' })}
 											>
 												<Trash2 size={12} />
 											</Button>
@@ -305,7 +329,7 @@ function InviteMembersModal({
 					prefix={<Plus size={12} color={Style.L1_FOREGROUND} />}
 					onClick={addRow}
 				>
-					Add another
+					{t('mbr_add_another', { defaultValue: 'Add another' })}
 				</Button>
 
 				<div className="invite-members-modal__footer-right">
@@ -316,7 +340,7 @@ function InviteMembersModal({
 						onClick={resetAndClose}
 					>
 						<X size={12} />
-						Cancel
+						{t('mbr_cancel', { defaultValue: 'Cancel' })}
 					</Button>
 
 					<Button
@@ -326,7 +350,9 @@ function InviteMembersModal({
 						disabled={isSubmitDisabled}
 						loading={isSubmitting}
 					>
-						{isSubmitting ? 'Inviting...' : 'Invite Team Members'}
+						{isSubmitting
+							? t('mbr_inviting', { defaultValue: 'Inviting...' })
+							: t('mbr_invite_submit', { defaultValue: 'Invite Team Members' })}
 					</Button>
 				</div>
 			</DialogFooter>

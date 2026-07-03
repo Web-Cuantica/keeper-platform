@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useCopyToClipboard } from 'react-use';
 import { LockKeyhole, RefreshCw, Trash2, X } from '@signozhq/icons';
 import { Badge } from '@signozhq/ui/badge';
@@ -18,6 +19,7 @@ import {
 	useUpdateUser,
 } from 'api/generated/services/users';
 import { AxiosError } from 'axios';
+import type { TFunction } from 'i18next';
 import { MemberRow } from 'components/MembersTable/MembersTable';
 import RolesSelect, { useRoles } from 'components/RolesSelect';
 import SaveErrorItem from 'components/ServiceAccountDrawer/SaveErrorItem';
@@ -62,20 +64,25 @@ function getInviteButtonLabel(
 	existingToken: { expiresAt?: string } | undefined,
 	isExpired: boolean,
 	notFound: boolean,
+	t: TFunction,
 ): string {
 	if (isLoading) {
-		return 'Checking invite...';
+		return t('mbr_checking_invite', { defaultValue: 'Checking invite...' });
 	}
 	if (existingToken && !isExpired) {
-		return 'Copy Invite Link';
+		return t('mbr_copy_invite_link', { defaultValue: 'Copy invite link' });
 	}
 	if (isExpired) {
-		return 'Regenerate Invite Link';
+		return t('mbr_regenerate_invite_link', {
+			defaultValue: 'Regenerate Invite Link',
+		});
 	}
 	if (notFound) {
-		return 'Generate Invite Link';
+		return t('mbr_generate_invite_link', {
+			defaultValue: 'Generate Invite Link',
+		});
 	}
-	return 'Copy Invite Link';
+	return t('mbr_copy_invite_link', { defaultValue: 'Copy invite link' });
 }
 
 function toSaveApiError(err: unknown): APIError {
@@ -99,6 +106,7 @@ function EditMemberDrawer({
 	onClose,
 	onComplete,
 }: EditMemberDrawerProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { formatTimezoneAdjustedTimestamp } = useTimezone();
 	const { user: currentUser } = useAppContext();
 
@@ -409,7 +417,9 @@ function EditMemberDrawer({
 				setShowResetLinkDialog(true);
 				onClose();
 			} else {
-				toast.error('Failed to generate password reset link', {
+				toast.error(t('mbr_generate_link_failed', {
+					defaultValue: 'Failed to generate password reset link',
+				}), {
 					position: 'top-right',
 				});
 			}
@@ -419,7 +429,7 @@ function EditMemberDrawer({
 			);
 			showErrorModal(errMsg as APIError);
 		}
-	}, [member, isInvited, onClose, showErrorModal, createTokenMutation]);
+	}, [member, isInvited, onClose, showErrorModal, createTokenMutation, t]);
 
 	const [copyState, copyToClipboard] = useCopyToClipboard();
 	const handleCopyResetLink = useCallback((): void => {
@@ -431,10 +441,14 @@ function EditMemberDrawer({
 		setTimeout(() => setHasCopiedResetLink(false), 2000);
 		const message =
 			linkType === 'invite'
-				? 'Invite link copied to clipboard'
-				: 'Reset link copied to clipboard';
+				? t('mbr_invite_link_copied', {
+						defaultValue: 'Invite link copied to clipboard',
+					})
+				: t('mbr_reset_link_copied', {
+						defaultValue: 'Password reset link copied to clipboard',
+					});
 		toast.success(message);
-	}, [resetLink, copyToClipboard, linkType]);
+	}, [resetLink, copyToClipboard, linkType, t]);
 
 	useEffect(() => {
 		if (copyState.error) {
@@ -447,7 +461,7 @@ function EditMemberDrawer({
 		onClose();
 	}, [onClose]);
 
-	const joinedOnLabel = isInvited ? 'Invited On' : 'Joined On';
+	const joinedOnLabel = isInvited ? t('mbr_invited_on', { defaultValue: 'Invited On' }) : t('mbr_joined_on', { defaultValue: 'Joined On' });
 
 	const formatTimestamp = useCallback(
 		(ts: string | null | undefined): string => {
@@ -550,14 +564,16 @@ function EditMemberDrawer({
 								),
 							);
 						}}
-						placeholder="Select roles"
+						placeholder={t('mbr_select_roles', { defaultValue: 'Select roles' })}
 					/>
 				)}
 			</div>
 
 			<div className="edit-member-drawer__meta">
 				<div className="edit-member-drawer__meta-item">
-					<span className="edit-member-drawer__meta-label">Status</span>
+					<span className="edit-member-drawer__meta-label">
+						{t('mbr_col_status', { defaultValue: 'Status' })}
+					</span>
 					{member?.status === MemberStatus.Active ? (
 						<Badge color="forest" variant="outline">
 							ACTIVE
@@ -579,7 +595,9 @@ function EditMemberDrawer({
 				</div>
 				{!isInvited && (
 					<div className="edit-member-drawer__meta-item">
-						<span className="edit-member-drawer__meta-label">Last Modified</span>
+						<span className="edit-member-drawer__meta-label">
+							{t('mbr_last_modified', { defaultValue: 'Last Modified' })}
+						</span>
 						<Badge color="vanilla">{formatTimestamp(member?.updatedAt)}</Badge>
 					</div>
 				)}
@@ -620,7 +638,9 @@ function EditMemberDrawer({
 									color="destructive"
 								>
 									<Trash2 size={12} />
-									{isInvited ? 'Revoke Invite' : 'Delete Member'}
+									{isInvited
+							? t('mbr_revoke_invite', { defaultValue: 'Revoke Invite' })
+							: t('mbr_delete_member', { defaultValue: 'Delete Member' })}
 								</Button>
 							</span>
 						</Tooltip>
@@ -636,15 +656,18 @@ function EditMemberDrawer({
 								>
 									<RefreshCw size={12} />
 									{isGeneratingLink
-										? 'Generating...'
+										? t('mbr_generating_link', { defaultValue: 'Generating...' })
 										: isInvited
 											? getInviteButtonLabel(
 													isLoadingTokenStatus,
 													existingToken,
 													isTokenExpired,
 													tokenNotFound,
+													t,
 												)
-											: 'Generate Password Reset Link'}
+											: t('mbr_generate_reset_link', {
+													defaultValue: 'Generate Password Reset Link',
+												})}
 								</Button>
 							</span>
 						</Tooltip>
@@ -653,7 +676,7 @@ function EditMemberDrawer({
 					<div className="edit-member-drawer__footer-right">
 						<Button variant="outlined" color="secondary" onClick={handleClose}>
 							<X size={14} />
-							Cancel
+							{t('mbr_cancel', { defaultValue: 'Cancel' })}
 						</Button>
 
 						<Button
@@ -663,7 +686,9 @@ function EditMemberDrawer({
 							onClick={handleSave}
 							loading={isSaving}
 						>
-							{isSaving ? 'Saving...' : 'Save Member Details'}
+							{isSaving
+							? t('mbr_saving', { defaultValue: 'Saving...' })
+							: t('mbr_save_member', { defaultValue: 'Save Member Details' })}
 						</Button>
 					</div>
 				</>
@@ -683,7 +708,7 @@ function EditMemberDrawer({
 				direction="right"
 				showCloseButton
 				showOverlay={false}
-				title="Member Details"
+				title={t('mbr_member_details', { defaultValue: 'Member Details' })}
 				footer={footer}
 				width="wide"
 			>

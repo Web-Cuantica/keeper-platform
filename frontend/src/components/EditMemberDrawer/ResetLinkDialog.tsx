@@ -1,6 +1,7 @@
 import { Check, Copy } from '@signozhq/icons';
 import { Button } from '@signozhq/ui/button';
 import { DialogWrapper } from '@signozhq/ui/dialog';
+import { useTranslation } from 'react-i18next';
 
 interface ResetLinkDialogProps {
 	open: boolean;
@@ -21,6 +22,9 @@ function ResetLinkDialog({
 	onClose,
 	onCopy,
 }: ResetLinkDialogProps): JSX.Element {
+	const { t } = useTranslation('pages');
+	const isInvite = linkType === 'invite';
+
 	return (
 		<DialogWrapper
 			open={open}
@@ -29,16 +33,26 @@ function ResetLinkDialog({
 					onClose();
 				}
 			}}
-			title={linkType === 'invite' ? 'Invite Link' : 'Password Reset Link'}
+			title={
+				isInvite
+					? t('mbr_link_invite_title', { defaultValue: 'Invite Link' })
+					: t('mbr_link_reset_title', { defaultValue: 'Password Reset Link' })
+			}
 			showCloseButton
 			width="base"
 			className="reset-link-dialog"
 		>
 			<div className="reset-link-dialog__content">
 				<p className="reset-link-dialog__description">
-					{linkType === 'invite'
-						? 'Share this one-time link with the team member to complete their account setup.'
-						: 'This creates a one-time link the team member can use to set a new password for their Keeper account.'}
+					{isInvite
+						? t('mbr_link_invite_desc', {
+								defaultValue:
+									'Share this one-time link with the team member to complete their account setup.',
+							})
+						: t('mbr_link_reset_desc', {
+								defaultValue:
+									'This creates a one-time link the team member can use to set a new password for their Keeper account.',
+							})}
 				</p>
 				<div className="reset-link-dialog__link-row">
 					<div className="reset-link-dialog__link-text-wrap">
@@ -51,12 +65,25 @@ function ResetLinkDialog({
 						prefix={hasCopied ? <Check size={12} /> : <Copy size={12} />}
 						className="reset-link-dialog__copy-btn"
 					>
-						{hasCopied ? 'Copied!' : 'Copy'}
+						{hasCopied
+							? t('mbr_copied', { defaultValue: 'Copied!' })
+							: t('mbr_copy', { defaultValue: 'Copy' })}
 					</Button>
 				</div>
+				{isInvite && (
+					<p className="reset-link-dialog__description">
+						{t('mbr_no_smtp_hint', {
+							defaultValue:
+								'No email server is configured, so share this link manually with the invited person.',
+						})}
+					</p>
+				)}
 				{expiresAt && (
 					<p className="reset-link-dialog__description">
-						This link expires on {expiresAt}.
+						{t('mbr_link_expires', {
+							date: expiresAt,
+							defaultValue: `This link expires on ${expiresAt}.`,
+						})}
 					</p>
 				)}
 			</div>
