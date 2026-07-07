@@ -1054,6 +1054,7 @@
   "pages:infra_col_hostname": "Hostname",
   "pages:infra_col_inodes": "Inodes",
   "pages:infra_col_inodes_free": "Inodes Free",
+  "pages:infra_col_disk": "Uso de disco",
   "pages:infra_col_inodes_used": "Inodes Used",
   "pages:infra_col_iowait": "IOWait",
   "pages:infra_col_job_group": "JOB GROUP",

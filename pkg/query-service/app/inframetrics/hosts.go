@@ -57,10 +57,11 @@ var (
 	}
 
 	queryNamesForTopHosts = map[string][]string{
-		"cpu":    {"A", "B", "F1"},
-		"memory": {"C", "D", "F2"},
-		"wait":   {"E", "F", "F3"},
-		"load15": {"G"},
+		"cpu":       {"A", "B", "F1"},
+		"memory":    {"C", "D", "F2"},
+		"wait":      {"E", "F", "F3"},
+		"load15":    {"G"},
+		"diskUsage": {"H", "I", "F4"},
 	}
 
 	// TODO(srikanthccv): remove hardcoded metric name and support keys from any system metric
@@ -509,10 +510,11 @@ func (h *HostsRepo) GetHostList(ctx context.Context, orgID valuer.UUID, req mode
 	for _, result := range formattedResponse {
 		for _, row := range result.Table.Rows {
 			record := model.HostListRecord{
-				CPU:    -1,
-				Memory: -1,
-				Wait:   -1,
-				Load15: -1,
+				CPU:       -1,
+				Memory:    -1,
+				Wait:      -1,
+				Load15:    -1,
+				DiskUsage: -1,
 			}
 
 			if hostName, ok := row.Data[hostNameAttrKey].(string); ok {
@@ -530,6 +532,9 @@ func (h *HostsRepo) GetHostList(ctx context.Context, orgID valuer.UUID, req mode
 			}
 			if load15, ok := row.Data["G"].(float64); ok {
 				record.Load15 = load15
+			}
+			if diskUsage, ok := row.Data["F4"].(float64); ok {
+				record.DiskUsage = diskUsage
 			}
 			record.Meta = map[string]string{}
 			if _, ok := hostAttrs[record.HostName]; ok {

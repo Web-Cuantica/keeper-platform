@@ -179,6 +179,31 @@ export const getHostColumnsConfig = (
 		},
 	},
 	{
+		id: 'diskUsage',
+		header: (): React.ReactNode => (
+			<div className={styles.columnHeaderRight}>
+				{t('pages:infra_col_disk', { defaultValue: 'Disk Usage' })}
+			</div>
+		),
+		accessorFn: (row): number => row.diskUsage,
+		width: { min: 220 },
+		enableSort: true,
+		cell: ({ value }): React.ReactNode => {
+			const disk = value as number;
+			return (
+				<div className={styles.progressContainer}>
+					<ValidateColumnValueWrapper
+						value={disk}
+						entity={InfraMonitoringEntity.HOSTS}
+						attribute="disk metric"
+					>
+						<EntityProgressBar value={disk} type="disk" />
+					</ValidateColumnValueWrapper>
+				</div>
+			);
+		},
+	},
+	{
 		id: 'wait',
 		header: (): React.ReactNode => (
 			<div className={styles.columnHeaderRight}>
