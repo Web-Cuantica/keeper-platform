@@ -49,8 +49,8 @@ export function getMemoryProgressColor(percent: number): string {
 
 export const hostDetailsMetadataConfig: K8sDetailsMetadataConfig<HostData>[] = [
 	{
-		label: 'STATUS',
-		getValue: (h): string => (h.active ? 'ACTIVE' : 'INACTIVE'),
+		label: 'ESTADO',
+		getValue: (h): string => (h.active ? 'ACTIVO' : 'INACTIVO'),
 		render: (value, h): React.ReactNode => (
 			<Badge
 				variant="outline"
@@ -63,7 +63,7 @@ export const hostDetailsMetadataConfig: K8sDetailsMetadataConfig<HostData>[] = [
 		),
 	},
 	{
-		label: 'OPERATING SYSTEM',
+		label: 'SISTEMA OPERATIVO',
 		getValue: (h): string => h.os || '-',
 		render: (value): React.ReactNode =>
 			value !== '-' ? (
@@ -75,7 +75,7 @@ export const hostDetailsMetadataConfig: K8sDetailsMetadataConfig<HostData>[] = [
 			),
 	},
 	{
-		label: 'CPU USAGE',
+		label: 'USO DE CPU',
 		getValue: (h): number => h.cpu * 100,
 		render: (value): React.ReactNode => (
 			<Progress
@@ -86,7 +86,7 @@ export const hostDetailsMetadataConfig: K8sDetailsMetadataConfig<HostData>[] = [
 		),
 	},
 	{
-		label: 'MEMORY USAGE',
+		label: 'USO DE MEMORIA',
 		getValue: (h): number => h.memory * 100,
 		render: (value): React.ReactNode => (
 			<Progress

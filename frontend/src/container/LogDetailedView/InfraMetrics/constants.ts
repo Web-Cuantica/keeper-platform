@@ -2720,16 +2720,16 @@ export const nodeWidgetInfo = [
 ];
 
 export const hostWidgetInfo = [
-	{ title: 'CPU Usage', yAxisUnit: 'percentunit' },
-	{ title: 'Memory Usage', yAxisUnit: 'bytes' },
-	{ title: 'System Load Average', yAxisUnit: '' },
-	{ title: 'Network usage (bytes)', yAxisUnit: 'bytes' },
-	{ title: 'Network usage (packet/s)', yAxisUnit: 'pps' },
-	{ title: 'Network errors', yAxisUnit: 'short' },
-	{ title: 'Network drops', yAxisUnit: 'short' },
-	{ title: 'Network connections', yAxisUnit: 'short' },
-	{ title: 'System disk io (bytes transferred)', yAxisUnit: 'bytes' },
-	{ title: 'System disk operations/s', yAxisUnit: 'short' },
-	{ title: 'Queue size', yAxisUnit: 'short' },
-	{ title: 'System disk operation time/s', yAxisUnit: 's' },
+	{ title: 'Uso de CPU', yAxisUnit: 'percentunit' },
+	{ title: 'Uso de memoria', yAxisUnit: 'bytes' },
+	{ title: 'Carga promedio del sistema', yAxisUnit: '' },
+	{ title: 'Uso de red (bytes)', yAxisUnit: 'bytes' },
+	{ title: 'Uso de red (paquetes/s)', yAxisUnit: 'pps' },
+	{ title: 'Errores de red', yAxisUnit: 'short' },
+	{ title: 'Paquetes de red descartados', yAxisUnit: 'short' },
+	{ title: 'Conexiones de red', yAxisUnit: 'short' },
+	{ title: 'E/S de disco (bytes transferidos)', yAxisUnit: 'bytes' },
+	{ title: 'Operaciones de disco/s', yAxisUnit: 'short' },
+	{ title: 'Tamaño de cola', yAxisUnit: 'short' },
+	{ title: 'Tiempo de operación de disco/s', yAxisUnit: 's' },
 ];
