@@ -31,7 +31,7 @@ function ChangePercentage({
 					<ArrowDownLeft size={14} color={Color.BG_FOREST_500} />
 				</div>
 				<div className="change-percentage__label">
-					{percentage}% vs Last {duration}
+					{percentage}% vs. {duration} previo
 				</div>
 			</div>
 		);
@@ -43,7 +43,7 @@ function ChangePercentage({
 					<ArrowUpRight size={14} color={Color.BG_CHERRY_500} />
 				</div>
 				<div className="change-percentage__label">
-					{percentage}% vs Last {duration}
+					{percentage}% vs. {duration} previo
 				</div>
 			</div>
 		);
@@ -51,7 +51,7 @@ function ChangePercentage({
 
 	return (
 		<div className="change-percentage change-percentage--no-previous-data">
-			<div className="change-percentage__label">no previous data</div>
+			<div className="change-percentage__label">sin datos previos</div>
 		</div>
 	);
 }
@@ -92,7 +92,7 @@ function StatsCard({
 	if (!displayTime && startTime && endTime) {
 		const formattedStartDate = extractDayFromTimestamp(startTime);
 		const formattedEndDate = extractDayFromTimestamp(endTime);
-		displayTime = `${formattedStartDate} to ${formattedEndDate}`;
+		displayTime = `${formattedStartDate} a ${formattedEndDate}`;
 	}
 
 	if (!displayTime) {
@@ -114,7 +114,7 @@ function StatsCard({
 						<div className="text">{displayTime}</div>
 					) : (
 						<Tooltip
-							title={`From ${formattedStartTimeForTooltip} to ${formattedEndTimeForTooltip}`}
+							title={`De ${formattedStartTimeForTooltip} a ${formattedEndTimeForTooltip}`}
 						>
 							<div className="text">{displayTime}</div>
 						</Tooltip>
@@ -149,7 +149,7 @@ StatsCard.defaultProps = {
 	totalCurrentCount: 0,
 	totalPastCount: 0,
 	isEmpty: false,
-	emptyMessage: 'No Data',
+	emptyMessage: 'Sin datos',
 	displayValue: '',
 	timeSeries: [],
 };

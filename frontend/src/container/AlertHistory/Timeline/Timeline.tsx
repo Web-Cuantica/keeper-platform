@@ -15,7 +15,7 @@ function Timeline({
 }): JSX.Element {
 	return (
 		<div className="timeline">
-			<div className="timeline__title">Timeline</div>
+			<div className="timeline__title">Línea de tiempo</div>
 			<div className="timeline__tabs-and-filters">
 				<TabsAndFilters />
 			</div>

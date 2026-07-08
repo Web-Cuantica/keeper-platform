@@ -19,7 +19,7 @@ function AverageResolutionCard({
 			displayValue={formatTime(+currentAvgResolutionTime)}
 			totalCurrentCount={+currentAvgResolutionTime}
 			totalPastCount={+pastAvgResolutionTime}
-			title="Avg. Resolution Time"
+			title="Tiempo prom. de resolución"
 			timeSeries={timeSeries}
 		/>
 	);

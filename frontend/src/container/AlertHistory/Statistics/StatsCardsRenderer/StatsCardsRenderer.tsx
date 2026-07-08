@@ -64,9 +64,9 @@ function StatsCardsRenderer({
 							/>
 						) : (
 							<StatsCard
-								title="Total Triggered"
+								title="Total disparadas"
 								isEmpty
-								emptyMessage="None Triggered."
+								emptyMessage="Ninguna disparada."
 							/>
 						)}
 
@@ -81,9 +81,9 @@ function StatsCardsRenderer({
 							/>
 						) : (
 							<StatsCard
-								title="Avg. Resolution Time"
+								title="Tiempo prom. de resolución"
 								isEmpty
-								emptyMessage="No Resolutions."
+								emptyMessage="Sin resoluciones."
 							/>
 						)}
 					</>

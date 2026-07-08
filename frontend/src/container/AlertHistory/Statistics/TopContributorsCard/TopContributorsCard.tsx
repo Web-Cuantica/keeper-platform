@@ -50,10 +50,10 @@ function TopContributorsCard({
 		<>
 			<div className="top-contributors-card">
 				<div className="top-contributors-card__header">
-					<div className="title">top contributors</div>
+					<div className="title">principales contribuyentes</div>
 					{topContributorsData.length > 3 && (
 						<Button type="text" className="view-all" onClick={toggleViewAllDrawer}>
-							<div className="label">View all</div>
+							<div className="label">Ver todos</div>
 							<div className="icon">
 								<ArrowRight
 									size={14}

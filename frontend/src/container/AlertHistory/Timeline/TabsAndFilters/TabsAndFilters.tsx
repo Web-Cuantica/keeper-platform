@@ -11,7 +11,7 @@ import './TabsAndFilters.styles.scss';
 function ComingSoon(): JSX.Element {
 	return (
 		<div className="coming-soon">
-			<div className="coming-soon__text">Coming Soon</div>
+			<div className="coming-soon__text">Próximamente</div>
 			<div className="coming-soon__icon">
 				<Info size={10} color={Color.BG_SIENNA_400} />
 			</div>
@@ -22,13 +22,13 @@ function TimelineTabs(): JSX.Element {
 	const tabs = [
 		{
 			value: TimelineTab.OVERALL_STATUS,
-			label: 'Overall Status',
+			label: 'Estado general',
 		},
 		{
 			value: TimelineTab.TOP_5_CONTRIBUTORS,
 			label: (
 				<div className="top-5-contributors">
-					Top 5 Contributors
+					Top 5 contribuyentes
 					<ComingSoon />
 				</div>
 			),
@@ -56,15 +56,15 @@ function TimelineFilters(): JSX.Element {
 	const tabs = [
 		{
 			value: TimelineFilter.ALL,
-			label: 'All',
+			label: 'Todas',
 		},
 		{
 			value: TimelineFilter.FIRED,
-			label: 'Fired',
+			label: 'Disparadas',
 		},
 		{
 			value: TimelineFilter.RESOLVED,
-			label: 'Resolved',
+			label: 'Resueltas',
 		},
 	];
 

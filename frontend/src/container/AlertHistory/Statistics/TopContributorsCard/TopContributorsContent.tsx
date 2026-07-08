@@ -12,8 +12,8 @@ function TopContributorsContent({
 			<div className="empty-content">
 				<div className="empty-content__icon">ℹ️</div>
 				<div className="empty-content__text">
-					Top contributors highlight the most frequently triggering group-by
-					attributes in multi-dimensional alerts
+					Los principales contribuyentes muestran los atributos de agrupación
+					(group-by) que disparan alertas multidimensionales con más frecuencia
 				</div>
 			</div>
 		);

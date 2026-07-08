@@ -17,7 +17,7 @@ function TotalTriggeredCard({
 		<StatsCard
 			totalCurrentCount={totalCurrentTriggers}
 			totalPastCount={totalPastTriggers}
-			title="Total Triggered"
+			title="Total disparadas"
 			timeSeries={timeSeries}
 		/>
 	);

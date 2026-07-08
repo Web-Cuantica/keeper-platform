@@ -84,7 +84,7 @@ export const timelineTableColumns = ({
 	) => string;
 }): ColumnsType<AlertRuleTimelineTableResponse> => [
 	{
-		title: 'STATE',
+		title: 'ESTADO',
 		dataIndex: 'state',
 		sorter: true,
 		width: 140,
@@ -106,7 +106,7 @@ export const timelineTableColumns = ({
 		),
 	},
 	{
-		title: 'CREATED AT',
+		title: 'CREADA',
 		dataIndex: 'unixMilli',
 		width: 200,
 		render: (value): JSX.Element => (
@@ -116,7 +116,7 @@ export const timelineTableColumns = ({
 		),
 	},
 	{
-		title: 'ACTIONS',
+		title: 'ACCIONES',
 		width: 140,
 		align: 'right',
 		render: (record): JSX.Element => (
