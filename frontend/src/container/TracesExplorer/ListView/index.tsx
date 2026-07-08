@@ -15,6 +15,8 @@ import DownloadOptionsMenu from 'components/DownloadOptionsMenu/DownloadOptionsM
 import ErrorInPlace from 'components/ErrorInPlace/ErrorInPlace';
 import ListViewOrderBy from 'components/OrderBy/ListViewOrderBy';
 import { ResizeTable } from 'components/ResizeTable';
+import type { SorterResult } from 'antd/es/table/interface';
+import { RowData } from 'lib/query/createTableColumnsFromQuery';
 import { ENTITY_VERSION_V5 } from 'constants/app';
 import { LOCALSTORAGE } from 'constants/localStorage';
 import { QueryParams } from 'constants/query';
@@ -193,8 +195,9 @@ function ListView({
 			getListColumns(
 				options?.selectColumns || [],
 				formatTimezoneAdjustedTimestamp,
+				orderBy,
 			),
-		[options?.selectColumns, formatTimezoneAdjustedTimestamp],
+		[options?.selectColumns, formatTimezoneAdjustedTimestamp, orderBy],
 	);
 
 	const transformedQueryTableData = useMemo(
@@ -219,6 +222,30 @@ function ListView({
 	const handleOrderChange = useCallback((value: string) => {
 		setOrderBy(value);
 	}, []);
+
+	// Ordenar haciendo clic en el header de la columna (server-side): mapea el sorter
+	// de antd al orderBy ("campo:asc|desc"), alternando DESC ↔ ASC.
+	const handleTableChange = useCallback(
+		(
+			_pagination: unknown,
+			_filters: unknown,
+			sorter: SorterResult<RowData> | SorterResult<RowData>[],
+		): void => {
+			const active = Array.isArray(sorter) ? sorter[0] : sorter;
+			if (!active || !active.order) {
+				setOrderBy('timestamp:desc');
+				return;
+			}
+			const rawField = String(active.field ?? active.columnKey ?? '');
+			// La columna Timestamp usa dataIndex 'date' pero el backend ordena por 'timestamp'.
+			const field = rawField === 'date' ? 'timestamp' : rawField;
+			if (!field) {
+				return;
+			}
+			setOrderBy(`${field}:${active.order === 'ascend' ? 'asc' : 'desc'}`);
+		},
+		[],
+	);
 
 	const isDataAbsent =
 		!isLoading &&
@@ -289,6 +316,7 @@ function ListView({
 					style={tableStyles}
 					dataSource={transformedQueryTableData}
 					columns={columns}
+					onChange={handleTableChange}
 					onDragColumn={handleDragColumn}
 				/>
 			)}

@@ -48,12 +48,32 @@ export const getTraceLink = (record: RowData): string =>
 		levelDown: 0,
 	})}`;
 
+// Direcciones permitidas al ordenar desde el header: alterna DESC ↔ ASC (sin estado "sin orden").
+const SORT_DIRECTIONS: ('descend' | 'ascend')[] = ['descend', 'ascend'];
+
+// Traduce el orderBy actual ("campo:asc|desc") al sortOrder de antd para ESTA columna
+// (para pintar la flecha en el header correcto). El orden real lo hace el backend.
+function sortOrderFor(
+	field: string,
+	orderBy?: string,
+): 'ascend' | 'descend' | null {
+	if (!orderBy) {
+		return null;
+	}
+	const [col, dir] = orderBy.split(':');
+	if (col !== field) {
+		return null;
+	}
+	return dir === 'asc' ? 'ascend' : 'descend';
+}
+
 export const getListColumns = (
 	selectedColumns: TelemetryFieldKey[],
 	formatTimezoneAdjustedTimestamp: (
 		input: TimestampInput,
 		format?: string,
 	) => string | number,
+	orderBy?: string,
 ): ColumnsType<RowData> => {
 	const initialColumns: ColumnsType<RowData> = [
 		{
@@ -61,6 +81,10 @@ export const getListColumns = (
 			key: 'date',
 			title: 'Timestamp',
 			width: 145,
+			// Orden server-side: () => 0 mantiene el orden del backend (no reordena en cliente).
+			sorter: (): number => 0,
+			sortOrder: sortOrderFor('timestamp', orderBy),
+			sortDirections: SORT_DIRECTIONS,
 			render: (value, item): JSX.Element => {
 				const date =
 					typeof value === 'string'
@@ -89,6 +113,10 @@ export const getListColumns = (
 				title: name,
 				dataIndex: name,
 				key: buildCompositeKey(name, fieldContext),
+				// Orden server-side por este campo (mismo columnName que usa el dropdown Order by).
+				sorter: (): number => 0,
+				sortOrder: sortOrderFor(name, orderBy),
+				sortDirections: SORT_DIRECTIONS,
 				width: 145,
 				render: (value, item): JSX.Element => {
 					if (value === '') {
