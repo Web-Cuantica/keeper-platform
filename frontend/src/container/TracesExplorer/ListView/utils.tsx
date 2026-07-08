@@ -67,6 +67,38 @@ function sortOrderFor(
 	return dir === 'asc' ? 'ascend' : 'descend';
 }
 
+// Encabezados legibles para las columnas conocidas del explorador de trazas.
+const COLUMN_LABELS: Record<string, string> = {
+	duration_nano: 'Duración',
+	durationNano: 'Duración',
+	'service.name': 'Servicio',
+	serviceName: 'Servicio',
+	http_method: 'Método',
+	httpMethod: 'Método',
+	response_status_code: 'Código',
+	responseStatusCode: 'Código',
+	name: 'Operación',
+};
+
+// Formatea una duración en ms de forma legible:
+//   <1s → "185.4ms"; ≥1s → "2s 200ms"; ≥1min → "1m 5s".
+function formatDurationMs(ms: number): string {
+	if (!Number.isFinite(ms) || ms < 0) {
+		return `${ms}ms`;
+	}
+	if (ms < 1000) {
+		return `${Number(ms.toFixed(2))}ms`;
+	}
+	const total = Math.round(ms);
+	const minutes = Math.floor(total / 60000);
+	const seconds = Math.floor((total % 60000) / 1000);
+	const millis = total % 1000;
+	if (minutes > 0) {
+		return `${minutes}m ${seconds}s`;
+	}
+	return `${seconds}s ${millis}ms`;
+}
+
 export const getListColumns = (
 	selectedColumns: TelemetryFieldKey[],
 	formatTimezoneAdjustedTimestamp: (
@@ -110,7 +142,7 @@ export const getListColumns = (
 			const name = props?.name || (props as any)?.key;
 			const fieldContext = props?.fieldContext || (props as any)?.type;
 			return {
-				title: name,
+				title: COLUMN_LABELS[name] ?? name,
 				dataIndex: name,
 				key: buildCompositeKey(name, fieldContext),
 				// Orden server-side por este campo (mismo columnName que usa el dropdown Order by).
@@ -145,7 +177,7 @@ export const getListColumns = (
 					if (name === 'durationNano' || name === 'duration_nano') {
 						return (
 							<BlockLink to={getTraceLink(item)} openInNewTab={false}>
-								<Typography data-testid={name}>{getMs(value)}ms</Typography>
+								<Typography data-testid={name}>{formatDurationMs(Number(getMs(value)))}</Typography>
 							</BlockLink>
 						);
 					}
