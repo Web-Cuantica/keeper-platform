@@ -1,5 +1,14 @@
 import { Link } from 'react-router-dom';
-import type { TableColumnsType as ColumnsType } from 'antd';
+import { Button, Dropdown } from 'antd';
+import type { MenuProps, TableColumnsType as ColumnsType } from 'antd';
+import {
+	ArrowDownToDot,
+	ArrowUpFromDot,
+	Copy,
+	Ellipsis,
+	RefreshCw,
+} from '@signozhq/icons';
+import { useCopyToClipboard } from 'react-use';
 import { Badge } from '@signozhq/ui/badge';
 import { Typography } from '@signozhq/ui/typography';
 import { TelemetryFieldKey } from 'api/v5/v5';
@@ -99,6 +108,95 @@ function formatDurationMs(ms: number): string {
 	return `${seconds}s ${millis}ms`;
 }
 
+// Acción del menú kebab de la celda: filtrar (=), excluir (!=) o reemplazar todo el filtro.
+export type CellFilterAction = 'filter' | 'exclude' | 'replace';
+
+// Handler que aplica la acción al query del explorer (lo implementa el ListView con
+// currentQuery + redirectWithQueryBuilderData; ver applyFilter del detalle de logs).
+export type CellFilterFn = (
+	fieldKey: string,
+	value: unknown,
+	action: CellFilterAction,
+) => void;
+
+// Columnas donde tiene sentido filtrar por valor exacto (NO duración ni timestamp,
+// que son rangos). Se aceptan los nombres snake_case (V5) y camelCase (V4).
+const FILTERABLE_COLUMNS = new Set<string>([
+	'service.name',
+	'serviceName',
+	'name',
+	'http_method',
+	'httpMethod',
+	'response_status_code',
+	'responseStatusCode',
+]);
+
+// Menú kebab por celda (estilo DataDog): copiar / filtrar / excluir / reemplazar, para
+// no tener que escribir a mano `service.name = '...'`. Reusa el mecanismo probado del
+// detalle de logs. Se monta como hermano del enlace de la celda (no dentro) para que el
+// clic en el kebab no navegue a la traza.
+function CellActions({
+	fieldKey,
+	value,
+	onFilter,
+}: {
+	fieldKey: string;
+	value: unknown;
+	onFilter: CellFilterFn;
+}): JSX.Element {
+	const [, setCopy] = useCopyToClipboard();
+
+	const items: MenuProps['items'] = [
+		{ key: 'copy', icon: <Copy size={14} />, label: 'Copiar valor' },
+		{ type: 'divider' },
+		{
+			key: 'filter',
+			icon: <ArrowDownToDot size={14} style={{ transform: 'rotate(90deg)' }} />,
+			label: `Filtrar por ${fieldKey}`,
+		},
+		{
+			key: 'exclude',
+			icon: <ArrowUpFromDot size={14} style={{ transform: 'rotate(90deg)' }} />,
+			label: `Excluir ${fieldKey}`,
+		},
+		{
+			key: 'replace',
+			icon: <RefreshCw size={14} />,
+			label: 'Reemplazar filtro con este valor',
+		},
+	];
+
+	// onClick a nivel de menú (el onClick por-item del Dropdown de antd no siempre dispara).
+	const onClick: NonNullable<MenuProps['onClick']> = ({ key, domEvent }): void => {
+		domEvent.stopPropagation();
+		if (key === 'copy') {
+			setCopy(String(value ?? ''));
+			return;
+		}
+		onFilter(fieldKey, value, key as CellFilterAction);
+	};
+
+	return (
+		<Dropdown
+			menu={{ items, onClick }}
+			trigger={['click']}
+			placement="bottomRight"
+		>
+			<Button
+				type="text"
+				size="small"
+				className="trace-cell-kebab"
+				icon={<Ellipsis size={14} />}
+				onClick={(e): void => {
+					// Evita navegar a la traza (la celda es un enlace) al abrir el menú.
+					e.preventDefault();
+					e.stopPropagation();
+				}}
+			/>
+		</Dropdown>
+	);
+}
+
 export const getListColumns = (
 	selectedColumns: TelemetryFieldKey[],
 	formatTimezoneAdjustedTimestamp: (
@@ -106,6 +204,7 @@ export const getListColumns = (
 		format?: string,
 	) => string | number,
 	orderBy?: string,
+	onFilter?: CellFilterFn,
 ): ColumnsType<RowData> => {
 	const initialColumns: ColumnsType<RowData> = [
 		{
@@ -151,43 +250,55 @@ export const getListColumns = (
 				sortDirections: SORT_DIRECTIONS,
 				width: 145,
 				render: (value, item): JSX.Element => {
+					const traceLink = getTraceLink(item);
+
+					let content: JSX.Element;
 					if (value === '') {
-						return (
-							<BlockLink to={getTraceLink(item)} openInNewTab={false}>
+						content = (
+							<BlockLink to={traceLink} openInNewTab={false}>
 								<Typography data-testid={name}>N/A</Typography>
 							</BlockLink>
 						);
-					}
-
-					if (
+					} else if (
 						name === 'httpMethod' ||
 						name === 'responseStatusCode' ||
 						name === 'response_status_code' ||
 						name === 'http_method'
 					) {
-						return (
-							<BlockLink to={getTraceLink(item)} openInNewTab={false}>
+						content = (
+							<BlockLink to={traceLink} openInNewTab={false}>
 								<Badge data-testid={name} color="sakura" variant="outline">
 									{value}
 								</Badge>
 							</BlockLink>
 						);
-					}
-
-					if (name === 'durationNano' || name === 'duration_nano') {
-						return (
-							<BlockLink to={getTraceLink(item)} openInNewTab={false}>
-								<Typography data-testid={name}>{formatDurationMs(Number(getMs(value)))}</Typography>
+					} else if (name === 'durationNano' || name === 'duration_nano') {
+						content = (
+							<BlockLink to={traceLink} openInNewTab={false}>
+								<Typography data-testid={name}>
+									{formatDurationMs(Number(getMs(value)))}
+								</Typography>
+							</BlockLink>
+						);
+					} else {
+						content = (
+							<BlockLink to={traceLink} openInNewTab={false}>
+								<Typography data-testid={name}>
+									<LineClampedText text={value} lines={3} />
+								</Typography>
 							</BlockLink>
 						);
 					}
 
+					// Kebab de filtro solo en columnas filtrables con valor no vacio.
+					if (!onFilter || value === '' || !FILTERABLE_COLUMNS.has(name)) {
+						return content;
+					}
 					return (
-						<BlockLink to={getTraceLink(item)} openInNewTab={false}>
-							<Typography data-testid={name}>
-								<LineClampedText text={value} lines={3} />
-							</Typography>
-						</BlockLink>
+						<div className="trace-list-cell">
+							{content}
+							<CellActions fieldKey={name} value={value} onFilter={onFilter} />
+						</div>
 					);
 				},
 				responsive: ['md'],

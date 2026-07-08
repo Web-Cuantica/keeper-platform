@@ -16,11 +16,17 @@ import ErrorInPlace from 'components/ErrorInPlace/ErrorInPlace';
 import ListViewOrderBy from 'components/OrderBy/ListViewOrderBy';
 import { ResizeTable } from 'components/ResizeTable';
 import type { SorterResult } from 'antd/es/table/interface';
+import { v4 as uuid } from 'uuid';
 import { RowData } from 'lib/query/createTableColumnsFromQuery';
+import { parseFieldValue } from 'container/LogDetailedView/utils';
+import {
+	BaseAutocompleteData,
+	DataTypes,
+} from 'types/api/queryBuilder/queryAutocompleteResponse';
 import { ENTITY_VERSION_V5 } from 'constants/app';
 import { LOCALSTORAGE } from 'constants/localStorage';
 import { QueryParams } from 'constants/query';
-import { initialQueriesMap, PANEL_TYPES } from 'constants/queryBuilder';
+import { initialQueriesMap, OPERATORS, PANEL_TYPES } from 'constants/queryBuilder';
 import { REACT_QUERY_KEY } from 'constants/reactQueryKeys';
 import EmptyLogsSearch from 'container/EmptyLogsSearch/EmptyLogsSearch';
 import NoLogs from 'container/NoLogs/NoLogs';
@@ -44,7 +50,7 @@ import { GlobalReducer } from 'types/reducer/globalTime';
 import { TracesLoading } from '../TraceLoading/TraceLoading';
 import { defaultSelectedColumns, PER_PAGE_OPTIONS } from './configs';
 import { Container, tableStyles } from './styles';
-import { getListColumns, transformDataWithDate } from './utils';
+import { CellFilterFn, getListColumns, transformDataWithDate } from './utils';
 
 import './ListView.styles.scss';
 
@@ -61,8 +67,12 @@ function ListView({
 	setIsLoadingQueries,
 	queryKeyRef,
 }: ListViewProps): JSX.Element {
-	const { stagedQuery, panelType: panelTypeFromQueryBuilder } =
-		useQueryBuilder();
+	const {
+		stagedQuery,
+		panelType: panelTypeFromQueryBuilder,
+		currentQuery,
+		redirectWithQueryBuilderData,
+	} = useQueryBuilder();
 
 	const panelType = panelTypeFromQueryBuilder || PANEL_TYPES.LIST;
 
@@ -190,14 +200,83 @@ function ListView({
 
 	const { formatTimezoneAdjustedTimestamp } = useTimezone();
 
+	// Aplica el filtro del kebab de la celda al query (mismo mecanismo que el detalle de
+	// logs): arma `key op 'valor'`, lo sincroniza con filter.expression (que el explorer V5
+	// prioriza) + filters.items, y redirige para correr la consulta.
+	const handleCellFilter = useCallback<CellFilterFn>(
+		(fieldKey, value, action) => {
+			if (!currentQuery) {
+				return;
+			}
+			const operator = action === 'exclude' ? OPERATORS['!='] : OPERATORS['='];
+			const replace = action === 'replace';
+
+			const rawValue = parseFieldValue(String(value ?? ''));
+			const isNumeric =
+				typeof rawValue === 'number' || typeof rawValue === 'boolean';
+			const formatted = isNumeric
+				? String(rawValue)
+				: `'${String(rawValue).replace(/'/g, "\\'")}'`;
+			const clause = `${fieldKey} ${operator} ${formatted}`;
+
+			const newItem = {
+				id: uuid(),
+				op: operator,
+				key: {
+					id: fieldKey,
+					key: fieldKey,
+					dataType: isNumeric ? DataTypes.Float64 : DataTypes.String,
+					type: '',
+				} as BaseAutocompleteData,
+				value: rawValue,
+			};
+
+			const nextQuery = {
+				...currentQuery,
+				builder: {
+					...currentQuery.builder,
+					queryData: currentQuery.builder.queryData.map((item, index) => {
+						if (index !== 0) {
+							return item;
+						}
+						const existingItems = replace ? [] : item.filters?.items || [];
+						const existingExpr = replace
+							? ''
+							: (item.filter?.expression || '').trim();
+						const expression = existingExpr
+							? `${existingExpr} AND ${clause}`
+							: clause;
+						return {
+							...item,
+							filters: {
+								items: [...existingItems, newItem],
+								op: item.filters?.op || 'AND',
+							},
+							filter: { ...item.filter, expression },
+						};
+					}),
+				},
+			};
+
+			redirectWithQueryBuilderData(nextQuery);
+		},
+		[currentQuery, redirectWithQueryBuilderData],
+	);
+
 	const columns = useMemo(
 		() =>
 			getListColumns(
 				options?.selectColumns || [],
 				formatTimezoneAdjustedTimestamp,
 				orderBy,
+				handleCellFilter,
 			),
-		[options?.selectColumns, formatTimezoneAdjustedTimestamp, orderBy],
+		[
+			options?.selectColumns,
+			formatTimezoneAdjustedTimestamp,
+			orderBy,
+			handleCellFilter,
+		],
 	);
 
 	const transformedQueryTableData = useMemo(

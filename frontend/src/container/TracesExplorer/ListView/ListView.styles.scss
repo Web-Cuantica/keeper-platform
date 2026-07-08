@@ -32,3 +32,28 @@
 		}
 	}
 }
+
+// Celda de la lista de trazas con menú kebab de filtro (filtrar/excluir/copiar).
+// El enlace ocupa el ancho; el kebab aparece al pasar el mouse por la celda.
+.trace-list-cell {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 4px;
+
+	> a {
+		flex: 1 1 auto;
+		min-width: 0;
+	}
+
+	.trace-cell-kebab {
+		flex-shrink: 0;
+		opacity: 0;
+		transition: opacity 0.1s ease-in-out;
+	}
+
+	&:hover .trace-cell-kebab,
+	.trace-cell-kebab.ant-dropdown-open {
+		opacity: 1;
+	}
+}
