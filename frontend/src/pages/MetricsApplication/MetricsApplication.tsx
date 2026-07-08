@@ -27,6 +27,11 @@ function MetricsApplication(): JSX.Element {
 
 	const activeKey = useMetricsApplicationTabKey();
 
+	// Nombre del servicio para el encabezado: el param viene URL-encoded (puede traer
+	// caracteres especiales), se decodifica para mostrarlo legible y recordar qué servicio
+	// se está viendo (antes la página no tenía ningún título de contexto).
+	const serviceName = decodeURIComponent(encodedServiceName ?? '');
+
 	const urlQuery = useUrlQuery();
 	const { safeNavigate } = useSafeNavigate();
 
@@ -61,6 +66,14 @@ function MetricsApplication(): JSX.Element {
 
 	return (
 		<div className="metrics-application-container">
+			<div className="metrics-application-header">
+				<span className="metrics-application-header__eyebrow">
+					{t('service', { defaultValue: 'Servicio' })}
+				</span>
+				<h1 className="metrics-application-header__title" title={serviceName}>
+					{serviceName}
+				</h1>
+			</div>
 			<ResourceAttributesFilter />
 			<ApDexApplication />
 			<Tabs

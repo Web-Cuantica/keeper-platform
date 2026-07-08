@@ -1,3 +1,33 @@
+.metrics-application-header {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	margin-bottom: 16px;
+
+	&__eyebrow {
+		font-size: 11px;
+		font-family: 'Inter';
+		font-weight: 500;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		color: var(--l2-foreground);
+	}
+
+	&__title {
+		margin: 0;
+		font-size: 18px;
+		font-family: 'Inter';
+		font-weight: 600;
+		line-height: 24px;
+		color: var(--l1-foreground);
+		// Nombre largo de servicio: elipsis en una sola línea.
+		max-width: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+}
+
 .service-route-tab {
 	margin-bottom: 64px;
 	.ant-tabs-nav {
