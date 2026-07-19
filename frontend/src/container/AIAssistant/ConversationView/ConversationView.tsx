@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import cx from 'classnames';
 
@@ -24,6 +25,7 @@ interface ConversationViewProps {
 export default function ConversationView({
 	conversationId,
 }: ConversationViewProps): JSX.Element {
+	const { t } = useTranslation('aiAssistant');
 	const variant = useVariant();
 	const isCompact = variant === 'panel';
 	const location = useLocation();
@@ -181,7 +183,7 @@ export default function ConversationView({
 			/>
 			{showDisclaimer && (
 				<div className={disclaimerClass} role="note" aria-live="polite">
-					SigNoz AI can make mistakes. Please double-check responses.
+					{t('disclaimer')}
 				</div>
 			)}
 			<div className={inputWrapperClass}>

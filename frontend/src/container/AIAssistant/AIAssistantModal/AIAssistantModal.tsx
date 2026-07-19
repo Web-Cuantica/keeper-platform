@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { createPortal } from 'react-dom';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Button } from '@signozhq/ui/button';
@@ -31,6 +32,7 @@ import styles from './AIAssistantModal.module.scss';
  */
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export default function AIAssistantModal(): JSX.Element | null {
+	const { t } = useTranslation('aiAssistant');
 	const history = useHistory();
 	const { pathname } = useLocation();
 	const [showHistory, setShowHistory] = useState(false);
@@ -165,53 +167,53 @@ export default function AIAssistantModal(): JSX.Element | null {
 									size="icon"
 									color="secondary"
 									onClick={(): void => setShowHistory((v) => !v)}
-									aria-label="Toggle conversations"
+									aria-label={t('toggle_conversations')}
 									className={showHistory ? styles.toggleBtnActive : ''}
 									prefix={<History size={14} />}
 								/>
 							</TooltipSimple>
 
-							<TooltipSimple title="New conversation">
+							<TooltipSimple title={t('new_conversation')}>
 								<Button
 									variant="ghost"
 									size="icon"
 									color="secondary"
 									onClick={handleNew}
-									aria-label="New conversation"
+									aria-label={t('new_conversation')}
 									prefix={<Plus size={14} />}
 								/>
 							</TooltipSimple>
 
-							<TooltipSimple title="Open full screen">
+							<TooltipSimple title={t('open_full_screen')}>
 								<Button
 									variant="ghost"
 									size="icon"
 									color="secondary"
 									onClick={handleExpand}
 									disabled={!activeConversationId}
-									aria-label="Open full screen"
+									aria-label={t('open_full_screen')}
 									prefix={<Maximize2 size={14} />}
 								/>
 							</TooltipSimple>
 
-							<TooltipSimple title="Minimize to side panel">
+							<TooltipSimple title={t('minimize_to_side_panel')}>
 								<Button
 									variant="ghost"
 									size="icon"
 									color="secondary"
 									onClick={handleMinimize}
-									aria-label="Minimize to side panel"
+									aria-label={t('minimize_to_side_panel')}
 									prefix={<Minus size={14} />}
 								/>
 							</TooltipSimple>
 
-							<TooltipSimple title="Close">
+							<TooltipSimple title={t('close')}>
 								<Button
 									variant="ghost"
 									size="icon"
 									color="secondary"
 									onClick={closeModal}
-									aria-label="Close"
+									aria-label={t('close')}
 									prefix={<X size={14} />}
 								/>
 							</TooltipSimple>

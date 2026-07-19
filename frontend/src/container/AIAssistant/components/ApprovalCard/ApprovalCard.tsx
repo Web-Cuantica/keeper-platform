@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useCopyToClipboard } from 'react-use';
 import cx from 'classnames';
 import { Button } from '@signozhq/ui/button';
@@ -45,6 +46,7 @@ export default function ApprovalCard({
 	conversationId,
 	approval,
 }: ApprovalCardProps): JSX.Element {
+	const { t } = useTranslation('aiAssistant');
 	const approveAction = useAIAssistantStore((s) => s.approveAction);
 	const rejectAction = useAIAssistantStore((s) => s.rejectAction);
 	const isStreaming = useAIAssistantStore(
@@ -89,7 +91,7 @@ export default function ApprovalCard({
 		<div className={styles.card}>
 			<div className={styles.header}>
 				<Shield size={13} className={styles.shieldIcon} />
-				<span className={styles.headerLabel}>Action requires approval</span>
+				<span className={styles.headerLabel}>{t('action_requires_approval')}</span>
 				<span className={styles.resourceBadge}>
 					{approval.actionType} · {approval.resourceType}
 				</span>
@@ -100,7 +102,7 @@ export default function ApprovalCard({
 			{approval.diff && (
 				<div className={styles.diffSection}>
 					<div className={styles.diffHeader}>
-						<span className={styles.diffHeaderLabel}>Diff</span>
+						<span className={styles.diffHeaderLabel}>{t('diff')}</span>
 						<TooltipSimple title="Expand diff">
 							<Button
 								variant="link"
@@ -191,7 +193,7 @@ export default function ApprovalCard({
 					disabled={isStreaming}
 					prefix={<Check />}
 				>
-					Approve
+					{t('approve')}
 				</Button>
 				<Button
 					variant="outlined"
@@ -201,7 +203,7 @@ export default function ApprovalCard({
 					disabled={isStreaming}
 					prefix={<X />}
 				>
-					Reject
+					{t('reject')}
 				</Button>
 			</div>
 		</div>
@@ -225,6 +227,7 @@ function DiffView({
 	wrapText = false,
 	viewMode = 'split',
 }: DiffViewProps): JSX.Element {
+	const { t } = useTranslation('aiAssistant');
 	const beforeText =
 		diff.before !== undefined ? JSON.stringify(diff.before, null, 2) : '';
 	const afterText =
@@ -239,7 +242,7 @@ function DiffView({
 				{diff.before !== undefined && (
 					<div className={cx(styles.diffBlock, styles.before)}>
 						<div className={styles.diffBlockHeader}>
-							<span className={styles.diffLabel}>Before</span>
+							<span className={styles.diffLabel}>{t('before')}</span>
 						</div>
 						<pre className={jsonClass}>{beforeText}</pre>
 					</div>
@@ -247,7 +250,7 @@ function DiffView({
 				{diff.after !== undefined && (
 					<div className={cx(styles.diffBlock, styles.after)}>
 						<div className={styles.diffBlockHeader}>
-							<span className={styles.diffLabel}>After</span>
+							<span className={styles.diffLabel}>{t('after')}</span>
 						</div>
 						<pre className={jsonClass}>{afterText}</pre>
 					</div>
@@ -267,7 +270,7 @@ function DiffView({
 		return (
 			<div className={cx(styles.diff, styles.expanded, styles.unified)}>
 				<div className={styles.diffBlockHeader}>
-					<span className={styles.diffLabel}>Diff</span>
+					<span className={styles.diffLabel}>{t('diff')}</span>
 					<div className={styles.diffHeaderActions}>
 						<CopyButton text={unifiedText} label="diff" />
 					</div>
@@ -296,7 +299,7 @@ function DiffView({
 		<div className={cx(styles.diff, styles.expanded)}>
 			<div className={cx(styles.diffBlock, styles.before)}>
 				<div className={styles.diffBlockHeader}>
-					<span className={styles.diffLabel}>Before</span>
+					<span className={styles.diffLabel}>{t('before')}</span>
 					<CopyButton text={beforeText} label="before" />
 				</div>
 				<div className={cx(styles.diffPane, { [styles.wrapped]: wrapText })}>
@@ -310,7 +313,7 @@ function DiffView({
 			</div>
 			<div className={cx(styles.diffBlock, styles.after)}>
 				<div className={styles.diffBlockHeader}>
-					<span className={styles.diffLabel}>After</span>
+					<span className={styles.diffLabel}>{t('after')}</span>
 					<CopyButton text={afterText} label="after" />
 				</div>
 				<div className={cx(styles.diffPane, { [styles.wrapped]: wrapText })}>

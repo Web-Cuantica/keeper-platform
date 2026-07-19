@@ -1,4 +1,5 @@
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { matchPath, useHistory, useLocation } from 'react-router-dom';
 import { Button } from '@signozhq/ui/button';
 import { TooltipSimple } from '@signozhq/ui/tooltip';
@@ -21,6 +22,7 @@ const AI_ASSISTANT_PANEL_OPEN_CLASS = 'ai-assistant-panel-open';
 const AI_ASSISTANT_PANEL_WIDTH_VAR = '--ai-assistant-panel-width';
 
 export default function AIAssistantPanel(): JSX.Element | null {
+	const { t } = useTranslation('aiAssistant');
 	const history = useHistory();
 	const { pathname } = useLocation();
 	const [showHistory, setShowHistory] = useState(false);
@@ -150,41 +152,41 @@ export default function AIAssistantPanel(): JSX.Element | null {
 								size="icon"
 								color="secondary"
 								onClick={(): void => setShowHistory((v) => !v)}
-								aria-label="Toggle conversations"
+								aria-label={t('toggle_conversations')}
 								prefix={<History size={14} />}
 							/>
 						</TooltipSimple>
 
-						<TooltipSimple title="New conversation">
+						<TooltipSimple title={t('new_conversation')}>
 							<Button
 								variant="ghost"
 								size="icon"
 								color="secondary"
 								onClick={handleNew}
-								aria-label="New conversation"
+								aria-label={t('new_conversation')}
 								prefix={<Plus size={14} />}
 							/>
 						</TooltipSimple>
 
-						<TooltipSimple title="Open full screen">
+						<TooltipSimple title={t('open_full_screen')}>
 							<Button
 								variant="ghost"
 								size="icon"
 								color="secondary"
 								onClick={handleExpand}
 								disabled={!activeConversationId}
-								aria-label="Open full screen"
+								aria-label={t('open_full_screen')}
 								prefix={<Maximize2 size={14} />}
 							/>
 						</TooltipSimple>
 
-						<TooltipSimple title="Close">
+						<TooltipSimple title={t('close')}>
 							<Button
 								variant="ghost"
 								size="icon"
 								color="secondary"
 								onClick={closeDrawer}
-								aria-label="Close panel"
+								aria-label={t('close_panel')}
 								prefix={<X size={14} />}
 							/>
 						</TooltipSimple>

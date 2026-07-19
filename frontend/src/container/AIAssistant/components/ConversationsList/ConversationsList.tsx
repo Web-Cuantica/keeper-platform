@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import cx from 'classnames';
 import { Button } from '@signozhq/ui/button';
 import { Input } from '@signozhq/ui/input';
@@ -62,6 +63,7 @@ function groupByDate(
  * load — visible signal of in-flight work without any layout shift.
  */
 function HeaderLoadingDots(): JSX.Element {
+	const { t } = useTranslation('aiAssistant');
 	return (
 		<span className={styles.loadingDots} role="status" aria-label="Loading">
 			<span className={styles.loadingDot} />
@@ -76,6 +78,7 @@ export default function ConversationsList({
 	onNewConversation,
 	showAddNewConversation = false,
 }: ConversationsListProps): JSX.Element {
+	const { t } = useTranslation('aiAssistant');
 	const variant = useVariant();
 	const conversations = useAIAssistantStore((s) => s.conversations);
 	const activeConversationId = useAIAssistantStore(
@@ -167,17 +170,17 @@ export default function ConversationsList({
 	return (
 		<div className={cx(styles.conversationsList, variantClass)}>
 			<div className={styles.header}>
-				<span className={styles.heading}>Conversations</span>
+				<span className={styles.heading}>{t('conversations')}</span>
 				{isLoadingThreads && <HeaderLoadingDots />}
 
 				{!isLoadingThreads && showAddNewConversation && (
-					<TooltipSimple title="New conversation">
+					<TooltipSimple title={t('new_conversation')}>
 						<Button
 							variant="solid"
 							size="sm"
 							color="secondary"
 							onClick={onNewConversation}
-							aria-label="New conversation"
+							aria-label={t('new_conversation')}
 						>
 							<Plus size={12} />
 						</Button>
@@ -190,7 +193,7 @@ export default function ConversationsList({
 					type="text"
 					value={searchQuery}
 					onChange={(e): void => setSearchQuery(e.target.value)}
-					placeholder="Search conversations…"
+					placeholder={t('search_conversations')}
 					prefix={<Search size={12} />}
 					className={styles.search}
 				/>
@@ -228,7 +231,7 @@ export default function ConversationsList({
 
 				{sortedArchived.length > 0 && (
 					<div className={cx(styles.group, styles.archived)}>
-						<span className={styles.groupLabel}>Archived Conversations</span>
+						<span className={styles.groupLabel}>{t('archived_conversations')}</span>
 						{sortedArchived.map((conv) => (
 							<ConversationItem
 								key={conv.id}

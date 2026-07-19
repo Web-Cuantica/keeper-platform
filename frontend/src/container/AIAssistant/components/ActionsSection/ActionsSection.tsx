@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { matchPath, useHistory, useLocation } from 'react-router-dom';
 import { convertFiltersToExpression } from 'components/QueryBuilderV2/utils';
 import { useQueryBuilder } from 'hooks/queryBuilder/useQueryBuilder';
@@ -393,6 +394,7 @@ export default function ActionsSection({
 	actions,
 	messageId,
 }: ActionsSectionProps): JSX.Element | null {
+	const { t } = useTranslation('aiAssistant');
 	const history = useHistory();
 	const { pathname } = useLocation();
 	const sendMessage = useAIAssistantStore((s) => s.sendMessage);
@@ -594,7 +596,7 @@ export default function ActionsSection({
 		<div className={styles.section}>
 			<div className={styles.heading}>
 				<Sparkles size={12} className={styles.headingIcon} />
-				<span className={styles.headingText}>Suggested actions</span>
+				<span className={styles.headingText}>{t('suggested_actions')}</span>
 			</div>
 
 			<div className={styles.list}>

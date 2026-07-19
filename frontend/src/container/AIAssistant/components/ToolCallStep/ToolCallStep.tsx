@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import cx from 'classnames';
 import { ChevronDown, ChevronRight, LoaderCircle } from '@signozhq/icons';
 
@@ -32,20 +33,21 @@ export function ToolCallContent({
 }: {
 	toolCall: StreamingToolCall;
 }): JSX.Element {
+	const { t } = useTranslation('aiAssistant');
 	const { toolName, input, result, done } = toolCall;
 	return (
 		<div className={styles.body}>
 			<div className={styles.section}>
-				<span className={styles.sectionLabel}>Tool</span>
+				<span className={styles.sectionLabel}>{t('tool')}</span>
 				<span className={styles.toolName}>{toolName}</span>
 			</div>
 			<div className={styles.section}>
-				<span className={styles.sectionLabel}>Input</span>
+				<span className={styles.sectionLabel}>{t('input')}</span>
 				<pre className={styles.json}>{JSON.stringify(input, null, 2)}</pre>
 			</div>
 			{done && result !== undefined && (
 				<div className={styles.section}>
-					<span className={styles.sectionLabel}>Output</span>
+					<span className={styles.sectionLabel}>{t('output')}</span>
 					<pre className={styles.json}>
 						{typeof result === 'string' ? result : JSON.stringify(result, null, 2)}
 					</pre>

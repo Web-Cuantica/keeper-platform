@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import cx from 'classnames';
 import { useCopyToClipboard } from 'react-use';
 import { Button } from '@signozhq/ui/button';
@@ -70,6 +71,7 @@ export default function MessageFeedback({
 	onRegenerate,
 	isLastAssistant = false,
 }: MessageFeedbackProps): JSX.Element {
+	const { t } = useTranslation('aiAssistant');
 	const [copied, setCopied] = useState(false);
 	const [, copyToClipboard] = useCopyToClipboard();
 	const submitMessageFeedback = useAIAssistantStore(
@@ -227,7 +229,7 @@ export default function MessageFeedback({
 								variant="ghost"
 								color="secondary"
 								onClick={onRegenerate}
-								aria-label="Regenerate response"
+								aria-label={t('regenerate_response')}
 							>
 								<RefreshCw size={12} />
 							</Button>
@@ -253,17 +255,17 @@ export default function MessageFeedback({
 							color="secondary"
 							onClick={(): void => setIsNegativeDialogOpen(false)}
 						>
-							Cancel
+							{t('cancel')}
 						</Button>
 						<Button variant="solid" color="primary" onClick={handleSubmitNegative}>
-							Send feedback
+							{t('send_feedback')}
 						</Button>
 					</div>
 				}
 			>
 				<textarea
 					className={styles.feedbackTextarea}
-					placeholder="Tell us what was unhelpful, inaccurate, or unsafe…"
+					placeholder={t('feedback_placeholder')}
 					value={negativeComment}
 					onChange={(e): void => setNegativeComment(e.target.value)}
 					rows={5}

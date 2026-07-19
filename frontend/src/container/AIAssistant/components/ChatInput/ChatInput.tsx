@@ -6,6 +6,7 @@ import {
 	useState,
 } from 'react';
 import { useQueryClient } from 'react-query';
+import { useTranslation } from 'react-i18next';
 import cx from 'classnames';
 import { Badge } from '@signozhq/ui/badge';
 import { Button } from '@signozhq/ui/button';
@@ -228,6 +229,7 @@ export default function ChatInput({
 	autoContexts,
 	onDismissAutoContext,
 }: ChatInputProps): JSX.Element {
+	const { t } = useTranslation('aiAssistant');
 	const { selectedTime } = useSelector<AppState, GlobalReducer>(
 		(state) => state.globalTime,
 	);
@@ -933,7 +935,7 @@ export default function ChatInput({
 				<textarea
 					ref={textareaRef}
 					className={styles.textarea}
-					placeholder="Ask anything… (Shift+Enter for new line)"
+					placeholder={t('ask_anything')}
 					value={text}
 					onChange={(e): void => {
 						const next = capText(e.target.value);
@@ -982,7 +984,7 @@ export default function ChatInput({
 								}}
 								prefix={<Plus size={10} />}
 							>
-								Add Context
+								{t('add_context')}
 							</Button>
 						</PopoverTrigger>
 						<PopoverContent
@@ -996,7 +998,7 @@ export default function ChatInput({
 									className={styles.contextPopoverCategories}
 									role="tablist"
 									aria-orientation="vertical"
-									aria-label="Context categories"
+									aria-label={t('context_categories')}
 								>
 									{CONTEXT_CATEGORIES.map((category) => {
 										const CategoryIcon = CONTEXT_CATEGORY_ICONS[category];
@@ -1072,7 +1074,7 @@ export default function ChatInput({
 											</div>
 										) : filteredContextOptions.length === 0 ? (
 											<div className={styles.contextPopoverEmpty}>
-												No matching entities
+												{t('no_matching_entities')}
 											</div>
 										) : (
 											filteredContextOptions.map((option, index) => {
@@ -1126,9 +1128,9 @@ export default function ChatInput({
 								className={styles.micRecording}
 								role="status"
 								aria-live="polite"
-								aria-label="Recording voice input"
+								aria-label={t('recording_voice_input')}
 							>
-								<TooltipSimple title="Discard recording">
+								<TooltipSimple title={t('discard_recording')}>
 									<Button
 										type="button"
 										variant="ghost"
@@ -1136,7 +1138,7 @@ export default function ChatInput({
 										color="secondary"
 										className={cx(styles.micDiscard, styles.secondary)}
 										onClick={handleDiscard}
-										aria-label="Discard recording"
+										aria-label={t('discard_recording')}
 										prefix={<X size={12} />}
 									/>
 								</TooltipSimple>
@@ -1150,7 +1152,7 @@ export default function ChatInput({
 									<span />
 									<span />
 								</span>
-								<TooltipSimple title="Stop and send">
+								<TooltipSimple title={t('stop_and_send')}>
 									<Button
 										type="button"
 										variant="ghost"
@@ -1158,13 +1160,13 @@ export default function ChatInput({
 										color="destructive"
 										className={cx(styles.micStop, styles.destructive)}
 										onClick={handleStopAndSend}
-										aria-label="Stop and send"
+										aria-label={t('stop_and_send')}
 										prefix={<Square size={9} fill="currentColor" strokeWidth={0} />}
 									/>
 								</TooltipSimple>
 							</div>
 						) : (
-							<TooltipSimple title="Voice input">
+							<TooltipSimple title={t('voice_input')}>
 								<Button
 									variant="ghost"
 									size="icon"

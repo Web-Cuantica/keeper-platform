@@ -12,7 +12,9 @@ function generateChecksum(str, algorithm, encoding) {
 const result = {};
 
 glob.sync(`public/locales/**/*.json`).forEach((path) => {
-	const [_, lang] = path.split('public/locales');
+	// En Windows glob devuelve separadores '\': normalizar a '/' para que el split
+	// funcione en cualquier SO (si no, `lang` queda undefined y el script revienta).
+	const [_, lang] = path.replace(/\\/g, '/').split('public/locales');
 	const content = fs.readFileSync(path, { encoding: 'utf-8' });
 	result[lang.replace('.json', '')] = generateChecksum(content);
 });

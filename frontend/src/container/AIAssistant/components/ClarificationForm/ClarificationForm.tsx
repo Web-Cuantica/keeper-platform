@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import cx from 'classnames';
 import { Button } from '@signozhq/ui/button';
 import { Checkbox } from '@signozhq/ui/checkbox';
@@ -42,6 +43,7 @@ export default function ClarificationForm({
 	conversationId,
 	clarification,
 }: ClarificationFormProps): JSX.Element {
+	const { t } = useTranslation('aiAssistant');
 	const submitClarification = useAIAssistantStore((s) => s.submitClarification);
 	const cancelStream = useAIAssistantStore((s) => s.cancelStream);
 	const isStreaming = useAIAssistantStore(
@@ -122,7 +124,7 @@ export default function ClarificationForm({
 		<div className={styles.clarification}>
 			<div className={styles.header}>
 				<CircleHelp size={13} className={styles.headerIcon} />
-				<span className={styles.headerLabel}>A few details needed</span>
+				<span className={styles.headerLabel}>{t('details_needed')}</span>
 			</div>
 
 			<p className={styles.message}>{clarification.message}</p>
@@ -146,7 +148,7 @@ export default function ClarificationForm({
 					disabled={isStreaming || !isFormValid}
 					prefix={<Send />}
 				>
-					Submit
+					{t('submit')}
 				</Button>
 				<Button
 					variant="outlined"
@@ -155,7 +157,7 @@ export default function ClarificationForm({
 					disabled={isStreaming}
 					prefix={<X />}
 				>
-					Cancel request
+					{t('cancel_request')}
 				</Button>
 			</div>
 		</div>
@@ -225,6 +227,7 @@ interface FieldInputProps {
 }
 
 function FieldInput({ field, value, onChange }: FieldInputProps): JSX.Element {
+	const { t } = useTranslation('aiAssistant');
 	const { id, type, label, required, options, allowCustom } = field;
 
 	// Local UI state for the synthetic "custom" option on select /
@@ -268,7 +271,7 @@ function FieldInput({ field, value, onChange }: FieldInputProps): JSX.Element {
 				>
 					<SelectTrigger
 						id={id}
-						placeholder="Select…"
+						placeholder={t('select_placeholder')}
 						aria-required={required || undefined}
 					/>
 					{/* Pin the dropdown width to the trigger via Radix's
