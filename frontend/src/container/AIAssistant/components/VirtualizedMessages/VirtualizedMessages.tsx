@@ -155,9 +155,7 @@ export default function VirtualizedMessages({
 					<Noz size={48} />
 				</div>
 				<h3 className={styles.emptyTitle}>{t('assistant_name')}</h3>
-				<p className={styles.emptySubtitle}>
-					Ask questions about your traces, logs, metrics, and infrastructure.
-				</p>
+				<p className={styles.emptySubtitle}>{t('empty_subtitle')}</p>
 				<div className={styles.suggestions}>
 					{emptyStateChips.map((chip) => (
 						<div

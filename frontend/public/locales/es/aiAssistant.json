@@ -1,6 +1,8 @@
 {
   "assistant_name": "Qubi",
+  "empty_subtitle": "Pregunta sobre tus trazas, logs, métricas e infraestructura.",
   "open_assistant": "Abrir Qubi",
+  "open_assistant_pending": "Abrir Qubi, {{count}} acciones requieren tu respuesta",
   "new_conversation": "Nueva conversación",
   "toggle_conversations": "Mostrar/ocultar conversaciones",
   "open_full_screen": "Abrir en pantalla completa",

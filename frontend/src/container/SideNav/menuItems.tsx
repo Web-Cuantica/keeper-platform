@@ -96,7 +96,7 @@ const AI_ASSISTANT_NAV_KEY = '/ai-assistant/new';
 
 export const aiAssistantMenuItem = {
 	key: AI_ASSISTANT_NAV_KEY,
-	label: 'Noz',
+	label: 'Qubi',
 	icon: <Noz size={16} />,
 	itemKey: 'ai-assistant',
 	isEarlyAccess: true,

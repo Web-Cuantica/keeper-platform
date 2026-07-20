@@ -1,6 +1,8 @@
 {
   "assistant_name": "Qubi",
+  "empty_subtitle": "Ask questions about your traces, logs, metrics, and infrastructure.",
   "open_assistant": "Open Qubi",
+  "open_assistant_pending": "Open Qubi, {{count}} actions need your response",
   "new_conversation": "New conversation",
   "toggle_conversations": "Toggle conversations",
   "open_full_screen": "Open full screen",
