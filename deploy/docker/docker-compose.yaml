@@ -119,7 +119,7 @@ services:
       - SIGNOZ_ALERTMANAGER_PROVIDER=signoz
       - SIGNOZ_TELEMETRYSTORE_CLICKHOUSE_DSN=tcp://clickhouse:9000
       - SIGNOZ_SQLSTORE_SQLITE_PATH=/var/lib/signoz/signoz.db
-      - SIGNOZ_TOKENIZER_JWT_SECRET=secret
+      - SIGNOZ_TOKENIZER_JWT_SECRET=${SIGNOZ_TOKENIZER_JWT_SECRET:-secret}
     healthcheck:
       test:
         - CMD
