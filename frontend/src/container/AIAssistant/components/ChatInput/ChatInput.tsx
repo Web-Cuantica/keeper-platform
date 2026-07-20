@@ -1172,7 +1172,7 @@ export default function ChatInput({
 									size="icon"
 									onClick={(): void => startVoiceInput(VoiceInputSource.Button)}
 									disabled={disabled}
-									aria-label="Start voice input"
+									aria-label={t('start_voice_input')}
 									className={styles.micBtn}
 									prefix={<Mic size={14} />}
 								/>
@@ -1180,25 +1180,25 @@ export default function ChatInput({
 						))}
 
 					{isStreaming && onCancel ? (
-						<TooltipSimple title="Stop generating">
+						<TooltipSimple title={t('stop_generating')}>
 							<Button
 								variant="solid"
 								size="icon"
 								color="destructive"
 								onClick={onCancel}
-								aria-label="Stop generating"
+								aria-label={t('stop_generating')}
 								prefix={<Square size={10} fill="currentColor" strokeWidth={0} />}
 							/>
 						</TooltipSimple>
 					) : (
-						<TooltipSimple title="Send message">
+						<TooltipSimple title={t('send_message')}>
 							<Button
 								variant="solid"
 								size="icon"
 								color="primary"
 								onClick={isListening ? handleStopAndSend : handleSend}
 								disabled={disabled || (!text.trim() && pendingFiles.length === 0)}
-								aria-label="Send message"
+								aria-label={t('send_message')}
 								prefix={<Send size={14} />}
 							/>
 						</TooltipSimple>

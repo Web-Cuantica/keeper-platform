@@ -51,7 +51,7 @@ export default function AIAssistantDrawer(): JSX.Element {
 				<div>
 					<div className="noz-wave">
 						<Noz size={16} />
-						<span>Noz</span>
+						<span>{t('assistant_name')}</span>
 					</div>
 
 					<div>

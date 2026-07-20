@@ -222,7 +222,7 @@ export default function MessageFeedback({
 					</TooltipSimple>
 
 					{onRegenerate && (
-						<TooltipSimple title="Regenerate">
+						<TooltipSimple title={t('regenerate')}>
 							<Button
 								className={styles.btn}
 								size="icon"
@@ -245,7 +245,7 @@ export default function MessageFeedback({
 			<DialogWrapper
 				open={isNegativeDialogOpen}
 				onOpenChange={setIsNegativeDialogOpen}
-				title="What went wrong?"
+				title={t('what_went_wrong')}
 				subTitle="Your feedback helps us improve the assistant. Comments are optional."
 				width="base"
 				footer={

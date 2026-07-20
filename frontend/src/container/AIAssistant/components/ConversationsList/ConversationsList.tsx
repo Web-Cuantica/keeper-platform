@@ -65,7 +65,7 @@ function groupByDate(
 function HeaderLoadingDots(): JSX.Element {
 	const { t } = useTranslation('aiAssistant');
 	return (
-		<span className={styles.loadingDots} role="status" aria-label="Loading">
+		<span className={styles.loadingDots} role="status" aria-label={t('loading')}>
 			<span className={styles.loadingDot} />
 			<span className={styles.loadingDot} />
 			<span className={styles.loadingDot} />

@@ -1,6 +1,6 @@
 {
-  "assistant_name": "Noz",
-  "open_assistant": "Open Noz",
+  "assistant_name": "Qubi",
+  "open_assistant": "Open Qubi",
   "new_conversation": "New conversation",
   "toggle_conversations": "Toggle conversations",
   "open_full_screen": "Open full screen",
@@ -61,5 +61,12 @@
   "input": "Input",
   "output": "Output",
 
-  "disclaimer": "Noz can make mistakes. Please double-check responses."
+  "expand_diff": "Expand diff",
+  "start_voice_input": "Start voice input",
+  "stop_generating": "Stop generating",
+  "send_message": "Send message",
+  "enter_custom_value": "Enter a custom value",
+  "back_to_chat": "Back to chat",
+
+  "disclaimer": "Qubi can make mistakes. Please double-check responses."
 }

@@ -103,13 +103,13 @@ export default function ApprovalCard({
 				<div className={styles.diffSection}>
 					<div className={styles.diffHeader}>
 						<span className={styles.diffHeaderLabel}>{t('diff')}</span>
-						<TooltipSimple title="Expand diff">
+						<TooltipSimple title={t('expand_diff')}>
 							<Button
 								variant="link"
 								size="sm"
 								color="secondary"
 								onClick={(): void => setDiffExpanded(true)}
-								aria-label="Expand diff"
+								aria-label={t('expand_diff')}
 								prefix={<Maximize2 size={12} />}
 							/>
 						</TooltipSimple>
@@ -126,7 +126,7 @@ export default function ApprovalCard({
 					onOpenAutoFocus={(e): void => e.preventDefault()}
 				>
 					<DialogHeader>
-						<DialogTitle>Approval diff</DialogTitle>
+						<DialogTitle>{t('approval_diff')}</DialogTitle>
 						<DialogSubtitle>
 							{approval.actionType} · {approval.resourceType}
 						</DialogSubtitle>

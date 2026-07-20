@@ -142,11 +142,11 @@ export default function AIAssistantPanel(): JSX.Element | null {
 				<div className={styles.header}>
 					<div className={`${styles.title} noz-wave`}>
 						<Noz size={18} />
-						<span>Noz</span>
+						<span>{t('assistant_name')}</span>
 					</div>
 
 					<div className={styles.actions}>
-						<TooltipSimple title={showHistory ? 'Back to chat' : 'Conversations'}>
+						<TooltipSimple title={showHistory ? t('back_to_chat') : t('conversations')}>
 							<Button
 								variant="ghost"
 								size="icon"

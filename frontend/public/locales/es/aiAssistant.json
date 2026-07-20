@@ -1,6 +1,6 @@
 {
-  "assistant_name": "Noz",
-  "open_assistant": "Abrir Noz",
+  "assistant_name": "Qubi",
+  "open_assistant": "Abrir Qubi",
   "new_conversation": "Nueva conversación",
   "toggle_conversations": "Mostrar/ocultar conversaciones",
   "open_full_screen": "Abrir en pantalla completa",
@@ -61,5 +61,12 @@
   "input": "Entrada",
   "output": "Salida",
 
-  "disclaimer": "Noz puede cometer errores. Verifica las respuestas importantes."
+  "expand_diff": "Expandir cambios",
+  "start_voice_input": "Iniciar entrada de voz",
+  "stop_generating": "Detener generación",
+  "send_message": "Enviar mensaje",
+  "enter_custom_value": "Escribe un valor…",
+  "back_to_chat": "Volver al chat",
+
+  "disclaimer": "Qubi puede cometer errores. Verifica las respuestas importantes."
 }

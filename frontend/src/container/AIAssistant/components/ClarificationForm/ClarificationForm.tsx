@@ -294,7 +294,7 @@ function FieldInput({ field, value, onChange }: FieldInputProps): JSX.Element {
 					<Input
 						type="text"
 						className={styles.input}
-						placeholder="Enter a custom value"
+						placeholder={t('enter_custom_value')}
 						value={customValue}
 						onChange={(e): void => {
 							setCustomValue(e.target.value);
@@ -407,7 +407,7 @@ function FieldInput({ field, value, onChange }: FieldInputProps): JSX.Element {
 					<Input
 						type="text"
 						className={styles.input}
-						placeholder="Enter a custom value"
+						placeholder={t('enter_custom_value')}
 						value={customValue}
 						onChange={(e): void => updateCustomValue(e.target.value)}
 					/>

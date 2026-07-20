@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 import Noz from 'components/Noz/Noz';
 
@@ -34,6 +35,7 @@ export default function VirtualizedMessages({
 	isStreaming,
 	onSendSuggestedPrompt,
 }: VirtualizedMessagesProps): JSX.Element {
+	const { t } = useTranslation('aiAssistant');
 	const regenerateAssistantMessage = useAIAssistantStore(
 		(s) => s.regenerateAssistantMessage,
 	);
@@ -152,7 +154,7 @@ export default function VirtualizedMessages({
 				<div className={`${styles.emptyIcon} noz-wave`}>
 					<Noz size={48} />
 				</div>
-				<h3 className={styles.emptyTitle}>Noz</h3>
+				<h3 className={styles.emptyTitle}>{t('assistant_name')}</h3>
 				<p className={styles.emptySubtitle}>
 					Ask questions about your traces, logs, metrics, and infrastructure.
 				</p>

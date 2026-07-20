@@ -145,7 +145,7 @@ export default function AIAssistantModal(): JSX.Element | null {
 				className={styles.backdrop}
 				role="dialog"
 				aria-modal="true"
-				aria-label="Noz"
+				aria-label={t('assistant_name')}
 				onClick={handleBackdropClick}
 			>
 				<div className={styles.modal}>
@@ -153,7 +153,7 @@ export default function AIAssistantModal(): JSX.Element | null {
 					<div className={styles.header}>
 						<div className={`${styles.title} noz-wave`}>
 							<Noz size={16} />
-							<span>Noz</span>
+							<span>{t('assistant_name')}</span>
 							<kbd className={styles.shortcut}>
 								<span>⌘</span>
 								<span>J</span>
