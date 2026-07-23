@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useMemo, useState } from 'react';
 import { Button } from '@signozhq/ui/button';
 import { Callout } from '@signozhq/ui/callout';
@@ -30,6 +31,7 @@ type FormValues = {
 };
 
 function SignUp(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [loading, setLoading] = useState(false);
 	const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
 
@@ -109,7 +111,7 @@ function SignUp(): JSX.Element {
 						<img src={tvUrl} alt="TV" width="32" height="32" />
 					</div>
 					<Typography.Title level={4} className="signup-header-title">
-						Create your account
+						{t('onb_create_your_account', { defaultValue: "Create your account" })}
 					</Typography.Title>
 					<Typography.Text className="signup-header-subtitle">
 						You&apos;re almost in. Create a password to start monitoring your
@@ -121,7 +123,7 @@ function SignUp(): JSX.Element {
 					<div className="signup-form-container">
 						<div className="signup-form-fields">
 							<div className="signup-field-container">
-								<Label htmlFor="signupEmail">Email address</Label>
+								<Label htmlFor="signupEmail">{t('onb_email_address', { defaultValue: "Email address" })}</Label>
 								<FormContainer.Item noStyle name="email">
 									<Input
 										placeholder="e.g. john@signoz.io"
@@ -135,7 +137,7 @@ function SignUp(): JSX.Element {
 							</div>
 
 							<div className="signup-field-container">
-								<Label htmlFor="currentPassword">Set your password</Label>
+								<Label htmlFor="currentPassword">{t('onb_set_your_password', { defaultValue: "Set your password" })}</Label>
 								<FormContainer.Item
 									name="password"
 									validateTrigger="onBlur"
@@ -144,7 +146,7 @@ function SignUp(): JSX.Element {
 									<AntdInput.Password
 										required
 										id="currentPassword"
-										placeholder="Enter new password"
+										placeholder={t('onb_enter_new_password', { defaultValue: "Enter new password" })}
 										disabled={loading}
 										className="signup-antd-input"
 									/>
@@ -152,7 +154,7 @@ function SignUp(): JSX.Element {
 							</div>
 
 							<div className="signup-field-container">
-								<Label htmlFor="confirmPassword">Confirm your new password</Label>
+								<Label htmlFor="confirmPassword">{t('onb_confirm_your_new_password', { defaultValue: "Confirm your new password" })}</Label>
 								<FormContainer.Item
 									name="confirmPassword"
 									validateTrigger="onBlur"
@@ -167,7 +169,7 @@ function SignUp(): JSX.Element {
 									<AntdInput.Password
 										required
 										id="confirmPassword"
-										placeholder="Confirm your new password"
+										placeholder={t('onb_confirm_your_new_password', { defaultValue: "Confirm your new password" })}
 										disabled={loading}
 										className="signup-antd-input"
 										onBlur={() => setConfirmPasswordTouched(true)}
@@ -194,7 +196,7 @@ function SignUp(): JSX.Element {
 							className="signup-submit-button"
 							suffix={<ArrowRight size={16} />}
 						>
-							Access My Workspace
+							{t('onb_access_my_workspace', { defaultValue: "Access My Workspace" })}
 						</Button>
 					</div>
 				</FormContainer>

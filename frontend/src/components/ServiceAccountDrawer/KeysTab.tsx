@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import React, { useCallback, useMemo } from 'react';
 import { KeyRound, X } from '@signozhq/icons';
 import { Button } from '@signozhq/ui/button';
@@ -30,6 +31,10 @@ interface KeysTabProps {
 	pageSize: number;
 }
 
+// Firma mínima de la función de traducción: evita el TS2322 de TFunctionResult y basta para
+// estos helpers, que no son componentes (no pueden usar el hook useTranslation).
+type TraducirFn = (key: string, opts?: { defaultValue?: string }) => string;
+
 interface BuildColumnsParams {
 	isDisabled: boolean;
 	accountId: string;
@@ -37,15 +42,18 @@ interface BuildColumnsParams {
 	handleformatLastObservedAt: (
 		lastObservedAt: Date | null | undefined,
 	) => string;
+	t: TraducirFn;
 }
 
-function formatExpiry(expiresAt: number): JSX.Element {
+// formatExpiry es un helper (no un componente): recibe `t` por parámetro desde el componente
+// que lo usa, en vez de llamar al hook.
+function formatExpiry(expiresAt: number, t: TraducirFn): JSX.Element {
 	if (expiresAt === 0) {
-		return <span className="keys-tab__expiry--never">Never</span>;
+		return <span className="keys-tab__expiry--never">{t('onb_never', { defaultValue: 'Never' })}</span>;
 	}
 	const expiryDate = dayjs.unix(expiresAt);
 	if (expiryDate.isBefore(dayjs())) {
-		return <span className="keys-tab__expiry--expired">Expired</span>;
+		return <span className="keys-tab__expiry--expired">{t('onb_expired', { defaultValue: 'Expired' })}</span>;
 	}
 	return <span>{expiryDate.format(DATE_TIME_FORMATS.MONTH_DATE)}</span>;
 }
@@ -55,6 +63,7 @@ function buildColumns({
 	accountId,
 	onRevokeClick,
 	handleformatLastObservedAt,
+	t,
 }: BuildColumnsParams): ColumnsType<ServiceaccounttypesGettableFactorAPIKeyDTO> {
 	return [
 		{
@@ -78,7 +87,7 @@ function buildColumns({
 				const bVal = b.expiresAt === 0 ? Infinity : b.expiresAt;
 				return aVal - bVal;
 			},
-			render: (expiresAt: number): JSX.Element => formatExpiry(expiresAt),
+			render: (expiresAt: number): JSX.Element => formatExpiry(expiresAt, t),
 		},
 		{
 			title: 'Last Observed At',
@@ -150,6 +159,7 @@ function KeysTab({
 	currentPage,
 	pageSize,
 }: KeysTabProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [, setIsAddKeyOpen] = useQueryState(
 		'add-key',
 		parseAsBoolean.withDefault(false),
@@ -185,8 +195,9 @@ function KeysTab({
 				accountId,
 				onRevokeClick,
 				handleformatLastObservedAt,
+				t,
 			}),
-		[isDisabled, accountId, onRevokeClick, handleformatLastObservedAt],
+		[isDisabled, accountId, onRevokeClick, handleformatLastObservedAt, t],
 	);
 
 	if (isLoading) {
@@ -209,7 +220,7 @@ function KeysTab({
 						rel="noopener noreferrer"
 						className="keys-tab__learn-more"
 					>
-						Learn more
+						{t('onb_learn_more', { defaultValue: "Learn more" })}
 					</a>
 				</p>
 				<AuthZTooltip

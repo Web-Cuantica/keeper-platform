@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { Control, UseFormRegister } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import { LockKeyhole, Trash2, X } from '@signozhq/icons';
@@ -48,12 +49,13 @@ function EditKeyForm({
 	canUpdate = true,
 	accountId = '',
 }: EditKeyFormProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	return (
 		<>
 			<form id={FORM_ID} className="edit-key-modal__form" onSubmit={onSubmit}>
 				<div className="edit-key-modal__field">
 					<label className="edit-key-modal__label" htmlFor="edit-key-name">
-						Name
+						{t('onb_name', { defaultValue: "Name" })}
 					</label>
 					{!canUpdate ? (
 						<AuthZTooltip
@@ -69,7 +71,7 @@ function EditKeyForm({
 						<Input
 							id="edit-key-name"
 							className="edit-key-modal__input"
-							placeholder="Enter key name"
+							placeholder={t('onb_enter_key_name', { defaultValue: "Enter key name" })}
 							{...register('name')}
 						/>
 					)}
@@ -96,7 +98,7 @@ function EditKeyForm({
 				</div>
 
 				<div className="edit-key-modal__field">
-					<span className="edit-key-modal__label">Expiration</span>
+					<span className="edit-key-modal__label">{t('onb_expiration', { defaultValue: "Expiration" })}</span>
 					<Controller
 						name="expiryMode"
 						control={control}
@@ -124,7 +126,7 @@ function EditKeyForm({
 				{expiryMode === ExpiryMode.DATE && (
 					<div className="edit-key-modal__field">
 						<label className="edit-key-modal__label" htmlFor="edit-key-datepicker">
-							Expiration Date
+							{t('onb_expiration_date', { defaultValue: "Expiration Date" })}
 						</label>
 						<div className="edit-key-modal__datepicker">
 							<Controller
@@ -147,7 +149,7 @@ function EditKeyForm({
 				)}
 
 				<div className="edit-key-modal__meta">
-					<span className="edit-key-modal__meta-label">Last Observed At</span>
+					<span className="edit-key-modal__meta-label">{t('onb_last_observed_at', { defaultValue: "Last Observed At" })}</span>
 					<Badge color="vanilla">
 						{formatLastObservedAt(
 							keyItem?.lastObservedAt ?? null,
@@ -167,13 +169,13 @@ function EditKeyForm({
 				>
 					<Button variant="link" color="destructive" onClick={onRevokeClick}>
 						<Trash2 size={12} />
-						Revoke Key
+						{t('onb_revoke_key', { defaultValue: "Revoke Key" })}
 					</Button>
 				</AuthZTooltip>
 				<div className="edit-key-modal__footer-right">
 					<Button variant="solid" color="secondary" onClick={onClose}>
 						<X size={12} />
-						Cancel
+						{t('onb_cancel', { defaultValue: "Cancel" })}
 					</Button>
 					<AuthZTooltip
 						checks={[buildAPIKeyUpdatePermission(keyItem?.id ?? '')]}
@@ -187,7 +189,7 @@ function EditKeyForm({
 							loading={isSaving}
 							disabled={!isDirty}
 						>
-							Save Changes
+							{t('onb_save_changes', { defaultValue: "Save Changes" })}
 						</Button>
 					</AuthZTooltip>
 				</div>

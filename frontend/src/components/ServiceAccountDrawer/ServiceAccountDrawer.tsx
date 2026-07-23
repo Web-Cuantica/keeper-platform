@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useQueryClient } from 'react-query';
 import { Key, LayoutGrid, Plus, Trash2, X } from '@signozhq/icons';
@@ -74,6 +75,7 @@ function toSaveApiError(err: unknown): APIError {
 function ServiceAccountDrawer({
 	onSuccess,
 }: ServiceAccountDrawerProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [selectedAccountId, setSelectedAccountId] = useQueryState(
 		SA_QUERY_PARAMS.ACCOUNT,
 	);
@@ -414,7 +416,7 @@ function ServiceAccountDrawer({
 							label: (
 								<>
 									<LayoutGrid size={14} />
-									Overview
+									{t('onb_overview', { defaultValue: "Overview" })}
 								</>
 							),
 						},
@@ -450,7 +452,7 @@ function ServiceAccountDrawer({
 							}}
 						>
 							<Plus size={12} />
-							Add Key
+							{t('onb_add_key', { defaultValue: "Add Key" })}
 						</Button>
 					</AuthZTooltip>
 				)}
@@ -557,7 +559,7 @@ function ServiceAccountDrawer({
 								}}
 							>
 								<Trash2 size={12} />
-								Delete Service Account
+								{t('onb_delete_service_account', { defaultValue: "Delete Service Account" })}
 							</Button>
 						</AuthZTooltip>
 					)}
@@ -565,7 +567,7 @@ function ServiceAccountDrawer({
 						<div className="sa-drawer__footer-right">
 							<Button variant="outlined" color="secondary" onClick={handleClose}>
 								<X size={14} />
-								Cancel
+								{t('onb_cancel', { defaultValue: "Cancel" })}
 							</Button>
 							<Button
 								variant="solid"
@@ -574,7 +576,7 @@ function ServiceAccountDrawer({
 								disabled={!isDirty}
 								onClick={handleSave}
 							>
-								Save Changes
+								{t('onb_save_changes', { defaultValue: "Save Changes" })}
 							</Button>
 						</div>
 					)}
@@ -595,7 +597,7 @@ function ServiceAccountDrawer({
 				direction="right"
 				showCloseButton
 				showOverlay={false}
-				title="Service Account Details"
+				title={t('onb_service_account_details', { defaultValue: "Service Account Details" })}
 				className="sa-drawer"
 				width="wide"
 				footer={footer}

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useEffect, useMemo, useState } from 'react';
 // eslint-disable-next-line no-restricted-imports
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,6 +34,7 @@ import './ConnectionStatus.styles.scss';
 const pollingInterval = 10000;
 
 export default function ConnectionStatus(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { minTime, maxTime, selectedTime } = useSelector<
 		AppState,
 		GlobalReducer
@@ -322,19 +324,19 @@ export default function ConnectionStatus(): JSX.Element {
 			<div className="full-docs-link">{renderDocsReference()}</div>
 			<div className="status-container">
 				<div className="service-info">
-					<div className="label"> Service Name </div>
+					<div className="label"> {t('onb_service_name', { defaultValue: "Service Name" })}</div>
 					<div className="language">{serviceName}</div>
 				</div>
 
 				<div className="language-info">
-					<div className="label"> Language - Framework </div>
+					<div className="label"> {t('onb_language_framework', { defaultValue: "Language - Framework" })}</div>
 					<div className="language">
 						{selectedDataSource?.name} - {selectedFramework}
 					</div>
 				</div>
 
 				<div className="status-info">
-					<div className="label"> Status </div>
+					<div className="label"> {t('onb_status', { defaultValue: "Status" })}</div>
 
 					<div className="status">
 						{isQueryServiceLoading && (
@@ -345,7 +347,7 @@ export default function ConnectionStatus(): JSX.Element {
 							(getStartedSource !== 'kafka' ? (
 								<>
 									<CircleCheck size="md" color="#52c41a" />
-									<span> Success </span>
+									<span> {t('onb_success', { defaultValue: "Success" })}</span>
 								</>
 							) : (
 								<MessagingQueueHealthCheck
@@ -357,7 +359,7 @@ export default function ConnectionStatus(): JSX.Element {
 							(getStartedSource !== 'kafka' ? (
 								<>
 									<CircleX size="md" color="#e84749" />
-									<span> Failed </span>
+									<span> {t('onb_failed', { defaultValue: "Failed" })}</span>
 								</>
 							) : (
 								<MessagingQueueHealthCheck
@@ -367,15 +369,15 @@ export default function ConnectionStatus(): JSX.Element {
 					</div>
 				</div>
 				<div className="details-info">
-					<div className="label"> Details </div>
+					<div className="label"> {t('onb_details', { defaultValue: "Details" })}</div>
 
 					<div className="details">
-						{isQueryServiceLoading && <div> Waiting for Update </div>}
+						{isQueryServiceLoading && <div> {t('onb_waiting_for_update', { defaultValue: "Waiting for Update" })}</div>}
 						{!isQueryServiceLoading && isReceivingData && (
-							<div> Received data from the application successfully. </div>
+							<div> {t('onb_received_data_from_the', { defaultValue: "Received data from the application successfully." })}</div>
 						)}
 						{!isQueryServiceLoading && !isReceivingData && (
-							<div> Could not detect the install </div>
+							<div> {t('onb_could_not_detect_the', { defaultValue: "Could not detect the install" })}</div>
 						)}
 					</div>
 				</div>

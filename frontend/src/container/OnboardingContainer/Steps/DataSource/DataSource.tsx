@@ -151,7 +151,7 @@ export default function DataSource(): JSX.Element {
 	return (
 		<div className="module-container">
 			<Typography.Text className="data-source-title">
-				<span className="required-symbol">*</span> Select Data Source
+				<span className="required-symbol">*</span> {t('onb_select_data_source', { defaultValue: "Select Data Source" })}
 			</Typography.Text>
 			<div className="supported-languages-container">
 				{supportedDataSources?.map((dataSource) => (
@@ -212,7 +212,7 @@ export default function DataSource(): JSX.Element {
 							<>
 								<Form.Item
 									name="serviceName"
-									label="Service Name"
+									label={t('onb_service_name', { defaultValue: "Service Name" })}
 									style={{ width: 300 }}
 									rules={[{ required: true, message: 'Please enter service name' }]}
 									validateTrigger="onBlur"
@@ -223,7 +223,7 @@ export default function DataSource(): JSX.Element {
 								{enableFrameworks && (
 									<div className="framework-selector">
 										<Form.Item
-											label="Select Framework"
+											label={t('onb_select_framework', { defaultValue: "Select Framework" })}
 											name="selectFramework"
 											rules={[{ required: true, message: 'Please select framework' }]}
 										>
@@ -231,7 +231,7 @@ export default function DataSource(): JSX.Element {
 												value={selectedFramework}
 												getPopupContainer={popupContainer}
 												style={{ width: 300 }}
-												placeholder="Select Framework"
+												placeholder={t('onb_select_framework', { defaultValue: "Select Framework" })}
 												onChange={(value): void => updateSelectedFramework(value)}
 												options={supportedframeworks}
 											/>
@@ -251,13 +251,13 @@ export default function DataSource(): JSX.Element {
 								icon={<Blocks size={14} />}
 								className="navigate-integrations-page-btn"
 							>
-								Go to integrations
+								{t('onb_go_to_integrations', { defaultValue: "Go to integrations" })}
 							</Button>
 						</div>
 
 						<div className="request-entity-container">
 							<Typography.Text>
-								Cannot find what you’re looking for? Request a data source
+								{t('onb_cannot_find_what_youre', { defaultValue: "Cannot find what you’re looking for? Request a data source" })}
 							</Typography.Text>
 
 							<div className="form-section">
@@ -266,7 +266,7 @@ export default function DataSource(): JSX.Element {
 										name="requestedDataSourceName"
 										style={{ width: 300, marginBottom: 0 }}
 									>
-										<Input placeholder="Enter data source name..." />
+										<Input placeholder={t('onb_enter_data_source_name', { defaultValue: "Enter data source name..." })} />
 									</Form.Item>
 									<Button
 										className="periscope-btn primary"
@@ -285,7 +285,7 @@ export default function DataSource(): JSX.Element {
 											requestedDataSourceName?.trim().length === 0
 										}
 									>
-										Submit
+										{t('onb_submit', { defaultValue: "Submit" })}
 									</Button>
 								</Space.Compact>
 							</div>

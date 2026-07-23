@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useCallback, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { Color } from '@signozhq/design-tokens';
@@ -51,6 +52,7 @@ function InviteTeamMembers({
 	onNext,
 	onClose,
 }: InviteTeamMembersProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [teamMembersToInvite, setTeamMembersToInvite] = useState<
 		TeamMember[] | null
 	>(teamMembers);
@@ -233,9 +235,9 @@ function InviteTeamMembers({
 									onChange={(value): void => handleRoleChange(value, member)}
 									className="team-member-role-select"
 								>
-									<Select.Option value="VIEWER">Viewer</Select.Option>
-									<Select.Option value="EDITOR">Editor</Select.Option>
-									<Select.Option value="ADMIN">Admin</Select.Option>
+									<Select.Option value="VIEWER">{t('onb_viewer', { defaultValue: "Viewer" })}</Select.Option>
+									<Select.Option value="EDITOR">{t('onb_editor', { defaultValue: "Editor" })}</Select.Option>
+									<Select.Option value="ADMIN">{t('onb_admin', { defaultValue: "Admin" })}</Select.Option>
 								</Select>
 
 								{teamMembersToInvite?.length > 1 && (
@@ -257,7 +259,7 @@ function InviteTeamMembers({
 							icon={<Plus size={14} />}
 							onClick={handleAddTeamMember}
 						>
-							Member
+							{t('onb_member', { defaultValue: "Member" })}
 						</Button>
 					</div>
 				</div>
@@ -278,7 +280,7 @@ function InviteTeamMembers({
 					onClick={onClose}
 				>
 					<X size={14} />
-					Cancel
+					{t('onb_cancel', { defaultValue: "Cancel" })}
 				</Button>
 
 				<Button
@@ -287,7 +289,7 @@ function InviteTeamMembers({
 					onClick={handleNext}
 					loading={isSendingInvites || isLoading}
 				>
-					Send Invites
+					{t('onb_send_invites', { defaultValue: "Send Invites" })}
 					<ArrowRight size={14} />
 				</Button>
 			</div>

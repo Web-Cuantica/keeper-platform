@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Check, Goal, Search, UserPlus, X } from '@signozhq/icons';
 import {
@@ -145,6 +146,7 @@ const allGroupedDataSources = groupDataSourcesByTags(
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 function OnboardingAddDataSource(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { safeNavigate } = useSafeNavigate();
 	const [groupedDataSources, setGroupedDataSources] = useState<{
 		[tag: string]: Entity[];
@@ -531,7 +533,7 @@ function OnboardingAddDataSource(): JSX.Element {
 			<div className="request-data-source-container">
 				{!isNoResultsFound && (
 					<>
-						<Typography.Text>Can’t find what you’re looking for?</Typography.Text>
+						<Typography.Text>{t('onb_cant_find_what_youre', { defaultValue: "Can’t find what you’re looking for?" })}</Typography.Text>
 
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -555,7 +557,7 @@ function OnboardingAddDataSource(): JSX.Element {
 								icon={<Goal size={16} />}
 								onClick={handleRequestDataSource}
 							>
-								Request Data Source
+								{t('onb_request_data_source', { defaultValue: "Request Data Source" })}
 							</Button>
 						)}
 
@@ -565,7 +567,7 @@ function OnboardingAddDataSource(): JSX.Element {
 								className="periscope-btn request-data-source-btn success"
 								icon={<Check size={16} />}
 							>
-								Request raised
+								{t('onb_request_raised', { defaultValue: "Request raised" })}
 							</Button>
 						)}
 					</>
@@ -601,7 +603,7 @@ function OnboardingAddDataSource(): JSX.Element {
 								icon={<Goal size={16} />}
 								onClick={handleRaiseRequest}
 							>
-								Raise request
+								{t('onb_raise_request', { defaultValue: "Raise request" })}
 							</Button>
 						)}
 
@@ -611,7 +613,7 @@ function OnboardingAddDataSource(): JSX.Element {
 								className="periscope-btn request-data-source-btn success"
 								icon={<Check size={16} />}
 							>
-								Request raised
+								{t('onb_request_raised', { defaultValue: "Request raised" })}
 							</Button>
 						)}
 					</>
@@ -655,7 +657,7 @@ function OnboardingAddDataSource(): JSX.Element {
 								onClick={handleShowInviteTeamMembersModal}
 								icon={<UserPlus size={16} />}
 							>
-								Invite a teammate
+								{t('onb_invite_a_teammate', { defaultValue: "Invite a teammate" })}
 							</Button>
 
 							<LaunchChatSupport
@@ -667,7 +669,7 @@ function OnboardingAddDataSource(): JSX.Element {
 								}}
 								eventName={`${ONBOARDING_V3_ANALYTICS_EVENTS_MAP?.BASE}: ${ONBOARDING_V3_ANALYTICS_EVENTS_MAP?.GET_HELP_BUTTON_CLICKED}`}
 								message=""
-								buttonText="Contact Support"
+								buttonText={t('onb_contact_support', { defaultValue: "Contact Support" })}
 								className="periscope-btn get-help-btn outlined"
 							/>
 						</div>
@@ -702,10 +704,10 @@ function OnboardingAddDataSource(): JSX.Element {
 												level={3}
 												className="question-title onboarding-question"
 											>
-												Select your data source
+												{t('onb_select_your_data_source', { defaultValue: "Select your data source" })}
 											</Typography.Title>
 											<Typography.Text className="question-sub-title">
-												Select from a host of services to start sending data to SigNoz
+												{t('onb_select_from_a_host', { defaultValue: "Select from a host of services to start sending data to SigNoz" })}
 											</Typography.Text>
 										</div>
 									</div>
@@ -719,7 +721,7 @@ function OnboardingAddDataSource(): JSX.Element {
 											<div className="data-sources-container">
 												<div className="onboarding-data-source-search">
 													<Input
-														placeholder="Search"
+														placeholder={t('onb_search', { defaultValue: "Search" })}
 														maxLength={20}
 														onChange={handleSearch}
 														addonAfter={<Search size="md" />}
@@ -991,7 +993,7 @@ function OnboardingAddDataSource(): JSX.Element {
 														}
 													}}
 												>
-													Next: Configure your product
+													{t('onb_next_configure_your_product', { defaultValue: "Next: Configure your product" })}
 												</Button>
 											</div>
 										)}
@@ -1023,7 +1025,7 @@ function OnboardingAddDataSource(): JSX.Element {
 										</Flex>
 									</div>
 									<iframe
-										title="docs"
+										title={t('onb_docs', { defaultValue: "docs" })}
 										src={docsUrl}
 										className="configure-product-docs-section-iframe"
 										referrerPolicy="unsafe-url"
@@ -1051,7 +1053,7 @@ function OnboardingAddDataSource(): JSX.Element {
 											handleUpdateCurrentStep(1);
 										}}
 									>
-										Back
+										{t('onb_back', { defaultValue: "Back" })}
 									</Button>
 									<Button
 										type="primary"
@@ -1071,7 +1073,7 @@ function OnboardingAddDataSource(): JSX.Element {
 											handleUpdateCurrentStep(3, e);
 										}}
 									>
-										Continue
+										{t('onb_continue', { defaultValue: "Continue" })}
 									</Button>
 								</div>
 							</div>
@@ -1085,7 +1087,7 @@ function OnboardingAddDataSource(): JSX.Element {
 
 				<Modal
 					className="invite-team-member-modal"
-					title={<span className="title">Invite a team member</span>}
+					title={<span className="title">{t('onb_invite_a_team_member', { defaultValue: "Invite a team member" })}</span>}
 					open={showInviteTeamMembersModal}
 					closable
 					onCancel={(): void => setShowInviteTeamMembersModal(false)}
@@ -1106,7 +1108,7 @@ function OnboardingAddDataSource(): JSX.Element {
 
 				<Modal
 					className="request-data-source-modal"
-					title={<span className="title">Request Data Source</span>}
+					title={<span className="title">{t('onb_request_data_source', { defaultValue: "Request Data Source" })}</span>}
 					open={showRequestDataSourceModal}
 					closable
 					onCancel={(): void => setShowRequestDataSourceModal(false)}
@@ -1119,7 +1121,7 @@ function OnboardingAddDataSource(): JSX.Element {
 							onClick={(): void => setShowRequestDataSourceModal(false)}
 							icon={<X size={16} />}
 						>
-							Cancel
+							{t('onb_cancel', { defaultValue: "Cancel" })}
 						</Button>,
 						<Button
 							key="submit"
@@ -1129,15 +1131,15 @@ function OnboardingAddDataSource(): JSX.Element {
 							onClick={handleSubmitDataSourceRequest}
 							icon={<Check size={16} />}
 						>
-							Submit request
+							{t('onb_submit_request', { defaultValue: "Submit request" })}
 						</Button>,
 					]}
 					destroyOnClose
 				>
 					<div className="request-data-source-modal-content">
-						<Typography.Text>Enter your request</Typography.Text>
+						<Typography.Text>{t('onb_enter_your_request', { defaultValue: "Enter your request" })}</Typography.Text>
 						<Input
-							placeholder="Eg: Kotlin"
+							placeholder={t('onb_eg_kotlin', { defaultValue: "Eg: Kotlin" })}
 							className="request-data-source-modal-input"
 							onChange={(e): void => setDataSourceRequest(e.target.value)}
 						/>

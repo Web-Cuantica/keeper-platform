@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useQueryClient } from 'react-query';
 import { Trash2, X } from '@signozhq/icons';
 import { Button } from '@signozhq/ui/button';
@@ -22,6 +23,7 @@ import { useErrorModal } from 'providers/ErrorModalProvider';
 import APIError from 'types/api/error';
 
 function DeleteAccountModal(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const queryClient = useQueryClient();
 	const { showErrorModal, isErrorModalVisible } = useErrorModal();
 	const [accountId, setAccountId] = useQueryState(SA_QUERY_PARAMS.ACCOUNT);
@@ -72,7 +74,7 @@ function DeleteAccountModal(): JSX.Element {
 
 	const content = (
 		<p className="sa-delete-dialog__body">
-			Are you sure you want to delete <strong>{accountName}</strong>? This action
+			{t('onb_are_you_sure_you', { defaultValue: "Are you sure you want to delete" })}<strong>{accountName}</strong>? This action
 			cannot be undone. All keys associated with this service account will be
 			permanently removed.
 		</p>
@@ -82,7 +84,7 @@ function DeleteAccountModal(): JSX.Element {
 		<div className="sa-delete-dialog__footer">
 			<Button variant="solid" color="secondary" onClick={handleCancel}>
 				<X size={12} />
-				Cancel
+				{t('onb_cancel', { defaultValue: "Cancel" })}
 			</Button>
 			<AuthZTooltip
 				checks={[buildSADeletePermission(accountId ?? '')]}
@@ -95,7 +97,7 @@ function DeleteAccountModal(): JSX.Element {
 					onClick={handleConfirm}
 				>
 					<Trash2 size={12} />
-					Delete
+					{t('onb_delete', { defaultValue: "Delete" })}
 				</Button>
 			</AuthZTooltip>
 		</div>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import cx from 'classnames';
 
 interface HeaderProps {
@@ -15,6 +16,7 @@ export default function Header({
 	docsURL,
 	imgClassName,
 }: HeaderProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	return (
 		<div className={cx('header', entity)}>
 			<img className={imgClassName} src={imgURL} alt="" />
@@ -22,7 +24,7 @@ export default function Header({
 				<h1>{heading}</h1>
 
 				<div className="detailed-docs-link">
-					View detailed docs
+					{t('onb_view_detailed_docs', { defaultValue: "View detailed docs" })}
 					<a target="_blank" href={docsURL} rel="noreferrer">
 						here
 					</a>

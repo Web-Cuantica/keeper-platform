@@ -120,7 +120,7 @@ export default function EnvironmentDetails(): JSX.Element {
 			layout="vertical"
 		>
 			<Typography.Text className="environment-title">
-				<span className="required-symbol">*</span> Select Environment
+				<span className="required-symbol">*</span> {t('onb_select_environment', { defaultValue: "Select Environment" })}
 			</Typography.Text>
 
 			<div className="supported-environments-container">
@@ -170,7 +170,7 @@ export default function EnvironmentDetails(): JSX.Element {
 
 			<div className="request-entity-container">
 				<Typography.Text>
-					Cannot find what you’re looking for? Request an environment
+					{t('onb_cannot_find_what_youre_2', { defaultValue: "Cannot find what you’re looking for? Request an environment" })}
 				</Typography.Text>
 
 				<div className="form-section">
@@ -179,7 +179,7 @@ export default function EnvironmentDetails(): JSX.Element {
 							name="requestedEnvironmentName"
 							style={{ width: 300, marginBottom: 0 }}
 						>
-							<Input placeholder="Enter environment name..." />
+							<Input placeholder={t('onb_enter_environment_name', { defaultValue: "Enter environment name..." })} />
 						</Form.Item>
 						<Button
 							className="periscope-btn primary"
@@ -198,7 +198,7 @@ export default function EnvironmentDetails(): JSX.Element {
 								requestedEnvironmentName?.trim().length === 0
 							}
 						>
-							Submit
+							{t('onb_submit', { defaultValue: "Submit" })}
 						</Button>
 					</Space.Compact>
 				</div>
