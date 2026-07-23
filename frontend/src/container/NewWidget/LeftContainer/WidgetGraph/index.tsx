@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { memo } from 'react';
 import { SolidInfoCircle } from '@signozhq/icons';
 import QueryCancelledPlaceholder from 'components/QueryCancelledPlaceholder';
@@ -25,6 +26,7 @@ function WidgetGraph({
 	enableDrillDown = false,
 	isCancelled = false,
 }: WidgetGraphContainerProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { currentQuery } = useQueryBuilder();
 
 	const isDarkMode = useIsDarkMode();
@@ -32,7 +34,7 @@ function WidgetGraph({
 	if (selectedWidget === undefined) {
 		return (
 			<Card $panelType={selectedGraph} isDarkMode={isDarkMode}>
-				Invalid widget
+				{t('qb_invalid_widget', { defaultValue: "Invalid widget" })}
 			</Card>
 		);
 	}

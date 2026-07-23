@@ -1,6 +1,7 @@
 // Uses Popover (not DropdownMenu like the rest of the antd-dropdown migration):
 // DropdownMenuTrigger preventDefaults pointerdown, breaking input focus and
 // dismissing on every keystroke. PopoverAnchor is a passive positioning element.
+import { useTranslation } from 'react-i18next';
 import { ReactNode, useRef, useState } from 'react';
 import { Popover, PopoverAnchor, PopoverContent } from '@signozhq/ui/popover';
 import { Typography } from '@signozhq/ui/typography';
@@ -29,6 +30,7 @@ function VariablesPopover({
 	variables,
 	children,
 }: VariablesPopoverProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [isOpen, setIsOpen] = useState(false);
 	const [cursorPosition, setCursorPosition] = useState<number | null>(null);
 	const anchorRef = useRef<HTMLDivElement>(null);
@@ -77,7 +79,7 @@ function VariablesPopover({
 					}}
 				>
 					{variables.length === 0 ? (
-						<div className="variables-popover-empty">No variables available</div>
+						<div className="variables-popover-empty">{t('qb_no_variables_available', { defaultValue: "No variables available" })}</div>
 					) : (
 						variables.map((v) => (
 							<button

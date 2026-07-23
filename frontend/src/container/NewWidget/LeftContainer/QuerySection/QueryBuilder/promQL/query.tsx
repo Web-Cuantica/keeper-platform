@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ChangeEvent, useCallback } from 'react';
 import { Input } from 'antd';
 import { LEGEND } from 'constants/global';
@@ -19,6 +20,7 @@ function PromQLQueryBuilder({
 	queryIndex,
 	deletable,
 }: IPromQLQueryBuilderProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { handleSetQueryItemData, removeQueryTypeItemByIndex } =
 		useQueryBuilder();
 
@@ -72,7 +74,7 @@ function PromQLQueryBuilder({
 				size="middle"
 				name="legend"
 				defaultValue={queryData?.legend}
-				addonBefore="Legend Format"
+				addonBefore={t('qb_legend_format_2', { defaultValue: "Legend Format" })}
 				style={{ marginBottom: '0.5rem' }}
 				data-testid="promql-legend-input"
 			/>

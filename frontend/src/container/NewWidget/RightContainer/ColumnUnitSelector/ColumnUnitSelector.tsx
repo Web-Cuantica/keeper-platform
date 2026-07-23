@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 import { Typography } from '@signozhq/ui/typography';
 import { useQueryBuilder } from 'hooks/queryBuilder/useQueryBuilder';
@@ -19,6 +20,7 @@ interface ColumnUnitSelectorProps {
 export function ColumnUnitSelector(
 	props: ColumnUnitSelectorProps,
 ): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { currentQuery } = useQueryBuilder();
 	const { columnUnits, setColumnUnits, isNewDashboard } = props;
 
@@ -75,7 +77,7 @@ export function ColumnUnitSelector(
 
 	return (
 		<section className="column-unit-selector">
-			<Typography.Text className="heading">Column Units</Typography.Text>
+			<Typography.Text className="heading">{t('qb_column_units', { defaultValue: "Column Units" })}</Typography.Text>
 			<div className="column-unit-selector-content">
 				{aggregationQueries.map(({ value, label }) => {
 					const baseQueryName = value.split('.')[0];

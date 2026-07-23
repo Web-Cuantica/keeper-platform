@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { memo, useCallback, useEffect, useMemo } from 'react';
 import { Tooltip } from 'antd';
 import cx from 'classnames';
@@ -26,6 +27,7 @@ const MetricsAggregateSection = memo(function MetricsAggregateSection({
 	panelType: PANEL_TYPES | null;
 	signalSource: string;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { setAggregationOptions } = useQueryBuilderV2Context();
 	const {
 		operators,
@@ -105,7 +107,7 @@ const MetricsAggregateSection = memo(function MetricsAggregateSection({
 											rel="noopener noreferrer"
 											style={{ color: '#1890ff', textDecoration: 'underline' }}
 										>
-											Learn more about temporal aggregation
+											{t('qb_learn_more_about_temporal', { defaultValue: "Learn more about temporal aggregation" })}
 										</a>
 									}
 								>
@@ -128,7 +130,7 @@ const MetricsAggregateSection = memo(function MetricsAggregateSection({
 									<Tooltip
 										title={
 											<div>
-												Set the time interval for aggregation
+												{t('qb_set_the_time_interval', { defaultValue: "Set the time interval for aggregation" })}
 												<br />
 												<a
 													href="https://signoz.io/docs/userguide/query-builder-v5/#time-aggregation-windows"
@@ -136,7 +138,7 @@ const MetricsAggregateSection = memo(function MetricsAggregateSection({
 													rel="noopener noreferrer"
 													style={{ color: '#1890ff', textDecoration: 'underline' }}
 												>
-													Learn about step intervals
+													{t('qb_learn_about_step_intervals', { defaultValue: "Learn about step intervals" })}
 												</a>
 											</div>
 										}
@@ -174,7 +176,7 @@ const MetricsAggregateSection = memo(function MetricsAggregateSection({
 											rel="noopener noreferrer"
 											style={{ color: '#1890ff', textDecoration: 'underline' }}
 										>
-											Learn more about spatial aggregation
+											{t('qb_learn_more_about_spatial', { defaultValue: "Learn more about spatial aggregation" })}
 										</a>
 									}
 								>
@@ -251,7 +253,7 @@ const MetricsAggregateSection = memo(function MetricsAggregateSection({
 							<Tooltip
 								title={
 									<div>
-										Set the time interval for aggregation
+										{t('qb_set_the_time_interval', { defaultValue: "Set the time interval for aggregation" })}
 										<br />
 										<a
 											href="https://signoz.io/docs/userguide/query-builder-v5/#time-aggregation-windows"
@@ -259,7 +261,7 @@ const MetricsAggregateSection = memo(function MetricsAggregateSection({
 											rel="noopener noreferrer"
 											style={{ color: '#1890ff', textDecoration: 'underline' }}
 										>
-											Learn about step intervals
+											{t('qb_learn_about_step_intervals', { defaultValue: "Learn about step intervals" })}
 										</a>
 									</div>
 								}

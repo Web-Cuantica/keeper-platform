@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { memo, useCallback, useRef, useState } from 'react';
 import { Input, InputRef } from 'antd';
 
@@ -12,6 +13,7 @@ function TextboxVariableInput({
 	variableData,
 	onValueUpdate,
 }: TextboxVariableInputProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const handleChange = useCallback(
 		(inputValue: string | string[]): void => {
 			if (inputValue === variableData.selectedValue) {
@@ -70,7 +72,7 @@ function TextboxVariableInput({
 		<Input
 			key={variableData.id}
 			ref={textboxInputRef}
-			placeholder="Enter value"
+			placeholder={t('qb_enter_value', { defaultValue: "Enter value" })}
 			data-testid={`variable-textbox-${variableData.id}`}
 			bordered={false}
 			value={textboxInputValue}

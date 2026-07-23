@@ -1,4 +1,5 @@
 /* eslint-disable sonarjs/cognitive-complexity */
+import { useTranslation } from 'react-i18next';
 import { useMemo, useRef, useState } from 'react';
 import { useDrag, useDrop, XYCoord } from 'react-dnd';
 import { Button, Input, InputNumber, Select, Space } from 'antd';
@@ -49,6 +50,7 @@ function Threshold({
 	columnUnits,
 	yAxisUnit,
 }: ThresholdProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [isEditMode, setIsEditMode] = useState<boolean>(isEditEnabled);
 	const [operator, setOperator] = useState<string | number>(
 		thresholdOperator as string | number,
@@ -244,7 +246,7 @@ function Threshold({
 				<div style={{ width: '100%' }}>
 					{selectedGraph === PANEL_TYPES.TIME_SERIES && (
 						<div className="time-series-alerts">
-							<Typography.Text className="label">Label</Typography.Text>
+							<Typography.Text className="label">{t('qb_label', { defaultValue: "Label" })}</Typography.Text>
 							{isEditMode ? (
 								<Input
 									defaultValue={label}
@@ -333,7 +335,7 @@ function Threshold({
 						<YAxisUnitSelector
 							value={unit}
 							onChange={handleUnitChange}
-							placeholder="Select unit"
+							placeholder={t('qb_select_unit', { defaultValue: "Select unit" })}
 							source={YAxisSource.DASHBOARDS}
 							initialValue={unit}
 							data-testid="threshold-unit-input"
@@ -392,14 +394,14 @@ function Threshold({
 							icon={<X size={14} />}
 							onClick={discardHandler}
 						>
-							Discard
+							{t('qb_discard', { defaultValue: "Discard" })}
 						</Button>
 						<Button
 							className="save-changes"
 							icon={<Check size={14} />}
 							onClick={saveHandler}
 						>
-							Save Changes
+							{t('qb_save_changes', { defaultValue: "Save Changes" })}
 						</Button>
 					</div>
 				)}

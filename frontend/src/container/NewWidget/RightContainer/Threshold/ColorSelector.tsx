@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { ChevronDown } from '@signozhq/icons';
 import { DropdownMenuSimple, type MenuItem } from '@signozhq/ui/dropdown-menu';
@@ -13,6 +14,7 @@ function ColorSelector({
 	thresholdColor = 'Red',
 	setColor,
 }: ColorSelectorProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [colorFromPicker, setColorFromPicker] = useState<string>('');
 
 	const debounceColor = useDebounce(colorFromPicker);
@@ -56,7 +58,7 @@ function ColorSelector({
 					onChange={handleColorChange}
 					placement="bottomLeft"
 				>
-					Custom Color
+					{t('qb_custom_color', { defaultValue: "Custom Color" })}
 				</ColorPicker>
 			),
 		},

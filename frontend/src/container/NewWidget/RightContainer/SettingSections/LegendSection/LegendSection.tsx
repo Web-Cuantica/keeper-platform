@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Dispatch, SetStateAction } from 'react';
 import type { UseQueryResult } from 'react-query';
 import { Select } from 'antd';
@@ -34,11 +35,12 @@ export default function LegendSection({
 	setCustomLegendColors,
 	queryResponse,
 }: LegendSectionProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	return (
-		<SettingsSection title="Legend" icon={<Layers size={14} />}>
+		<SettingsSection title={t('qb_legend', { defaultValue: "Legend" })} icon={<Layers size={14} />}>
 			{allowLegendPosition && (
 				<section className="legend-position control-container">
-					<Typography.Text className="section-heading">Position</Typography.Text>
+					<Typography.Text className="section-heading">{t('qb_position', { defaultValue: "Position" })}</Typography.Text>
 					<Select
 						onChange={(value: LegendPosition): void => setLegendPosition(value)}
 						value={legendPosition}
@@ -47,12 +49,12 @@ export default function LegendSection({
 					>
 						<Option value={LegendPosition.BOTTOM}>
 							<div className="select-option">
-								<Typography.Text className="display">Bottom</Typography.Text>
+								<Typography.Text className="display">{t('qb_bottom', { defaultValue: "Bottom" })}</Typography.Text>
 							</div>
 						</Option>
 						<Option value={LegendPosition.RIGHT}>
 							<div className="select-option">
-								<Typography.Text className="display">Right</Typography.Text>
+								<Typography.Text className="display">{t('qb_right', { defaultValue: "Right" })}</Typography.Text>
 							</div>
 						</Option>
 					</Select>

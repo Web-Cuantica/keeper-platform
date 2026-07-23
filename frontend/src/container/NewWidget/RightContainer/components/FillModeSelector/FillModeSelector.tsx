@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ToggleGroupSimple } from '@signozhq/ui/toggle-group';
 import { Typography } from '@signozhq/ui/typography';
 import { FillMode } from 'lib/uPlotV2/config/types';
@@ -13,9 +14,10 @@ export default function FillModeSelector({
 	value,
 	onChange,
 }: FillModeSelectorProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	return (
 		<section className="fill-mode-selector control-container">
-			<Typography.Text className="section-heading">Fill mode</Typography.Text>
+			<Typography.Text className="section-heading">{t('qb_fill_mode', { defaultValue: "Fill mode" })}</Typography.Text>
 			<ToggleGroupSimple
 				type="single"
 				value={value}
@@ -43,7 +45,7 @@ export default function FillModeSelector({
 									<rect x="8" y="16" width="32" height="16" stroke="#888" fill="none" />
 								</svg>
 								<Typography.Text className="section-heading-small">
-									None
+									{t('qb_none', { defaultValue: "None" })}
 								</Typography.Text>
 							</>
 						),
@@ -65,7 +67,7 @@ export default function FillModeSelector({
 									<rect x="8" y="16" width="32" height="16" fill="#888" />
 								</svg>
 								<Typography.Text className="section-heading-small">
-									Solid
+									{t('qb_solid', { defaultValue: "Solid" })}
 								</Typography.Text>
 							</>
 						),
@@ -100,7 +102,7 @@ export default function FillModeSelector({
 									/>
 								</svg>
 								<Typography.Text className="section-heading-small">
-									Gradient
+									{t('qb_gradient', { defaultValue: "Gradient" })}
 								</Typography.Text>
 							</>
 						),

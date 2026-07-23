@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Plus } from '@signozhq/icons';
 import { useQueryBuilder } from 'hooks/queryBuilder/useQueryBuilder';
 import { IPromQLQuery } from 'types/api/queryBuilder/queryBuilderData';
@@ -7,6 +8,7 @@ import { QueryButton } from '../../styles';
 import PromQLQueryBuilder from './query';
 
 function PromQLQueryContainer(): JSX.Element | null {
+	const { t } = useTranslation('pages');
 	const { addNewQueryItem, currentQuery } = useQueryBuilder();
 
 	const addQueryHandler = (): void => {
@@ -30,7 +32,7 @@ function PromQLQueryContainer(): JSX.Element | null {
 				icon={<Plus size="md" />}
 				style={{ margin: '0.4rem 1rem' }}
 			>
-				Query
+				{t('qb_query', { defaultValue: "Query" })}
 			</QueryButton>
 		</>
 	);

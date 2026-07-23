@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Dispatch, SetStateAction } from 'react';
 import { Link } from '@signozhq/icons';
 import { ContextLinksData, Widgets } from 'types/api/dashboard/getAll';
@@ -18,9 +19,10 @@ export default function ContextLinksSection({
 	setContextLinks,
 	selectedWidget,
 }: ContextLinksSectionProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	return (
 		<SettingsSection
-			title="Context Links"
+			title={t('qb_context_links', { defaultValue: "Context Links" })}
 			icon={<Link size={14} />}
 			defaultOpen={!!contextLinks.linksData.length}
 		>

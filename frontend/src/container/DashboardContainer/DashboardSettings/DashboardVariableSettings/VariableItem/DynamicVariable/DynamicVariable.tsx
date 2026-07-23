@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
 	Dispatch,
 	SetStateAction,
@@ -50,6 +51,7 @@ function DynamicVariable({
 		| undefined;
 	errorAttributeKeyMessage?: string;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const sources = [
 		AttributeSource.ALL_TELEMETRY,
 		AttributeSource.LOGS,
@@ -166,7 +168,7 @@ function DynamicVariable({
 		<div className="dynamic-variable-container">
 			<div className="dynamic-variable-config-container">
 				<CustomSelect
-					placeholder="Select a field"
+					placeholder={t('qb_select_a_field', { defaultValue: "Select a field" })}
 					options={Object.keys(filteredAttributes).map((key) => ({
 						label: key,
 						value: key,

@@ -1,5 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable sonarjs/cognitive-complexity */
+import { useTranslation } from 'react-i18next';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
 import {
@@ -154,6 +155,7 @@ function QueryAggregationSelect({
 	queryData: IBuilderQuery;
 	maxAggregations?: number;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const isDarkMode = useIsDarkMode();
 	const { setAggregationOptions } = useQueryBuilderV2Context();
 
@@ -664,7 +666,7 @@ function QueryAggregationSelect({
 			<Tooltip
 				title={
 					<div>
-						Aggregation functions:
+						{t('qb_aggregation_functions', { defaultValue: "Aggregation functions:" })}
 						<br />
 						<span style={{ fontSize: '12px', lineHeight: '1.4' }}>
 							• <strong>count</strong> - number of occurrences
@@ -681,7 +683,7 @@ function QueryAggregationSelect({
 							rel="noopener noreferrer"
 							style={{ color: '#1890ff', textDecoration: 'underline' }}
 						>
-							View documentation
+							{t('qb_view_documentation', { defaultValue: "View documentation" })}
 						</a>
 					</div>
 				}

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useCallback } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -19,6 +20,7 @@ function ThresholdSelector({
 	selectedGraph,
 	columnUnits,
 }: ThresholdSelectorProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { currentQuery } = useQueryBuilder();
 
 	const aggregationQueries = useGetQueryLabels(currentQuery);
@@ -75,7 +77,7 @@ function ThresholdSelector({
 						data-testid="add-threshold-cta"
 						onClick={addThresholdHandler}
 					>
-						Add Threshold
+						{t('qb_add_threshold', { defaultValue: "Add Threshold" })}
 					</Button>
 				</div>
 				{thresholds.map((threshold, idx) => (

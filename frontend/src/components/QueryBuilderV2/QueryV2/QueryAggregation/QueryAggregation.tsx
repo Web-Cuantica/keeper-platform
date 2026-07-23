@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
 import { Tooltip } from 'antd';
 import InputWithLabel from 'components/InputWithLabel/InputWithLabel';
@@ -25,6 +26,7 @@ function QueryAggregationOptions({
 	onChange?: (value: string) => void;
 	queryData: IBuilderQuery | IBuilderTraceOperator;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const showAggregationInterval = useMemo(() => {
 		if (panelType === PANEL_TYPES.VALUE) {
 			return false;
@@ -62,7 +64,7 @@ function QueryAggregationOptions({
 						<Tooltip
 							title={
 								<div>
-									Set the time interval for aggregation
+									{t('qb_set_the_time_interval', { defaultValue: "Set the time interval for aggregation" })}
 									<br />
 									<a
 										href="https://signoz.io/docs/userguide/query-builder-v5/#time-aggregation-windows"
@@ -70,7 +72,7 @@ function QueryAggregationOptions({
 										rel="noopener noreferrer"
 										style={{ color: '#1890ff', textDecoration: 'underline' }}
 									>
-										Learn about step intervals
+										{t('qb_learn_about_step_intervals', { defaultValue: "Learn about step intervals" })}
 									</a>
 								</div>
 							}

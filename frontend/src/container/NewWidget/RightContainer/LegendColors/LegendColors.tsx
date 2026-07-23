@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
 	Dispatch,
 	SetStateAction,
@@ -65,6 +66,7 @@ function LegendColors({
 	setCustomLegendColors,
 	queryResponse = null as any,
 }: LegendColorsProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { currentQuery } = useQueryBuilder();
 	const isDarkMode = useIsDarkMode();
 
@@ -136,14 +138,14 @@ function LegendColors({
 			label: (
 				<section className="legend-colors-header">
 					<Palette size={16} />
-					<Typography.Text className="typography">Legend Colors</Typography.Text>
+					<Typography.Text className="typography">{t('qb_legend_colors', { defaultValue: "Legend Colors" })}</Typography.Text>
 				</section>
 			),
 			children: (
 				<div className="legend-colors-content">
 					{legendLabels.length === 0 ? (
 						<Typography.Text color="muted">
-							No legends available. Run a query to see legend options.
+							{t('qb_no_legends_available_run', { defaultValue: "No legends available. Run a query to see legend options." })}
 						</Typography.Text>
 					) : (
 						<>
@@ -154,7 +156,7 @@ function LegendColors({
 									onClick={resetAllColors}
 									disabled={Object.keys(customLegendColors).length === 0}
 								>
-									Reset All
+									{t('qb_reset_all', { defaultValue: "Reset All" })}
 								</Button>
 							</div>
 							<div className="legend-items">
@@ -186,7 +188,7 @@ function LegendColors({
 																resetToDefault(label);
 															}}
 														>
-															Reset
+															{t('qb_reset', { defaultValue: "Reset" })}
 														</Typography.Link>
 													</div>
 												)}

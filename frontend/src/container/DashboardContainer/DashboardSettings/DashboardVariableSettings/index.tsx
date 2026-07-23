@@ -362,7 +362,7 @@ function VariablesSettings({
 								className="apply-to-all-button"
 								loading={updateMutation.isLoading}
 							>
-								<Typography.Text>Apply to all</Typography.Text>
+								<Typography.Text>{t('qb_apply_to_all', { defaultValue: "Apply to all" })}</Typography.Text>
 							</Button>
 						)}
 						<Button
@@ -466,7 +466,7 @@ function VariablesSettings({
 							}
 						>
 							<Flex align="center" justify="center" gap={4}>
-								<Plus size="md" /> Add Variable
+								<Plus size="md" /> {t('qb_add_variable', { defaultValue: "Add Variable" })}
 							</Flex>
 						</Button>
 					</Row>
@@ -497,7 +497,7 @@ function VariablesSettings({
 				</>
 			)}
 			<Modal
-				title="Delete variable"
+				title={t('qb_delete_variable', { defaultValue: "Delete variable" })}
 				centered
 				open={deleteVariableModal}
 				onOk={handleDeleteConfirm}
@@ -513,13 +513,13 @@ function VariablesSettings({
 				</Typography.Text>
 			</Modal>
 			<Modal
-				title="Apply variable to all panels"
+				title={t('qb_apply_variable_to_all', { defaultValue: "Apply variable to all panels" })}
 				centered
 				open={applyToAllModal}
 				onOk={handleApplyToAllConfirm}
 				onCancel={handleApplyToAllCancel}
-				okText="Apply to all"
-				cancelText="Cancel"
+				okText={t('qb_apply_to_all', { defaultValue: "Apply to all" })}
+				cancelText={t('qb_cancel', { defaultValue: "Cancel" })}
 			>
 				<Typography.Text>
 					Are you sure you want to apply variable{' '}

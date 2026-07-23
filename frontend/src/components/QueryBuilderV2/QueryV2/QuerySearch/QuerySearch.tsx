@@ -674,26 +674,26 @@ function QuerySearch({
 	// Helper function to render a badge for the current context mode
 	const renderContextBadge = (): JSX.Element => {
 		if (!editingMode) {
-			return <Badge color="vanilla">Unknown</Badge>;
+			return <Badge color="vanilla">{t('qb_unknown', { defaultValue: "Unknown" })}</Badge>;
 		}
 
 		switch (editingMode) {
 			case 'key':
 				return <Badge color="robin">Key</Badge>;
 			case 'operator':
-				return <Badge color="sakura">Operator</Badge>;
+				return <Badge color="sakura">{t('qb_operator', { defaultValue: "Operator" })}</Badge>;
 			case 'value':
 				return <Badge color="forest">Value</Badge>;
 			case 'conjunction':
-				return <Badge color="amber">Conjunction</Badge>;
+				return <Badge color="amber">{t('qb_conjunction', { defaultValue: "Conjunction" })}</Badge>;
 			case 'function':
-				return <Badge color="aqua">Function</Badge>;
+				return <Badge color="aqua">{t('qb_function', { defaultValue: "Function" })}</Badge>;
 			case 'parenthesis':
-				return <Badge color="sakura">Parenthesis</Badge>;
+				return <Badge color="sakura">{t('qb_parenthesis', { defaultValue: "Parenthesis" })}</Badge>;
 			case 'bracketList':
-				return <Badge color="cherry">Bracket List</Badge>;
+				return <Badge color="cherry">{t('qb_bracket_list', { defaultValue: "Bracket List" })}</Badge>;
 			default:
-				return <Badge color="vanilla">Unknown</Badge>;
+				return <Badge color="vanilla">{t('qb_unknown', { defaultValue: "Unknown" })}</Badge>;
 		}
 	};
 
@@ -1329,7 +1329,7 @@ function QuerySearch({
 
 	const getTooltipContent = (): JSX.Element => (
 		<div>
-			Need help with search syntax?
+			{t('qb_need_help_with_search', { defaultValue: "Need help with search syntax?" })}
 			<br />
 			<a
 				href="https://signoz.io/docs/userguide/search-syntax/"
@@ -1337,7 +1337,7 @@ function QuerySearch({
 				rel="noopener noreferrer"
 				style={{ color: '#1890ff', textDecoration: 'underline' }}
 			>
-				View documentation
+				{t('qb_view_documentation', { defaultValue: "View documentation" })}
 			</a>
 		</div>
 	);
@@ -1364,7 +1364,7 @@ function QuerySearch({
 					)}
 					{queryContext?.currentPair && (
 						<span className="triplet-info query-pair-info">
-							Current pair: <Badge color="robin">{queryContext.currentPair.key}</Badge>
+							{t('qb_current_pair', { defaultValue: "Current pair:" })}<Badge color="robin">{queryContext.currentPair.key}</Badge>
 							<Badge color="sakura">{queryContext.currentPair.operator}</Badge>
 							{queryContext.currentPair.value && (
 								<Badge color="forest">{queryContext.currentPair.value}</Badge>
@@ -1578,7 +1578,7 @@ function QuerySearch({
 						className="query-examples"
 						defaultActiveKey={[]}
 					>
-						<Panel header="Query Examples" key="1">
+						<Panel header={t('qb_query_examples', { defaultValue: "Query Examples" })} key="1">
 							<div className="query-examples-list">
 								{queryExamples.map((example) => (
 									<div

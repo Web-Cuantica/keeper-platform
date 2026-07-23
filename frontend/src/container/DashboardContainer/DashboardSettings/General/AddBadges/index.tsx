@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Col, Tooltip } from 'antd';
 import { Badge } from '@signozhq/ui/badge';
@@ -6,6 +7,7 @@ import Input from 'components/Input';
 import styles from './AddBadges.module.scss';
 
 function AddTags({ tags, setTags }: AddTagsProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [inputValue, setInputValue] = useState<string>('');
 	const [editInputIndex, setEditInputIndex] = useState(-1);
 	const [editInputValue, setEditInputValue] = useState('');
@@ -95,7 +97,7 @@ function AddTags({ tags, setTags }: AddTagsProps): JSX.Element {
 					type="text"
 					value={inputValue}
 					rootClassName={styles.tagsInput}
-					placeholder="Start typing your tag name"
+					placeholder={t('qb_start_typing_your_tag', { defaultValue: "Start typing your tag name" })}
 					onChangeHandler={(event): void =>
 						onChangeHandler(event.target.value, setInputValue)
 					}

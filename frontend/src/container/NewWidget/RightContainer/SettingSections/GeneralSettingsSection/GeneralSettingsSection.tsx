@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
 	Dispatch,
 	SetStateAction,
@@ -37,6 +38,7 @@ export default function GeneralSettingsSection({
 	setDescription,
 	dashboardVariables,
 }: GeneralSettingsSectionProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [inputValue, setInputValue] = useState(title);
 	const [autoCompleteOpen, setAutoCompleteOpen] = useState(false);
 	const [cursorPos, setCursorPos] = useState(0);
@@ -119,9 +121,9 @@ export default function GeneralSettingsSection({
 	}, [inputValue, updateCursorAndDropdown]);
 
 	return (
-		<SettingsSection title="General" defaultOpen icon={null}>
+		<SettingsSection title={t('qb_general', { defaultValue: "General" })} defaultOpen icon={null}>
 			<section className="general-settings__name-description control-container">
-				<Typography.Text className="section-heading">Name</Typography.Text>
+				<Typography.Text className="section-heading">{t('qb_name', { defaultValue: "Name" })}</Typography.Text>
 				<AutoComplete
 					options={dashboardVariableOptions}
 					value={inputValue}
@@ -129,7 +131,7 @@ export default function GeneralSettingsSection({
 					onSelect={onSelect}
 					filterOption={filterOption}
 					getPopupContainer={popupContainer}
-					placeholder="Enter the panel name here..."
+					placeholder={t('qb_enter_the_panel_name', { defaultValue: "Enter the panel name here..." })}
 					open={autoCompleteOpen}
 				>
 					<Input
@@ -141,9 +143,9 @@ export default function GeneralSettingsSection({
 						onBlur={(): void => setAutoCompleteOpen(false)}
 					/>
 				</AutoComplete>
-				<Typography.Text className="section-heading">Description</Typography.Text>
+				<Typography.Text className="section-heading">{t('qb_description', { defaultValue: "Description" })}</Typography.Text>
 				<TextArea
-					placeholder="Enter the panel description here..."
+					placeholder={t('qb_enter_the_panel_description', { defaultValue: "Enter the panel description here..." })}
 					bordered
 					allowClear
 					value={description}

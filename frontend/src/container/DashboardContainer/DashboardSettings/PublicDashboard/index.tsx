@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useCopyToClipboard } from 'react-use';
@@ -63,6 +64,7 @@ const showErrorNotification = (error: APIError): void => {
 };
 
 function PublicDashboardSetting(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [publicDashboardData, setPublicDashboardData] = useState<
 		PublicDashboardMetaProps | undefined
 	>(undefined);
@@ -260,18 +262,18 @@ function PublicDashboardSetting(): JSX.Element {
 						value={timeRangeEnabled}
 						onChange={handleTimeRangeEnabled}
 					>
-						Enable time range
+						{t('qb_enable_time_range', { defaultValue: "Enable time range" })}
 					</Checkbox>
 				</div>
 
 				<div className="default-time-range-select">
 					<div className="default-time-range-select-label">
 						<Typography.Text className="default-time-range-select-label-text">
-							Default time range
+							{t('qb_default_time_range', { defaultValue: "Default time range" })}
 						</Typography.Text>
 					</div>
 					<Select
-						placeholder="Select default time range"
+						placeholder={t('qb_select_default_time_range', { defaultValue: "Select default time range" })}
 						options={TIME_RANGE_PRESETS_OPTIONS}
 						value={defaultTimeRange}
 						onChange={handleDefaultTimeRange}
@@ -284,7 +286,7 @@ function PublicDashboardSetting(): JSX.Element {
 					<div className="public-dashboard-url">
 						<div className="url-label-container">
 							<Typography.Text className="url-label">
-								Public Dashboard URL
+								{t('qb_public_dashboard_url', { defaultValue: "Public Dashboard URL" })}
 							</Typography.Text>
 						</div>
 
@@ -342,7 +344,7 @@ function PublicDashboardSetting(): JSX.Element {
 								)
 							}
 						>
-							Publish dashboard
+							{t('qb_publish_dashboard', { defaultValue: "Publish dashboard" })}
 						</Button>
 					) : (
 						<>
@@ -354,7 +356,7 @@ function PublicDashboardSetting(): JSX.Element {
 								loading={isLoadingRevokePublicDashboardAccess}
 								icon={<Trash size={14} />}
 							>
-								Unpublish dashboard
+								{t('qb_unpublish_dashboard', { defaultValue: "Unpublish dashboard" })}
 							</Button>
 
 							<Button
@@ -365,7 +367,7 @@ function PublicDashboardSetting(): JSX.Element {
 								loading={isLoadingUpdatePublicDashboard}
 								icon={<Globe size={14} />}
 							>
-								Update published dashboard
+								{t('qb_update_published_dashboard', { defaultValue: "Update published dashboard" })}
 							</Button>
 						</>
 					)}

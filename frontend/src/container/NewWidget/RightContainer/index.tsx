@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Dispatch, SetStateAction, useMemo } from 'react';
 import { UseQueryResult } from 'react-query';
 import { Typography } from '@signozhq/ui/typography';
@@ -111,6 +112,7 @@ function RightContainer({
 	enableDrillDown = false,
 	isNewDashboard,
 }: RightContainerProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { dashboardVariables } = useDashboardVariables();
 
 	const selectedPanelDisplay = PanelTypesWithData.find(
@@ -206,7 +208,7 @@ function RightContainer({
 		<div className="right-container">
 			<section className="header">
 				<div className="purple-dot" />
-				<Typography.Text className="header-text">Panel Settings</Typography.Text>
+				<Typography.Text className="header-text">{t('qb_panel_settings', { defaultValue: "Panel Settings" })}</Typography.Text>
 			</section>
 
 			<GeneralSettingsSection

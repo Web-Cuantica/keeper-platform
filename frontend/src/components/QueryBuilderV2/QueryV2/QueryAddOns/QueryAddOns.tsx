@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button, Tooltip } from 'antd';
 import { ToggleGroupSimple } from '@signozhq/ui/toggle-group';
@@ -115,6 +116,7 @@ function TooltipContent({
 	description?: string;
 	docLink?: string;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	return (
 		<div
 			style={{
@@ -143,7 +145,7 @@ function TooltipContent({
 						marginTop: '4px',
 					}}
 				>
-					Learn more
+					{t('qb_learn_more', { defaultValue: "Learn more" })}
 					<ExternalLink size={12} />
 				</a>
 			)}
@@ -168,6 +170,7 @@ function QueryAddOns({
 	index: number;
 	isForTraceOperator?: boolean;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [addOns, setAddOns] = useState<AddOn[]>(ADD_ONS);
 
 	const [selectedViews, setSelectedViews] = useState<AddOn[]>([]);
@@ -347,8 +350,8 @@ function QueryAddOns({
 								<Tooltip
 									title={
 										<TooltipContent
-											label="Group By"
-											description="Break down data by attributes like service name, endpoint, status code, or region. Essential for spotting patterns and comparing performance across different segments."
+											label={t('qb_group_by', { defaultValue: "Group By" })}
+											description={t('qb_break_down_data_by', { defaultValue: "Break down data by attributes like service name, endpoint, status code, or region. Essential for spotting patterns and comparing performance across different segments." })}
 											docLink="https://signoz.io/docs/userguide/query-builder-v5/#grouping"
 										/>
 									}
@@ -356,7 +359,7 @@ function QueryAddOns({
 									mouseEnterDelay={0.5}
 								>
 									<div className="label" style={{ cursor: 'help' }}>
-										Group By
+										{t('qb_group_by', { defaultValue: "Group By" })}
 									</div>
 								</Tooltip>
 								<div className="input">
@@ -383,8 +386,8 @@ function QueryAddOns({
 								<Tooltip
 									title={
 										<TooltipContent
-											label="Having"
-											description="Filter grouped results based on aggregate conditions. Show only groups meeting specific criteria, like error rates > 5% or p99 latency > 500"
+											label={t('qb_having', { defaultValue: "Having" })}
+											description={t('qb_filter_grouped_results_based', { defaultValue: "Filter grouped results based on aggregate conditions. Show only groups meeting specific criteria, like error rates > 5% or p99 latency > 500" })}
 											docLink="https://signoz.io/docs/userguide/query-builder-v5/#conditional-filtering-with-having"
 										/>
 									}
@@ -392,7 +395,7 @@ function QueryAddOns({
 									mouseEnterDelay={0.5}
 								>
 									<div className="label" style={{ cursor: 'help' }}>
-										Having
+										{t('qb_having', { defaultValue: "Having" })}
 									</div>
 								</Tooltip>
 								<div className="input">
@@ -412,11 +415,11 @@ function QueryAddOns({
 					{selectedViews.find((view) => view.key === 'limit') && (
 						<div className="add-on-content" data-testid="limit-content">
 							<InputWithLabel
-								label="Limit"
+								label={t('qb_limit', { defaultValue: "Limit" })}
 								type="number"
 								onChange={handleChangeLimit}
 								initialValue={query?.limit ?? undefined}
-								placeholder="Enter limit"
+								placeholder={t('qb_enter_limit', { defaultValue: "Enter limit" })}
 								onClose={(): void => {
 									setSelectedViews((prev) =>
 										prev.filter((view) => view.key !== 'limit'),
@@ -432,8 +435,8 @@ function QueryAddOns({
 								<Tooltip
 									title={
 										<TooltipContent
-											label="Order By"
-											description="Sort results to surface what matters most. Quickly identify slowest operations, most frequent errors, or highest resource consumers."
+											label={t('qb_order_by', { defaultValue: "Order By" })}
+											description={t('qb_sort_results_to_surface', { defaultValue: "Sort results to surface what matters most. Quickly identify slowest operations, most frequent errors, or highest resource consumers." })}
 											docLink="https://signoz.io/docs/userguide/query-builder-v5/#sorting--limiting"
 										/>
 									}
@@ -441,7 +444,7 @@ function QueryAddOns({
 									mouseEnterDelay={0.5}
 								>
 									<div className="label" style={{ cursor: 'help' }}>
-										Order By
+										{t('qb_order_by', { defaultValue: "Order By" })}
 									</div>
 								</Tooltip>
 								<div className="input">
@@ -471,8 +474,8 @@ function QueryAddOns({
 									<Tooltip
 										title={
 											<TooltipContent
-												label="Reduce to"
-												description="Apply mathematical operations like sum, average, min, max, or percentiles to reduce multiple time series into a single value."
+												label={t('qb_reduce_to', { defaultValue: "Reduce to" })}
+												description={t('qb_apply_mathematical_operations_like', { defaultValue: "Apply mathematical operations like sum, average, min, max, or percentiles to reduce multiple time series into a single value." })}
 												docLink="https://signoz.io/docs/userguide/query-builder-v5/#reduce-operations"
 											/>
 										}
@@ -480,7 +483,7 @@ function QueryAddOns({
 										mouseEnterDelay={0.5}
 									>
 										<div className="label" style={{ cursor: 'help' }}>
-											Reduce to
+											{t('qb_reduce_to', { defaultValue: "Reduce to" })}
 										</div>
 									</Tooltip>
 									<div className="input">
@@ -499,8 +502,8 @@ function QueryAddOns({
 					{selectedViews.find((view) => view.key === 'legend_format') && (
 						<div className="add-on-content" data-testid="legend-format-content">
 							<InputWithLabel
-								label="Legend format"
-								placeholder="Write legend format"
+								label={t('qb_legend_format', { defaultValue: "Legend format" })}
+								placeholder={t('qb_write_legend_format', { defaultValue: "Write legend format" })}
 								onChange={handleChangeQueryLegend}
 								initialValue={isEmpty(query?.legend) ? undefined : query?.legend}
 								onClose={(): void => {

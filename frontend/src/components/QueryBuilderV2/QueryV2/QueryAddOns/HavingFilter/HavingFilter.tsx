@@ -1,4 +1,5 @@
 /* eslint-disable sonarjs/cognitive-complexity */
+import { useTranslation } from 'react-i18next';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
 	autocompletion,
@@ -93,6 +94,7 @@ function HavingFilter({
 	onChange: (value: string) => void;
 	queryData: IBuilderQuery;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const isDarkMode = useIsDarkMode();
 	const { getAggregationOptions } = useQueryBuilderV2Context();
 	const aggregationOptions = getAggregationOptions(queryData.queryName);
@@ -345,7 +347,7 @@ function HavingFilter({
 							},
 						]),
 					]}
-					placeholder="Type Having query like count() > 10 ..."
+					placeholder={t('qb_type_having_query_like', { defaultValue: "Type Having query like count() > 10 ..." })}
 					basicSetup={{
 						lineNumbers: false,
 						autocompletion: true,

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button } from '@signozhq/ui/button';
 import { Kbd } from '@signozhq/ui/kbd';
 import { DEFAULT_PIN_TOOLTIP_KEY } from 'lib/uPlotV2/plugins/TooltipPlugin/types';
@@ -22,6 +23,7 @@ export default function TooltipFooter({
 	canDrilldown = true,
 	dismiss,
 }: TooltipFooterProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const handleUnpinClick = (): void => {
 		logEvent(Events.TOOLTIP_UNPINNED, {
 			id: id,
@@ -37,7 +39,7 @@ export default function TooltipFooter({
 			<div>
 				{isPinned ? (
 					<div className={Styles.hint}>
-						<span>Press</span>
+						<span>{t('qb_press', { defaultValue: "Press" })}</span>
 						<Kbd active>{pinKey.toUpperCase()}</Kbd>
 						<span>or</span>
 						<Kbd active>Esc</Kbd>
@@ -50,11 +52,11 @@ export default function TooltipFooter({
 								<Kbd>
 									<MousePointerClick size={12} />
 								</Kbd>
-								<span>Click to drilldown</span>
+								<span>{t('qb_click_to_drilldown', { defaultValue: "Click to drilldown" })}</span>
 							</div>
 						)}
 						<div className={Styles.hint} data-active="false">
-							<span>Press</span>
+							<span>{t('qb_press', { defaultValue: "Press" })}</span>
 							<Kbd>{pinKey.toUpperCase()}</Kbd>
 							<span>to pin the tooltip</span>
 						</div>
@@ -68,11 +70,11 @@ export default function TooltipFooter({
 					color="secondary"
 					size="sm"
 					onClick={handleUnpinClick}
-					aria-label="Unpin tooltip"
+					aria-label={t('qb_unpin_tooltip', { defaultValue: "Unpin tooltip" })}
 					data-testid="uplot-tooltip-unpin"
 				>
 					<X size={10} />
-					<span>Unpin</span>
+					<span>{t('qb_unpin', { defaultValue: "Unpin" })}</span>
 				</Button>
 			)}
 		</div>

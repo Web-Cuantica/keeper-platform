@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { SolidAlertTriangle } from '@signozhq/icons';
 import { ConfirmDialog } from '@signozhq/ui/dialog';
 import { Typography } from '@signozhq/ui/typography';
@@ -19,6 +20,7 @@ export default function DiscardChangesModal({
 	onDiscard,
 	onClose,
 }: DiscardChangesModalProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const dashboardName = dashboardTitle ? (
 		<>
 			{' '}
@@ -35,11 +37,11 @@ export default function DiscardChangesModal({
 					onClose();
 				}
 			}}
-			title="Discard changes?"
+			title={t('qb_discard_changes', { defaultValue: "Discard changes?" })}
 			titleIcon={<SolidAlertTriangle size={14} color="#fdd600" />}
 			confirmText="Discard"
 			confirmColor="destructive"
-			cancelText="Keep editing"
+			cancelText={t('qb_keep_editing', { defaultValue: "Keep editing" })}
 			onConfirm={onDiscard}
 			onCancel={onClose}
 		>
