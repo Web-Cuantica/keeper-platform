@@ -99,12 +99,15 @@ jest.mock('react-i18next', () => ({
 	...jest.requireActual('react-i18next'),
 	useTranslation: (): {
 		t: (str: string, options?: { defaultValue?: string }) => string;
-		i18n: { changeLanguage: () => Promise<void> };
+		i18n: { changeLanguage: () => Promise<void>; language: string };
 	} => ({
 		t: (str: string, options?: { defaultValue?: string }): string =>
 			options?.defaultValue ?? str,
 		i18n: {
 			changeLanguage: (): Promise<void> => new Promise(() => {}),
+			// SideNav lee `i18n.language` para marcar el idioma activo; sin esto sería
+			// undefined en todo test que lo renderice.
+			language: 'en',
 		},
 	}),
 }));
