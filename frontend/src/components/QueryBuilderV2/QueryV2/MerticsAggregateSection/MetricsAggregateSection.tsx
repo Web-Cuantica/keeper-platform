@@ -155,8 +155,8 @@ const MetricsAggregateSection = memo(function MetricsAggregateSection({
 									<div className="metrics-aggregation-section-content-item-value">
 										<InputWithLabel
 											onChange={handleChangeAggregateEvery}
-											label="Seconds"
-											placeholder="Auto"
+											label={t('qb2_seconds', { defaultValue: "Seconds" })}
+											placeholder={t('qb2_auto', { defaultValue: "Auto" })}
 											labelAfter
 											initialValue={query?.stepInterval ?? null}
 										/>
@@ -278,8 +278,8 @@ const MetricsAggregateSection = memo(function MetricsAggregateSection({
 							<div className="metrics-aggregation-section-content-item-value">
 								<InputWithLabel
 									onChange={handleChangeAggregateEvery}
-									label="Seconds"
-									placeholder="Auto"
+									label={t('qb2_seconds', { defaultValue: "Seconds" })}
+									placeholder={t('qb2_auto', { defaultValue: "Auto" })}
 									labelAfter
 									initialValue={query?.stepInterval ?? null}
 									className="histogram-every-input"

@@ -71,7 +71,7 @@ function StepsContent({
 													handleReplaceStep(index, span.serviceName, span.name)
 												}
 											>
-												Replace
+												{t('qb2_replace', { defaultValue: "Replace" })}
 											</Button>
 										</Tooltip>
 									)}

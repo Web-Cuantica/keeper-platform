@@ -52,7 +52,7 @@ function FunnelStepActions({
 					setIsAddDetailsModalOpen(true);
 				}}
 			>
-				Add details
+				{t('qb2_add_details', { defaultValue: "Add details" })}
 			</Button>
 
 			<Tooltip
@@ -76,7 +76,7 @@ function FunnelStepActions({
 						}
 					}}
 				>
-					Delete
+					{t('qb2_delete', { defaultValue: "Delete" })}
 				</Button>
 			</Tooltip>
 		</div>

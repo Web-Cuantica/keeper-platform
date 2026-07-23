@@ -683,7 +683,7 @@ function QuerySearch({
 			case 'operator':
 				return <Badge color="sakura">{t('qb_operator', { defaultValue: "Operator" })}</Badge>;
 			case 'value':
-				return <Badge color="forest">Value</Badge>;
+				return <Badge color="forest">{t('qb2_value', { defaultValue: "Value" })}</Badge>;
 			case 'conjunction':
 				return <Badge color="amber">{t('qb_conjunction', { defaultValue: "Conjunction" })}</Badge>;
 			case 'function':

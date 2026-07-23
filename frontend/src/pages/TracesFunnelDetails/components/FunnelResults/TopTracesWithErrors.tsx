@@ -17,7 +17,7 @@ function TopTracesWithErrors(props: TopTracesWithErrorsProps): JSX.Element {
 		<FunnelTopTracesTable
 			{...props}
 			title={t('funnel_traces_errors', { defaultValue: 'Traces with errors' })}
-			tooltip="A list of the traces with errors in the funnel"
+			tooltip={t('qb2_a_list_of_the_2', { defaultValue: "A list of the traces with errors in the funnel" })}
 			useQueryHook={useFunnelErrorTraces}
 		/>
 	);

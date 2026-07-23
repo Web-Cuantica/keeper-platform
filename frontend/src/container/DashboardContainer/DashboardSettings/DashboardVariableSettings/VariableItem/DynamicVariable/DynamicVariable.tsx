@@ -207,7 +207,7 @@ function DynamicVariable({
 					/>
 				</span>
 				<Select
-					placeholder="Source"
+					placeholder={t('qb2_source', { defaultValue: "Source" })}
 					defaultValue={AttributeSource.ALL_TELEMETRY}
 					options={sources.map((source) => ({ label: source, value: source }))}
 					onChange={(value): void => setAttributeSource(value as AttributeSource)}

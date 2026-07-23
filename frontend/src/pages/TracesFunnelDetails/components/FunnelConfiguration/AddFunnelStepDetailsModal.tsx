@@ -113,7 +113,7 @@ function AddFunnelStepDetailsModal({
 		>
 			<div className="funnel-step-modal-content">
 				<div className="funnel-step-modal-content__field">
-					<span className="funnel-step-modal-content__label">Step name</span>
+					<span className="funnel-step-modal-content__label">{t('qb2_step_name', { defaultValue: "Step name" })}</span>
 					<Input
 						className="funnel-step-modal-content__input"
 						placeholder={t('funnel_step_name_ph', { defaultValue: 'Eg. checkout-dropoff-funnel-step1' })}
@@ -124,7 +124,7 @@ function AddFunnelStepDetailsModal({
 					/>
 				</div>
 				<div className="funnel-step-modal-content__field">
-					<span className="funnel-step-modal-content__label">Description</span>
+					<span className="funnel-step-modal-content__label">{t('qb2_description', { defaultValue: "Description" })}</span>
 					<Input.TextArea
 						className="funnel-step-modal-content__input"
 						placeholder={t('funnel_step_desc_ph', { defaultValue: 'Eg. checkout dropoff funnel' })}

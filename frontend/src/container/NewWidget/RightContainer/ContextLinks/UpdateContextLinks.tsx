@@ -270,7 +270,7 @@ function UpdateContextLinks({
 						<div className="url-parameters-section">
 							<Row gutter={[8, 8]} className="parameter-header">
 								<Col span={6}>Key</Col>
-								<Col span={16}>Value</Col>
+								<Col span={16}>{t('qb2_value', { defaultValue: "Value" })}</Col>
 								<Col span={2}>{/* Empty column for spacing */}</Col>
 							</Row>
 
@@ -297,7 +297,7 @@ function UpdateContextLinks({
 											{({ setIsOpen, setCursorPosition }): JSX.Element => (
 												<TextArea
 													rows={1}
-													placeholder="Value"
+													placeholder={t('qb2_value', { defaultValue: "Value" })}
 													value={param.value}
 													onChange={(event): void => {
 														setCursorPosition(event.target.selectionStart || 0);

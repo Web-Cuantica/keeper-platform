@@ -92,10 +92,10 @@ function AddFunnelDescriptionModal({
 		>
 			<div className="funnel-step-modal-content">
 				<div className="funnel-step-modal-content__field">
-					<span className="funnel-step-modal-content__label">Description</span>
+					<span className="funnel-step-modal-content__label">{t('qb2_description', { defaultValue: "Description" })}</span>
 					<Input.TextArea
 						className="funnel-step-modal-content__input"
-						placeholder="(Optional) Eg. checkout dropoff funnel"
+						placeholder={t('qb2_optional_eg_checkout_dropoff', { defaultValue: "(Optional) Eg. checkout dropoff funnel" })}
 						value={description}
 						onChange={(e): void => setDescription(e.target.value)}
 						autoSize={{ minRows: 3, maxRows: 5 }}

@@ -182,7 +182,7 @@ function FunnelStep({
 							</div>
 						</div>
 						<div className="filters__where-filter">
-							<div className="label">Where</div>
+							<div className="label">{t('qb2_where', { defaultValue: "Where" })}</div>
 							<Form.Item name={['steps', stepData.id, 'filters']}>
 								<QueryBuilderSearchV2
 									query={query}

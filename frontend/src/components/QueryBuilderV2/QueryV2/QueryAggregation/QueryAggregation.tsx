@@ -90,8 +90,8 @@ function QueryAggregationOptions({
 							<InputWithLabel
 								initialValue={queryData?.stepInterval ? queryData?.stepInterval : null}
 								className="query-aggregation-interval-input"
-								label="Seconds"
-								placeholder="Auto"
+								label={t('qb2_seconds', { defaultValue: "Seconds" })}
+								placeholder={t('qb2_auto', { defaultValue: "Auto" })}
 								type="number"
 								onChange={handleAggregationIntervalChange}
 								labelAfter

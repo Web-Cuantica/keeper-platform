@@ -91,7 +91,7 @@ function SearchBar({
 					onClick={onCreateFunnel}
 					disabled={!hasEditPermission}
 				>
-					New funnel
+					{t('funnel_new', { defaultValue: 'New funnel' })}
 				</Button>
 			</Tooltip>
 		</div>

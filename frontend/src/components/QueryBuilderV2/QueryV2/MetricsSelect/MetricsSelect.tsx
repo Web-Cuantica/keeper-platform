@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { memo, useCallback, useMemo } from 'react';
 import { Select } from 'antd';
 import {
@@ -43,6 +44,7 @@ export const MetricsSelect = memo(function MetricsSelect({
 	signalSourceChangeEnabled: boolean;
 	savePreviousQuery: boolean;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { handleChangeAggregatorAttribute } = useQueryOperations({
 		index,
 		query,
@@ -142,7 +144,7 @@ export const MetricsSelect = memo(function MetricsSelect({
 			{signalSourceChangeEnabled && (
 				<Select
 					className="source-selector"
-					placeholder="Source"
+					placeholder={t('qb2_source', { defaultValue: "Source" })}
 					options={SOURCE_OPTIONS}
 					value={source}
 					defaultValue="metrics"
