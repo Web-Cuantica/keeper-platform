@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
 import { UseQueryResult } from 'react-query';
 import { Color } from '@signozhq/design-tokens';
@@ -18,6 +19,7 @@ function EndPointMetrics({
 }: {
 	endPointMetricsDataQuery: UseQueryResult<SuccessResponse<any>, unknown>;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { isLoading, isRefetching, isError, data, refetch } =
 		endPointMetricsDataQuery;
 
@@ -40,7 +42,7 @@ function EndPointMetrics({
 			<div className="domain-details-grid">
 				<div className="labels-row">
 					<Typography.Text color="muted" className="domain-details-metadata-label">
-						Rate
+						{t('cfg_rate', { defaultValue: "Rate" })}
 					</Typography.Text>
 					<Typography.Text color="muted" className="domain-details-metadata-label">
 						AVERAGE LATENCY

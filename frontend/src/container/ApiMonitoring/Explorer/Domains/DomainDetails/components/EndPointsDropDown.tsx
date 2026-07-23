@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
 import { UseQueryResult } from 'react-query';
 import { Select } from 'antd';
@@ -25,6 +26,7 @@ function EndPointsDropDown({
 	parentContainerDiv,
 	dropdownStyle,
 }: EndPointsDropDownProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { data, isLoading, isFetching } = endPointDropDownDataQuery;
 
 	const handleChange = (value: string): void => {
@@ -40,7 +42,7 @@ function EndPointsDropDown({
 	return (
 		<Select
 			value={selectedEndPointName || undefined}
-			placeholder="Select endpoint"
+			placeholder={t('cfg_select_endpoint', { defaultValue: "Select endpoint" })}
 			loading={isLoading || isFetching}
 			style={{ width: '100%' }}
 			onChange={handleChange}

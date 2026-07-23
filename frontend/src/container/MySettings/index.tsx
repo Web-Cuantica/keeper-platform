@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { Badge } from '@signozhq/ui/badge';
@@ -22,6 +23,7 @@ import UserInfo from './UserInfo';
 import './MySettings.styles.scss';
 
 function MySettings(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const isDarkMode = useIsDarkMode();
 	const { userPreferences, updateUserPreferenceInContext } = useAppContext();
 	const { toggleTheme, autoSwitch, setAutoSwitch } = useThemeMode();
@@ -65,7 +67,7 @@ function MySettings(): JSX.Element {
 			label: (
 				<div className="theme-option">
 					<Sun size={12} data-testid="light-theme-icon" /> Light{' '}
-					<Badge color="robin">Beta</Badge>
+					<Badge color="robin">{t('cfg_beta', { defaultValue: "Beta" })}</Badge>
 				</div>
 			),
 			value: 'light',
@@ -161,10 +163,10 @@ function MySettings(): JSX.Element {
 		<div className="my-settings-container">
 			<div className="user-info-section">
 				<div className="user-info-section-header">
-					<div className="user-info-section-title">Account </div>
+					<div className="user-info-section-title">{t('cfg_account', { defaultValue: "Account" })}</div>
 
 					<div className="user-info-section-subtitle">
-						Manage your account settings.
+						{t('cfg_manage_your_account_settings', { defaultValue: "Manage your account settings." })}
 					</div>
 				</div>
 
@@ -175,17 +177,17 @@ function MySettings(): JSX.Element {
 
 			<div className="user-preference-section">
 				<div className="user-preference-section-header">
-					<div className="user-preference-section-title">User Preferences</div>
+					<div className="user-preference-section-title">{t('cfg_user_preferences', { defaultValue: "User Preferences" })}</div>
 
 					<div className="user-preference-section-subtitle">
-						Tailor the SigNoz console to work according to your needs.
+						{t('cfg_tailor_the_signoz_console', { defaultValue: "Tailor the SigNoz console to work according to your needs." })}
 					</div>
 				</div>
 
 				<div className="user-preference-section-content">
 					<div className="user-preference-section-content-item theme-selector">
 						<div className="user-preference-section-content-item-title-action">
-							Select your theme
+							{t('cfg_select_your_theme', { defaultValue: "Select your theme" })}
 							<ToggleGroupSimple
 								type="single"
 								onChange={handleThemeChange}

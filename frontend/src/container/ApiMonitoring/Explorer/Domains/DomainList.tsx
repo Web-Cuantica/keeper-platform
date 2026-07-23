@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useQueryClient } from 'react-query';
 // eslint-disable-next-line no-restricted-imports
@@ -34,6 +35,7 @@ import DomainDetails from './DomainDetails/DomainDetails';
 import '../Explorer.styles.scss';
 
 function DomainList(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [params, setParams] = useApiMonitoringParams();
 	const { showIP, selectedDomain } = params;
 	const [selectedDomainIndex, setSelectedDomainIndex] = useState<number>(-1);
@@ -155,7 +157,7 @@ function DomainList(): JSX.Element {
 					dataSource={DataSource.TRACES}
 					queryData={query}
 					onChange={handleSearchChange}
-					placeholder="Enter your filter query (e.g., deployment.environment = 'otel-demo' AND service.name = 'frontend')"
+					placeholder={t('cfg_enter_your_filter_query', { defaultValue: "Enter your filter query (e.g., deployment.environment = 'otel-demo' AND service.name = 'frontend')" })}
 					hardcodedAttributeKeys={ApiMonitoringHardcodedAttributeKeys}
 				/>
 			</div>
@@ -176,11 +178,11 @@ function DomainList(): JSX.Element {
 
 							<div className="no-filtered-domains-message">
 								<div className="no-domain-title">
-									No External API calls detected with applied filters.
+									{t('cfg_no_external_api_calls', { defaultValue: "No External API calls detected with applied filters." })}
 								</div>
 								<div className="no-domain-subtitle">
 									Ensure all HTTP client spans are being sent with kind as{' '}
-									<span className="attribute">Client</span> and url set in{' '}
+									<span className="attribute">{t('cfg_client', { defaultValue: "Client" })}</span> and url set in{' '}
 									<span className="attribute">url.full</span> or{' '}
 									<span className="attribute">http.url</span> attribute.
 								</div>

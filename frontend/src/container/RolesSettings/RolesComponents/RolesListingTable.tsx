@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import cx from 'classnames';
@@ -31,6 +32,7 @@ interface RolesListingTableProps {
 function RolesListingTable({
 	searchQuery,
 }: RolesListingTableProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { isRolesEnabled } = useRolesFeatureGate();
 
 	const { permissions: listPerms, isLoading: isAuthZLoading } = useAuthZ([
@@ -240,15 +242,15 @@ function RolesListingTable({
 			<div className={styles.scrollContainer}>
 				<div className={styles.tableInner}>
 					<div className={styles.tableHeader}>
-						<div className={cx(styles.headerCell, styles.headerCellName)}>Name</div>
+						<div className={cx(styles.headerCell, styles.headerCellName)}>{t('cfg_name', { defaultValue: "Name" })}</div>
 						<div className={cx(styles.headerCell, styles.headerCellDescription)}>
-							Description
+							{t('cfg_description', { defaultValue: "Description" })}
 						</div>
 						<div className={cx(styles.headerCell, styles.headerCellUpdatedAt)}>
-							Updated At
+							{t('cfg_updated_at', { defaultValue: "Updated At" })}
 						</div>
 						<div className={cx(styles.headerCell, styles.headerCellCreatedAt)}>
-							Created At
+							{t('cfg_created_at', { defaultValue: "Created At" })}
 						</div>
 					</div>
 

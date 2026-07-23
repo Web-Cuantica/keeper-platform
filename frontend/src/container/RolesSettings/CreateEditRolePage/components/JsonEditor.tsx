@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
 	forwardRef,
 	useCallback,
@@ -38,6 +39,7 @@ type MonacoEditor = Parameters<OnMount>[0];
 
 const JsonEditor = forwardRef<JsonEditorRef, JsonEditorProps>(
 	function JsonEditor({ resources, mode, onChange, onValidityChange }, ref) {
+		const { t } = useTranslation('pages');
 		const isDarkMode = useIsDarkMode();
 		const [copyState, copyToClipboard] = useCopyToClipboard();
 		const [copied, setCopied] = useState(false);
@@ -196,7 +198,7 @@ const JsonEditor = forwardRef<JsonEditorRef, JsonEditorProps>(
 					{parseError && (
 						<div className={styles.jsonEditorError} data-testid="json-editor-error">
 							<Typography as="span" size="base" weight="medium">
-								Parse Error:
+								{t('cfg_parse_error', { defaultValue: "Parse Error:" })}
 							</Typography>
 							<Typography
 								as="span"
@@ -213,7 +215,7 @@ const JsonEditor = forwardRef<JsonEditorRef, JsonEditorProps>(
 							data-testid="json-editor-schema-error"
 						>
 							<Typography as="span" size="base" weight="medium">
-								Schema Error:
+								{t('cfg_schema_error', { defaultValue: "Schema Error:" })}
 							</Typography>
 							<Typography
 								as="span"

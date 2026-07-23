@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { Info } from '@signozhq/icons';
 import { Input } from '@signozhq/ui/input';
@@ -19,6 +20,7 @@ function JsonFlattening({
 	selectedProcessorData,
 	isAdd,
 }: JsonFlatteningProps): JSX.Element | null {
+	const { t } = useTranslation('pages');
 	const form = Form.useFormInstance();
 	const mappingValue = selectedProcessorData?.mapping || {};
 	const enableFlattening = Form.useWatch('enable_flattening', form);
@@ -61,17 +63,17 @@ function JsonFlattening({
 			>
 				<Space>
 					<Switch value={enablePaths} onChange={handleEnablePathsChange} />
-					Enable Paths
+					{t('cfg_enable_paths', { defaultValue: "Enable Paths" })}
 				</Space>
 			</Form.Item>
 
 			{enablePaths && (
 				<Form.Item
 					name="path_prefix"
-					label="Path Prefix"
+					label={t('cfg_path_prefix', { defaultValue: "Path Prefix" })}
 					initialValue={selectedProcessorData?.path_prefix}
 				>
-					<Input placeholder="Path Prefix" />
+					<Input placeholder={t('cfg_path_prefix', { defaultValue: "Path Prefix" })} />
 				</Form.Item>
 			)}
 
@@ -79,8 +81,8 @@ function JsonFlattening({
 				<Space>
 					<Switch value={enableMapping} onChange={handleEnableMappingChange} />
 					<Flex gap="8px" align="center">
-						Enable Mapping
-						<Tooltip title="The order of filled keys will determine the priority of keys i.e. earlier keys have higher precedence">
+						{t('cfg_enable_mapping', { defaultValue: "Enable Mapping" })}
+						<Tooltip title={t('cfg_the_order_of_filled', { defaultValue: "The order of filled keys will determine the priority of keys i.e. earlier keys have higher precedence" })}>
 							<Info size="md" />
 						</Tooltip>
 					</Flex>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ILog } from 'types/api/logs/log';
 import { PipelineData } from 'types/api/pipeline/def';
 
@@ -10,6 +11,7 @@ function PipelineSimulationResult({
 	inputLogs,
 	pipeline,
 }: PipelineSimulationResultProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { isLoading, outputLogs, isError, errorMsg } = usePipelinePreview({
 		pipeline: {
 			...pipeline,
@@ -22,7 +24,7 @@ function PipelineSimulationResult({
 	if (isError) {
 		return (
 			<div className="pipeline-simulation-error">
-				<div>There was an error</div>
+				<div>{t('cfg_there_was_an_error', { defaultValue: "There was an error" })}</div>
 				<div>{errorMsg}</div>
 			</div>
 		);
@@ -33,7 +35,7 @@ function PipelineSimulationResult({
 	}
 
 	if (outputLogs.length < 1) {
-		return <div>No logs found</div>;
+		return <div>{t('cfg_no_logs_found', { defaultValue: "No logs found" })}</div>;
 	}
 
 	return <LogsList logs={outputLogs} />;

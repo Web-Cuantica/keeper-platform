@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 // eslint-disable-next-line no-restricted-imports
 import { useSelector } from 'react-redux';
@@ -43,6 +44,7 @@ function DomainDetails({
 	domainListLength: number;
 	domainListFilters: IBuilderQuery['filters'];
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [params, setParams] = useApiMonitoringParams();
 	const [selectedView, setSelectedView] = useState<VIEWS>(
 		(params.selectedView as VIEWS) || VIEWS.ALL_ENDPOINTS,
@@ -188,7 +190,7 @@ function DomainDetails({
 								}}
 								icon={<ArrowUp size={16} />}
 								disabled={selectedDomainIndex === 0}
-								title="Previous domain"
+								title={t('cfg_previous_domain', { defaultValue: "Previous domain" })}
 							/>
 							<Button
 								className="domain-navigate-cta"
@@ -200,7 +202,7 @@ function DomainDetails({
 								}}
 								icon={<ArrowDown size={16} />}
 								disabled={selectedDomainIndex === domainListLength - 1}
-								title="Next domain"
+								title={t('cfg_next_domain', { defaultValue: "Next domain" })}
 							/>
 						</Button.Group>
 					</div>

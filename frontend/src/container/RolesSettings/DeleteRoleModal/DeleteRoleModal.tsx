@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Trash2 } from '@signozhq/icons';
 import { ConfirmDialog } from '@signozhq/ui/dialog';
 import { Typography } from '@signozhq/ui/typography';
@@ -21,6 +22,7 @@ function DeleteRoleModal({
 	onCancel,
 	onConfirm,
 }: DeleteRoleModalProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	return (
 		<ConfirmDialog
 			open={isOpen}
@@ -29,22 +31,22 @@ function DeleteRoleModal({
 					onCancel();
 				}
 			}}
-			title="Delete Role"
+			title={t('cfg_delete_role', { defaultValue: "Delete Role" })}
 			titleIcon={<Trash2 size={14} />}
 			confirmText="Delete Role"
 			confirmColor="destructive"
-			cancelText="Cancel"
+			cancelText={t('cfg_cancel', { defaultValue: "Cancel" })}
 			onConfirm={onConfirm}
 			onCancel={onCancel}
 			disableOutsideClick
 		>
 			<Typography>
-				Are you sure you want to delete the role <strong>{roleName}</strong>? This
+				{t('cfg_are_you_sure_you', { defaultValue: "Are you sure you want to delete the role" })}<strong>{roleName}</strong>? This
 				action cannot be undone.
 			</Typography>
 			{error && (
 				<Callout
-					title="Failed to delete role"
+					title={t('cfg_failed_to_delete_role', { defaultValue: "Failed to delete role" })}
 					color="cherry"
 					className={styles.errorCallout}
 				>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useMemo, useState } from 'react';
 import { UseQueryResult } from 'react-query';
 import { Skeleton, Table, TablePaginationConfig } from 'antd';
@@ -30,6 +31,7 @@ function DependentServices({
 	dependentServicesQuery,
 	timeRange,
 }: DependentServicesProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { data, refetch, isError, isLoading, isRefetching } =
 		dependentServicesQuery;
 
@@ -83,7 +85,7 @@ function DependentServices({
 										/>
 
 										<Typography.Text className="no-status-code-data-message">
-											This query had no results. Edit your query and try again!
+											{t('cfg_this_query_had_no', { defaultValue: "This query had no results. Edit your query and try again!" })}
 										</Typography.Text>
 									</div>
 								</div>

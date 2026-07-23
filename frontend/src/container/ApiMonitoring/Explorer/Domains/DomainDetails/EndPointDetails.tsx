@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useQueries } from 'react-query';
 import { ENTITY_VERSION_V4, ENTITY_VERSION_V5 } from 'constants/app';
@@ -58,6 +59,7 @@ function EndPointDetails({
 		dateTimeRange?: [number, number],
 	) => void;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { startTime: minTime, endTime: maxTime } = timeRange;
 	const [params, setParams] = useApiMonitoringParams();
 
@@ -270,19 +272,19 @@ function EndPointDetails({
 					<QueryBuilderSearchV2
 						query={query}
 						onChange={handleFilterChange}
-						placeholder="Search for filters..."
+						placeholder={t('cfg_search_for_filters', { defaultValue: "Search for filters..." })}
 					/>
 				</div>
 			</div>
 			<div className="endpoint-meta-data">
 				<div className="endpoint-meta-data-pill">
-					<div className="endpoint-meta-data-label">Endpoint</div>
+					<div className="endpoint-meta-data-label">{t('cfg_endpoint', { defaultValue: "Endpoint" })}</div>
 					<div className="endpoint-meta-data-value">
 						{endpoint || 'All Endpoints'}
 					</div>
 				</div>
 				<div className="endpoint-meta-data-pill">
-					<div className="endpoint-meta-data-label">Port</div>
+					<div className="endpoint-meta-data-label">{t('cfg_port', { defaultValue: "Port" })}</div>
 					<div className="endpoint-meta-data-value">{port || '-'}</div>
 				</div>
 			</div>

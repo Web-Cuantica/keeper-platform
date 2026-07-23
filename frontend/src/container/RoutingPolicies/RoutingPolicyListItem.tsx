@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Color } from '@signozhq/design-tokens';
 import { Button, Collapse, Flex } from 'antd';
 import { Badge } from '@signozhq/ui/badge';
@@ -69,16 +70,17 @@ function PolicyListItemHeader({
 function PolicyListItemContent({
 	routingPolicy,
 }: PolicyListItemContentProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { formatTimezoneAdjustedTimestamp } = useTimezone();
 
 	return (
 		<div className="policy-list-item-content">
 			<div className="policy-list-item-content-row">
-				<Typography>Created by</Typography>
+				<Typography>{t('cfg_created_by', { defaultValue: "Created by" })}</Typography>
 				<Typography>{routingPolicy.createdBy}</Typography>
 			</div>
 			<div className="policy-list-item-content-row">
-				<Typography>Created on</Typography>
+				<Typography>{t('cfg_created_on', { defaultValue: "Created on" })}</Typography>
 				<Typography>
 					{routingPolicy.createdAt
 						? formatTimezoneAdjustedTimestamp(
@@ -89,11 +91,11 @@ function PolicyListItemContent({
 				</Typography>
 			</div>
 			<div className="policy-list-item-content-row">
-				<Typography>Updated by</Typography>
+				<Typography>{t('cfg_updated_by', { defaultValue: "Updated by" })}</Typography>
 				<Typography>{routingPolicy.updatedBy || '-'}</Typography>
 			</div>
 			<div className="policy-list-item-content-row">
-				<Typography>Updated on</Typography>
+				<Typography>{t('cfg_updated_on', { defaultValue: "Updated on" })}</Typography>
 				<Typography>
 					{routingPolicy.updatedAt
 						? formatTimezoneAdjustedTimestamp(
@@ -104,19 +106,19 @@ function PolicyListItemContent({
 				</Typography>
 			</div>
 			<div className="policy-list-item-content-row">
-				<Typography>Expression</Typography>
+				<Typography>{t('cfg_expression', { defaultValue: "Expression" })}</Typography>
 				<Typography.Text truncate={1}>
 					{routingPolicy.expression || '-'}
 				</Typography.Text>
 			</div>
 			<div className="policy-list-item-content-row">
-				<Typography>Description</Typography>
+				<Typography>{t('cfg_description', { defaultValue: "Description" })}</Typography>
 				<Typography.Text truncate={1}>
 					{routingPolicy.description || '-'}
 				</Typography.Text>
 			</div>
 			<div className="policy-list-item-content-row">
-				<Typography>Channels</Typography>
+				<Typography>{t('cfg_channels', { defaultValue: "Channels" })}</Typography>
 				<div>
 					{routingPolicy.channels.map((channel) => (
 						<Badge key={channel} color="vanilla">

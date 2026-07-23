@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useCallback, useMemo, useState } from 'react';
 import { ConfirmDialog } from '@signozhq/ui/dialog';
 import { Divider } from '@signozhq/ui/divider';
@@ -39,6 +40,7 @@ function ActionToggle({
 	onSelectedIdsChange,
 	hasError = false,
 }: ActionToggleProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
 	const [pendingScope, setPendingScope] = useState<PermissionScope | null>(null);
 
@@ -138,9 +140,9 @@ function ActionToggle({
 						handleCancelScopeChange();
 					}
 				}}
-				title="Change permission scope?"
+				title={t('cfg_change_permission_scope', { defaultValue: "Change permission scope?" })}
 				confirmText="Change scope"
-				cancelText="Cancel"
+				cancelText={t('cfg_cancel', { defaultValue: "Cancel" })}
 				onConfirm={handleConfirmScopeChange}
 				onCancel={handleCancelScopeChange}
 			>

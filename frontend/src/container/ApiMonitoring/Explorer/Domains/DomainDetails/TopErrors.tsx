@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useMemo, useState } from 'react';
 import { QueryFunctionContext, useQueries, useQuery } from 'react-query';
 import { Spin, Table, Tooltip } from 'antd';
@@ -43,6 +44,7 @@ function TopErrors({
 	};
 	initialFilters: IBuilderQuery['filters'];
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { startTime: minTime, endTime: maxTime } = timeRange;
 
 	const [endPointName, setSelectedEndPointName] = useState<string>('');
@@ -173,9 +175,9 @@ function TopErrors({
 				<div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
 					<Switch value={showStatusCodeErrors} onChange={setShowStatusCodeErrors} />
 					<span style={{ color: 'white', fontSize: '14px' }}>
-						Status Message Exists
+						{t('cfg_status_message_exists', { defaultValue: "Status Message Exists" })}
 					</span>
-					<Tooltip title="When enabled, shows errors that have a status message. When disabled, shows all errors regardless of status message">
+					<Tooltip title={t('cfg_when_enabled_shows_errors', { defaultValue: "When enabled, shows errors that have a status message. When disabled, shows all errors regardless of status message" })}>
 						<Info size={16} color="white" />
 					</Tooltip>
 				</div>

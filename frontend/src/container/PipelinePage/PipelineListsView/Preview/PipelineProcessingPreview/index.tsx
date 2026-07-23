@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { RelativeDurationOptions } from 'container/TopNav/DateTimeSelectionV2/constants';
 import { PipelineData } from 'types/api/pipeline/def';
@@ -12,6 +13,7 @@ import './styles.scss';
 function PipelineProcessingPreview({
 	pipeline,
 }: PipelineProcessingPreviewProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const last1HourInterval = RelativeDurationOptions[3].value;
 	const [logsSampleQueryInterval, setLogsSampleQueryInterval] =
 		useState(last1HourInterval);
@@ -27,7 +29,7 @@ function PipelineProcessingPreview({
 	return (
 		<div>
 			<div className="pipeline-preview-section-header">
-				<div>Sample logs</div>
+				<div>{t('cfg_sample_logs', { defaultValue: "Sample logs" })}</div>
 				<PreviewIntervalSelector
 					previewFilter={pipeline.filter}
 					value={logsSampleQueryInterval}
@@ -38,7 +40,7 @@ function PipelineProcessingPreview({
 				<SampleLogsResponseDisplay response={sampleLogsResponse} />
 			</div>
 			<div className="pipeline-preview-section-header">
-				<div>Processed Output</div>
+				<div>{t('cfg_processed_output', { defaultValue: "Processed Output" })}</div>
 			</div>
 			<div className="pipeline-preview-logs-container">
 				<LogsProcessingSimulator inputLogs={sampleLogs} pipeline={pipeline} />
