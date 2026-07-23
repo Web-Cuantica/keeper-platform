@@ -1759,5 +1759,7 @@
   "qb2_valid_traces_found": "Se encontraron trazas válidas",
   "qb2_save_funnel": "Guardar embudo",
   "qb2_a_list_of_the": "Lista de las trazas más lentas del embudo",
-  "qb2_a_list_of_the_2": "Lista de las trazas con errores del embudo"
+  "qb2_a_list_of_the_2": "Lista de las trazas con errores del embudo",
+  "funnel_lat_start": "Inicio del span",
+  "funnel_lat_end": "Fin del span"
 }

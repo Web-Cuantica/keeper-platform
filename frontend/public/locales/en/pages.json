@@ -899,5 +899,7 @@
   "qb2_valid_traces_found": "Valid traces found",
   "qb2_save_funnel": "Save funnel",
   "qb2_a_list_of_the": "A list of the slowest traces in the funnel",
-  "qb2_a_list_of_the_2": "A list of the traces with errors in the funnel"
+  "qb2_a_list_of_the_2": "A list of the traces with errors in the funnel",
+  "funnel_lat_start": "Start of span",
+  "funnel_lat_end": "End of span"
 }

@@ -51,7 +51,7 @@ function FunnelStep({
 			children: LatencyPointers.map((option) => ({
 				type: 'radio',
 				key: option.value,
-				label: option.key,
+				label: t(`funnel_lat_${option.value}`, { defaultValue: option.key }),
 				value: option.value,
 			})),
 		},
@@ -216,21 +216,21 @@ function FunnelStep({
 						{hasEditPermission ? (
 							<DropdownMenuSimple menu={{ items: latencyPointerItems }}>
 								<Space>
-									{
-										LatencyPointers.find(
-											(option) => option.value === stepData.latency_pointer,
-										)?.key
-									}
+									{t(`funnel_lat_${stepData.latency_pointer}`, {
+									defaultValue: LatencyPointers.find(
+										(option) => option.value === stepData.latency_pointer,
+									)?.key,
+								})}
 									<ChevronDown size={14} color="var(--bg-vanilla-400)" />
 								</Space>
 							</DropdownMenuSimple>
 						) : (
 							<Space>
-								{
-									LatencyPointers.find(
+								{t(`funnel_lat_${stepData.latency_pointer}`, {
+									defaultValue: LatencyPointers.find(
 										(option) => option.value === stepData.latency_pointer,
-									)?.key
-								}
+									)?.key,
+								})}
 								<ChevronDown size={14} color="var(--bg-vanilla-400)" />
 							</Space>
 						)}
