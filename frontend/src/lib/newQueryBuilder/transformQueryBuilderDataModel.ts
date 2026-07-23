@@ -39,8 +39,18 @@ export const transformQueryBuilderDataModel = (
 			queryTraceOperator.push({ ...traceOperator });
 		} else {
 			const queryFromData = value as IBuilderQuery;
+			// Los valores por defecto se toman de la fuente de datos de la consulta, no
+			// siempre de métricas. Una consulta guardada (p. ej. una vista del explorador)
+			// no persiste `aggregations`; si se rellenaba con los de métricas, una consulta
+			// de trazas volvía con la agregación en forma de métrica
+			// ({metricName, temporality, ...}) en vez de [{expression:'count() '}], y el
+			// constructor del payload reventaba antes de llegar a la red.
+			const valoresPorDefecto =
+				initialQueryBuilderFormValuesMap[queryFromData.dataSource] ??
+				initialQueryBuilderFormValuesMap.metrics;
+
 			queryData.push({
-				...initialQueryBuilderFormValuesMap.metrics,
+				...valoresPorDefecto,
 				...queryFromData,
 			});
 		}

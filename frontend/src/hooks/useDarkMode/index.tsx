@@ -145,6 +145,12 @@ export const useThemeConfig = (): ThemeConfig => {
 			colorPrimary: '#1368F1',
 			colorBgBase: isDarkMode ? '#0B0C0E' : '#fff',
 			colorBgContainer: isDarkMode ? '#121317' : '#fff',
+			// Bordes visibles en todo el portal. antd, en modo claro, cae en su gris por
+			// defecto (~#f0f0f0) sobre un lienzo #fafafa: 1,07:1 de contraste, o sea un
+			// borde que matemáticamente no se puede ver. Por eso las tarjetas y tablas
+			// aparecían sin contorno y costaba distinguir la agrupación de paneles.
+			colorBorder: isDarkMode ? '#1D212D' : '#d2d8e3',
+			colorBorderSecondary: isDarkMode ? '#16181D' : '#e1e6ee',
 			colorLink: '#1368F1',
 			colorPrimaryText: '#0F53C1',
 		},
