@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { Input } from 'antd';
 import SignozModal from 'components/SignozModal/SignozModal';
@@ -21,6 +22,7 @@ function AddFunnelStepDetailsModal({
 	onClose,
 	stepData,
 }: AddFunnelStepDetailsModalProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { funnelId, steps, setSteps } = useFunnelContext();
 
 	const [stepName, setStepName] = useState<string>(stepData?.name || '');
@@ -86,12 +88,12 @@ function AddFunnelStepDetailsModal({
 	return (
 		<SignozModal
 			open={isOpen}
-			title="Add funnel step details"
+			title={t('funnel_step_details_title', { defaultValue: 'Add funnel step details' })}
 			width={384}
 			onCancel={handleCancel}
 			rootClassName="funnel-step-modal funnel-modal signoz-modal"
-			cancelText="Cancel"
-			okText="Save changes"
+			cancelText={t('funnel_cancel', { defaultValue: 'Cancel' })}
+			okText={t('funnel_save_changes', { defaultValue: 'Save changes' })}
 			okButtonProps={{
 				icon: <Check size={14} />,
 				type: 'primary',
@@ -114,7 +116,7 @@ function AddFunnelStepDetailsModal({
 					<span className="funnel-step-modal-content__label">Step name</span>
 					<Input
 						className="funnel-step-modal-content__input"
-						placeholder="Eg. checkout-dropoff-funnel-step1"
+						placeholder={t('funnel_step_name_ph', { defaultValue: 'Eg. checkout-dropoff-funnel-step1' })}
 						value={stepName}
 						onChange={(e): void => setStepName(e.target.value)}
 						autoFocus
@@ -125,7 +127,7 @@ function AddFunnelStepDetailsModal({
 					<span className="funnel-step-modal-content__label">Description</span>
 					<Input.TextArea
 						className="funnel-step-modal-content__input"
-						placeholder="Eg. checkout dropoff funnel"
+						placeholder={t('funnel_step_desc_ph', { defaultValue: 'Eg. checkout dropoff funnel' })}
 						value={description}
 						onChange={(e): void => setDescription(e.target.value)}
 						autoSize={{ minRows: 3, maxRows: 5 }}

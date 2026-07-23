@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { useQueryClient } from 'react-query';
 import { Input } from 'antd';
@@ -22,6 +23,7 @@ function AddFunnelDescriptionModal({
 	funnelId,
 	funnelDescription,
 }: AddFunnelDescriptionProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [description, setDescription] = useState<string>(funnelDescription);
 	const { notifications } = useNotifications();
 	const queryClient = useQueryClient();
@@ -66,12 +68,12 @@ function AddFunnelDescriptionModal({
 	return (
 		<SignozModal
 			open={isOpen}
-			title="Add funnel description"
+			title={t('funnel_desc_title', { defaultValue: 'Add funnel description' })}
 			width={384}
 			onCancel={handleCancel}
 			rootClassName="funnel-step-modal funnel-modal signoz-modal"
-			cancelText="Cancel"
-			okText="Save changes"
+			cancelText={t('funnel_cancel', { defaultValue: 'Cancel' })}
+			okText={t('funnel_save_changes', { defaultValue: 'Save changes' })}
 			okButtonProps={{
 				icon: <Check size={14} />,
 				type: 'primary',

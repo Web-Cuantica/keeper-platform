@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useMemo, useState } from 'react';
 import { Button, Form, Space, Tooltip } from 'antd';
 import { DropdownMenuSimple, type MenuItem } from '@signozhq/ui/dropdown-menu';
@@ -30,6 +31,7 @@ function FunnelStep({
 	index,
 	stepsCount,
 }: FunnelStepProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { handleStepChange: onStepChange, handleStepRemoval: onStepRemove } =
 		useFunnelContext();
 	const [form] = Form.useForm();
@@ -144,7 +146,7 @@ function FunnelStep({
 							<div className="service">
 								<Form.Item name={['steps', stepData.id, 'service_name']}>
 									<FilterSelect
-										placeholder="Select Service"
+										placeholder={t('funnel_select_service', { defaultValue: 'Select Service' })}
 										queryParam={QueryParams.service}
 										filterType="serviceName"
 										shouldSetQueryParams={false}
@@ -163,7 +165,7 @@ function FunnelStep({
 							<div className="span">
 								<Form.Item name={['steps', stepData.id, 'span_name']}>
 									<FilterSelect
-										placeholder="Select Span name"
+										placeholder={t('funnel_select_span', { defaultValue: 'Select Span name' })}
 										queryParam={QueryParams.spanName}
 										filterType="name"
 										shouldSetQueryParams={false}
@@ -190,7 +192,7 @@ function FunnelStep({
 											: (): void => {}
 									}
 									hasPopupContainer={false}
-									placeholder="Search for filters..."
+									placeholder={t('funnel_filters_ph', { defaultValue: 'Search for filters...' })}
 									rootClassName="traces-funnel-where-filter"
 								/>
 							</Form.Item>
@@ -207,10 +209,10 @@ function FunnelStep({
 								onStepChange(index, { has_errors: !stepData.has_errors })
 							}
 						/>
-						<div className="error__label">Errors</div>
+						<div className="error__label">{t('funnel_errors', { defaultValue: 'Errors' })}</div>
 					</div>
 					<div className="latency-pointer">
-						<div className="latency-pointer__label">Latency pointer</div>
+						<div className="latency-pointer__label">{t('funnel_latency_pointer', { defaultValue: 'Latency pointer' })}</div>
 						{hasEditPermission ? (
 							<DropdownMenuSimple menu={{ items: latencyPointerItems }}>
 								<Space>

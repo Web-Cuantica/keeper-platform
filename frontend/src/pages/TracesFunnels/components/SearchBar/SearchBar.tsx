@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ChangeEvent } from 'react';
 import { Color } from '@signozhq/design-tokens';
 import { Input } from '@signozhq/ui/input';
@@ -24,6 +25,7 @@ function SearchBar({
 	onSort,
 	onCreateFunnel,
 }: SearchBarProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { hasEditPermission } = useAppContext();
 
 	return (
@@ -59,12 +61,12 @@ function SearchBar({
 			>
 				<Button type="text" className="search__sort-btn">
 					<ArrowDownWideNarrow size={12} data-testid="sort-by" />
-					<div className="search__sort-btn-text">Sort</div>
+					<div className="search__sort-btn-text">{t('funnel_sort', { defaultValue: 'Sort' })}</div>
 				</Button>
 			</Popover>
 			<Input
 				className="search__input"
-				placeholder="Search by name, description, or tags..."
+				placeholder={t('funnel_search_ph', { defaultValue: 'Search by name, description, or tags...' })}
 				prefix={
 					<Search
 						size={12}

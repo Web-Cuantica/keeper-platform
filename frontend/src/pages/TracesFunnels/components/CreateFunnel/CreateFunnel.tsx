@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { useQueryClient } from 'react-query';
 import { generatePath, matchPath, useLocation } from 'react-router-dom';
@@ -25,6 +26,7 @@ function CreateFunnel({
 	onClose,
 	redirectToDetails,
 }: CreateFunnelProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [funnelName, setFunnelName] = useState<string>('');
 	const [inputError, setInputError] = useState<string>('');
 	const createFunnelMutation = useCreateFunnel();
@@ -99,12 +101,12 @@ function CreateFunnel({
 	return (
 		<SignozModal
 			open={isOpen}
-			title="Create new funnel"
+			title={t('funnel_create_title', { defaultValue: 'Create new funnel' })}
 			width={384}
 			onCancel={handleCancel}
 			rootClassName="funnel-modal"
-			cancelText="Cancel"
-			okText="Create Funnel"
+			cancelText={t('funnel_cancel', { defaultValue: 'Cancel' })}
+			okText={t('funnel_create_ok', { defaultValue: 'Create Funnel' })}
 			okButtonProps={{
 				icon: <Check size={14} />,
 				loading: createFunnelMutation.isLoading,
@@ -123,14 +125,14 @@ function CreateFunnel({
 			destroyOnClose
 		>
 			<div className="funnel-modal-content">
-				<span className="funnel-modal-content__label">Enter funnel name</span>
+				<span className="funnel-modal-content__label">{t('funnel_name_label', { defaultValue: 'Enter funnel name' })}</span>
 				<Input
 					className={`funnel-modal-content__input${
 						inputError ? ' funnel-modal-content__input--error' : ''
 					}`}
 					value={funnelName}
 					onChange={handleInputChange}
-					placeholder="Eg. checkout dropoff funnel"
+					placeholder={t('funnel_name_ph', { defaultValue: 'Eg. checkout dropoff funnel' })}
 					autoFocus
 				/>
 				{inputError && (

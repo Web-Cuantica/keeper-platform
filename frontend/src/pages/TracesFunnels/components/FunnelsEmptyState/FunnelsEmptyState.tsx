@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button } from 'antd';
 import LearnMore from 'components/LearnMore/LearnMore';
 import { Plus } from '@signozhq/icons';
@@ -15,6 +16,7 @@ function FunnelsEmptyState({
 	onCreateFunnel,
 }: FunnelsEmptyStateProps): JSX.Element {
 	const { hasEditPermission } = useAppContext();
+	const { t } = useTranslation('pages');
 
 	return (
 		<div className="funnels-empty">
@@ -26,9 +28,13 @@ function FunnelsEmptyState({
 						className="funnels-empty__icon"
 					/>
 					<div>
-						<span className="funnels-empty__title">No funnels yet. </span>
+						<span className="funnels-empty__title">
+							{t('funnel_empty_title', { defaultValue: 'No funnels yet.' })}{' '}
+						</span>
 						<span className="funnels-empty__subtitle">
-							Create a funnel to start analyzing your data
+							{t('funnel_empty_subtitle', {
+								defaultValue: 'Create a funnel to start analyzing your data',
+							})}
 						</span>
 					</div>
 				</section>
@@ -41,7 +47,7 @@ function FunnelsEmptyState({
 							onClick={onCreateFunnel}
 							className="funnels-empty__new-btn"
 						>
-							New funnel
+							{t('funnel_new', { defaultValue: 'New funnel' })}
 						</Button>
 					)}
 					<LearnMore url="https://signoz.io/blog/tracing-funnels-observability-distributed-systems/" />
