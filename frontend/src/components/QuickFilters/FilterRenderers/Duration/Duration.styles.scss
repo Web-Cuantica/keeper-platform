@@ -19,7 +19,9 @@
 		font-weight: 400;
 		line-height: 18px;
 		letter-spacing: -0.07px;
-		text-transform: capitalize;
+		// En español `capitalize` daría "Ambiente De Despliegue": los títulos ya vienen
+		// con la capitalización correcta (traducidos o vía getFilterName).
+		text-transform: none;
 	}
 
 	.duration-inputs {

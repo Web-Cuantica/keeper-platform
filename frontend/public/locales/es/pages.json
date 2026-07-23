@@ -1977,5 +1977,10 @@
   "qf_f_log_level": "Nivel de log",
   "qf_f_source": "Origen",
   "qf_f_region": "Región",
-  "qf_f_cloud_provider": "Proveedor de nube"
+  "qf_f_cloud_provider": "Proveedor de nube",
+  "apm_click_row_for_stats": "Haz clic en cualquier fila para ver las estadísticas del endpoint",
+  "apm_avg_latency_upper": "LATENCIA PROM.",
+  "apm_avg_rate_upper": "TASA PROM.",
+  "apm_disable_status_message_toggle": "Desactiva el interruptor \"Tiene mensaje de estado\" para ver todos los errores",
+  "apm_query_no_results": "La consulta no arrojó resultados. Edítala e inténtalo de nuevo."
 }

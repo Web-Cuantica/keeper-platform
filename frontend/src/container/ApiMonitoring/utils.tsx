@@ -547,6 +547,7 @@ export interface DomainMetricsResponseRow {
 
 export const formatDomainMetricsDataForTable = (
 	row: DomainMetricsResponseRow | undefined,
+	t?: TraducirFn,
 ): DomainMetricsData => {
 	if (!row) {
 		return {
@@ -565,7 +566,7 @@ export const formatDomainMetricsDataForTable = (
 
 	// Convert nanoseconds to milliseconds for timestamp, then format (only if valid)
 	const lastUsedFormatted = !isEmptyFilterValue(dataMap.D)
-		? getLastUsedRelativeTime(new Date(dataMap.D as string).getTime())
+		? getLastUsedRelativeTime(new Date(dataMap.D as string).getTime(), t)
 		: undefined;
 
 	return {
@@ -2283,6 +2284,7 @@ interface EndPointStatusCodeData {
 
 export const getFormattedEndPointMetricsData = (
 	data: EndPointMetricsResponseRow[],
+	t?: TraducirFn,
 ): EndPointMetricsData => {
 	if (!data || data.length === 0) {
 		return {
@@ -2303,7 +2305,7 @@ export const getFormattedEndPointMetricsData = (
 
 	// Convert timestamp to relative time (only if valid)
 	const lastUsedFormatted = !isEmptyFilterValue(data[0].data.D)
-		? getLastUsedRelativeTime(new Date(data[0].data.D as string).getTime())
+		? getLastUsedRelativeTime(new Date(data[0].data.D as string).getTime(), t)
 		: undefined;
 
 	return {
@@ -2532,7 +2534,7 @@ export const getDependentServicesColumns = (
 	{
 		title: (
 			<span className="top-services-item-latency-title col-title">
-				AVG. LATENCY
+				{t('pages:apm_avg_latency_upper', { defaultValue: 'AVG. LATENCY' })}
 			</span>
 		),
 		dataIndex: 'latency',
@@ -2553,7 +2555,7 @@ export const getDependentServicesColumns = (
 	{
 		title: (
 			<span className="top-services-item-error-percentage-title col-title">
-				ERROR %
+				{t('pages:apm_error_pct', { defaultValue: 'ERROR %' })}
 			</span>
 		),
 		dataIndex: 'errorPercentage',
@@ -2596,7 +2598,9 @@ export const getDependentServicesColumns = (
 	},
 	{
 		title: (
-			<span className="top-services-item-rate-title col-title">AVG. RATE</span>
+			<span className="top-services-item-rate-title col-title">
+				{t('pages:apm_avg_rate_upper', { defaultValue: 'AVG. RATE' })}
+			</span>
 		),
 		dataIndex: 'rate',
 		key: 'rate',
@@ -3069,6 +3073,7 @@ export const getAllEndpointsWidgetData = (
 					? '-'
 					: getLastUsedRelativeTime(
 							new Date(new Date(lastUsed).toISOString()).getTime(),
+							t,
 						)}
 			</span>
 		),
@@ -3120,8 +3125,16 @@ export const getAllEndpointsWidgetData = (
 				lineHeight: '18px',
 			}}
 		>
-			Endpoint Overview
-			<Tooltip title="Click on any row to get corresponding endpoint stats">
+			{t ? t('pages:apm_endpoint_overview', { defaultValue: 'Endpoint Overview' }) : 'Endpoint Overview'}
+			<Tooltip
+				title={
+					t
+						? t('pages:apm_click_row_for_stats', {
+								defaultValue: 'Click on any row to get corresponding endpoint stats',
+							})
+						: 'Click on any row to get corresponding endpoint stats'
+				}
+			>
 				<Info size={16} color="white" />
 			</Tooltip>
 		</div>

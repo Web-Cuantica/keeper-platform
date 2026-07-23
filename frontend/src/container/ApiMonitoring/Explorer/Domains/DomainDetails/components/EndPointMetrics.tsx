@@ -30,8 +30,9 @@ function EndPointMetrics({
 
 		return getFormattedEndPointMetricsData(
 			data?.payload?.data?.result[0].table.rows,
+			t,
 		);
-	}, [data?.payload?.data?.result, isLoading, isRefetching, isError]);
+	}, [data?.payload?.data?.result, isLoading, isRefetching, isError, t]);
 
 	if (isError) {
 		return <ErrorState refetch={refetch} />;
@@ -45,13 +46,13 @@ function EndPointMetrics({
 						{t('cfg_rate', { defaultValue: "Rate" })}
 					</Typography.Text>
 					<Typography.Text color="muted" className="domain-details-metadata-label">
-						AVERAGE LATENCY
+						{t('pages:apm_average_latency', { defaultValue: 'AVERAGE LATENCY' })}
 					</Typography.Text>
 					<Typography.Text color="muted" className="domain-details-metadata-label">
-						ERROR %
+						{t('pages:apm_error_pct', { defaultValue: 'ERROR %' })}
 					</Typography.Text>
 					<Typography.Text color="muted" className="domain-details-metadata-label">
-						LAST USED
+						{t('pages:apm_last_used_upper', { defaultValue: 'LAST USED' })}
 					</Typography.Text>
 				</div>
 

@@ -1117,5 +1117,10 @@
   "qf_f_log_level": "Log Level",
   "qf_f_source": "Source",
   "qf_f_region": "Region",
-  "qf_f_cloud_provider": "Cloud Provider"
+  "qf_f_cloud_provider": "Cloud Provider",
+  "apm_click_row_for_stats": "Click on any row to get corresponding endpoint stats",
+  "apm_avg_latency_upper": "AVG. LATENCY",
+  "apm_avg_rate_upper": "AVG. RATE",
+  "apm_disable_status_message_toggle": "Please disable \"Status Message Exists\" toggle to see all errors",
+  "apm_query_no_results": "This query had no results. Edit your query and try again!"
 }

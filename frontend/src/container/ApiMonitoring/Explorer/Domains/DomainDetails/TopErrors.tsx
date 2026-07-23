@@ -220,8 +220,8 @@ function TopErrors({
 
 										<Typography.Text className="no-filtered-endpoints-message">
 											{showStatusCodeErrors
-												? 'Please disable "Status Message Exists" toggle to see all errors'
-												: 'This query had no results. Edit your query and try again!'}
+												? t('pages:apm_disable_status_message_toggle', { defaultValue: 'Please disable "Status Message Exists" toggle to see all errors' })
+												: t('pages:apm_query_no_results', { defaultValue: 'This query had no results. Edit your query and try again!' })}
 										</Typography.Text>
 									</div>
 								</div>

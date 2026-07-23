@@ -76,8 +76,9 @@ function DomainMetrics({
 		// Only pass the data if it matches the expected format
 		return formatDomainMetricsDataForTable(
 			rowData as DomainMetricsResponseRow | undefined,
+			t,
 		);
-	}, [domainMetricsData]);
+	}, [domainMetricsData, t]);
 
 	if (isError) {
 		return (
