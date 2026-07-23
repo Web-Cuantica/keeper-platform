@@ -67,7 +67,7 @@ function buildColumns({
 }: BuildColumnsParams): ColumnsType<ServiceaccounttypesGettableFactorAPIKeyDTO> {
 	return [
 		{
-			title: 'Name',
+			title: t('onb_name', { defaultValue: 'Name' }),
 			dataIndex: 'name',
 			key: 'name',
 			className: 'keys-tab__name-column',
@@ -77,7 +77,7 @@ function buildColumns({
 			),
 		},
 		{
-			title: 'Expiry',
+			title: t('onb_expiration', { defaultValue: 'Expiry' }),
 			dataIndex: 'expiresAt',
 			key: 'expiry',
 			width: 160,
@@ -90,7 +90,7 @@ function buildColumns({
 			render: (expiresAt: number): JSX.Element => formatExpiry(expiresAt, t),
 		},
 		{
-			title: 'Last Observed At',
+			title: t('onb_last_observed_at', { defaultValue: 'Last Observed At' }),
 			dataIndex: 'lastObservedAt',
 			key: 'lastObservedAt',
 			width: 220,
