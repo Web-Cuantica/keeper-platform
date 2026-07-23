@@ -236,10 +236,10 @@ function EndPointDetails({
 
 	const [rateOverTimeWidget, latencyOverTimeWidget] = useMemo(
 		() => [
-			getRateOverTimeWidgetData(domainName, endPointName, filters),
-			getLatencyOverTimeWidgetData(domainName, endPointName, filters),
+			getRateOverTimeWidgetData(domainName, endPointName, filters, t),
+			getLatencyOverTimeWidgetData(domainName, endPointName, filters, t),
 		],
-		[domainName, endPointName, filters], // Use combinedFilters
+		[domainName, endPointName, filters, t], // Use combinedFilters
 	);
 
 	// // [TODO] Fix this later
@@ -280,7 +280,7 @@ function EndPointDetails({
 				<div className="endpoint-meta-data-pill">
 					<div className="endpoint-meta-data-label">{t('cfg_endpoint', { defaultValue: "Endpoint" })}</div>
 					<div className="endpoint-meta-data-value">
-						{endpoint || 'All Endpoints'}
+						{endpoint || t('pages:apm_all_endpoints', { defaultValue: 'All Endpoints' })}
 					</div>
 				</div>
 				<div className="endpoint-meta-data-pill">

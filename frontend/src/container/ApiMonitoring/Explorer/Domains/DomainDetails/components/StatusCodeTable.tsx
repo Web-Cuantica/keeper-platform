@@ -4,7 +4,7 @@ import { UseQueryResult } from 'react-query';
 import { Table } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
 import {
-	endPointStatusCodeColumns,
+	getEndPointStatusCodeColumns,
 	getFormattedEndPointStatusCodeData,
 } from 'container/ApiMonitoring/utils';
 import { SuccessResponse } from 'types/api';
@@ -41,7 +41,7 @@ function StatusCodeTable({
 			<Table
 				loading={isLoading || isRefetching}
 				dataSource={statusCodeData || []}
-				columns={endPointStatusCodeColumns}
+				columns={getEndPointStatusCodeColumns(t)}
 				pagination={false}
 				rowClassName={(_, index): string =>
 					index % 2 === 0 ? 'table-row-dark' : 'table-row-light'

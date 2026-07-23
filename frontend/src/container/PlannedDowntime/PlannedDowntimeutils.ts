@@ -12,16 +12,16 @@ import type { ErrorType } from 'api/generatedAPIInstance';
 import { AxiosError } from 'axios';
 import { DATE_TIME_FORMATS } from 'constants/dateTimeFormats';
 import dayjs, { Dayjs } from 'dayjs';
-import type { TFunction } from 'i18next';
 import { isEmpty } from 'lodash-es';
 import APIError from 'types/api/error';
+import { TraducirFn } from 'types/common/i18n';
 
 type DateTimeString = string | null | undefined;
 
 export const getDuration = (
 	startTime: DateTimeString,
 	endTime: DateTimeString,
-	t?: TFunction,
+	t?: TraducirFn,
 ): string => {
 	if (!startTime || !endTime) {
 		return t ? t('al_pd_na', { defaultValue: 'N/A' }) : 'N/A';
@@ -79,7 +79,7 @@ export const getAlertOptionsFromIds = (
 
 export const recurrenceInfo = (
 	schedule?: AlertmanagertypesScheduleDTO | null,
-	t?: TFunction,
+	t?: TraducirFn,
 ): string => {
 	const noText = t ? t('al_pd_no', { defaultValue: 'No' }) : 'No';
 	if (!schedule) {
@@ -144,7 +144,7 @@ type DeleteDowntimeScheduleProps = {
 	deleteId?: string;
 	hideDeleteDowntimeScheduleModal: () => void;
 	clearSearch: () => void;
-	t: TFunction;
+	t: TraducirFn;
 };
 
 export const deleteDowntimeHandler = ({
@@ -200,7 +200,7 @@ export const recurrenceOptions = {
 
 // Opciones de recurrencia con labels traducidos (values intactos para comparaciones)
 export const getRecurrenceOptions = (
-	t: TFunction,
+	t: TraducirFn,
 ): typeof recurrenceOptions => ({
 	doesNotRepeat: {
 		label: t('al_pd_recurrence_does_not_repeat', {
@@ -234,7 +234,7 @@ export const recurrenceWeeklyOptions = {
 
 // Días de la semana con labels traducidos (values intactos)
 export const getRecurrenceWeeklyOptions = (
-	t: TFunction,
+	t: TraducirFn,
 ): typeof recurrenceWeeklyOptions => ({
 	monday: {
 		label: t('al_pd_weekday_monday', { defaultValue: 'Monday' }),
@@ -312,7 +312,7 @@ export const recurrenceOptionWithSubmenu: Option[] = [
 ];
 
 // Opciones del select de recurrencia con labels traducidos
-export const getRecurrenceOptionWithSubmenu = (t: TFunction): Option[] => {
+export const getRecurrenceOptionWithSubmenu = (t: TraducirFn): Option[] => {
 	const options = getRecurrenceOptions(t);
 	return [
 		options.doesNotRepeat,

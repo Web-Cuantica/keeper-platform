@@ -357,6 +357,7 @@ describe('EndPointDetails Component', () => {
 					}),
 				]),
 			}),
+			expect.any(Function), // t, para traducir el título del panel
 		);
 
 		expect(getLatencyOverTimeWidgetData).toHaveBeenCalledWith(
@@ -370,6 +371,7 @@ describe('EndPointDetails Component', () => {
 					}),
 				]),
 			}),
+			expect.any(Function), // t, para traducir el título del panel
 		);
 	});
 

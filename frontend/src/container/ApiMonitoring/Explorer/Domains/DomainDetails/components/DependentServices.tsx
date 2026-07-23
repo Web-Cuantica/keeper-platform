@@ -5,7 +5,7 @@ import { Skeleton, Table, TablePaginationConfig } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
 import { QueryParams } from 'constants/query';
 import {
-	dependentServicesColumns,
+	getDependentServicesColumns,
 	DependentServicesData,
 	getFormattedDependentServicesData,
 } from 'container/ApiMonitoring/utils';
@@ -70,7 +70,7 @@ function DependentServices({
 				<Table
 					loading={isLoading || isRefetching}
 					dataSource={dependentServicesData || []}
-					columns={dependentServicesColumns}
+					columns={getDependentServicesColumns(t)}
 					rowClassName="table-row-dark"
 					pagination={paginationConfig}
 					locale={{
@@ -119,7 +119,9 @@ function DependentServices({
 						tabIndex={0}
 					>
 						<UnfoldVertical size={14} />
-						{isExpanded ? 'Show less...' : 'Show more...'}
+						{isExpanded
+							? t('pages:apm_show_less', { defaultValue: 'Show less...' })
+							: t('pages:apm_show_more', { defaultValue: 'Show more...' })}
 					</div>
 				)}
 			</div>

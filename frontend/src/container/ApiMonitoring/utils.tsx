@@ -39,6 +39,8 @@ import { EQueryType } from 'types/common/dashboard';
 import { DataSource, ReduceOperators } from 'types/common/queryBuilder';
 import { v4 } from 'uuid';
 
+import { TraducirFn } from 'types/common/i18n';
+
 import { domainNameKey } from './constants';
 import { SPAN_ATTRIBUTES } from './Explorer/Domains/DomainDetails/constants';
 import {
@@ -118,7 +120,14 @@ export const ApiMonitoringQuickFiltersConfig: IQuickFiltersConfig[] = [
 	},
 ];
 
-export const getLastUsedRelativeTime = (lastRefresh: number): string => {
+export const getLastUsedRelativeTime = (
+	lastRefresh: number,
+	t?: TraducirFn,
+): string => {
+	// `t` es opcional: estas utilidades se llaman desde formateadores que no siempre lo
+	// tienen a mano. Sin `t` el texto queda en inglés (mismo comportamiento que antes).
+	const tr = (clave: string, def: string, n: number): string =>
+		t ? (t(`pages:${clave}`, { defaultValue: def, n }) as string) : def.replace('{{n}}', String(n));
 	const currentTime = dayjs();
 
 	const secondsDiff = currentTime.diff(lastRefresh, 'seconds');
@@ -129,28 +138,38 @@ export const getLastUsedRelativeTime = (lastRefresh: number): string => {
 	const monthsDiff = currentTime.diff(lastRefresh, 'months');
 
 	if (monthsDiff > 0) {
-		return `${monthsDiff} ${monthsDiff === 1 ? 'month' : 'months'} ago`;
+		return monthsDiff === 1
+			? tr('apm_ago_month', '{{n}} month ago', monthsDiff)
+			: tr('apm_ago_months', '{{n}} months ago', monthsDiff);
 	}
 
 	if (daysDiff > 0) {
-		return `${daysDiff} ${daysDiff === 1 ? 'day' : 'days'} ago`;
+		return daysDiff === 1
+			? tr('apm_ago_day', '{{n}} day ago', daysDiff)
+			: tr('apm_ago_days', '{{n}} days ago', daysDiff);
 	}
 
 	if (hoursDiff > 0) {
-		return `${hoursDiff}h ago`;
+		return tr('apm_ago_hours', '{{n}}h ago', hoursDiff);
 	}
 
 	if (minutedDiff > 0) {
-		return `${minutedDiff}m ago`;
+		return tr('apm_ago_minutes', '{{n}}m ago', minutedDiff);
 	}
 
-	return `${secondsDiff}s ago`;
+	return tr('apm_ago_seconds', '{{n}}s ago', secondsDiff);
 };
 
 // Rename this to a proper name
-export const columnsConfig: ColumnType<APIDomainsRowData>[] = [
+export const getColumnsConfig = (
+	t: TraducirFn,
+): ColumnType<APIDomainsRowData>[] => [
 	{
-		title: <div className="domain-list-name-col-header">Domain</div>,
+		title: (
+			<div className="domain-list-name-col-header">
+				{t('pages:apm_domain', { defaultValue: 'Domain' })}
+			</div>
+		),
 		dataIndex: 'domainName',
 		key: 'domainName',
 		width: '23.7%',
@@ -163,7 +182,7 @@ export const columnsConfig: ColumnType<APIDomainsRowData>[] = [
 		),
 	},
 	{
-		title: <div>Endpoints in use</div>,
+		title: <div>{t('pages:apm_endpoints_in_use', { defaultValue: 'Endpoints in use' })}</div>,
 		dataIndex: 'endpointCount',
 		key: 'endpointCount',
 		width: '14.2%',
@@ -195,7 +214,7 @@ export const columnsConfig: ColumnType<APIDomainsRowData>[] = [
 		className: `column`,
 	},
 	{
-		title: <div>Last used</div>,
+		title: <div>{t('pages:apm_last_used', { defaultValue: 'Last used' })}</div>,
 		dataIndex: 'lastUsed',
 		key: 'lastUsed',
 		width: '14.2%',
@@ -216,12 +235,13 @@ export const columnsConfig: ColumnType<APIDomainsRowData>[] = [
 		render: (lastUsed: string): string =>
 			lastUsed === 'n/a' || lastUsed === '-'
 				? '-'
-				: getLastUsedRelativeTime(new Date(lastUsed).getTime()),
+				: getLastUsedRelativeTime(new Date(lastUsed).getTime(), t),
 	},
 	{
 		title: (
 			<div>
-				Rate <span className="round-metric-tag">ops/s</span>
+				{t('pages:apm_rate', { defaultValue: 'Rate' })}{' '}
+				<span className="round-metric-tag">ops/s</span>
 			</div>
 		),
 		dataIndex: 'rate',
@@ -238,7 +258,7 @@ export const columnsConfig: ColumnType<APIDomainsRowData>[] = [
 	{
 		title: (
 			<div>
-				Error <span className="round-metric-tag">%</span>
+				{t('pages:apm_error', { defaultValue: 'Error' })} <span className="round-metric-tag">%</span>
 			</div>
 		),
 		dataIndex: 'errorRate',
@@ -280,7 +300,8 @@ export const columnsConfig: ColumnType<APIDomainsRowData>[] = [
 	{
 		title: (
 			<div>
-				Avg. Latency <span className="round-metric-tag">ms</span>
+				{t('pages:apm_avg_latency', { defaultValue: 'Avg. Latency' })}{' '}
+				<span className="round-metric-tag">ms</span>
 			</div>
 		),
 		dataIndex: 'latency',
@@ -941,12 +962,15 @@ export const extractPortAndEndpoint = (
 export const getEndPointsColumnsConfig = (
 	isGroupedByAttribute: boolean,
 	expandedRowKeys: React.Key[],
+	t: TraducirFn,
 	// eslint-disable-next-line sonarjs/cognitive-complexity
 ): ColumnType<EndPointsTableRowData>[] => [
 	{
 		title: (
 			<div className="endpoint-name-header">
-				{isGroupedByAttribute ? 'Endpoint group' : 'Endpoint'}
+				{isGroupedByAttribute
+					? t('pages:apm_endpoint_group', { defaultValue: 'Endpoint group' })
+					: t('pages:apm_endpoint', { defaultValue: 'Endpoint' })}
 			</div>
 		),
 		dataIndex: 'endpointName',
@@ -983,7 +1007,7 @@ export const getEndPointsColumnsConfig = (
 		},
 	},
 	{
-		title: <div className="column-header">Port</div>,
+		title: <div className="column-header">{t('pages:apm_port', { defaultValue: 'Port' })}</div>,
 		dataIndex: 'port',
 		key: 'port',
 		width: 180,
@@ -995,7 +1019,7 @@ export const getEndPointsColumnsConfig = (
 	{
 		title: (
 			<div className="column-header">
-				Num of calls <ArrowUpDown size={14} />
+				{t('pages:apm_num_of_calls', { defaultValue: 'Num of calls' })} <ArrowUpDown size={14} />
 			</div>
 		),
 		dataIndex: 'callCount',
@@ -1008,7 +1032,7 @@ export const getEndPointsColumnsConfig = (
 	{
 		title: (
 			<div>
-				Error <span className="round-metric-tag">%</span>
+				{t('pages:apm_error', { defaultValue: 'Error' })} <span className="round-metric-tag">%</span>
 			</div>
 		),
 		dataIndex: 'errorRate',
@@ -1043,7 +1067,7 @@ export const getEndPointsColumnsConfig = (
 	{
 		title: (
 			<div>
-				Latency <span className="round-metric-tag">ms</span>
+				{t('pages:apm_latency', { defaultValue: 'Latency' })} <span className="round-metric-tag">ms</span>
 			</div>
 		),
 		dataIndex: 'latency',
@@ -1054,7 +1078,7 @@ export const getEndPointsColumnsConfig = (
 		className: `column`,
 	},
 	{
-		title: <div>Last used</div>,
+		title: <div>{t('pages:apm_last_used', { defaultValue: 'Last used' })}</div>,
 		dataIndex: 'lastUsed',
 		key: 'lastUsed',
 		width: 120,
@@ -1065,7 +1089,7 @@ export const getEndPointsColumnsConfig = (
 		render: (lastUsed: string): string =>
 			lastUsed === 'n/a' || lastUsed === '-'
 				? '-'
-				: getLastUsedRelativeTime(new Date(lastUsed).getTime()),
+				: getLastUsedRelativeTime(new Date(lastUsed).getTime(), t),
 	},
 ];
 
@@ -1283,10 +1307,15 @@ export const getTopErrorsCoRelationQueryFilters = (
 	};
 };
 
-export const getTopErrorsColumnsConfig =
-	(): ColumnType<TopErrorsTableRowData>[] => [
+export const getTopErrorsColumnsConfig = (
+		t: TraducirFn,
+	): ColumnType<TopErrorsTableRowData>[] => [
 		{
-			title: <div className="endpoint-name-header">Endpoint</div>,
+			title: (
+				<div className="endpoint-name-header">
+					{t('pages:apm_endpoint', { defaultValue: 'Endpoint' })}
+				</div>
+			),
 			dataIndex: 'endpointName',
 			key: 'endpointName',
 			width: 180,
@@ -1296,14 +1325,16 @@ export const getTopErrorsColumnsConfig =
 			render: (text: string, record: TopErrorsTableRowData): React.ReactNode => {
 				const { endpoint } = extractPortAndEndpoint(record.endpointName);
 				return (
-					<Tooltip title="Click to open traces">
+					<Tooltip title={t('pages:apm_click_to_open_traces', { defaultValue: 'Click to open traces' })}>
 						<div className="endpoint-name-value">{endpoint}</div>
 					</Tooltip>
 				);
 			},
 		},
 		{
-			title: <div className="column-header">Status code</div>,
+			title: (
+				<div className="column-header">{t('pages:apm_status_code', { defaultValue: 'Status code' })}</div>
+			),
 			dataIndex: 'statusCode',
 			key: 'statusCode',
 			width: 180,
@@ -1313,7 +1344,11 @@ export const getTopErrorsColumnsConfig =
 			className: `column`,
 		},
 		{
-			title: <div className="column-header">Status message</div>,
+			title: (
+				<div className="column-header">
+					{t('pages:apm_status_message', { defaultValue: 'Status message' })}
+				</div>
+			),
 			dataIndex: 'statusMessage',
 			key: 'statusMessage',
 			width: 180,
@@ -1322,7 +1357,7 @@ export const getTopErrorsColumnsConfig =
 			className: `column`,
 		},
 		{
-			title: <div>Count</div>,
+			title: <div>{t('pages:apm_count', { defaultValue: 'Count' })}</div>,
 			dataIndex: 'count',
 			key: 'count',
 			width: 120,
@@ -2297,9 +2332,15 @@ export const getFormattedEndPointStatusCodeData = (
 	}));
 };
 
-export const endPointStatusCodeColumns: ColumnType<EndPointStatusCodeData>[] = [
+export const getEndPointStatusCodeColumns = (
+	t: TraducirFn,
+): ColumnType<EndPointStatusCodeData>[] => [
 	{
-		title: <div className="status-code-header">STATUS CODE</div>,
+		title: (
+			<div className="status-code-header">
+				{t('pages:apm_status_code_upper', { defaultValue: 'STATUS CODE' })}
+			</div>
+		),
 		dataIndex: 'statusCode',
 		key: 'statusCode',
 		render: (text): JSX.Element => (
@@ -2316,7 +2357,8 @@ export const endPointStatusCodeColumns: ColumnType<EndPointStatusCodeData>[] = [
 	{
 		title: (
 			<div className="column-header">
-				NUMBER OF CALLS <ArrowUpDown size={14} />
+				{t('pages:apm_number_of_calls_upper', { defaultValue: 'NUMBER OF CALLS' })}{' '}
+				<ArrowUpDown size={14} />
 			</div>
 		),
 		dataIndex: 'count',
@@ -2329,7 +2371,7 @@ export const endPointStatusCodeColumns: ColumnType<EndPointStatusCodeData>[] = [
 		},
 	},
 	{
-		title: 'RATE',
+		title: t('pages:apm_rate_upper', { defaultValue: 'RATE' }),
 		dataIndex: 'rate',
 		key: 'rate',
 		align: 'right',
@@ -2343,7 +2385,7 @@ export const endPointStatusCodeColumns: ColumnType<EndPointStatusCodeData>[] = [
 		},
 	},
 	{
-		title: 'P99 Latency',
+		title: t('pages:apm_p99_latency', { defaultValue: 'P99 Latency' }),
 		dataIndex: 'p99Latency',
 		key: 'p99Latency',
 		align: 'right',
@@ -2441,9 +2483,15 @@ export const getFormattedDependentServicesData = (
 	}));
 };
 
-export const dependentServicesColumns: ColumnType<DependentServicesData>[] = [
+export const getDependentServicesColumns = (
+	t: TraducirFn,
+): ColumnType<DependentServicesData>[] => [
 	{
-		title: <span className="title-wrapper col-title">Dependent Services</span>,
+		title: (
+			<span className="title-wrapper col-title">
+				{t('pages:apm_dependent_services', { defaultValue: 'Dependent Services' })}
+			</span>
+		),
 		dataIndex: 'serviceData',
 		key: 'serviceData',
 		render: (serviceData: ServiceData): ReactNode => (
@@ -2451,7 +2499,11 @@ export const dependentServicesColumns: ColumnType<DependentServicesData>[] = [
 				<div className="top-services-item-progress">
 					<div className="top-services-item-key">{serviceData.serviceName}</div>
 					<div className="top-services-item-count">
-						{serviceData.count !== '-' ? `${serviceData.count} Calls` : '-'}
+						{serviceData.count !== '-'
+							? `${serviceData.count} ${t('pages:apm_calls', {
+									defaultValue: 'Calls',
+								})}`
+							: '-'}
 					</div>
 					<div
 						className="top-services-item-progress-bar"
@@ -2834,13 +2886,18 @@ export const getAllEndpointsWidgetData = (
 	groupBy: BaseAutocompleteData[],
 	domainName: string,
 	filters: IBuilderQuery['filters'],
+	t?: TraducirFn,
 	// eslint-disable-next-line sonarjs/cognitive-complexity
 ): Widgets => {
 	const isGroupedByAttribute = groupBy.length > 0;
 
 	const widget = getWidgetQueryBuilder(
 		getWidgetQuery({
-			title: 'Endpoint Overview',
+			title: t
+				? (t('pages:apm_endpoint_overview', {
+						defaultValue: 'Endpoint Overview',
+					}) as string)
+				: 'Endpoint Overview',
 			description: 'Endpoint Overview',
 			panelTypes: PANEL_TYPES.TABLE,
 			queryData: [
@@ -3105,6 +3162,7 @@ export const getRateOverTimeWidgetData = (
 	domainName: string,
 	endPointName: string,
 	filters: IBuilderQuery['filters'],
+	t?: TraducirFn,
 ): Widgets => {
 	let legend = domainName;
 	if (endPointName) {
@@ -3114,7 +3172,11 @@ export const getRateOverTimeWidgetData = (
 
 	return getWidgetQueryBuilder(
 		getWidgetQuery({
-			title: 'Rate Over Time',
+			title: t
+				? (t('pages:apm_rate_over_time', {
+						defaultValue: 'Rate Over Time',
+					}) as string)
+				: 'Rate Over Time',
 			description: 'Rate over time.',
 			queryData: [
 				{
@@ -3155,6 +3217,7 @@ export const getLatencyOverTimeWidgetData = (
 	domainName: string,
 	endPointName: string,
 	filters: IBuilderQuery['filters'],
+	t?: TraducirFn,
 ): Widgets => {
 	let legend = domainName;
 	if (endPointName) {
@@ -3164,7 +3227,11 @@ export const getLatencyOverTimeWidgetData = (
 
 	return getWidgetQueryBuilder(
 		getWidgetQuery({
-			title: 'Latency Over Time',
+			title: t
+				? (t('pages:apm_latency_over_time', {
+						defaultValue: 'Latency Over Time',
+					}) as string)
+				: 'Latency Over Time',
 			description: 'Latency over time.',
 			queryData: [
 				{

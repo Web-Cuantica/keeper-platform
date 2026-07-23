@@ -112,7 +112,7 @@ function TopErrors({
 		cacheTime: 0,
 	});
 
-	const topErrorsColumnsConfig = useMemo(() => getTopErrorsColumnsConfig(), []);
+	const topErrorsColumnsConfig = useMemo(() => getTopErrorsColumnsConfig(t), [t]);
 
 	const formattedTopErrorsData = useMemo(
 		() =>
@@ -185,12 +185,14 @@ function TopErrors({
 
 			<div className="endpoints-table-container">
 				<div className="endpoints-table-header">
-					{showStatusCodeErrors ? 'Errors with Status Message' : 'All Errors'}{' '}
+					{showStatusCodeErrors
+						? t('pages:apm_errors_with_status_message', { defaultValue: 'Errors with Status Message' })
+						: t('pages:apm_all_errors', { defaultValue: 'All Errors' })}{' '}
 					<Tooltip
 						title={
 							showStatusCodeErrors
-								? 'Shows errors that have a status message'
-								: 'Shows all errors regardless of status message'
+								? t('pages:apm_shows_errors_with_status_message', { defaultValue: 'Shows errors that have a status message' })
+								: t('pages:apm_shows_all_errors', { defaultValue: 'Shows all errors regardless of status message' })
 						}
 					>
 						<Info size={16} color="white" />

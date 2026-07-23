@@ -29,7 +29,7 @@ import DOCLINKS from 'utils/docLinks';
 
 import { ApiMonitoringHardcodedAttributeKeys } from '../../constants';
 import { DEFAULT_PARAMS, useApiMonitoringParams } from '../../queryParams';
-import { columnsConfig, formatDataForTable } from '../../utils';
+import { formatDataForTable, getColumnsConfig } from '../../utils';
 import DomainDetails from './DomainDetails/DomainDetails';
 
 import '../Explorer.styles.scss';
@@ -203,7 +203,7 @@ function DomainList(): JSX.Element {
 				<Table
 					className="api-monitoring-domain-list-table"
 					dataSource={isFetching || isLoading ? [] : formattedDataForTable}
-					columns={columnsConfig}
+					columns={getColumnsConfig(t)}
 					loading={{
 						spinning: isFetching || isLoading,
 						indicator: (

@@ -1,5 +1,4 @@
 import React from 'react';
-import type { TFunction } from 'i18next';
 import { Tooltip } from 'antd';
 import { Badge } from '@signozhq/ui/badge';
 import { HostData } from 'api/infraMonitoring/getHostLists';
@@ -18,6 +17,7 @@ import { HostnameCell } from './utils';
 
 import styles from './table.module.scss';
 import { Container, Info } from '@signozhq/icons';
+import { TraducirFn } from 'types/common/i18n';
 
 function hostRowSource(host: HostData): { meta: Record<string, string> } {
 	return {
@@ -48,7 +48,7 @@ function HostGroupCell({ row }: { row: HostData }): JSX.Element {
 // Construye las columnas en tiempo de render con `t` disponible para traducir
 // los encabezados y tooltips (no debe evaluarse en useState).
 export const getHostColumnsConfig = (
-	t: TFunction,
+	t: TraducirFn,
 ): TableColumnDef<HostData>[] => [
 	{
 		id: 'hostGroup',

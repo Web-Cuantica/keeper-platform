@@ -111,8 +111,8 @@ function AllEndPoints({
 	const query = updatedCurrentQuery?.builder?.queryData[0] || null;
 
 	const allEndpointsWidgetData = useMemo(
-		() => getAllEndpointsWidgetData(groupBy, domainName, filters),
-		[groupBy, domainName, filters],
+		() => getAllEndpointsWidgetData(groupBy, domainName, filters, t),
+		[groupBy, domainName, filters, t],
 	);
 
 	// --- GROUP BY STATE SYNC (existing) ---

@@ -233,9 +233,18 @@ function DomainDetails({
 							value={selectedView}
 							size="lg"
 							items={[
-								{ value: VIEW_TYPES.ALL_ENDPOINTS, label: 'All Endpoints' },
-								{ value: VIEW_TYPES.ENDPOINT_STATS, label: 'Endpoint(s) Stats' },
-								{ value: VIEW_TYPES.TOP_ERRORS, label: 'Top 10 Errors' },
+								{
+									value: VIEW_TYPES.ALL_ENDPOINTS,
+									label: t('pages:apm_all_endpoints', { defaultValue: 'All Endpoints' }),
+								},
+								{
+									value: VIEW_TYPES.ENDPOINT_STATS,
+									label: t('pages:apm_endpoints_stats', { defaultValue: 'Endpoint(s) Stats' }),
+								},
+								{
+									value: VIEW_TYPES.TOP_ERRORS,
+									label: t('pages:apm_top_10_errors', { defaultValue: 'Top 10 Errors' }),
+								},
 							]}
 						/>
 					</div>
