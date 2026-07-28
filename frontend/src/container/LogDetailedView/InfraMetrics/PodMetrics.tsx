@@ -99,7 +99,10 @@ function PodMetrics({
 					tzDate: (timestamp: number) =>
 						uPlot.tzDate(new Date(timestamp * 1e3), timezone.value),
 					timezone: timezone.value,
-					query: currentQuery,
+					// La leyenda se resuelve contra ESTE query, no contra el del query builder
+					// global: es el del panel el que trae su `legend`. Con el global, las series
+					// salían rotuladas "count()" (mismo fallo que en el detalle de host).
+					query: queryPayloads[idx]?.query ?? currentQuery,
 					legendScrollPosition: legendScrollPositionRef.current,
 					setLegendScrollPosition: (position: {
 						scrollTop: number;
