@@ -17,6 +17,12 @@
   "loading_conversation": "Loading conversation",
   "loading": "Loading",
   "search_conversations": "Search conversations…",
+
+  "group_today": "Today",
+  "group_yesterday": "Yesterday",
+  "group_last_7_days": "Last 7 days",
+  "group_last_30_days": "Last 30 days",
+  "group_older": "Older",
   "conversation_actions": "Conversation actions",
 
   "ask_anything": "Ask anything… (Shift+Enter for new line)",

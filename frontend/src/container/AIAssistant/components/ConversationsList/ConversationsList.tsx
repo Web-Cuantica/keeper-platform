@@ -29,26 +29,28 @@ function groupByDate(
 	const now = Date.now();
 	const DAY = 86_400_000;
 
+	// Las claves son de traducción, no textos: esta función no es un hook y no
+	// puede llamar a `useTranslation`. El rótulo se resuelve al renderizar.
 	const groups: Record<string, Conversation[]> = {
-		Today: [],
-		Yesterday: [],
-		'Last 7 days': [],
-		'Last 30 days': [],
-		Older: [],
+		group_today: [],
+		group_yesterday: [],
+		group_last_7_days: [],
+		group_last_30_days: [],
+		group_older: [],
 	};
 
 	for (const conv of conversations) {
 		const age = now - (conv.updatedAt ?? conv.createdAt);
 		if (age < DAY) {
-			groups.Today.push(conv);
+			groups.group_today.push(conv);
 		} else if (age < 2 * DAY) {
-			groups.Yesterday.push(conv);
+			groups.group_yesterday.push(conv);
 		} else if (age < 7 * DAY) {
-			groups['Last 7 days'].push(conv);
+			groups.group_last_7_days.push(conv);
 		} else if (age < 30 * DAY) {
-			groups['Last 30 days'].push(conv);
+			groups.group_last_30_days.push(conv);
 		} else {
-			groups.Older.push(conv);
+			groups.group_older.push(conv);
 		}
 	}
 
@@ -102,14 +104,18 @@ export default function ConversationsList({
 	}, [fetchThreads]);
 
 	// Case-insensitive substring match against the conversation title.
-	// Untitled conversations match the literal placeholder so users
-	// searching for "new" can still find them.
+	// Untitled conversations match the placeholder so users searching for
+	// "nueva" can still find them.
 	const trimmedQuery = searchQuery.trim().toLowerCase();
+	// `t` puede devolver undefined segun los tipos de i18next; el `?? ''` evita
+	// que una clave ausente se convierta en el texto "undefined" y haga que las
+	// conversaciones sin titulo aparezcan al buscar esa palabra.
+	const untitledLabel = t('new_conversation') ?? '';
 	const matchesQuery = (c: Conversation): boolean => {
 		if (!trimmedQuery) {
 			return true;
 		}
-		const title = (c.title ?? 'New conversation').toLowerCase();
+		const title = (c.title ?? untitledLabel).toLowerCase();
 		return title.includes(trimmedQuery);
 	};
 
@@ -214,7 +220,7 @@ export default function ConversationsList({
 
 				{groups.map(({ label, items }) => (
 					<div key={label} className={styles.group}>
-						<span className={styles.groupLabel}>{label}</span>
+						<span className={styles.groupLabel}>{t(label)}</span>
 						{items.map((conv) => (
 							<ConversationItem
 								key={conv.id}

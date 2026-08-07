@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 
 import logEvent from 'api/common/logEvent';
@@ -23,6 +24,7 @@ export default function AIAssistantPage(): JSX.Element {
 	const location = useLocation<{ fromInApp?: boolean } | undefined>();
 	const { pathname } = location;
 	const { conversationId } = useParams<RouteParams>();
+	const { t } = useTranslation('aiAssistant');
 
 	// Skip the mount-time Opened fire when the user expanded an already-open
 	// drawer/modal — that surface already emitted Opened with the right source.
@@ -118,7 +120,9 @@ export default function AIAssistantPage(): JSX.Element {
 				<div className={styles.header}>
 					<div className={`${styles.title} noz-wave`}>
 						<Noz size={18} />
-						<span>Noz</span>
+						{/* El nombre sale del catálogo, no del código: "Noz" era la marca
+						    del asistente en upstream y aquí se llama Qubi. */}
+						<span>{t('assistant_name')}</span>
 					</div>
 				</div>
 

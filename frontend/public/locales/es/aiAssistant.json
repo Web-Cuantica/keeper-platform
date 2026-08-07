@@ -17,6 +17,12 @@
   "loading_conversation": "Cargando conversación",
   "loading": "Cargando",
   "search_conversations": "Buscar conversaciones…",
+
+  "group_today": "Hoy",
+  "group_yesterday": "Ayer",
+  "group_last_7_days": "Últimos 7 días",
+  "group_last_30_days": "Últimos 30 días",
+  "group_older": "Anteriores",
   "conversation_actions": "Acciones de la conversación",
 
   "ask_anything": "Pregunta lo que quieras… (Shift+Enter para salto de línea)",

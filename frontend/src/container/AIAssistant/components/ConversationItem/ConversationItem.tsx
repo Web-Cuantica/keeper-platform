@@ -72,7 +72,7 @@ export default function ConversationItem({
 	const [, copyToClipboard] = useCopyToClipboard();
 
 	const isArchived = Boolean(conversation.archived);
-	const displayTitle = conversation.title ?? 'New conversation';
+	const displayTitle = conversation.title ?? t('new_conversation');
 	const ts = conversation.updatedAt ?? conversation.createdAt;
 
 	const handleCopyLink = useCallback((): void => {
