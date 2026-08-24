@@ -1,4 +1,6 @@
 {
+  "apdex_tooltip": "Apdex is a way to measure your users' satisfaction with the response time of your web service. It's represented as a score from 0-1.",
+  "apdex_tooltip_link": "Learn more about Apdex.",
   "alertlist_action_clone": "Clone",
   "alertlist_action_delete": "Delete",
   "alertlist_action_disable": "Disable",

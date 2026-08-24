@@ -1,4 +1,6 @@
 {
+  "apdex_tooltip": "Apdex mide la satisfacción de tus usuarios con el tiempo de respuesta de tu servicio web. Se representa como una puntuación de 0 a 1.",
+  "apdex_tooltip_link": "Más sobre Apdex.",
   "al_action_delete": "Eliminar",
   "al_action_duplicate": "Duplicar",
   "al_action_rename": "Renombrar",
