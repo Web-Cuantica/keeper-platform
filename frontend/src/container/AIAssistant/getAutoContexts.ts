@@ -329,14 +329,21 @@ function collectSharedMetadata(
 ): Record<string, unknown> {
 	const out: Record<string, unknown> = {};
 
-	// Time range — emit only when both bounds are explicit. SigNoz writes
-	// `startTime` / `endTime` in milliseconds when the user picks a custom
-	// range; relative ranges (`relativeTime=15m`) are left out because the
-	// server applies its own freshly-anchored window.
+	// Time range — the explicit pair when the user picked a custom range
+	// (SigNoz writes `startTime` / `endTime` in milliseconds), plus the raw
+	// relative token (`relativeTime=15m`, legacy `1hr`/`1day`) otherwise. The
+	// server prefers the absolute pair and translates the relative token to
+	// the canonical window syntax anchored at query time — we never compute
+	// absolute bounds for a relative range here because they'd be stale by
+	// the time the agent runs.
 	const startTime = numericParam(params, QueryParams.startTime);
 	const endTime = numericParam(params, QueryParams.endTime);
 	if (startTime !== null && endTime !== null) {
 		out.timeRange = { start: startTime, end: endTime };
+	}
+	const relativeTime = params.get(QueryParams.relativeTime);
+	if (relativeTime) {
+		out.relativeTime = relativeTime;
 	}
 
 	// Query Builder state — URL-encoded JSON written by `QueryBuilderProvider`.
