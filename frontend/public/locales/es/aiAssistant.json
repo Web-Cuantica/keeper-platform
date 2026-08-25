@@ -77,11 +77,15 @@
   "ex_service_health": "¿Cómo está la salud de mis servicios?",
   "help_context_title": "Sabe qué estás viendo",
   "help_context_desc": "Usa el tablero, el servicio y el rango de tiempo que tienes en pantalla: puedes decir «esto» o «este periodo».",
+  "help_interpret_title": "Explicar lo que pasó",
+  "help_interpret_desc": "Interpreta las gráficas: cuándo empezó, cuánto subió y dónde se concentra.",
+  "ex_latency": "¿Qué pasó con la latencia de kinetiq-api?",
+  "ex_is_normal": "¿Es normal el comportamiento de kinetiq-api?",
   "ex_this_period": "¿Cuántos errores hubo en este periodo?",
   "ex_this_service": "¿Cómo está la salud de este servicio?",
   "help_build_title": "Crear tableros y alertas",
   "help_build_desc": "Los arma por ti y te muestra el cambio para que lo apruebes antes de aplicarlo.",
   "ex_dashboard": "Créame un tablero con los golden signals de kinetiq-api",
   "ex_alert": "Avísame si los errores 5xx pasan de 10 por minuto",
-  "help_footnote": "Nada se crea ni se modifica sin tu aprobación. Si tu pregunta es ambigua, Qubi prefiere preguntarte antes que adivinar."
+  "help_footnote": "Nada se crea ni se modifica sin tu aprobación. Si tu pregunta es ambigua, Qubi prefiere preguntarte antes que adivinar. Y cuando propone causas, separa lo que midió de lo que es solo una hipótesis por revisar."
 }

@@ -31,6 +31,10 @@ import styles from './QubiHelp.module.scss';
 const HELP_GROUPS = [
 	{ id: 'explore', examples: ['ex_slow_endpoints', 'ex_errors', 'ex_service_health'] },
 	{ id: 'context', examples: ['ex_this_period', 'ex_this_service'] },
+	// Interpretación (Nivel 3a): entró aquí cuando quedó medida y desplegada (v9), no antes.
+	// Los ejemplos nombran el servicio a propósito: funcionan desde CUALQUIER página; un
+	// deíctico ("esta gráfica") fuera de un tablero obligaría a Qubi a preguntar cuál.
+	{ id: 'interpret', examples: ['ex_latency', 'ex_is_normal'] },
 	{ id: 'build', examples: ['ex_dashboard', 'ex_alert'] },
 ] as const;
 

@@ -77,11 +77,15 @@
   "ex_service_health": "How healthy are my services?",
   "help_context_title": "It knows what you're looking at",
   "help_context_desc": "Uses the dashboard, service and time range on your screen — you can say \"this\" or \"this period\".",
+  "help_interpret_title": "Explain what happened",
+  "help_interpret_desc": "It reads the charts for you: when it started, how much it rose and where it concentrates.",
+  "ex_latency": "What happened to kinetiq-api's latency?",
+  "ex_is_normal": "Is kinetiq-api behaving normally?",
   "ex_this_period": "How many errors were there in this period?",
   "ex_this_service": "How healthy is this service?",
   "help_build_title": "Build dashboards and alerts",
   "help_build_desc": "Drafts them for you and shows the change so you can approve it before it's applied.",
   "ex_dashboard": "Create a dashboard with the golden signals for kinetiq-api",
   "ex_alert": "Alert me if 5xx errors go above 10 per minute",
-  "help_footnote": "Nothing is created or changed without your approval. If your question is ambiguous, Qubi asks instead of guessing."
+  "help_footnote": "Nothing is created or modified without your approval. If your question is ambiguous, Qubi prefers to ask rather than guess. And when it suggests causes, it separates what it measured from what is just a hypothesis to check."
 }
