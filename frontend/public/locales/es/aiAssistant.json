@@ -10,21 +10,18 @@
   "close": "Cerrar",
   "close_drawer": "Cerrar panel",
   "close_panel": "Cerrar panel",
-
   "conversations": "Conversaciones",
   "archived_conversations": "Conversaciones archivadas",
   "loading_conversations": "Cargando conversaciones",
   "loading_conversation": "Cargando conversación",
   "loading": "Cargando",
   "search_conversations": "Buscar conversaciones…",
-
   "group_today": "Hoy",
   "group_yesterday": "Ayer",
   "group_last_7_days": "Últimos 7 días",
   "group_last_30_days": "Últimos 30 días",
   "group_older": "Anteriores",
   "conversation_actions": "Acciones de la conversación",
-
   "ask_anything": "Pregunta lo que quieras… (Shift+Enter para salto de línea)",
   "add_context": "Agregar contexto",
   "no_matching_entities": "Sin coincidencias",
@@ -33,7 +30,6 @@
   "discard_recording": "Descartar grabación",
   "stop_and_send": "Detener y enviar",
   "voice_input": "Entrada de voz",
-
   "action_requires_approval": "Esta acción requiere aprobación",
   "approve": "Aprobar",
   "reject": "Rechazar",
@@ -43,7 +39,6 @@
   "approval_diff": "Cambios propuestos",
   "before": "Antes",
   "after": "Después",
-
   "details_needed": "Faltan algunos datos",
   "submit": "Enviar",
   "cancel_request": "Cancelar solicitud",
@@ -51,30 +46,42 @@
   "answers_submitted_resuming": "Respuestas enviadas — continuando…",
   "request_cancelled": "Solicitud cancelada.",
   "confirm": "Confirmar",
-
   "suggested_action": "Acción sugerida",
   "suggested_actions": "Acciones sugeridas",
   "apply": "Aplicar",
   "dismiss": "Descartar",
   "dismissed": "Descartada.",
-
   "regenerate": "Regenerar",
   "regenerate_response": "Regenerar respuesta",
   "what_went_wrong": "¿Qué salió mal?",
   "feedback_placeholder": "Cuéntanos qué fue poco útil, impreciso o inseguro…",
   "send_feedback": "Enviar comentarios",
   "cancel": "Cancelar",
-
   "tool": "Herramienta",
   "input": "Entrada",
   "output": "Salida",
-
   "expand_diff": "Expandir cambios",
   "start_voice_input": "Iniciar entrada de voz",
   "stop_generating": "Detener generación",
   "send_message": "Enviar mensaje",
   "enter_custom_value": "Escribe un valor…",
   "back_to_chat": "Volver al chat",
-
-  "disclaimer": "Qubi puede cometer errores. Verifica las respuestas importantes."
+  "disclaimer": "Qubi puede cometer errores. Verifica las respuestas importantes.",
+  "help_title": "¿Qué puede hacer Qubi?",
+  "help_heading": "¿Qué puede hacer Qubi?",
+  "help_subtitle": "Pregúntale en español, como le hablarías a un compañero. Toca un ejemplo para probarlo.",
+  "help_explore_title": "Consultar tu telemetría",
+  "help_explore_desc": "Busca en trazas, bitácoras y métricas, y te responde con los números, sin que armes la consulta.",
+  "ex_slow_endpoints": "¿Qué endpoints son los más lentos?",
+  "ex_errors": "Muéstrame los errores de la última hora",
+  "ex_service_health": "¿Cómo está la salud de mis servicios?",
+  "help_context_title": "Sabe qué estás viendo",
+  "help_context_desc": "Usa el tablero, el servicio y el rango de tiempo que tienes en pantalla: puedes decir «esto» o «este periodo».",
+  "ex_this_period": "¿Cuántos errores hubo en este periodo?",
+  "ex_this_service": "¿Cómo está la salud de este servicio?",
+  "help_build_title": "Crear tableros y alertas",
+  "help_build_desc": "Los arma por ti y te muestra el cambio para que lo apruebes antes de aplicarlo.",
+  "ex_dashboard": "Créame un tablero con los golden signals de kinetiq-api",
+  "ex_alert": "Avísame si los errores 5xx pasan de 10 por minuto",
+  "help_footnote": "Nada se crea ni se modifica sin tu aprobación. Si tu pregunta es ambigua, Qubi prefiere preguntarte antes que adivinar."
 }

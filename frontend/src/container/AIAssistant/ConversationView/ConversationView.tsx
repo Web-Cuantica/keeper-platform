@@ -179,7 +179,13 @@ export default function ConversationView({
 				conversationId={conversationId}
 				messages={messages}
 				isStreaming={isStreamingHere}
-				onSendSuggestedPrompt={(text): void => handleSend(text)}
+				// Los chips van con el MISMO contexto de pantalla que un mensaje
+				// escrito a mano. Sin esto, "Agrégale los endpoints más lentos"
+				// llegaba sin el tablero que el usuario tiene enfrente y Qubi
+				// preguntaba a cuál — justo el fallo que originó los contextos.
+				onSendSuggestedPrompt={(text): void =>
+					handleSend(text, undefined, autoContexts.length > 0 ? autoContexts : undefined)
+				}
 			/>
 			{showDisclaimer && (
 				<div className={disclaimerClass} role="note" aria-live="polite">

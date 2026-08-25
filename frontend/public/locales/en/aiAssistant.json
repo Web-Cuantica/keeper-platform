@@ -10,21 +10,18 @@
   "close": "Close",
   "close_drawer": "Close drawer",
   "close_panel": "Close panel",
-
   "conversations": "Conversations",
   "archived_conversations": "Archived Conversations",
   "loading_conversations": "Loading conversations",
   "loading_conversation": "Loading conversation",
   "loading": "Loading",
   "search_conversations": "Search conversations…",
-
   "group_today": "Today",
   "group_yesterday": "Yesterday",
   "group_last_7_days": "Last 7 days",
   "group_last_30_days": "Last 30 days",
   "group_older": "Older",
   "conversation_actions": "Conversation actions",
-
   "ask_anything": "Ask anything… (Shift+Enter for new line)",
   "add_context": "Add Context",
   "no_matching_entities": "No matching entities",
@@ -33,7 +30,6 @@
   "discard_recording": "Discard recording",
   "stop_and_send": "Stop and send",
   "voice_input": "Voice input",
-
   "action_requires_approval": "Action requires approval",
   "approve": "Approve",
   "reject": "Reject",
@@ -43,7 +39,6 @@
   "approval_diff": "Approval diff",
   "before": "Before",
   "after": "After",
-
   "details_needed": "A few details needed",
   "submit": "Submit",
   "cancel_request": "Cancel request",
@@ -51,30 +46,42 @@
   "answers_submitted_resuming": "Answers submitted — resuming…",
   "request_cancelled": "Request cancelled.",
   "confirm": "Confirm",
-
   "suggested_action": "Suggested Action",
   "suggested_actions": "Suggested actions",
   "apply": "Apply",
   "dismiss": "Dismiss",
   "dismissed": "Dismissed.",
-
   "regenerate": "Regenerate",
   "regenerate_response": "Regenerate response",
   "what_went_wrong": "What went wrong?",
   "feedback_placeholder": "Tell us what was unhelpful, inaccurate, or unsafe…",
   "send_feedback": "Send feedback",
   "cancel": "Cancel",
-
   "tool": "Tool",
   "input": "Input",
   "output": "Output",
-
   "expand_diff": "Expand diff",
   "start_voice_input": "Start voice input",
   "stop_generating": "Stop generating",
   "send_message": "Send message",
   "enter_custom_value": "Enter a custom value",
   "back_to_chat": "Back to chat",
-
-  "disclaimer": "Qubi can make mistakes. Please double-check responses."
+  "disclaimer": "Qubi can make mistakes. Please double-check responses.",
+  "help_title": "What can Qubi do?",
+  "help_heading": "What can Qubi do?",
+  "help_subtitle": "Ask in plain language, like you would ask a teammate. Tap an example to try it.",
+  "help_explore_title": "Query your telemetry",
+  "help_explore_desc": "Searches traces, logs and metrics and answers with the numbers — you don't build the query.",
+  "ex_slow_endpoints": "Which endpoints are the slowest?",
+  "ex_errors": "Show me the errors from the last hour",
+  "ex_service_health": "How healthy are my services?",
+  "help_context_title": "It knows what you're looking at",
+  "help_context_desc": "Uses the dashboard, service and time range on your screen — you can say \"this\" or \"this period\".",
+  "ex_this_period": "How many errors were there in this period?",
+  "ex_this_service": "How healthy is this service?",
+  "help_build_title": "Build dashboards and alerts",
+  "help_build_desc": "Drafts them for you and shows the change so you can approve it before it's applied.",
+  "ex_dashboard": "Create a dashboard with the golden signals for kinetiq-api",
+  "ex_alert": "Alert me if 5xx errors go above 10 per minute",
+  "help_footnote": "Nothing is created or changed without your approval. If your question is ambiguous, Qubi asks instead of guessing."
 }

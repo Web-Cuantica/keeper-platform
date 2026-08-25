@@ -10,6 +10,7 @@ import Noz from 'components/Noz/Noz';
 import logEvent from 'api/common/logEvent';
 
 import ConversationsList from '../components/ConversationsList';
+import QubiHelp from '../components/QubiHelp';
 import ConversationView from '../ConversationView';
 import { AIAssistantEvents } from '../events';
 import { useAIAssistantAnalyticsContext } from '../hooks/useAIAssistantAnalyticsContext';
@@ -146,6 +147,8 @@ export default function AIAssistantPanel(): JSX.Element | null {
 					</div>
 
 					<div className={styles.actions}>
+						<QubiHelp />
+
 						<TooltipSimple title={showHistory ? t('back_to_chat') : t('conversations')}>
 							<Button
 								variant="ghost"

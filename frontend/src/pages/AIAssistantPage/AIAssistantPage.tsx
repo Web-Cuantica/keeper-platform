@@ -14,6 +14,7 @@ import Noz from 'components/Noz/Noz';
 
 import styles from './AIAssistantPage.module.scss';
 import ConversationsList from 'container/AIAssistant/components/ConversationsList';
+import QubiHelp from 'container/AIAssistant/components/QubiHelp';
 
 interface RouteParams {
 	conversationId: string;
@@ -124,6 +125,8 @@ export default function AIAssistantPage(): JSX.Element {
 						    del asistente en upstream y aquí se llama Qubi. */}
 						<span>{t('assistant_name')}</span>
 					</div>
+
+					<QubiHelp />
 				</div>
 
 				<div className={styles.body}>

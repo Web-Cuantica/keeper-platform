@@ -1,0 +1,89 @@
+/* Tokens SEMÁNTICOS (--l1/--l2/--l3, --accent-*): se resuelven solos en tema claro y oscuro.
+   Los tokens crudos de paleta (--bg-vanilla-*, --bg-ink-*) NO: dejaban los títulos casi
+   invisibles sobre fondo blanco. */
+.helpPopover {
+	width: 360px;
+	max-width: calc(100vw - 32px);
+	padding: 0;
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	padding: 14px;
+	max-height: 70vh;
+	overflow-y: auto;
+}
+
+.heading {
+	margin: 0;
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--l1-foreground);
+}
+
+.subtitle {
+	margin: 0;
+	font-size: 12px;
+	line-height: 1.45;
+	color: var(--l3-foreground);
+}
+
+.group {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.groupTitle {
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--l1-foreground);
+}
+
+.groupDesc {
+	font-size: 11px;
+	line-height: 1.45;
+	color: var(--l3-foreground);
+}
+
+.examples {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+/* Botón real: se activa con Enter y lo anuncia un lector de pantalla. */
+.example {
+	width: 100%;
+	text-align: left;
+	padding: 6px 8px;
+	border: 1px solid var(--l2-border);
+	border-radius: 4px;
+	background: var(--l2-background);
+	color: var(--l1-foreground);
+	font-size: 12px;
+	line-height: 1.4;
+	cursor: pointer;
+	transition: border-color 0.15s ease, color 0.15s ease;
+
+	&:hover {
+		border-color: var(--accent-primary);
+		color: var(--accent-primary);
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--accent-primary);
+		outline-offset: 1px;
+	}
+}
+
+.footnote {
+	margin: 0;
+	padding-top: 10px;
+	border-top: 1px solid var(--l1-border);
+	font-size: 11px;
+	line-height: 1.45;
+	color: var(--l3-foreground);
+}
