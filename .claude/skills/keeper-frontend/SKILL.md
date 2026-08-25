@@ -1,6 +1,6 @@
 ---
 name: keeper-frontend
-description: Usar para trabajo de frontend/UI en la plataforma Keeper (fork de SigNoz) bajo C:\Code\Keeper\keeper-platform — rebrand, dashboards y paneles, Logs Explorer, SideNav, thresholds/colores, títulos i18n, y el loop de build/deploy en Docker. Disparadores típicos: "arregla el front de Keeper", "agrega un panel/dashboard", "colorea el panel", "rebrand a Keeper", "el menú/título no se ve bien", "valida el cambio en la UI". Cubre la arquitectura real (renderers duales, shapes V1/V2) y los gotchas (CRLF, rebrand i18n, build cache).
+description: Usar para trabajo de frontend/UI en la plataforma Keeper (fork de SigNoz) bajo C:\Code\Keeper\keeper-platform — rebrand, dashboards y paneles, Logs Explorer, SideNav, thresholds/colores, i18n al español, dashboards y alertas por API, y el loop de build/deploy en Docker y al VPS de Hetzner. Disparadores típicos: "arregla el front de Keeper", "agrega un panel/dashboard", "colorea el panel", "rebrand a Keeper", "el menú/título no se ve bien", "tradúcelo al español", "crea una alerta por API", "despliega el portal", "valida el cambio en la UI". Cubre la arquitectura real (renderers duales, shapes V1/V2) y los gotchas (CRLF, rebrand i18n, rutas MSYS, build cache). NO usar para el asistente Qubi (esa es keeper-assistant).
 ---
 
 # Keeper frontend — Senior React engineer (fork de SigNoz)
@@ -34,6 +34,25 @@ docker compose --project-directory C:/Code/Keeper/keeper-platform/deploy/docker 
   `/etc/signoz/web/`). Primer build lento; luego rápido (cache pnpm store + go-build).
 - **El usuario abre Docker Desktop**, no el agente (sus arranques fallan). Si el disco se
   llena (VHDX de WSL en `%LOCALAPPDATA%\Docker\wsl\disk\docker_data.vhdx`), Docker se cae.
+
+### Desplegar al VPS (Hetzner) — dos caminos, uno NO es durable
+
+| Camino | Cómo | Sobrevive a… |
+|---|---|---|
+| **Web-swap** (~20 MB) | `tar` del build → `/etc/signoz/web` → `restart signoz` | restart y reboot, **NO** a recrear el contenedor |
+| **Imagen horneada** (~58 MB) | `docker save \| gzip` → scp → `docker load` → `compose up -d --force-recreate` | todo |
+
+- Antes de recrear el contenedor: `docker diff` para inventariar la capa de escritura y
+  `git log --since=<fecha de la imagen> -- '*.go'` para no embarcar backend sin probar. Los
+  volúmenes con nombre (`signoz-sqlite` en `/var/lib/signoz`) sobreviven.
+- Recrear `signoz` **rompe el canal opamp** del otel-collector (cachea la IP del contenedor):
+  `dial tcp …:4320: connect: connection refused`. Se recupera solo en ~1 s. El error
+  `settings.Capabilities is deprecated` es ruidoso pero inofensivo.
+- **Rutas MSYS en Windows:** `docker` quiere `C:/...` con `MSYS_NO_PATHCONV=1`; `tar` es un
+  binario MSYS y con `C:/...` interpreta `C:` como host remoto ("Cannot connect to C:") —
+  necesita `/c/...` o `--force-local`.
+- Verifica que la **ingesta siguió viva** (spans/logs con timestamp posterior), no solo que la
+  UI cargue.
 - Admin local para login/validación: `admin@keeper.local` (password por-instancia, no
   hardcodear). `orgID` viene del registro y cambia si se borran volúmenes.
 
@@ -83,7 +102,23 @@ docker compose --project-directory C:/Code/Keeper/keeper-platform/deploy/docker 
 
 ---
 
+- **Alertas-as-code (API):** `POST /api/v1/rules` exige `version:'v5'` + el envelope
+  `condition.compositeQuery.queries` + **`preferredChannels` no vacío** (el canal es
+  obligatorio; para demo se creó un webhook local no-op). WhatsApp NO es canal nativo: requiere
+  webhook + relay.
+- **Localización:** el portal va en español por defecto (i18next, `fallbackLng ['es','en']`, sin
+  `navigator`) con selector es/en en el menú de usuario. `locales/es/` tiene 33 namespaces. Lo
+  que queda sin traducir es *chrome hardcodeado* en páginas profundas y la paleta de atajos
+  (Cmd+J), que está entera en inglés.
+
 ## Gotchas (te ahorran horas)
+
+- **groupBy en dashboards guardados = shape LEGADO** `{key, dataType, type}`, aunque el request
+  v5 use `{name, fieldDataType, fieldContext}`: la conversión la hace el front al consultar
+  (`api/v5/queryRange/prepareQueryRangePayloadV5.ts` lee `item.key`). Si guardas el shape v5, el
+  panel se queda cargando PARA SIEMPRE — sin error en consola y sin request en red, porque el
+  mapeo produce `name=undefined` y la consulta jamás sale. Los value/graph sin groupBy no lo
+  sufren (por eso los kinetiq usaban series enumeradas con `filter.expression`).
 
 - **CRLF:** el repo usa `core.autocrlf=true` + `.gitattributes`. **NO uses `sed -i`** para
   reemplazos masivos: voltea los fin-de-línea (CRLF→LF) y ensucia el diff de decenas de
@@ -111,3 +146,19 @@ docker compose --project-directory C:/Code/Keeper/keeper-platform/deploy/docker 
 
 Memorias relacionadas: deploy loop del frontend, filtros Explorer V5, dashboards-as-code,
 Docker Desktop lo abre el usuario.
+
+## Qubi en el portal (panel del asistente)
+
+- **El contexto de pantalla viaja por VARIOS caminos y hay que alimentarlos todos.**
+  `ChatInput` fusiona `autoContexts` y los manda; los CHIPS sugeridos y el popover de ayuda
+  son caminos APARTE. En ago-2026 los chips mandaban `handleSend(text)` sin contexto: escribir
+  la frase funcionaba y tocar el chip con la misma frase no — el sintoma original que dio
+  origen al contexto de pantalla, vivo por otra puerta. Al tocar este flujo, inventaria todos
+  los emisores, no solo el que reporto el usuario.
+- **Ayuda del asistente:** `container/AIAssistant/components/QubiHelp`. Solo anuncia lo que
+  esta DESPLEGADO (misma regla que los chips: una capacidad que falla al primer clic es peor
+  que no anunciarla). Calcula sus contextos igual que ConversationView y respeta
+  `variant === 'page'` (ahi no hay pagina de fondo a la que referirse).
+- **Tokens de color: usa los SEMANTICOS** (`--l1/--l2/--l3-foreground|background|border`,
+  `--accent-*`), que se resuelven en ambos temas. Los crudos de paleta (`--bg-vanilla-*`,
+  `--bg-ink-*`) dejan el texto ilegible en tema claro — se caza en el navegador, no con lint.
