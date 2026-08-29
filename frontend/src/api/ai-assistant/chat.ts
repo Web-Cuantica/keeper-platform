@@ -237,6 +237,13 @@ export type ListThreadsOptions = Omit<
 /** String-literal view of `FeedbackRatingDTO` so call-sites can pass `'positive'`/`'negative'`. */
 export type FeedbackRating = `${FeedbackRatingDTO}`;
 
+export type FeedbackCategory =
+	| 'incorrect'
+	| 'insufficient_context'
+	| 'wrong_tool'
+	| 'slow'
+	| 'other';
+
 // ---------------------------------------------------------------------------
 // Thread listing & detail
 // ---------------------------------------------------------------------------
@@ -537,11 +544,11 @@ export const restoreExecution = (
 export async function submitFeedback(
 	messageId: string,
 	rating: FeedbackRating,
-	comment?: string,
+	category?: FeedbackCategory,
 ): Promise<void> {
 	await AIAssistantInstance.post(`/messages/${messageId}/feedback`, {
 		rating,
-		comment: comment ?? null,
+		category: category ?? null,
 	});
 }
 

@@ -26,6 +26,7 @@ import {
 	ThreadSummary,
 	updateThread,
 } from '../../../api/ai-assistant/chat';
+import type { FeedbackCategory } from '../../../api/ai-assistant/chat';
 import {
 	Conversation,
 	ConversationStreamState,
@@ -567,8 +568,8 @@ export interface AIAssistantStore {
 	submitMessageFeedback: (
 		messageId: string,
 		rating: FeedbackRating,
-		comment?: string,
-	) => Promise<void>;
+		category?: FeedbackCategory,
+	) => Promise<boolean>;
 }
 
 // ---------------------------------------------------------------------------
@@ -1271,28 +1272,29 @@ export const useAIAssistantStore = create<AIAssistantStore>()(
 			submitMessageFeedback: async (
 				messageId: string,
 				rating: FeedbackRating,
-				comment?: string,
-			): Promise<void> => {
+				category?: FeedbackCategory,
+			): Promise<boolean> => {
 				const { activeConversationId } = get();
 				if (!activeConversationId) {
-					return;
+					return false;
 				}
 
-				set((s) => {
-					const conv = s.conversations[activeConversationId];
-					if (!conv) {
-						return;
-					}
-					const msg = conv.messages.find((m) => m.id === messageId);
-					if (msg) {
-						msg.feedbackRating = rating;
-					}
-				});
-
 				try {
-					await submitFeedback(messageId, rating, comment);
+					await submitFeedback(messageId, rating, category);
+					set((s) => {
+						const conv = s.conversations[activeConversationId];
+						if (!conv) {
+							return;
+						}
+						const msg = conv.messages.find((m) => m.id === messageId);
+						if (msg) {
+							msg.feedbackRating = rating;
+						}
+					});
+					return true;
 				} catch (err) {
 					console.error('[AIAssistant] submitMessageFeedback failed:', err);
+					return false;
 				}
 			},
 
