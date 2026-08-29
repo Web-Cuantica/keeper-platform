@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ChangeEvent, useMemo } from 'react';
 import { Plus, Search } from '@signozhq/icons';
 import { Color } from '@signozhq/design-tokens';
@@ -15,6 +16,7 @@ import useRoutingPolicies from './useRoutingPolicies';
 import './styles.scss';
 
 function RoutingPolicies(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { user } = useAppContext();
 	const {
 		// Routing Policies
@@ -62,13 +64,13 @@ function RoutingPolicies(): JSX.Element {
 	return (
 		<div className="routing-policies-container">
 			<div className="routing-policies-content">
-				<Typography.Title className="title">Routing Policies</Typography.Title>
+				<Typography.Title className="title">{t('cfg_routing_policies', { defaultValue: "Routing Policies" })}</Typography.Title>
 				<Typography.Text className="subtitle">
-					Create and manage routing policies.
+					{t('cfg_create_and_manage_routing', { defaultValue: "Create and manage routing policies." })}
 				</Typography.Text>
 				<Flex className="toolbar">
 					<Input
-						placeholder="Search for a routing policy..."
+						placeholder={t('cfg_search_for_a_routing', { defaultValue: "Search for a routing policy..." })}
 						prefix={<Search size={12} color={Color.BG_VANILLA_400} />}
 						value={searchTerm}
 						onChange={handleSearch}
@@ -81,7 +83,7 @@ function RoutingPolicies(): JSX.Element {
 						>
 							<Flex gap={4} align="center">
 								<Plus size={16} />
-								New routing policy
+								{t('cfg_new_routing_policy', { defaultValue: "New routing policy" })}
 							</Flex>
 						</Button>
 					</Tooltip>

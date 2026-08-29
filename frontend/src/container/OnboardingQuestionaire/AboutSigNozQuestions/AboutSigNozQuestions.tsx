@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useEffect, useMemo, useState } from 'react';
 import { Button } from '@signozhq/ui/button';
 import { Checkbox } from '@signozhq/ui/checkbox';
@@ -56,6 +57,7 @@ export function AboutSigNozQuestions({
 	setSignozDetails,
 	onNext,
 }: AboutSigNozQuestionsProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { versionData } = useAppContext();
 
 	const [interestInSignoz, setInterestInSignoz] = useState<string[]>(
@@ -120,14 +122,14 @@ export function AboutSigNozQuestions({
 	return (
 		<div className="questions-container">
 			<OnboardingQuestionHeader
-				title="Set up your workspace"
-				subtitle="Tailor SigNoz to suit your observability needs."
+				title={t('onb_set_up_your_workspace', { defaultValue: "Set up your workspace" })}
+				subtitle={t('onb_tailor_signoz_to_suit', { defaultValue: "Tailor SigNoz to suit your observability needs." })}
 			/>
 
 			<div className="questions-form-container">
 				<div className="questions-form">
 					<div className="form-group">
-						<div className="question">How did you first come across SigNoz?</div>
+						<div className="question">{t('onb_how_did_you_first', { defaultValue: "How did you first come across SigNoz?" })}</div>
 
 						<AntdInput.TextArea
 							className="discover-signoz-input"
@@ -140,7 +142,7 @@ export function AboutSigNozQuestions({
 					</div>
 
 					<div className="form-group">
-						<div className="question">What got you interested in SigNoz?</div>
+						<div className="question">{t('onb_what_got_you_interested', { defaultValue: "What got you interested in SigNoz?" })}</div>
 						<div className="checkbox-grid">
 							{shuffledOptionKeys.map((option: string) => (
 								<div key={option} className="checkbox-item">
@@ -166,7 +168,7 @@ export function AboutSigNozQuestions({
 									<Input
 										type="text"
 										className="onboarding-questionaire-other-input"
-										placeholder="What got you interested in SigNoz?"
+										placeholder={t('onb_what_got_you_interested', { defaultValue: "What got you interested in SigNoz?" })}
 										value={otherInterestInSignoz}
 										autoFocus
 										onChange={(e): void => setOtherInterestInSignoz(e.target.value)}
@@ -186,7 +188,7 @@ export function AboutSigNozQuestions({
 						disabled={isNextDisabled}
 						suffix={<ArrowRight size={12} />}
 					>
-						Next
+						{t('onb_next', { defaultValue: "Next" })}
 					</Button>
 				</div>
 			</div>

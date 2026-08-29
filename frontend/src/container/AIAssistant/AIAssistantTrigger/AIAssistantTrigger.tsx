@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { matchPath, useLocation } from 'react-router-dom';
 import { Button } from '@signozhq/ui/button';
 import { TooltipSimple } from '@signozhq/ui/tooltip';
@@ -21,6 +22,7 @@ import styles from './AIAssistantTrigger.module.scss';
  * Hidden when the panel is already open or when on the full-screen AI Assistant page.
  */
 export default function AIAssistantTrigger(): JSX.Element | null {
+	const { t } = useTranslation('aiAssistant');
 	const { pathname } = useLocation();
 	const isDrawerOpen = useAIAssistantStore((s) => s.isDrawerOpen);
 	const isModalOpen = useAIAssistantStore((s) => s.isModalOpen);
@@ -49,7 +51,7 @@ export default function AIAssistantTrigger(): JSX.Element | null {
 				color="primary"
 				className={`${styles.trigger} noz-wave`}
 				onClick={handleOpen}
-				aria-label="Open Noz"
+				aria-label={t('open_assistant')}
 				prefix={<Noz size={24} />}
 			/>
 		</TooltipSimple>

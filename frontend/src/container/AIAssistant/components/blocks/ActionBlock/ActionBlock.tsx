@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import cx from 'classnames';
 import { Button } from '@signozhq/ui/button';
 import { Check, LoaderCircle, TriangleAlert, X, Zap } from '@signozhq/icons';
@@ -35,6 +36,7 @@ export default function ActionBlock({
 }: {
 	data: AIActionBlock;
 }): JSX.Element {
+	const { t } = useTranslation('aiAssistant');
 	const { messageId } = useMessageContext();
 	const answeredBlocks = useAIAssistantStore((s) => s.answeredBlocks);
 	const markBlockAnswered = useAIAssistantStore((s) => s.markBlockAnswered);
@@ -170,7 +172,7 @@ export default function ActionBlock({
 		<div className={blockStyles.block}>
 			<div className={styles.header}>
 				<Zap size={13} className={styles.zapIcon} />
-				<span className={styles.headerLabel}>Suggested Action</span>
+				<span className={styles.headerLabel}>{t('suggested_action')}</span>
 			</div>
 
 			<p className={styles.description}>{description}</p>
@@ -191,11 +193,11 @@ export default function ActionBlock({
 			<div className={styles.actions}>
 				<Button variant="solid" size="sm" onClick={execute}>
 					<Check size={12} />
-					Apply
+					{t('apply')}
 				</Button>
 				<Button variant="outlined" size="sm" onClick={handleDismiss}>
 					<X size={12} />
-					Dismiss
+					{t('dismiss')}
 				</Button>
 			</div>
 		</div>

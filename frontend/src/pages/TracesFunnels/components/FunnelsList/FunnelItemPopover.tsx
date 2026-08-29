@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { Button, Popover, Tooltip } from 'antd';
 import cx from 'classnames';
@@ -26,6 +27,7 @@ function FunnelItemActions({
 	setIsRenameModalOpen,
 	setIsDeleteModalOpen,
 }: FunnelItemActionsProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	return (
 		<div className="funnel-item__actions">
 			<Button
@@ -60,6 +62,7 @@ function FunnelItemPopover({
 	funnel,
 	shouldRedirectToTracesListOnDeleteSuccess,
 }: FunnelItemPopoverProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [isRenameModalOpen, setIsRenameModalOpen] = useState<boolean>(false);
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 	const { hasEditPermission } = useAppContext();
@@ -75,7 +78,7 @@ function FunnelItemPopover({
 
 	if (!hasEditPermission) {
 		return (
-			<Tooltip title="You need editor or admin access to edit funnels">
+			<Tooltip title={t('funnel_no_perm_edit', { defaultValue: 'You need editor or admin access to edit funnels' })}>
 				<Button
 					type="text"
 					className="funnel-item__action-btn"

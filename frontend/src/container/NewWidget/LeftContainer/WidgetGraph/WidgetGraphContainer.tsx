@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Card } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
 import ErrorInPlace from 'components/ErrorInPlace/ErrorInPlace';
@@ -19,6 +20,7 @@ function WidgetGraphContainer({
 	isLoadingPanelData,
 	enableDrillDown = false,
 }: WidgetGraphContainerProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	if (queryResponse.data && selectedGraph === PANEL_TYPES.BAR) {
 		const sortedSeriesData = getSortedSeriesData(
 			queryResponse.data?.payload.data.result,
@@ -32,7 +34,7 @@ function WidgetGraphContainer({
 	}
 
 	if (selectedWidget === undefined) {
-		return <Card>Invalid widget</Card>;
+		return <Card>{t('qb_invalid_widget', { defaultValue: "Invalid widget" })}</Card>;
 	}
 
 	if (queryResponse?.error) {
@@ -53,7 +55,7 @@ function WidgetGraphContainer({
 	if (queryResponse.isIdle) {
 		return (
 			<NotFoundContainer>
-				<Typography>No Data</Typography>
+				<Typography>{t('qb_no_data', { defaultValue: "No Data" })}</Typography>
 			</NotFoundContainer>
 		);
 	}

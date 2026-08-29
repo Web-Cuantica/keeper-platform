@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { InfraMonitoringEntity } from 'container/InfraMonitoringK8s/constants';
 import { Time } from 'container/TopNav/DateTimeSelectionV2/types';
+import { getUPlotChartOptions } from 'lib/uPlotLib/getUplotChartOptions';
 import * as appContextHooks from 'providers/App/App';
 import { LicenseEvent } from 'types/api/licensesV3/getActive';
 
@@ -424,6 +425,29 @@ describe('EntityMetrics', () => {
 				entity: mockEntity,
 				category: InfraMonitoringEntity.PODS,
 			}),
+		);
+	});
+
+	// La leyenda se resuelve contra el query que recibe el graficador. Si le llega
+	// el del query builder global en vez del del panel, todas las series se rotulan
+	// "count()" en lugar de su etiqueta ({{state}}, {{device}}::{{direction}}, 1m...).
+	it('grafica cada panel con su propio query, no con el del query builder global', () => {
+		const panelQuery = {
+			builder: { queryData: [{ queryName: 'A', legend: '{{state}}' }] },
+		};
+		mockUseEntityMetrics.mockReturnValue({
+			queries: mockQueries as any,
+			chartData: mockChartData,
+			queryPayloads: [
+				{ graphType: 'graph', query: panelQuery },
+				{ graphType: 'table' },
+			] as any,
+		});
+
+		renderEntityMetrics();
+
+		expect(getUPlotChartOptions).toHaveBeenCalledWith(
+			expect.objectContaining({ query: panelQuery }),
 		);
 	});
 });

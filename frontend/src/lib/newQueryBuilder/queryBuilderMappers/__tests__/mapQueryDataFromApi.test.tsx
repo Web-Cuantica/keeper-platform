@@ -41,4 +41,36 @@ describe('mapQueryDataFromApi function tests', () => {
 		// when the query object is not passed take the initial values and merge the composite query on top of it
 		expect(output).toStrictEqual(defaultOutput);
 	});
+
+	// Regresión de la vista guardada del explorador de trazas. Guardar una vista y
+	// volver a abrirla devolvía "Cannot use 'in' operator..." / "not implemented" y la
+	// petición a query_range NUNCA salía: el fallo era del cliente, al construir el
+	// payload. Causa: el spec v5 que persiste la vista NO incluye `aggregations`, y el
+	// hueco se rellenaba SIEMPRE con los valores por defecto de métricas, así que una
+	// consulta de trazas volvía con {metricName, temporality, ...} en vez de count().
+	it('reconstruye la agregación de trazas al releer una vista guardada', () => {
+		// Forma real devuelta por GET /api/v1/explorer/views?sourcePage=traces.
+		const vistaGuardada = {
+			queryType: 'builder',
+			panelType: 'list',
+			queries: [
+				{
+					type: 'builder_query',
+					spec: {
+						name: 'A',
+						stepInterval: 0,
+						signal: 'traces',
+						source: '',
+						filter: { expression: "name != 'resourceFetch'" },
+						having: { expression: '' },
+					},
+				},
+			],
+		} as unknown as Parameters<typeof mapQueryDataFromApi>[0];
+
+		const [consulta] = mapQueryDataFromApi(vistaGuardada).builder.queryData;
+
+		expect(consulta.dataSource).toBe('traces');
+		expect(consulta.aggregations).toStrictEqual([{ expression: 'count() ' }]);
+	});
 });

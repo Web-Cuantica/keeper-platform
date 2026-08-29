@@ -21,6 +21,7 @@ import { isEmpty, isNumber, isUndefined } from 'lodash-es';
 import { useTimezone } from 'providers/Timezone';
 
 import LogLinesActionButtons from '../LogLinesActionButtons/LogLinesActionButtons';
+import { useCopyLogJSON } from '../LogLinesActionButtons/useCopyLogJSON';
 import LogStateIndicator from '../LogStateIndicator/LogStateIndicator';
 import { getLogIndicatorType } from '../LogStateIndicator/utils';
 // styles
@@ -137,6 +138,8 @@ function RawLogView({
 		[isReadOnly, onLogClick, isActiveLog, onSetActiveLog, data, onClearActiveLog],
 	);
 
+	const handleCopyJSON = useCopyLogJSON(data);
+
 	const handleShowContext: MouseEventHandler<HTMLElement> = useCallback(
 		(event) => {
 			event.preventDefault();
@@ -197,6 +200,8 @@ function RawLogView({
 				<LogLinesActionButtons
 					handleShowContext={handleShowContext}
 					onLogCopy={onLogCopy}
+					onViewDetails={handleClickExpand}
+					onCopyJSON={handleCopyJSON}
 				/>
 			)}
 		</RawLogViewContainer>

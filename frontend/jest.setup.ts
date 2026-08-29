@@ -86,6 +86,32 @@ window.getComputedStyle = function (
 	}
 };
 
+// Doble global de react-i18next.
+//
+// Sin i18next inicializado, el `t` real devuelve la CLAVE, no el `defaultValue`. Como los
+// componentes usan t('clave', { defaultValue: 'English' }), cualquier test que busque el
+// texto en inglés falla — y falla en silencio hasta que alguien lo corre, porque la app en
+// el navegador sí carga los locales. Estaba resuelto solo en `src/tests/test-utils.tsx`, que
+// muchos tests no importan; aquí aplica a TODOS.
+// Solo se intercepta `useTranslation`: `Trans`, `I18nextProvider` e `initReactI18next` se
+// dejan reales porque hay componentes que los usan.
+jest.mock('react-i18next', () => ({
+	...jest.requireActual('react-i18next'),
+	useTranslation: (): {
+		t: (str: string, options?: { defaultValue?: string }) => string;
+		i18n: { changeLanguage: () => Promise<void>; language: string };
+	} => ({
+		t: (str: string, options?: { defaultValue?: string }): string =>
+			options?.defaultValue ?? str,
+		i18n: {
+			changeLanguage: (): Promise<void> => new Promise(() => {}),
+			// SideNav lee `i18n.language` para marcar el idioma activo; sin esto sería
+			// undefined en todo test que lo renderice.
+			language: 'en',
+		},
+	}),
+}));
+
 beforeAll(() => server.listen());
 
 afterEach(() => server.resetHandlers());

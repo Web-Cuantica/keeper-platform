@@ -174,6 +174,7 @@ describe('AllEndPoints', () => {
 				items: expect.arrayContaining([expect.objectContaining({ id: 'test' })]),
 				op: 'AND',
 			}),
+			expect.any(Function), // t, para traducir el título del panel
 		);
 	});
 

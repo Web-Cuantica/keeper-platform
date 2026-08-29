@@ -292,10 +292,12 @@ export function createShortcutActions(deps: ActionDeps): CmdAction[] {
 	if (aiAssistant) {
 		actions.unshift({
 			id: 'ai-assistant',
-			name: 'Open Noz',
+			name: 'Open Qubi',
 			shortcut: ['cmd+j'],
-			keywords: 'noz ai assistant chat ask sparkles copilot',
-			section: 'Noz',
+			// Se conserva "noz" entre las palabras clave: es el nombre del asistente en
+			// upstream y alguien que venga de SigNoz lo buscará así.
+			keywords: 'qubi noz ai assistant chat ask sparkles copilot',
+			section: 'Qubi',
 			icon: <Noz size={16} />,
 			roles: ['ADMIN', 'EDITOR', 'VIEWER'],
 			perform: aiAssistant.open,

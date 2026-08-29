@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useQueryClient } from 'react-query';
 import { Trash2, X } from '@signozhq/icons';
 import { Button } from '@signozhq/ui/button';
@@ -39,11 +40,12 @@ export function RevokeKeyFooter({
 	accountId,
 	keyId,
 }: RevokeKeyFooterProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	return (
 		<>
 			<Button variant="solid" color="secondary" onClick={onCancel}>
 				<X size={12} />
-				Cancel
+				{t('onb_cancel', { defaultValue: "Cancel" })}
 			</Button>
 			<AuthZTooltip
 				checks={[
@@ -59,7 +61,7 @@ export function RevokeKeyFooter({
 					onClick={onConfirm}
 				>
 					<Trash2 size={12} />
-					Revoke Key
+					{t('onb_revoke_key', { defaultValue: "Revoke Key" })}
 				</Button>
 			</AuthZTooltip>
 		</>

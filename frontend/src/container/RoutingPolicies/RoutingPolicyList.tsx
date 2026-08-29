@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
 import { Button, Table, TableProps } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
@@ -19,6 +20,7 @@ function RoutingPolicyList({
 	handleDeleteModalOpen,
 	hasSearchTerm,
 }: RoutingPolicyListProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const columns: TableProps<RoutingPolicy>['columns'] = [
 		{
 			title: 'Routing Policy',
@@ -51,14 +53,14 @@ function RoutingPolicyList({
 				{showError ? (
 					<div className="error-state">
 						<Typography.Text>
-							Something went wrong while fetching routing policies.
+							{t('cfg_something_went_wrong_while', { defaultValue: "Something went wrong while fetching routing policies." })}
 						</Typography.Text>
 						<Button icon={<RotateCw size={14} />} onClick={refetchRoutingPolicies}>
-							Retry
+							{t('cfg_retry', { defaultValue: "Retry" })}
 						</Button>
 					</div>
 				) : hasSearchTerm ? (
-					<Typography.Text>No matching routing policies found.</Typography.Text>
+					<Typography.Text>{t('cfg_no_matching_routing_policies', { defaultValue: "No matching routing policies found." })}</Typography.Text>
 				) : (
 					<Typography.Text>
 						No routing policies yet,{' '}
@@ -67,7 +69,7 @@ function RoutingPolicyList({
 							target="_blank"
 							rel="noopener noreferrer"
 						>
-							Learn more here
+							{t('cfg_learn_more_here', { defaultValue: "Learn more here" })}
 						</a>
 					</Typography.Text>
 				)}

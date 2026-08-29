@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { useQueryClient } from 'react-query';
 import { Input } from '@signozhq/ui/input';
@@ -22,6 +23,7 @@ function RenameFunnel({
 	funnelId,
 	initialName,
 }: RenameFunnelProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [newFunnelName, setNewFunnelName] = useState<string>(initialName);
 	const renameFunnelMutation = useRenameFunnel();
 	const { notifications } = useNotifications();
@@ -63,12 +65,12 @@ function RenameFunnel({
 	return (
 		<SignozModal
 			open={isOpen}
-			title="Rename Funnel"
+			title={t('funnel_rename_title', { defaultValue: 'Rename Funnel' })}
 			width={384}
 			onCancel={handleCancel}
 			rootClassName="funnel-modal"
-			cancelText="Cancel"
-			okText="Rename Funnel"
+			cancelText={t('funnel_cancel', { defaultValue: 'Cancel' })}
+			okText={t('funnel_rename_ok', { defaultValue: 'Rename Funnel' })}
 			okButtonProps={{
 				icon: <Check size={14} />,
 				loading: renameFunnelMutation.isLoading,

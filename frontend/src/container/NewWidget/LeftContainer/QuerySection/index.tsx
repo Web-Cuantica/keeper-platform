@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useCallback, useEffect, useMemo } from 'react';
 import { Color } from '@signozhq/design-tokens';
 import { Button, Tabs } from 'antd';
@@ -33,6 +34,7 @@ function QuerySection({
 	dashboardName,
 	isNewPanel,
 }: QueryProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const {
 		currentQuery,
 		handleRunQuery: handleRunQueryFromQueryBuilder,
@@ -176,7 +178,7 @@ function QuerySection({
 						<TextToolTip text="This will temporarily save the current query and graph state. This will persist across tab change" />
 						<RunQueryBtn
 							className="run-query-dashboard-btn"
-							label="Stage & Run Query"
+							label={t('qb_stage_run_query', { defaultValue: "Stage & Run Query" })}
 							onStageRunQuery={handleRunQuery}
 							isLoadingQueries={isLoadingQueries}
 							handleCancelQuery={handleCancelQuery}

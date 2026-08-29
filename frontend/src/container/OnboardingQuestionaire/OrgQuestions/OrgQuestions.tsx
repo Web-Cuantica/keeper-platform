@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { Button } from '@signozhq/ui/button';
 import { Input } from '@signozhq/ui/input';
@@ -45,6 +46,7 @@ const migrationTimelineOptions = {
 };
 
 function OrgQuestions({ orgDetails, onNext }: OrgQuestionsProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [observabilityTool, setObservabilityTool] = useState<string | null>(
 		orgDetails?.observabilityTool || null,
 	);
@@ -131,10 +133,10 @@ function OrgQuestions({ orgDetails, onNext }: OrgQuestionsProps): JSX.Element {
 			<div className="onboarding-header-section">
 				<div className="onboarding-header-icon">🎉</div>
 				<Typography.Title level={4} className="onboarding-header-title">
-					Welcome to SigNoz Cloud
+					{t('onb_welcome_to_signoz_cloud', { defaultValue: "Welcome to SigNoz Cloud" })}
 				</Typography.Title>
 				<Typography.Text className="onboarding-header-subtitle">
-					Let&apos;s get you started
+					{t('onb_letaposs_get_you_started', { defaultValue: "Let&apos;s get you started" })}
 				</Typography.Text>
 			</div>
 
@@ -142,7 +144,7 @@ function OrgQuestions({ orgDetails, onNext }: OrgQuestionsProps): JSX.Element {
 				<div className="questions-form">
 					<div className="form-group">
 						<label className="question" htmlFor="observabilityTool">
-							Which observability tool do you currently use?
+							{t('onb_which_observability_tool_do', { defaultValue: "Which observability tool do you currently use?" })}
 						</label>
 						<RadioGroup
 							value={observabilityTool || ''}
@@ -161,7 +163,7 @@ function OrgQuestions({ orgDetails, onNext }: OrgQuestionsProps): JSX.Element {
 												<Input
 													type="text"
 													className="onboarding-questionaire-other-input"
-													placeholder="What tool do you currently use?"
+													placeholder={t('onb_what_tool_do_you', { defaultValue: "What tool do you currently use?" })}
 													value={otherTool || ''}
 													autoFocus
 													onChange={(e): void => setOtherTool(e.target.value)}
@@ -185,7 +187,7 @@ function OrgQuestions({ orgDetails, onNext }: OrgQuestionsProps): JSX.Element {
 					{showMigrationQuestion && (
 						<div className="form-group">
 							<div className="question">
-								What is your timeline for migrating to SigNoz?
+								{t('onb_what_is_your_timeline', { defaultValue: "What is your timeline for migrating to SigNoz?" })}
 							</div>
 							<RadioGroup
 								value={migrationTimeline || ''}
@@ -205,7 +207,7 @@ function OrgQuestions({ orgDetails, onNext }: OrgQuestionsProps): JSX.Element {
 					)}
 
 					<div className="form-group">
-						<div className="question">Do you already use OpenTelemetry?</div>
+						<div className="question">{t('onb_do_you_already_use', { defaultValue: "Do you already use OpenTelemetry?" })}</div>
 						<RadioGroup
 							value={usesOtel === true ? 'yes' : usesOtel === false ? 'no' : ''}
 							onChange={handleOtelChange}
@@ -231,7 +233,7 @@ function OrgQuestions({ orgDetails, onNext }: OrgQuestionsProps): JSX.Element {
 					disabled={isNextDisabled}
 					suffix={<ArrowRight size={12} />}
 				>
-					Next
+					{t('onb_next', { defaultValue: "Next" })}
 				</Button>
 			</div>
 		</div>

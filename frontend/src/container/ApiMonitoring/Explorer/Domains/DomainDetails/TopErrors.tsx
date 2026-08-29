@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useMemo, useState } from 'react';
 import { QueryFunctionContext, useQueries, useQuery } from 'react-query';
 import { Spin, Table, Tooltip } from 'antd';
@@ -43,6 +44,7 @@ function TopErrors({
 	};
 	initialFilters: IBuilderQuery['filters'];
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { startTime: minTime, endTime: maxTime } = timeRange;
 
 	const [endPointName, setSelectedEndPointName] = useState<string>('');
@@ -110,7 +112,7 @@ function TopErrors({
 		cacheTime: 0,
 	});
 
-	const topErrorsColumnsConfig = useMemo(() => getTopErrorsColumnsConfig(), []);
+	const topErrorsColumnsConfig = useMemo(() => getTopErrorsColumnsConfig(t), [t]);
 
 	const formattedTopErrorsData = useMemo(
 		() =>
@@ -173,9 +175,9 @@ function TopErrors({
 				<div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
 					<Switch value={showStatusCodeErrors} onChange={setShowStatusCodeErrors} />
 					<span style={{ color: 'white', fontSize: '14px' }}>
-						Status Message Exists
+						{t('cfg_status_message_exists', { defaultValue: "Status Message Exists" })}
 					</span>
-					<Tooltip title="When enabled, shows errors that have a status message. When disabled, shows all errors regardless of status message">
+					<Tooltip title={t('cfg_when_enabled_shows_errors', { defaultValue: "When enabled, shows errors that have a status message. When disabled, shows all errors regardless of status message" })}>
 						<Info size={16} color="white" />
 					</Tooltip>
 				</div>
@@ -183,12 +185,14 @@ function TopErrors({
 
 			<div className="endpoints-table-container">
 				<div className="endpoints-table-header">
-					{showStatusCodeErrors ? 'Errors with Status Message' : 'All Errors'}{' '}
+					{showStatusCodeErrors
+						? t('pages:apm_errors_with_status_message', { defaultValue: 'Errors with Status Message' })
+						: t('pages:apm_all_errors', { defaultValue: 'All Errors' })}{' '}
 					<Tooltip
 						title={
 							showStatusCodeErrors
-								? 'Shows errors that have a status message'
-								: 'Shows all errors regardless of status message'
+								? t('pages:apm_shows_errors_with_status_message', { defaultValue: 'Shows errors that have a status message' })
+								: t('pages:apm_shows_all_errors', { defaultValue: 'Shows all errors regardless of status message' })
 						}
 					>
 						<Info size={16} color="white" />
@@ -216,8 +220,8 @@ function TopErrors({
 
 										<Typography.Text className="no-filtered-endpoints-message">
 											{showStatusCodeErrors
-												? 'Please disable "Status Message Exists" toggle to see all errors'
-												: 'This query had no results. Edit your query and try again!'}
+												? t('pages:apm_disable_status_message_toggle', { defaultValue: 'Please disable "Status Message Exists" toggle to see all errors' })
+												: t('pages:apm_query_no_results', { defaultValue: 'This query had no results. Edit your query and try again!' })}
 										</Typography.Text>
 									</div>
 								</div>

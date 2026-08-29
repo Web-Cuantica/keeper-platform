@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { Button } from 'antd';
 import { ILog } from 'types/api/logs/log';
@@ -9,6 +10,7 @@ function LogsProcessingSimulator({
 	inputLogs,
 	pipeline,
 }: LogsProcessingSimulatorProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [simulationInput, setSimulationInput] = useState<ILog[] | null>(null);
 
 	const simulate = (): void => setSimulationInput(inputLogs);
@@ -20,7 +22,7 @@ function LogsProcessingSimulator({
 					type="primary"
 					onClick={simulate}
 				>
-					Simulate Processing
+					{t('cfg_simulate_processing', { defaultValue: "Simulate Processing" })}
 				</Button>
 			</div>
 		);

@@ -2,6 +2,8 @@ import { useTranslation } from 'react-i18next';
 import { Typography } from '@signozhq/ui/typography';
 import { ChevronDown, ChevronRight } from '@signozhq/icons';
 
+import { claveTituloFiltro } from '../../filterTitleI18n';
+
 interface CheckboxFilterHeaderProps {
 	title: string;
 	isOpen: boolean;
@@ -26,7 +28,9 @@ function CheckboxFilterHeader({
 				) : (
 					<ChevronRight size={13} cursor="pointer" />
 				)}
-				<Typography.Text className="title">{title}</Typography.Text>
+				<Typography.Text className="title">
+					{t(claveTituloFiltro(title), { defaultValue: title })}
+				</Typography.Text>
 			</section>
 			<section className="right-action">
 				{isOpen && showClearAll && (

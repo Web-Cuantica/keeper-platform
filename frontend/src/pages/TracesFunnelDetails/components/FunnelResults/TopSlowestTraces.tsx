@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useFunnelSlowTraces } from 'hooks/TracesFunnels/useFunnels';
 import { FunnelStepData } from 'types/api/traceFunnels';
 
@@ -11,11 +12,12 @@ interface TopSlowestTracesProps {
 }
 
 function TopSlowestTraces(props: TopSlowestTracesProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	return (
 		<FunnelTopTracesTable
 			{...props}
-			title="Slowest 5 traces"
-			tooltip="A list of the slowest traces in the funnel"
+			title={t('funnel_slowest', { defaultValue: 'Slowest 5 traces' })}
+			tooltip={t('qb2_a_list_of_the', { defaultValue: "A list of the slowest traces in the funnel" })}
 			useQueryHook={useFunnelSlowTraces}
 		/>
 	);

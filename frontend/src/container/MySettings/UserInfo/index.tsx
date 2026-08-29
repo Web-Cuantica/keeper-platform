@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { Button, Input, Modal } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
@@ -19,6 +20,7 @@ import '../MySettings.styles.scss';
 import './UserInfo.styles.scss';
 
 function UserInfo(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { user, org, updateUser } = useAppContext();
 
 	const { showErrorModal } = useErrorModal();
@@ -144,7 +146,7 @@ function UserInfo(): JSX.Element {
 					icon={<FileTerminal size={16} />}
 					onClick={(): void => setIsUpdateNameModalOpen(true)}
 				>
-					Update name
+					{t('cfg_update_name', { defaultValue: "Update name" })}
 				</Button>
 
 				<Button
@@ -153,13 +155,13 @@ function UserInfo(): JSX.Element {
 					icon={<FileTerminal size={16} />}
 					onClick={(): void => setIsResetPasswordModalOpen(true)}
 				>
-					Reset password
+					{t('cfg_reset_password', { defaultValue: "Reset password" })}
 				</Button>
 			</div>
 
 			<Modal
 				className="update-name-modal"
-				title={<span className="title">Update name</span>}
+				title={<span className="title">{t('cfg_update_name', { defaultValue: "Update name" })}</span>}
 				open={isUpdateNameModalOpen}
 				closable
 				onCancel={hideUpdateNameModal}
@@ -172,14 +174,14 @@ function UserInfo(): JSX.Element {
 						loading={isLoading}
 						data-testid="update-name-btn"
 					>
-						Update name
+						{t('cfg_update_name', { defaultValue: "Update name" })}
 					</Button>,
 				]}
 			>
-				<Typography.Text>Name</Typography.Text>
+				<Typography.Text>{t('cfg_name', { defaultValue: "Name" })}</Typography.Text>
 				<div className="update-name-input">
 					<Input
-						placeholder="e.g. John Doe"
+						placeholder={t('cfg_eg_john_doe', { defaultValue: "e.g. John Doe" })}
 						value={changedName}
 						disabled={isLoading}
 						onChange={(e): void => setChangedName(e.target.value)}
@@ -192,7 +194,7 @@ function UserInfo(): JSX.Element {
 
 			<Modal
 				className="reset-password-modal"
-				title={<span className="title">Reset password</span>}
+				title={<span className="title">{t('cfg_reset_password', { defaultValue: "Reset password" })}</span>}
 				open={isResetPasswordModalOpen}
 				closable
 				destroyOnClose
@@ -209,13 +211,13 @@ function UserInfo(): JSX.Element {
 						disabled={isResetPasswordDisabled}
 						data-testid="reset-password-btn"
 					>
-						Reset password
+						{t('cfg_reset_password', { defaultValue: "Reset password" })}
 					</Button>,
 				]}
 			>
 				<div className="reset-password-container">
 					<div className="current-password-input">
-						<Typography.Text>Current password</Typography.Text>
+						<Typography.Text>{t('cfg_current_password', { defaultValue: "Current password" })}</Typography.Text>
 						<Input.Password
 							data-testid="current-password-textbox"
 							disabled={isLoading}
@@ -236,7 +238,7 @@ function UserInfo(): JSX.Element {
 					</div>
 
 					<div className="new-password-input">
-						<Typography.Text>New password</Typography.Text>
+						<Typography.Text>{t('cfg_new_password', { defaultValue: "New password" })}</Typography.Text>
 						<Input.Password
 							data-testid="new-password-textbox"
 							disabled={isLoading}
@@ -258,7 +260,7 @@ function UserInfo(): JSX.Element {
 						/>
 						{passwordsMatch && (
 							<span className="password-error-text">
-								New password must be different from current password
+								{t('cfg_new_password_must_be', { defaultValue: "New password must be different from current password" })}
 							</span>
 						)}
 					</div>

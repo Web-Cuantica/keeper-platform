@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useIsMutating } from 'react-query';
 import { Button, Skeleton } from 'antd';
 import { REACT_QUERY_KEY } from 'constants/reactQueryKeys';
@@ -12,6 +13,7 @@ interface StepsFooterProps {
 }
 
 function ValidTracesCount(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const {
 		hasAllEmptyStepFields,
 		isValidateStepsLoading,
@@ -27,14 +29,14 @@ function ValidTracesCount(): JSX.Element {
 
 	if (hasAllEmptyStepFields) {
 		return (
-			<span className="steps-footer__valid-traces">No service / span names</span>
+			<span className="steps-footer__valid-traces">{t('qb2_no_service_span_names', { defaultValue: "No service / span names" })}</span>
 		);
 	}
 
 	if (hasIncompleteStepFields) {
 		return (
 			<span className="steps-footer__valid-traces">
-				Missing service / span names
+				{t('qb2_missing_service_span_names', { defaultValue: "Missing service / span names" })}
 			</span>
 		);
 	}
@@ -46,15 +48,16 @@ function ValidTracesCount(): JSX.Element {
 	if (validTracesCount === 0) {
 		return (
 			<span className="steps-footer__valid-traces steps-footer__valid-traces--none">
-				No valid traces found
+				{t('qb2_no_valid_traces_found', { defaultValue: "No valid traces found" })}
 			</span>
 		);
 	}
 
-	return <span className="steps-footer__valid-traces">Valid traces found</span>;
+	return <span className="steps-footer__valid-traces">{t('qb2_valid_traces_found', { defaultValue: "Valid traces found" })}</span>;
 }
 
 function StepsFooter({ stepsCount, isSaving }: StepsFooterProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { hasIncompleteStepFields, handleSaveFunnel, hasUnsavedChanges } =
 		useFunnelContext();
 
@@ -75,7 +78,7 @@ function StepsFooter({ stepsCount, isSaving }: StepsFooterProps): JSX.Element {
 					icon={<Check size={14} />}
 					loading={isSaving}
 				>
-					Save funnel
+					{t('qb2_save_funnel', { defaultValue: "Save funnel" })}
 				</Button>
 			</div>
 		</div>

@@ -1,4 +1,3 @@
-import type { TFunction } from 'i18next';
 import { BellDot } from '@signozhq/icons';
 import { Badge } from '@signozhq/ui/badge';
 import { SEVERITY_BADGE_COLORS } from 'components/Alerts/constants';
@@ -10,10 +9,11 @@ import LabelColumn from 'components/Alerts/LabelColumn';
 import styles from './TriggeredAlerts.module.scss';
 import type { Alert, GroupedAlert } from './types';
 import { GroupTagsCell } from 'container/TriggeredAlerts/components/GroupTagsCell';
+import { TraducirFn } from 'types/common/i18n';
 
 export function getAlertColumns(
 	formatTimezoneAdjustedTimestamp: (date: string, format: string) => string,
-	t: TFunction,
+	t: TraducirFn,
 ): TableColumnDef<Alert>[] {
 	return [
 		{
@@ -109,7 +109,7 @@ export function getAlertColumns(
 }
 
 export function getGroupedColumns(
-	t: TFunction,
+	t: TraducirFn,
 ): TableColumnDef<GroupedAlert>[] {
 	return [
 		{

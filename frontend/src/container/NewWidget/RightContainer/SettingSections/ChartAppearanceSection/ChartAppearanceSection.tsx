@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Dispatch, SetStateAction } from 'react';
 import { Switch } from '@signozhq/ui/switch';
 import { Typography } from '@signozhq/ui/typography';
@@ -51,8 +52,9 @@ export default function ChartAppearanceSection({
 	allowSpanGaps,
 	stepInterval,
 }: ChartAppearanceSectionProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	return (
-		<SettingsSection title="Chart Appearance" icon={<Paintbrush size={14} />}>
+		<SettingsSection title={t('qb_chart_appearance', { defaultValue: "Chart Appearance" })} icon={<Paintbrush size={14} />}>
 			{allowFillMode && (
 				<FillModeSelector value={fillMode} onChange={setFillMode} />
 			)}
@@ -68,9 +70,9 @@ export default function ChartAppearanceSection({
 			{allowShowPoints && (
 				<section className="show-points toggle-card">
 					<div className="toggle-card-text-container">
-						<Typography.Text className="section-heading">Show points</Typography.Text>
+						<Typography.Text className="section-heading">{t('qb_show_points', { defaultValue: "Show points" })}</Typography.Text>
 						<Typography.Text className="toggle-card-description">
-							Display individual data points on the chart
+							{t('qb_display_individual_data_points', { defaultValue: "Display individual data points on the chart" })}
 						</Typography.Text>
 					</div>
 					<Switch value={showPoints} onChange={setShowPoints} />

@@ -18,6 +18,9 @@ describe('getAutoContexts', () => {
 				metadata: {
 					page: 'alert_detail',
 					ruleId,
+					// The raw token travels as-is; the server anchors it at
+					// query time (a precomputed pair would arrive stale).
+					relativeTime: '1h',
 				},
 			},
 		]);
@@ -120,6 +123,30 @@ describe('getAutoContexts', () => {
 				resourceId: dashboardId,
 				metadata: {
 					page: 'dashboard_detail',
+				},
+			},
+		]);
+	});
+
+	it('carries the relative time token and dashboard variables', () => {
+		const dashboardId = 'dash-123';
+		const pathname = ROUTES.DASHBOARD.replace(':dashboardId', dashboardId);
+		const variables = { service: 'kinetiq-api' };
+		const search = `?${QueryParams.relativeTime}=6h&${
+			QueryParams.variables
+		}=${encodeURIComponent(JSON.stringify(variables))}`;
+
+		const contexts = getAutoContexts(pathname, search);
+
+		expect(contexts).toStrictEqual([
+			{
+				source: 'auto',
+				type: 'dashboard',
+				resourceId: dashboardId,
+				metadata: {
+					page: 'dashboard_detail',
+					relativeTime: '6h',
+					variables,
 				},
 			},
 		]);

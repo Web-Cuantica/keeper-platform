@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Check, Copy } from '@signozhq/icons';
 import { Badge } from '@signozhq/ui/badge';
 import { Button } from '@signozhq/ui/button';
@@ -17,6 +18,7 @@ function KeyCreatedPhase({
 	expiryLabel,
 	onCopy,
 }: KeyCreatedPhaseProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	return (
 		<div className="add-key-modal__form">
 			<div className="add-key-modal__field">
@@ -35,7 +37,7 @@ function KeyCreatedPhase({
 			</div>
 
 			<div className="add-key-modal__expiry-meta">
-				<span className="add-key-modal__expiry-label">Expiration</span>
+				<span className="add-key-modal__expiry-label">{t('onb_expiration', { defaultValue: "Expiration" })}</span>
 				<Badge color="vanilla">{expiryLabel}</Badge>
 			</div>
 
@@ -43,7 +45,7 @@ function KeyCreatedPhase({
 				<Callout
 					type="info"
 					showIcon
-					title="Store the key securely. This is the only time it will be displayed."
+					title={t('onb_store_the_key_securely', { defaultValue: "Store the key securely. This is the only time it will be displayed." })}
 				/>
 			</div>
 		</div>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { UseQueryResult } from 'react-query';
 import { Color } from '@signozhq/design-tokens';
@@ -57,6 +58,7 @@ function StatusCodeBarCharts({
 	};
 	onDragSelect: (start: number, end: number) => void;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	// 0 : Status Code Count
 	// 1 : Status Code Latency
 	const [currentWidgetInfoIndex, setCurrentWidgetInfoIndex] = useState(0);
@@ -265,7 +267,7 @@ function StatusCodeBarCharts({
 		<div>
 			<Card bordered className="endpoint-details-card">
 				<div className="header">
-					<Typography.Text>Call response status</Typography.Text>
+					<Typography.Text>{t('cfg_call_response_status', { defaultValue: "Call response status" })}</Typography.Text>
 					<Button.Group className="views-tabs">
 						<Button
 							value={0}
@@ -273,14 +275,14 @@ function StatusCodeBarCharts({
 							disabled={false}
 							onClick={(): void => setCurrentWidgetInfoIndex(0)}
 						>
-							Number of calls
+							{t('cfg_number_of_calls', { defaultValue: "Number of calls" })}
 						</Button>
 						<Button
 							value={1}
 							className={currentWidgetInfoIndex === 1 ? 'selected_view tab' : 'tab'}
 							onClick={(): void => setCurrentWidgetInfoIndex(1)}
 						>
-							Latency
+							{t('cfg_latency', { defaultValue: "Latency" })}
 						</Button>
 					</Button.Group>
 				</div>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Dispatch, SetStateAction } from 'react';
 import {
 	closestCenter,
@@ -91,6 +92,7 @@ function ContextLinks({
 	setContextLinks: Dispatch<SetStateAction<ContextLinksData>>;
 	selectedWidget?: Widgets;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	// Use the custom hook for modal functionality
 	const {
 		isModalOpen,
@@ -138,7 +140,7 @@ function ContextLinks({
 					style={{ width: '100%' }}
 					onClick={handleAddContextLink}
 				>
-					Add Context Link
+					{t('qb_add_context_link', { defaultValue: "Add Context Link" })}
 				</Button>
 				<OverlayScrollbar>
 					<DndContext

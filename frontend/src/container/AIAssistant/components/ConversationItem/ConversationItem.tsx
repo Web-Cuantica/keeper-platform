@@ -1,4 +1,5 @@
 import { KeyboardEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useCopyToClipboard } from 'react-use';
 import cx from 'classnames';
 import ROUTES from 'constants/routes';
@@ -64,13 +65,14 @@ export default function ConversationItem({
 	onArchive,
 	onRestore,
 }: ConversationItemProps): JSX.Element {
+	const { t } = useTranslation('aiAssistant');
 	const [isEditing, setIsEditing] = useState(false);
 	const [editValue, setEditValue] = useState('');
 	const inputRef = useRef<HTMLInputElement>(null);
 	const [, copyToClipboard] = useCopyToClipboard();
 
 	const isArchived = Boolean(conversation.archived);
-	const displayTitle = conversation.title ?? 'New conversation';
+	const displayTitle = conversation.title ?? t('new_conversation');
 	const ts = conversation.updatedAt ?? conversation.createdAt;
 
 	const handleCopyLink = useCallback((): void => {
@@ -215,7 +217,7 @@ export default function ConversationItem({
 							size="icon"
 							color="none"
 							className={styles.btn}
-							aria-label="Conversation actions"
+							aria-label={t('conversation_actions')}
 							prefix={<EllipsisVertical size={12} />}
 						/>
 					</DropdownMenuSimple>

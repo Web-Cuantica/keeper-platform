@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Plus } from '@signozhq/icons';
@@ -13,6 +14,7 @@ import RolesListingTable from './RolesComponents/RolesListingTable';
 import styles from './RolesSettings.module.scss';
 
 function RolesSettings(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [searchQuery, setSearchQuery] = useState('');
 	const history = useHistory();
 	const { isRolesEnabled } = useRolesFeatureGate();
@@ -20,7 +22,7 @@ function RolesSettings(): JSX.Element {
 	return (
 		<div data-testid="roles-settings">
 			<div className={styles.rolesSettingsHeader}>
-				<h3 className={styles.rolesSettingsHeaderTitle}>Roles</h3>
+				<h3 className={styles.rolesSettingsHeaderTitle}>{t('cfg_roles', { defaultValue: "Roles" })}</h3>
 				<p className={styles.rolesSettingsHeaderDescription}>
 					{isRolesEnabled
 						? 'Create and manage custom roles for your team. '
@@ -31,7 +33,7 @@ function RolesSettings(): JSX.Element {
 						rel="noopener noreferrer"
 						className={styles.rolesSettingsHeaderLearnMore}
 					>
-						Learn more
+						{t('cfg_learn_more', { defaultValue: "Learn more" })}
 					</a>
 				</p>
 			</div>
@@ -39,7 +41,7 @@ function RolesSettings(): JSX.Element {
 				<div className={styles.rolesSettingsToolbar}>
 					<Input
 						type="search"
-						placeholder="Search for roles..."
+						placeholder={t('cfg_search_for_roles', { defaultValue: "Search for roles..." })}
 						value={searchQuery}
 						onChange={(e): void => setSearchQuery(e.target.value)}
 					/>
@@ -52,7 +54,7 @@ function RolesSettings(): JSX.Element {
 								onClick={(): void => history.push(ROUTES.ROLE_CREATE)}
 							>
 								<Plus size={14} />
-								Custom role
+								{t('cfg_custom_role', { defaultValue: "Custom role" })}
 							</Button>
 						</AuthZTooltip>
 					)}

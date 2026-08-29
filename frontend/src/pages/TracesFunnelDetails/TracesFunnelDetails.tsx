@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { Typography } from '@signozhq/ui/typography';
 import Spinner from 'components/Spinner';
@@ -11,6 +12,7 @@ import FunnelResults from './components/FunnelResults/FunnelResults';
 import './TracesFunnelDetails.styles.scss';
 
 function TracesFunnelDetails(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { funnelId } = useParams<{ funnelId: string }>();
 	const { data, isLoading, isError } = useFunnelDetails({ funnelId });
 
@@ -21,7 +23,7 @@ function TracesFunnelDetails(): JSX.Element {
 	if (isError) {
 		return (
 			<NotFoundContainer>
-				<Typography>Error loading funnel details</Typography>
+				<Typography>{t('funnel_load_error', { defaultValue: 'Error loading funnel details' })}</Typography>
 			</NotFoundContainer>
 		);
 	}

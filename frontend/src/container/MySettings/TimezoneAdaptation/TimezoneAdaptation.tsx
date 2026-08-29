@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
 import { Color } from '@signozhq/design-tokens';
 import { Switch } from '@signozhq/ui/switch';
@@ -8,6 +9,7 @@ import { useTimezone } from 'providers/Timezone';
 import './TimezoneAdaptation.styles.scss';
 
 function TimezoneAdaptation(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const {
 		timezone,
 		browserTimezone,
@@ -47,7 +49,7 @@ function TimezoneAdaptation(): JSX.Element {
 	return (
 		<div className="timezone-adaption">
 			<div className="timezone-adaption__header">
-				<h2 className="timezone-adaption__title">Adapt to my timezone</h2>
+				<h2 className="timezone-adaption__title">{t('cfg_adapt_to_my_timezone', { defaultValue: "Adapt to my timezone" })}</h2>
 				<Switch
 					value={isAdaptationEnabled}
 					onChange={handleSwitchChange}
@@ -57,7 +59,7 @@ function TimezoneAdaptation(): JSX.Element {
 			</div>
 
 			<p className="timezone-adaption__description">
-				Adapt the timestamps shown in the SigNoz console to my active timezone.
+				{t('cfg_adapt_the_timestamps_shown', { defaultValue: "Adapt the timestamps shown in the SigNoz console to my active timezone." })}
 			</p>
 
 			<div className="timezone-adaption__note">
@@ -66,7 +68,7 @@ function TimezoneAdaptation(): JSX.Element {
 					<span className="timezone-adaption__note-text">
 						{isTimezoneOverridden ? (
 							<>
-								Your current timezone is overridden to
+								{t('cfg_your_current_timezone_is', { defaultValue: "Your current timezone is overridden to" })}
 								<span className="timezone-adaption__note-text-overridden">
 									{timezone.offset}
 								</span>
@@ -87,7 +89,7 @@ function TimezoneAdaptation(): JSX.Element {
 						onClick={handleOverrideClear}
 					>
 						<Delete height={12} width={12} color={Color.BG_ROBIN_300} />
-						Clear override
+						{t('cfg_clear_override', { defaultValue: "Clear override" })}
 					</button>
 				)}
 			</div>

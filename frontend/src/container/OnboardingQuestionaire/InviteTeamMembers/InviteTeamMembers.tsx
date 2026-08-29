@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useCallback, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { Button } from '@signozhq/ui/button';
@@ -47,6 +48,7 @@ function InviteTeamMembers({
 	setTeamMembers,
 	onNext,
 }: InviteTeamMembersProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [teamMembersToInvite, setTeamMembersToInvite] = useState<
 		TeamMember[] | null
 	>(teamMembers);
@@ -262,21 +264,21 @@ function InviteTeamMembers({
 	return (
 		<div className="questions-container">
 			<OnboardingQuestionHeader
-				title="Invite your team"
-				subtitle="SigNoz is a lot more useful with collaborators on board."
+				title={t('onb_invite_your_team', { defaultValue: "Invite your team" })}
+				subtitle={t('onb_signoz_is_a_lot', { defaultValue: "SigNoz is a lot more useful with collaborators on board." })}
 			/>
 
 			<div className="questions-form-container">
 				<div className="questions-form invite-team-members-form">
 					<div className="form-group">
 						<div className="question-label">
-							Invite your team to the SigNoz workspace
+							{t('onb_invite_your_team_to', { defaultValue: "Invite your team to the SigNoz workspace" })}
 						</div>
 
 						<div className="invite-team-members-table">
 							<div className="invite-team-members-table-header">
-								<div className="table-header-cell email-header">Email address</div>
-								<div className="table-header-cell role-header">Roles</div>
+								<div className="table-header-cell email-header">{t('onb_email_address', { defaultValue: "Email address" })}</div>
+								<div className="table-header-cell role-header">{t('onb_roles', { defaultValue: "Roles" })}</div>
 								<div className="table-header-cell action-header" />
 							</div>
 
@@ -299,7 +301,7 @@ function InviteTeamMembers({
 												emailValidity[member.id] === false &&
 												member.email.trim() !== '' && (
 													<Typography.Text className="email-error-message">
-														Invalid email address
+														{t('onb_invalid_email_address', { defaultValue: "Invalid email address" })}
 													</Typography.Text>
 												)}
 										</div>
@@ -308,12 +310,12 @@ function InviteTeamMembers({
 												value={member.role || undefined}
 												onChange={(value): void => handleRoleChange(value, member)}
 												className="team-member-role-select"
-												placeholder="Select roles"
+												placeholder={t('onb_select_roles', { defaultValue: "Select roles" })}
 												suffixIcon={<ChevronDown size={14} />}
 											>
-												<Select.Option value="VIEWER">Viewer</Select.Option>
-												<Select.Option value="EDITOR">Editor</Select.Option>
-												<Select.Option value="ADMIN">Admin</Select.Option>
+												<Select.Option value="VIEWER">{t('onb_viewer', { defaultValue: "Viewer" })}</Select.Option>
+												<Select.Option value="EDITOR">{t('onb_editor', { defaultValue: "Editor" })}</Select.Option>
+												<Select.Option value="ADMIN">{t('onb_admin', { defaultValue: "Admin" })}</Select.Option>
 											</Select>
 										</div>
 										<div className="team-member-cell action-cell">
@@ -323,7 +325,7 @@ function InviteTeamMembers({
 													color="secondary"
 													className="remove-team-member-button"
 													onClick={(): void => handleRemoveTeamMember(member.id)}
-													aria-label="Remove team member"
+													aria-label={t('onb_remove_team_member', { defaultValue: "Remove team member" })}
 												>
 													<Trash2 size={12} />
 												</Button>
@@ -341,7 +343,7 @@ function InviteTeamMembers({
 									prefix={<Plus size={12} />}
 									onClick={handleAddTeamMember}
 								>
-									Add another
+									{t('onb_add_another', { defaultValue: "Add another" })}
 								</Button>
 							</div>
 						</div>
@@ -381,7 +383,7 @@ function InviteTeamMembers({
 							)
 						}
 					>
-						Send Invites
+						{t('onb_send_invites', { defaultValue: "Send Invites" })}
 					</Button>
 					<Button
 						variant="ghost"
@@ -390,7 +392,7 @@ function InviteTeamMembers({
 						onClick={handleDoLater}
 						disabled={isButtonDisabled}
 					>
-						I&apos;ll do this later
+						{t('onb_iaposll_do_this_later', { defaultValue: "I&apos;ll do this later" })}
 					</Button>
 				</div>
 			</div>

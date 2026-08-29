@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import cx from 'classnames';
 import { useCopyToClipboard } from 'react-use';
 import { Button } from '@signozhq/ui/button';
@@ -9,6 +10,7 @@ import { Check, Copy, RefreshCw, ThumbsDown, ThumbsUp } from '@signozhq/icons';
 import { useTimezone } from 'providers/Timezone';
 
 import logEvent from 'api/common/logEvent';
+import type { FeedbackCategory } from 'api/ai-assistant/chat';
 
 import { FeedbackRatingDTO } from 'api/ai-assistant/sigNozAIAssistantAPI.schemas';
 import { AIAssistantEvents } from '../../events';
@@ -33,6 +35,17 @@ const VOTE_LABEL = {
 		ariaLabel: 'Bad response',
 	},
 } as const;
+
+const NEGATIVE_FEEDBACK_CATEGORIES: Array<{
+	value: FeedbackCategory;
+	label: string;
+}> = [
+	{ value: 'incorrect', label: 'Respuesta incorrecta' },
+	{ value: 'insufficient_context', label: 'Faltó contexto o datos' },
+	{ value: 'wrong_tool', label: 'Herramienta equivocada' },
+	{ value: 'slow', label: 'Fue lento' },
+	{ value: 'other', label: 'Otro motivo' },
+];
 
 interface MessageFeedbackProps {
 	message: Message;
@@ -70,6 +83,7 @@ export default function MessageFeedback({
 	onRegenerate,
 	isLastAssistant = false,
 }: MessageFeedbackProps): JSX.Element {
+	const { t } = useTranslation('aiAssistant');
 	const [copied, setCopied] = useState(false);
 	const [, copyToClipboard] = useCopyToClipboard();
 	const submitMessageFeedback = useAIAssistantStore(
@@ -79,17 +93,17 @@ export default function MessageFeedback({
 
 	const { formatTimezoneAdjustedTimestamp } = useTimezone();
 
-	// Local vote state — initialised from persisted feedbackRating, updated
-	// immediately on click so the UI responds without waiting for the API.
+	// Estado local del voto, inicializado desde la calificación persistida.
 	const [vote, setVote] = useState<FeedbackRating | null>(
 		message.feedbackRating ?? null,
 	);
 
-	// Negative-feedback dialog: collects an optional comment from the user.
-	// Positive feedback is one-click; negative requires explicit Submit so
-	// users can describe what was wrong.
+	// El voto negativo se clasifica sin pedir texto libre para que la señal sea analizable y no
+	// recopile datos sensibles de forma innecesaria.
 	const [isNegativeDialogOpen, setIsNegativeDialogOpen] = useState(false);
-	const [negativeComment, setNegativeComment] = useState('');
+	const [negativeCategory, setNegativeCategory] =
+		useState<FeedbackCategory | null>(null);
+	const [isSubmittingFeedback, setIsSubmittingFeedback] = useState(false);
 
 	const [relativeTime, setRelativeTime] = useState(() =>
 		formatRelativeTime(message.createdAt),
@@ -129,46 +143,59 @@ export default function MessageFeedback({
 		message.blocks,
 	]);
 
+	const submitVote = useCallback(
+		async (
+			rating: FeedbackRating,
+			category?: FeedbackCategory,
+		): Promise<boolean> => {
+			setIsSubmittingFeedback(true);
+			try {
+				const accepted = await submitMessageFeedback(message.id, rating, category);
+				if (!accepted) {
+					return false;
+				}
+				setVote(rating);
+				void logEvent(AIAssistantEvents.FeedbackSubmitted, {
+					messageId: message.id,
+					threadId,
+					rating: FEEDBACK_ANALYTICS_RATING[rating],
+					category: category ?? null,
+				});
+				return true;
+			} finally {
+				setIsSubmittingFeedback(false);
+			}
+		},
+		[message.id, submitMessageFeedback, threadId],
+	);
+
 	const handleVote = useCallback(
 		(rating: FeedbackRating): void => {
-			if (vote === rating) {
+			if (vote === rating || isSubmittingFeedback) {
 				return;
 			}
 			if (rating === FeedbackRatingDTO.negative) {
-				setNegativeComment('');
+				setNegativeCategory(null);
 				setIsNegativeDialogOpen(true);
 				return;
 			}
-			setVote(rating);
-			void logEvent(AIAssistantEvents.FeedbackSubmitted, {
-				messageId: message.id,
-				threadId,
-				rating: FEEDBACK_ANALYTICS_RATING[rating],
-				hasComment: false,
-				commentLength: 0,
-			});
-			submitMessageFeedback(message.id, rating);
+			void submitVote(rating);
 		},
-		[vote, message.id, submitMessageFeedback, threadId],
+		[vote, isSubmittingFeedback, submitVote],
 	);
 
-	const handleSubmitNegative = useCallback((): void => {
-		setVote(FeedbackRatingDTO.negative);
-		setIsNegativeDialogOpen(false);
-		const trimmed = negativeComment.trim();
-		void logEvent(AIAssistantEvents.FeedbackSubmitted, {
-			messageId: message.id,
-			threadId,
-			rating: FEEDBACK_ANALYTICS_RATING[FeedbackRatingDTO.negative],
-			hasComment: trimmed.length > 0,
-			commentLength: trimmed.length,
-		});
-		submitMessageFeedback(
-			message.id,
+	const handleSubmitNegative = useCallback(async (): Promise<void> => {
+		if (!negativeCategory) {
+			return;
+		}
+		const accepted = await submitVote(
 			FeedbackRatingDTO.negative,
-			trimmed || undefined,
+			negativeCategory,
 		);
-	}, [message.id, negativeComment, submitMessageFeedback, threadId]);
+		if (accepted) {
+			setIsNegativeDialogOpen(false);
+		}
+	}, [negativeCategory, submitVote]);
 
 	return (
 		<>
@@ -198,6 +225,7 @@ export default function MessageFeedback({
 							onClick={(): void => handleVote(FeedbackRatingDTO.positive)}
 							aria-label={VOTE_LABEL[FeedbackRatingDTO.positive].ariaLabel}
 							aria-pressed={vote === FeedbackRatingDTO.positive}
+							disabled={isSubmittingFeedback}
 						>
 							<ThumbsUp size={12} />
 						</Button>
@@ -214,20 +242,21 @@ export default function MessageFeedback({
 							onClick={(): void => handleVote(FeedbackRatingDTO.negative)}
 							aria-label={VOTE_LABEL[FeedbackRatingDTO.negative].ariaLabel}
 							aria-pressed={vote === FeedbackRatingDTO.negative}
+							disabled={isSubmittingFeedback}
 						>
 							<ThumbsDown size={12} />
 						</Button>
 					</TooltipSimple>
 
 					{onRegenerate && (
-						<TooltipSimple title="Regenerate">
+						<TooltipSimple title={t('regenerate')}>
 							<Button
 								className={styles.btn}
 								size="icon"
 								variant="ghost"
 								color="secondary"
 								onClick={onRegenerate}
-								aria-label="Regenerate response"
+								aria-label={t('regenerate_response')}
 							>
 								<RefreshCw size={12} />
 							</Button>
@@ -243,8 +272,8 @@ export default function MessageFeedback({
 			<DialogWrapper
 				open={isNegativeDialogOpen}
 				onOpenChange={setIsNegativeDialogOpen}
-				title="What went wrong?"
-				subTitle="Your feedback helps us improve the assistant. Comments are optional."
+				title="¿Qué salió mal?"
+				subTitle="Elige el motivo principal. No recopilamos comentarios libres en esta etapa."
 				width="base"
 				footer={
 					<div className={styles.feedbackDialogFooter}>
@@ -253,23 +282,36 @@ export default function MessageFeedback({
 							color="secondary"
 							onClick={(): void => setIsNegativeDialogOpen(false)}
 						>
-							Cancel
+							Cancelar
 						</Button>
-						<Button variant="solid" color="primary" onClick={handleSubmitNegative}>
-							Send feedback
+						<Button
+							variant="solid"
+							color="primary"
+							onClick={(): void => void handleSubmitNegative()}
+							disabled={!negativeCategory || isSubmittingFeedback}
+						>
+							Enviar feedback
 						</Button>
 					</div>
 				}
 			>
-				<textarea
-					className={styles.feedbackTextarea}
-					placeholder="Tell us what was unhelpful, inaccurate, or unsafe…"
-					value={negativeComment}
-					onChange={(e): void => setNegativeComment(e.target.value)}
-					rows={5}
-					autoFocus
-					maxLength={2000}
-				/>
+				<fieldset
+					className={styles.feedbackCategories}
+					aria-label="Motivo del feedback negativo"
+				>
+					{NEGATIVE_FEEDBACK_CATEGORIES.map((category) => (
+						<Button
+							key={category.value}
+							variant={negativeCategory === category.value ? 'solid' : 'outlined'}
+							color={negativeCategory === category.value ? 'primary' : 'secondary'}
+							onClick={(): void => setNegativeCategory(category.value)}
+							aria-pressed={negativeCategory === category.value}
+							disabled={isSubmittingFeedback}
+						>
+							{category.label}
+						</Button>
+						))}
+				</fieldset>
 			</DialogWrapper>
 		</>
 	);

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { CircleCheck, CircleX, LoaderCircle } from '@signozhq/icons';
 import logEvent from 'api/common/logEvent';
@@ -29,6 +30,7 @@ const enum ApplicationLogsType {
 }
 
 export default function LogsConnectionStatus(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [loading, setLoading] = useState(true);
 	const { selectedDataSource, activeStep, selectedEnvironment } =
 		useOnboardingContext();
@@ -233,12 +235,12 @@ export default function LogsConnectionStatus(): JSX.Element {
 			<div className="full-docs-link">{renderDocsReference()}</div>
 			<div className="status-container">
 				<div className="service-info">
-					<div className="label"> Logs Type </div>
+					<div className="label"> {t('onb_logs_type', { defaultValue: "Logs Type" })}</div>
 					<div className="language text-capitalize"> {logType} </div>
 				</div>
 
 				<div className="status-info">
-					<div className="label"> Status </div>
+					<div className="label"> {t('onb_status', { defaultValue: "Status" })}</div>
 
 					<div className="status">
 						{(loading || isFetching) && (
@@ -247,27 +249,27 @@ export default function LogsConnectionStatus(): JSX.Element {
 						{!(loading || isFetching) && isReceivingData && (
 							<>
 								<CircleCheck size="md" color="#52c41a" />
-								<span> Success </span>
+								<span> {t('onb_success', { defaultValue: "Success" })}</span>
 							</>
 						)}
 						{!(loading || isFetching) && !isReceivingData && (
 							<>
 								<CircleX size="md" color="#e84749" />
-								<span> Failed </span>
+								<span> {t('onb_failed', { defaultValue: "Failed" })}</span>
 							</>
 						)}
 					</div>
 				</div>
 				<div className="details-info">
-					<div className="label"> Details </div>
+					<div className="label"> {t('onb_details', { defaultValue: "Details" })}</div>
 
 					<div className="details">
-						{(loading || isFetching) && <div> Waiting for Update </div>}
+						{(loading || isFetching) && <div> {t('onb_waiting_for_update', { defaultValue: "Waiting for Update" })}</div>}
 						{!(loading || isFetching) && isReceivingData && (
-							<div> Received logs successfully. </div>
+							<div> {t('onb_received_logs_successfully', { defaultValue: "Received logs successfully." })}</div>
 						)}
 						{!(loading || isFetching) && !isReceivingData && (
-							<div> Could not detect the logs </div>
+							<div> {t('onb_could_not_detect_the_2', { defaultValue: "Could not detect the logs" })}</div>
 						)}
 					</div>
 				</div>

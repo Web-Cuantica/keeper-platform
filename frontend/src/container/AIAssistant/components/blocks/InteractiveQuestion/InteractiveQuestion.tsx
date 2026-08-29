@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import cx from 'classnames';
 import { Button } from '@signozhq/ui/button';
 import logEvent from 'api/common/logEvent';
@@ -33,6 +34,7 @@ export default function InteractiveQuestion({
 }: {
 	data: QuestionData;
 }): JSX.Element {
+	const { t } = useTranslation('aiAssistant');
 	const { question, type = 'radio', options } = data;
 	const normalized = options.map(normalizeOption);
 
@@ -126,7 +128,7 @@ export default function InteractiveQuestion({
 						disabled={selected.length === 0}
 						onClick={(): void => handleSubmit(selected)}
 					>
-						Confirm
+						{t('confirm')}
 					</Button>
 				</>
 			)}

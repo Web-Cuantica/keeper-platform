@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { Control, UseFormRegister } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import { Button } from '@signozhq/ui/button';
@@ -36,16 +37,17 @@ function KeyFormPhase({
 	onClose,
 	accountId,
 }: KeyFormPhaseProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	return (
 		<>
 			<form id={FORM_ID} className="add-key-modal__form" onSubmit={onSubmit}>
 				<div className="add-key-modal__field">
 					<label className="add-key-modal__label" htmlFor="key-name">
-						Name <span style={{ color: 'var(--destructive)' }}>*</span>
+						{t('onb_name', { defaultValue: "Name" })}<span style={{ color: 'var(--destructive)' }}>*</span>
 					</label>
 					<Input
 						id="key-name"
-						placeholder="Enter key name e.g.: Service Owner"
+						placeholder={t('onb_enter_key_name_eg', { defaultValue: "Enter key name e.g.: Service Owner" })}
 						className="add-key-modal__input"
 						{...register('keyName', {
 							required: true,
@@ -55,7 +57,7 @@ function KeyFormPhase({
 				</div>
 
 				<div className="add-key-modal__field">
-					<span className="add-key-modal__label">Expiration</span>
+					<span className="add-key-modal__label">{t('onb_expiration', { defaultValue: "Expiration" })}</span>
 					<Controller
 						name="expiryMode"
 						control={control}
@@ -82,7 +84,7 @@ function KeyFormPhase({
 				{expiryMode === ExpiryMode.DATE && (
 					<div className="add-key-modal__field">
 						<label className="add-key-modal__label" htmlFor="expiry-date">
-							Expiration Date
+							{t('onb_expiration_date', { defaultValue: "Expiration Date" })}
 						</label>
 						<div className="add-key-modal__datepicker">
 							<Controller
@@ -107,7 +109,7 @@ function KeyFormPhase({
 			<div className="add-key-modal__footer">
 				<div className="add-key-modal__footer-right">
 					<Button variant="solid" color="secondary" onClick={onClose}>
-						Cancel
+						{t('onb_cancel', { defaultValue: "Cancel" })}
 					</Button>
 					<AuthZTooltip
 						checks={[
@@ -124,7 +126,7 @@ function KeyFormPhase({
 							loading={isSubmitting}
 							disabled={!isValid}
 						>
-							Create Key
+							{t('onb_create_key', { defaultValue: "Create Key" })}
 						</Button>
 					</AuthZTooltip>
 				</div>

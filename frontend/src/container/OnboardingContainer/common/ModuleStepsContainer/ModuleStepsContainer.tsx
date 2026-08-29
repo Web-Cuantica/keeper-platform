@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import React, { SetStateAction, useState } from 'react';
 import {
 	ArrowLeft,
@@ -67,6 +68,7 @@ export default function ModuleStepsContainer({
 	selectedModuleSteps,
 	setIsInviteTeamMemberModalOpen,
 }: ModuleStepsContainerProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { safeNavigate } = useSafeNavigate();
 	const {
 		activeStep,
@@ -385,7 +387,7 @@ export default function ModuleStepsContainer({
 						<div className="brand-logo" onClick={handleLogoClick}>
 							<img src={signozBrandLogoUrl} alt="Keeper" />
 
-							<div className="brand-logo-name">Keeper</div>
+							<div className="brand-logo-name">{t('onb_keeper', { defaultValue: "Keeper" })}</div>
 						</div>
 					</div>
 
@@ -419,7 +421,7 @@ export default function ModuleStepsContainer({
 					icon={<UserPlus size={16} />}
 					className="invite-user-btn"
 				>
-					Invite teammates
+					{t('onb_invite_teammates', { defaultValue: "Invite teammates" })}
 				</Button>
 			</div>
 
@@ -462,7 +464,7 @@ export default function ModuleStepsContainer({
 						disabled={current === 0}
 						icon={<ArrowLeft size="md" />}
 					>
-						Back
+						{t('onb_back', { defaultValue: "Back" })}
 					</Button>
 					<Button
 						onClick={(e): void => handleNext(e)}
@@ -485,7 +487,7 @@ export default function ModuleStepsContainer({
 							selectedDataSource?.name || '',
 							activeStep?.module?.id,
 						)}
-						buttonText="Facing issues sending data to Keeper?"
+						buttonText={t('onb_facing_issues_sending_data', { defaultValue: "Facing issues sending data to Keeper?" })}
 						onHoverText="Click here to get help with sending data to Keeper"
 					/>
 				</div>

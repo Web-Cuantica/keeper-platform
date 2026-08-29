@@ -4,10 +4,10 @@ import { IBuilderQuery } from 'types/api/queryBuilder/queryBuilderData';
 
 import { SPAN_ATTRIBUTES } from '../Explorer/Domains/DomainDetails/constants';
 import {
-	endPointStatusCodeColumns,
 	extractPortAndEndpoint,
 	formatDataForTable,
 	getCustomFiltersForBarChart,
+	getEndPointStatusCodeColumns,
 	getFormattedEndPointDropDownData,
 	getFormattedEndPointStatusCodeChartData,
 	getFormattedEndPointStatusCodeData,
@@ -40,6 +40,11 @@ jest.mock('../utils', () => {
 		getLatencyOverTimeWidgetData: originalModule.getLatencyOverTimeWidgetData,
 	};
 });
+
+// Doble de la función de traducción: devuelve el defaultValue, igual que i18next cuando la
+// clave no está en el locale. Las fábricas getX(t) la reciben por parámetro.
+const tFalsa = (_clave: string, opts?: { defaultValue?: string }): string =>
+	opts?.defaultValue ?? _clave;
 
 describe('API Monitoring Utils', () => {
 	// New tests for formatDataForTable
@@ -230,7 +235,7 @@ describe('API Monitoring Utils', () => {
 	describe('getTopErrorsColumnsConfig', () => {
 		it('should return column configuration with expected fields', () => {
 			// Act
-			const result = getTopErrorsColumnsConfig();
+			const result = getTopErrorsColumnsConfig(tFalsa);
 
 			// Assert
 			expect(result).toBeDefined();
@@ -886,9 +891,10 @@ describe('API Monitoring Utils', () => {
 		});
 	});
 
-	describe('endPointStatusCodeColumns', () => {
+	describe('getEndPointStatusCodeColumns', () => {
 		it('should have the expected columns', () => {
 			// Assert
+			const endPointStatusCodeColumns = getEndPointStatusCodeColumns(tFalsa);
 			expect(endPointStatusCodeColumns).toBeDefined();
 			expect(endPointStatusCodeColumns.length).toBeGreaterThan(0);
 
@@ -902,6 +908,7 @@ describe('API Monitoring Utils', () => {
 
 		it('should have properly configured columns with render functions', () => {
 			// Check that columns have appropriate render functions
+			const endPointStatusCodeColumns = getEndPointStatusCodeColumns(tFalsa);
 			const statusCodeColumn = endPointStatusCodeColumns.find(
 				(col) => col.dataIndex === 'statusCode',
 			);

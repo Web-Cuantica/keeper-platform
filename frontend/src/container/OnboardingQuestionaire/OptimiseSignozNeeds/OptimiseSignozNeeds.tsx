@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { Button } from '@signozhq/ui/button';
 import { Slider } from '@signozhq/ui/slider';
@@ -88,6 +89,7 @@ function OptimiseSignozNeeds({
 	onWillDoLater,
 	isNextDisabled,
 }: OptimiseSignozNeedsProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [logsPerDay, setLogsPerDay] = useState<number>(
 		optimiseSignozDetails?.logsPerDay || 0,
 	);
@@ -188,21 +190,21 @@ function OptimiseSignozNeeds({
 	return (
 		<div className="questions-container">
 			<OnboardingQuestionHeader
-				title="Set up your workspace"
-				subtitle="Tailor SigNoz to suit your observability needs."
+				title={t('onb_set_up_your_workspace', { defaultValue: "Set up your workspace" })}
+				subtitle={t('onb_tailor_signoz_to_suit', { defaultValue: "Tailor SigNoz to suit your observability needs." })}
 			/>
 
 			<div className="questions-form-container">
 				<div className="questions-form">
 					<div className="form-group">
 						<Typography.Text className="question">
-							What does your scale approximately look like?
+							{t('onb_what_does_your_scale', { defaultValue: "What does your scale approximately look like?" })}
 						</Typography.Text>
 					</div>
 
 					<div className="form-group">
 						<label className="question-slider" htmlFor="organisationName">
-							Logs / Day
+							{t('onb_logs_day', { defaultValue: "Logs / Day" })}
 						</label>
 						<div className="slider-container">
 							<div>
@@ -229,7 +231,7 @@ function OptimiseSignozNeeds({
 
 					<div className="form-group">
 						<label className="question-slider" htmlFor="organisationName">
-							Metrics <Minus size={14} /> Number of Hosts
+							{t('onb_metrics', { defaultValue: "Metrics" })}<Minus size={14} /> {t('onb_number_of_hosts', { defaultValue: "Number of Hosts" })}
 						</label>
 						<div className="slider-container">
 							<div>
@@ -256,7 +258,7 @@ function OptimiseSignozNeeds({
 
 					<div className="form-group">
 						<label className="question-slider" htmlFor="organisationName">
-							Number of services
+							{t('onb_number_of_services', { defaultValue: "Number of services" })}
 						</label>
 						<div className="slider-container">
 							<div>
@@ -299,7 +301,7 @@ function OptimiseSignozNeeds({
 							)
 						}
 					>
-						Next
+						{t('onb_next', { defaultValue: "Next" })}
 					</Button>
 					<Button
 						variant="ghost"
@@ -308,7 +310,7 @@ function OptimiseSignozNeeds({
 						onClick={handleWillDoLater}
 						disabled={isUpdatingProfile}
 					>
-						I&apos;ll do this later
+						{t('onb_iaposll_do_this_later', { defaultValue: "I&apos;ll do this later" })}
 					</Button>
 				</div>
 			</div>

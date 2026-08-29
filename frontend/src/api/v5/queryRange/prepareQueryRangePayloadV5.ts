@@ -134,14 +134,26 @@ function getFilter(queryData: IBuilderQuery): Filter {
 	};
 }
 
+// Las columnas pueden llegar como objeto o, en los caminos que solo arrastran el nombre,
+// como string suelto. `'key' in c` sobre un string lanza TypeError y tumba la consulta
+// ANTES de salir a la red (el explorador lo muestra como un 500 que nunca ocurrió).
+// Aquí se normaliza el string al objeto que espera el resto del pipeline.
+function normalizaColumnas(
+	columnas: (BaseAutocompleteData | TelemetryFieldKey | string)[] | undefined,
+): (BaseAutocompleteData | TelemetryFieldKey)[] | undefined {
+	return columnas
+		?.map((c) => (typeof c === 'string' ? ({ name: c } as TelemetryFieldKey) : c))
+		.filter((c) => ('key' in c ? c?.key : c?.name));
+}
+
 function createBaseSpec(
 	queryData: IBuilderQuery,
 	requestType: RequestType,
 	panelType?: PANEL_TYPES,
 ): BaseBuilderQuery {
-	const nonEmptySelectColumns = (
-		queryData.selectColumns as (BaseAutocompleteData | TelemetryFieldKey)[]
-	)?.filter((c) => ('key' in c ? c?.key : c?.name));
+	const nonEmptySelectColumns = normalizaColumnas(
+		queryData.selectColumns as (BaseAutocompleteData | TelemetryFieldKey)[],
+	);
 
 	return {
 		stepInterval: queryData?.stepInterval || null,
@@ -366,9 +378,9 @@ function createTraceOperatorBaseSpec(
 	requestType: RequestType,
 	panelType?: PANEL_TYPES,
 ): BaseBuilderQuery {
-	const nonEmptySelectColumns = (
-		queryData.selectColumns as (BaseAutocompleteData | TelemetryFieldKey)[]
-	)?.filter((c) => ('key' in c ? c?.key : c?.name));
+	const nonEmptySelectColumns = normalizaColumnas(
+		queryData.selectColumns as (BaseAutocompleteData | TelemetryFieldKey)[],
+	);
 
 	const {
 		stepInterval,

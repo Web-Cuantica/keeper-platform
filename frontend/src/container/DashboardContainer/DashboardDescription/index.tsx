@@ -348,13 +348,13 @@ function DashboardDescription(props: DashboardDescriptionProps): JSX.Element {
 					</Tooltip>
 
 					{isPublicDashboard && (
-						<Tooltip title="This dashboard is publicly accessible">
+						<Tooltip title={t('qb_this_dashboard_is_publicly', { defaultValue: "This dashboard is publicly accessible" })}>
 							<Globe size={14} className="public-dashboard-icon" />
 						</Tooltip>
 					)}
 
 					{isDashboardLocked && (
-						<Tooltip title="This dashboard is locked">
+						<Tooltip title={t('qb_this_dashboard_is_locked', { defaultValue: "This dashboard is locked" })}>
 							<LockKeyhole size={14} className="lock-dashboard-icon" />
 						</Tooltip>
 					)}
@@ -397,7 +397,7 @@ function DashboardDescription(props: DashboardDescriptionProps): JSX.Element {
 												setIsDashbordSettingsOpen(false);
 											}}
 										>
-											Rename
+											{t('qb_rename', { defaultValue: "Rename" })}
 										</Button>
 									)}
 
@@ -406,7 +406,7 @@ function DashboardDescription(props: DashboardDescriptionProps): JSX.Element {
 										icon={<Fullscreen size={14} />}
 										onClick={handle.enter}
 									>
-										Full screen
+										{t('qb_full_screen', { defaultValue: "Full screen" })}
 									</Button>
 								</section>
 								<section className="section-2">
@@ -419,7 +419,7 @@ function DashboardDescription(props: DashboardDescriptionProps): JSX.Element {
 												setIsDashbordSettingsOpen(false);
 											}}
 										>
-											New section
+											{t('qb_new_section_2', { defaultValue: "New section" })}
 										</Button>
 									)}
 
@@ -434,7 +434,7 @@ function DashboardDescription(props: DashboardDescriptionProps): JSX.Element {
 											setIsDashbordSettingsOpen(false);
 										}}
 									>
-										Export JSON
+										{t('qb_export_json', { defaultValue: "Export JSON" })}
 									</Button>
 									<Button
 										type="text"
@@ -446,7 +446,7 @@ function DashboardDescription(props: DashboardDescriptionProps): JSX.Element {
 											setIsDashbordSettingsOpen(false);
 										}}
 									>
-										Copy as JSON
+										{t('qb_copy_as_json', { defaultValue: "Copy as JSON" })}
 									</Button>
 								</section>
 								<section className="delete-dashboard">
@@ -479,7 +479,7 @@ function DashboardDescription(props: DashboardDescriptionProps): JSX.Element {
 								data-testid="show-drawer"
 								onClick={onConfigureClick}
 							>
-								Configure
+								{t('qb_configure', { defaultValue: "Configure" })}
 							</Button>
 							<SettingsDrawer
 								drawerTitle="Dashboard Configuration"
@@ -500,7 +500,7 @@ function DashboardDescription(props: DashboardDescriptionProps): JSX.Element {
 							type="primary"
 							data-testid="add-panel-header"
 						>
-							New Panel
+							{t('qb_new_panel', { defaultValue: "New Panel" })}
 						</Button>
 					)}
 				</div>
@@ -527,7 +527,7 @@ function DashboardDescription(props: DashboardDescriptionProps): JSX.Element {
 
 			<Modal
 				open={isRenameDashboardOpen}
-				title="Rename Dashboard"
+				title={t('qb_rename_dashboard', { defaultValue: "Rename Dashboard" })}
 				onOk={(): void => {
 					// handle update dashboard here
 				}}
@@ -544,7 +544,7 @@ function DashboardDescription(props: DashboardDescriptionProps): JSX.Element {
 							onClick={onNameChangeHandler}
 							disabled={updateDashboardMutation.isLoading}
 						>
-							Rename Dashboard
+							{t('qb_rename_dashboard', { defaultValue: "Rename Dashboard" })}
 						</Button>
 						<Button
 							type="text"
@@ -552,13 +552,13 @@ function DashboardDescription(props: DashboardDescriptionProps): JSX.Element {
 							className="cancel-btn"
 							onClick={(): void => setIsRenameDashboardOpen(false)}
 						>
-							Cancel
+							{t('qb_cancel', { defaultValue: "Cancel" })}
 						</Button>
 					</div>
 				}
 			>
 				<div className="dashboard-content">
-					<Typography.Text className="name-text">Enter a new name</Typography.Text>
+					<Typography.Text className="name-text">{t('qb_enter_a_new_name', { defaultValue: "Enter a new name" })}</Typography.Text>
 					<Input
 						data-testid="dashboard-name"
 						className="dashboard-name-input"
@@ -569,7 +569,7 @@ function DashboardDescription(props: DashboardDescriptionProps): JSX.Element {
 			</Modal>
 			<Modal
 				open={isPanelNameModalOpen}
-				title="New Section"
+				title={t('qb_new_section', { defaultValue: "New Section" })}
 				rootClassName="section-naming"
 				onOk={(): void => handleAddRow()}
 				onCancel={(): void => {
@@ -585,7 +585,7 @@ function DashboardDescription(props: DashboardDescriptionProps): JSX.Element {
 							onClick={(): void => handleAddRow()}
 							disabled={updateDashboardMutation.isLoading}
 						>
-							Create Section
+							{t('qb_create_section', { defaultValue: "Create Section" })}
 						</Button>
 						<Button
 							type="text"
@@ -596,13 +596,13 @@ function DashboardDescription(props: DashboardDescriptionProps): JSX.Element {
 								setSectionName(DEFAULT_ROW_NAME);
 							}}
 						>
-							Cancel
+							{t('qb_cancel', { defaultValue: "Cancel" })}
 						</Button>
 					</div>
 				}
 			>
 				<div className="section-naming-content">
-					<Typography.Text className="name-text">Enter Section name</Typography.Text>
+					<Typography.Text className="name-text">{t('qb_enter_section_name', { defaultValue: "Enter Section name" })}</Typography.Text>
 					<Input
 						data-testid="section-name"
 						className="section-name-input"

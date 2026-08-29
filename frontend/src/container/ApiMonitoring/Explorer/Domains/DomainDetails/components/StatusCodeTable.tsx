@@ -1,9 +1,10 @@
+import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
 import { UseQueryResult } from 'react-query';
 import { Table } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
 import {
-	endPointStatusCodeColumns,
+	getEndPointStatusCodeColumns,
 	getFormattedEndPointStatusCodeData,
 } from 'container/ApiMonitoring/utils';
 import { SuccessResponse } from 'types/api';
@@ -17,6 +18,7 @@ function StatusCodeTable({
 }: {
 	endPointStatusCodeDataQuery: UseQueryResult<SuccessResponse<any>, unknown>;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { isLoading, isRefetching, isError, data, refetch } =
 		endPointStatusCodeDataQuery;
 
@@ -39,7 +41,7 @@ function StatusCodeTable({
 			<Table
 				loading={isLoading || isRefetching}
 				dataSource={statusCodeData || []}
-				columns={endPointStatusCodeColumns}
+				columns={getEndPointStatusCodeColumns(t)}
 				pagination={false}
 				rowClassName={(_, index): string =>
 					index % 2 === 0 ? 'table-row-dark' : 'table-row-light'
@@ -56,7 +58,7 @@ function StatusCodeTable({
 									/>
 
 									<Typography.Text className="no-status-code-data-message">
-										This query had no results. Edit your query and try again!
+										{t('cfg_this_query_had_no', { defaultValue: "This query had no results. Edit your query and try again!" })}
 									</Typography.Text>
 								</div>
 							</div>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { memo } from 'react';
 import { Card, Modal } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
@@ -14,6 +15,7 @@ import { PanelTypesWithData } from './menuItems';
 import './PanelTypeSelectionModal.styles.scss';
 
 function PanelTypeSelectionModal(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { isPanelTypeSelectionModalOpen, setIsPanelTypeSelectionModalOpen } =
 		usePanelTypeSelectionModalStore();
 
@@ -50,7 +52,7 @@ function PanelTypeSelectionModal(): JSX.Element {
 			}}
 			rootClassName="panel-type-selection-modal"
 			footer={null}
-			title="New Panel"
+			title={t('qb_new_panel', { defaultValue: "New Panel" })}
 		>
 			<div className="panel-selection">
 				{PanelTypesWithData.map(({ name, icon, display }) => (

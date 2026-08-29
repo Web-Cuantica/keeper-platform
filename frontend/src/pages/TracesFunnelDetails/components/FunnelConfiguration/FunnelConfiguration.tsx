@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { memo, useState } from 'react';
 import { Button, Tooltip } from 'antd';
 import { Divider } from '@signozhq/ui/divider';
@@ -35,6 +36,7 @@ function FunnelConfiguration({
 	triggerAutoSave,
 	showNotifications,
 }: FunnelConfigurationProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { hasEditPermission } = useAppContext();
 	const { triggerSave } = useFunnelContext();
 	const { isPopoverOpen, setIsPopoverOpen, steps, isSaving } =
@@ -72,7 +74,7 @@ function FunnelConfiguration({
 								className="funnel-item__action-btn funnel-configuration__rename-btn"
 								icon={<PencilLine size={14} />}
 								onClick={(): void => setIsDescriptionModalOpen(true)}
-								aria-label="Edit Funnel Description"
+								aria-label={t('qb2_edit_funnel_description', { defaultValue: "Edit Funnel Description" })}
 								disabled={!hasEditPermission}
 							/>
 						</Tooltip>

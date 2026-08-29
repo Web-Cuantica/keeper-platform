@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useCallback, useRef, useState } from 'react';
 import { Info, Plus, X } from '@signozhq/icons';
 import { Button } from '@signozhq/ui/button';
@@ -33,6 +34,7 @@ function ItemInputSelector({
 	docsAnchor = 'role',
 	hasError = false,
 }: ItemInputSelectorProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [inputValue, setInputValue] = useState('');
 	const footerRef = useRef<HTMLDivElement>(null);
 
@@ -171,13 +173,13 @@ function ItemInputSelector({
 					<TooltipSimple
 						title={
 							<Typography align="left">
-								Still not sure on how to add selectors? <br />
+								{t('cfg_still_not_sure_on', { defaultValue: "Still not sure on how to add selectors?" })}<br />
 								<Typography.Link
 									href={`${BASE_DOCS_URL}#${docsAnchor}`}
 									target="_blank"
 									rel="noopener noreferrer"
 								>
-									Check the docs
+									{t('cfg_check_the_docs', { defaultValue: "Check the docs" })}
 								</Typography.Link>{' '}
 								to understand selectors for this resource.
 							</Typography>
@@ -194,7 +196,7 @@ function ItemInputSelector({
 						target="_blank"
 						rel="noopener noreferrer"
 					>
-						Check the docs
+						{t('cfg_check_the_docs', { defaultValue: "Check the docs" })}
 					</Typography.Link>{' '}
 					to understand selectors for this resource.
 				</Typography>

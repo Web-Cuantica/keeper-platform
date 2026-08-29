@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useCallback, useRef, useState } from 'react';
 import { SolidAlertTriangle } from '@signozhq/icons';
 import { Button, ButtonGroup } from '@signozhq/ui/button';
@@ -33,6 +34,7 @@ function PermissionEditor({
 	isLoading = false,
 	validationErrors,
 }: PermissionEditorProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const jsonEditorRef = useRef<JsonEditorRef>(null);
 
 	const handleJsonValidityChange = useCallback(
@@ -155,7 +157,7 @@ function PermissionEditor({
 					color="muted"
 					className={styles.permissionEditorTitle}
 				>
-					Transaction Groups
+					{t('cfg_transaction_groups', { defaultValue: "Transaction Groups" })}
 				</Typography>
 				<hr className={styles.permissionEditorDivider} />
 				<RadioGroup
@@ -170,7 +172,7 @@ function PermissionEditor({
 						className={styles.permissionEditorModeInput}
 						testId="permission-editor-mode-interactive"
 					>
-						Interactive
+						{t('cfg_interactive', { defaultValue: "Interactive" })}
 					</RadioGroupItem>
 					<RadioGroupItem
 						value="json"
@@ -194,10 +196,10 @@ function PermissionEditor({
 								testId="toggle-all-group"
 							>
 								<Button onClick={handleExpandAll} data-testid="expand-all-button">
-									Expand all
+									{t('cfg_expand_all', { defaultValue: "Expand all" })}
 								</Button>
 								<Button onClick={handleCollapseAll} data-testid="collapse-all-button">
-									Collapse all
+									{t('cfg_collapse_all', { defaultValue: "Collapse all" })}
 								</Button>
 							</ButtonGroup>
 						</div>
@@ -232,11 +234,11 @@ function PermissionEditor({
 						handleDiscardCancel();
 					}
 				}}
-				title="Discard JSON changes?"
+				title={t('cfg_discard_json_changes', { defaultValue: "Discard JSON changes?" })}
 				titleIcon={<SolidAlertTriangle size={14} color="#fdd600" />}
 				confirmText="Discard"
 				confirmColor="destructive"
-				cancelText="Stay in JSON"
+				cancelText={t('cfg_stay_in_json', { defaultValue: "Stay in JSON" })}
 				onConfirm={handleDiscardConfirm}
 				onCancel={handleDiscardCancel}
 			>

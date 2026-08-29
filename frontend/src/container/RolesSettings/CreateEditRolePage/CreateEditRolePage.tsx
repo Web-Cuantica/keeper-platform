@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useCallback, useState } from 'react';
 import { matchPath, useHistory, useLocation } from 'react-router-dom';
 import { ArrowLeft, SolidAlertTriangle } from '@signozhq/icons';
@@ -20,6 +21,7 @@ import { useNavigationBlocker } from '../../../hooks/useNavigationBlocker';
 import styles from './CreateEditRolePage.module.scss';
 
 function CreateEditRolePage(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const history = useHistory();
 	const { pathname } = useLocation();
 	const urlQuery = useUrlQuery();
@@ -153,7 +155,7 @@ function CreateEditRolePage(): JSX.Element {
 						>
 							<ArrowLeft size={16} />
 						</Button>
-						<Typography.Title level={3}>Failed to load role</Typography.Title>
+						<Typography.Title level={3}>{t('cfg_failed_to_load_role', { defaultValue: "Failed to load role" })}</Typography.Title>
 					</div>
 				</div>
 
@@ -191,7 +193,7 @@ function CreateEditRolePage(): JSX.Element {
 						<div className={styles.unsavedIndicator}>
 							<span className={styles.unsavedDot} />
 							<Typography as="span" size="base" className={styles.unsavedText}>
-								Unsaved changes
+								{t('cfg_unsaved_changes', { defaultValue: "Unsaved changes" })}
 							</Typography>
 						</div>
 					)}
@@ -223,7 +225,7 @@ function CreateEditRolePage(): JSX.Element {
 						{isCreateMode ? (
 							<div className={styles.formField}>
 								<label htmlFor="role-name" className={styles.formLabel}>
-									Name
+									{t('cfg_name', { defaultValue: "Name" })}
 								</label>
 								<Input
 									id="role-name"
@@ -236,13 +238,13 @@ function CreateEditRolePage(): JSX.Element {
 						) : null}
 						<div className={styles.formField}>
 							<label htmlFor="role-description" className={styles.formLabel}>
-								Description
+								{t('cfg_description', { defaultValue: "Description" })}
 							</label>
 							<Input
 								id="role-description"
 								value={formData.description}
 								onChange={(e): void => handleFormChange('description', e.target.value)}
-								placeholder="Custom role for the support team"
+								placeholder={t('cfg_custom_role_for_the', { defaultValue: "Custom role for the support team" })}
 								data-testid="role-description-input"
 							/>
 						</div>
@@ -269,11 +271,11 @@ function CreateEditRolePage(): JSX.Element {
 						cancelNavigation();
 					}
 				}}
-				title="Discard unsaved changes?"
+				title={t('cfg_discard_unsaved_changes', { defaultValue: "Discard unsaved changes?" })}
 				titleIcon={<SolidAlertTriangle size={14} color="#fdd600" />}
 				confirmText="Discard"
 				confirmColor="destructive"
-				cancelText="Keep editing"
+				cancelText={t('cfg_keep_editing', { defaultValue: "Keep editing" })}
 				onConfirm={confirmNavigation}
 				onCancel={cancelNavigation}
 				data-testid="discard-changes-dialog"

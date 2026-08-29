@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Input } from '@signozhq/ui/input';
 import { Button } from 'antd';
@@ -44,6 +45,7 @@ export default function ChartManager({
 	decimalPrecision = PrecisionOptionsEnum.TWO,
 	onCancel,
 }: ChartManagerProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { notifications } = useNotifications();
 	const { legendItemsMap } = useLegendsSync({
 		config,
@@ -146,17 +148,17 @@ export default function ChartManager({
 		<div className="chart-manager-container">
 			<div className="chart-manager-header">
 				<Input
-					placeholder="Filter Series"
+					placeholder={t('qb_filter_series', { defaultValue: "Filter Series" })}
 					value={filterValue}
 					onChange={handleFilterChange}
 					data-testid="filter-input"
 				/>
 				<div className="chart-manager-actions-container">
 					<Button type="default" onClick={onCancel}>
-						Cancel
+						{t('qb_cancel', { defaultValue: "Cancel" })}
 					</Button>
 					<Button type="primary" onClick={handleSave}>
-						Save
+						{t('qb_save', { defaultValue: "Save" })}
 					</Button>
 				</div>
 			</div>

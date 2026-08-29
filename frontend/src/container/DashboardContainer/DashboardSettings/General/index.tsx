@@ -129,7 +129,7 @@ function GeneralDashboardSettings(): JSX.Element {
 					}}
 				>
 					<div>
-						<Typography className={styles.dashboardName}>Dashboard Name</Typography>
+						<Typography className={styles.dashboardName}>{t('qb_dashboard_name', { defaultValue: "Dashboard Name" })}</Typography>
 						<section className={styles.nameIconInput}>
 							<Select
 								defaultActiveFirstOption
@@ -159,7 +159,7 @@ function GeneralDashboardSettings(): JSX.Element {
 					</div>
 
 					<div>
-						<Typography className={styles.dashboardName}>Description</Typography>
+						<Typography className={styles.dashboardName}>{t('qb_description', { defaultValue: "Description" })}</Typography>
 						<Input.TextArea
 							data-testid="dashboard-desc"
 							rows={6}
@@ -169,7 +169,7 @@ function GeneralDashboardSettings(): JSX.Element {
 						/>
 					</div>
 					<div>
-						<Typography className={styles.dashboardName}>Tags</Typography>
+						<Typography className={styles.dashboardName}>{t('qb_tags', { defaultValue: "Tags" })}</Typography>
 						<AddTags tags={updatedTags} setTags={setUpdatedTags} />
 					</div>
 				</Space>
@@ -177,16 +177,16 @@ function GeneralDashboardSettings(): JSX.Element {
 			<Col className={`${styles.overviewSettings} ${styles.crossPanelSyncGroup}`}>
 				<div className={styles.crossPanelSyncSectionHeader}>
 					<Typography.Text className={styles.crossPanelSyncSectionTitle}>
-						Cross-Panel Sync
+						{t('qb_crosspanel_sync', { defaultValue: "Cross-Panel Sync" })}
 					</Typography.Text>
 					<Tooltip
 						title={
 							<div className={styles.crossPanelSyncTooltipContent}>
 								<strong className={styles.crossPanelSyncTooltipTitle}>
-									Cross-Panel Sync
+									{t('qb_crosspanel_sync', { defaultValue: "Cross-Panel Sync" })}
 								</strong>
 								<span className={styles.crossPanelSyncTooltipDescription}>
-									Sync crosshair and tooltip across all the dashboard panels
+									{t('qb_sync_crosshair_and_tooltip', { defaultValue: "Sync crosshair and tooltip across all the dashboard panels" })}
 								</span>
 								<a
 									href="https://signoz.io/docs/dashboards/interactivity/#cross-panel-sync"
@@ -194,7 +194,7 @@ function GeneralDashboardSettings(): JSX.Element {
 									rel="noopener noreferrer"
 									className={styles.crossPanelSyncTooltipDocLink}
 								>
-									Learn more
+									{t('qb_learn_more', { defaultValue: "Learn more" })}
 									<ExternalLink size={12} />
 								</a>
 							</div>
@@ -208,10 +208,10 @@ function GeneralDashboardSettings(): JSX.Element {
 				<div className={styles.crossPanelSyncRow}>
 					<div className={styles.crossPanelSyncInfo}>
 						<Typography.Text className={styles.crossPanelSyncTitle}>
-							Sync Mode
+							{t('qb_sync_mode', { defaultValue: "Sync Mode" })}
 						</Typography.Text>
 						<Typography.Text className={styles.crossPanelSyncDescription}>
-							Sync crosshair and tooltip across all the dashboard panels
+							{t('qb_sync_crosshair_and_tooltip', { defaultValue: "Sync crosshair and tooltip across all the dashboard panels" })}
 						</Typography.Text>
 					</div>
 					<ToggleGroupSimple
@@ -231,7 +231,7 @@ function GeneralDashboardSettings(): JSX.Element {
 					<div className={styles.crossPanelSyncRow}>
 						<div className={styles.crossPanelSyncInfo}>
 							<Typography.Text className={styles.crossPanelSyncTitle}>
-								Synced Tooltip Series
+								{t('qb_synced_tooltip_series', { defaultValue: "Synced Tooltip Series" })}
 							</Typography.Text>
 							<Typography.Text className={styles.crossPanelSyncDescription}>
 								Show only series that intersect on group-by, or every series with the
@@ -273,7 +273,7 @@ function GeneralDashboardSettings(): JSX.Element {
 							type="text"
 							className={styles.discardBtn}
 						>
-							Discard
+							{t('qb_discard', { defaultValue: "Discard" })}
 						</Button>
 						<Button
 							style={{

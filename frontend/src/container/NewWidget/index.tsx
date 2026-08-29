@@ -1,4 +1,5 @@
 /* eslint-disable sonarjs/cognitive-complexity */
+import { useTranslation } from 'react-i18next';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { UseQueryResult } from 'react-query';
 // eslint-disable-next-line no-restricted-imports
@@ -90,6 +91,7 @@ function NewWidget({
 	selectedGraph,
 	enableDrillDown = false,
 }: NewWidgetProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { safeNavigate } = useSafeNavigate();
 	const setToScrollWidgetId = useScrollToWidgetIdStore(
 		(s) => s.setToScrollWidgetId,
@@ -816,7 +818,7 @@ function NewWidget({
 					/>
 					<Flex align="center" gap={24}>
 						<Typography.Text className="configure-panel">
-							Configure panel
+							{t('qb_configure_panel', { defaultValue: "Configure panel" })}
 						</Typography.Text>
 					</Flex>
 				</div>
@@ -833,7 +835,7 @@ function NewWidget({
 							disabled={isSaveDisabled || !currentQuery}
 							onClick={handleSwitchToViewMode}
 						>
-							Switch to View Mode
+							{t('qb_switch_to_view_mode', { defaultValue: "Switch to View Mode" })}
 						</Button>
 					)}
 					{isSaveDisabled && (
@@ -845,7 +847,7 @@ function NewWidget({
 							onClick={onSaveDashboard}
 							className="save-btn"
 						>
-							Save Changes
+							{t('qb_save_changes', { defaultValue: "Save Changes" })}
 						</Button>
 					)}
 					{!isSaveDisabled && (
@@ -858,7 +860,7 @@ function NewWidget({
 							prefix={<Check size={14} />}
 							className="save-btn"
 						>
-							Save Changes
+							{t('qb_save_changes', { defaultValue: "Save Changes" })}
 						</Button>
 					)}
 				</div>

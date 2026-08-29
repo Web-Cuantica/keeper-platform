@@ -17,7 +17,8 @@ interface MockQueryResult {
 // Mock the utility function
 jest.mock('container/ApiMonitoring/utils', () => ({
 	getFormattedDependentServicesData: jest.fn(),
-	dependentServicesColumns: [
+	// Ahora es una fábrica getX(t): el componente le pasa su función de traducción.
+	getDependentServicesColumns: (): unknown[] => [
 		{ title: 'Dependent Services', dataIndex: 'serviceData', key: 'serviceData' },
 		{ title: 'AVG. LATENCY', dataIndex: 'latency', key: 'latency' },
 		{ title: 'ERROR %', dataIndex: 'errorPercentage', key: 'errorPercentage' },

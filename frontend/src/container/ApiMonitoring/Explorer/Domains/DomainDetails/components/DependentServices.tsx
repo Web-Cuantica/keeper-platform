@@ -1,10 +1,11 @@
+import { useTranslation } from 'react-i18next';
 import { useMemo, useState } from 'react';
 import { UseQueryResult } from 'react-query';
 import { Skeleton, Table, TablePaginationConfig } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
 import { QueryParams } from 'constants/query';
 import {
-	dependentServicesColumns,
+	getDependentServicesColumns,
 	DependentServicesData,
 	getFormattedDependentServicesData,
 } from 'container/ApiMonitoring/utils';
@@ -30,6 +31,7 @@ function DependentServices({
 	dependentServicesQuery,
 	timeRange,
 }: DependentServicesProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { data, refetch, isError, isLoading, isRefetching } =
 		dependentServicesQuery;
 
@@ -68,7 +70,7 @@ function DependentServices({
 				<Table
 					loading={isLoading || isRefetching}
 					dataSource={dependentServicesData || []}
-					columns={dependentServicesColumns}
+					columns={getDependentServicesColumns(t)}
 					rowClassName="table-row-dark"
 					pagination={paginationConfig}
 					locale={{
@@ -83,7 +85,7 @@ function DependentServices({
 										/>
 
 										<Typography.Text className="no-status-code-data-message">
-											This query had no results. Edit your query and try again!
+											{t('cfg_this_query_had_no', { defaultValue: "This query had no results. Edit your query and try again!" })}
 										</Typography.Text>
 									</div>
 								</div>
@@ -117,7 +119,9 @@ function DependentServices({
 						tabIndex={0}
 					>
 						<UnfoldVertical size={14} />
-						{isExpanded ? 'Show less...' : 'Show more...'}
+						{isExpanded
+							? t('pages:apm_show_less', { defaultValue: 'Show less...' })
+							: t('pages:apm_show_more', { defaultValue: 'Show more...' })}
 					</div>
 				)}
 			</div>

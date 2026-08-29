@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { ToggleGroupSimple } from '@signozhq/ui/toggle-group';
 import { Typography } from '@signozhq/ui/typography';
 import { LineInterpolation } from 'lib/uPlotV2/config/types';
@@ -13,10 +14,11 @@ export default function LineInterpolationSelector({
 	value,
 	onChange,
 }: LineInterpolationSelectorProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	return (
 		<section className="line-interpolation-selector control-container">
 			<Typography.Text className="section-heading">
-				Line interpolation
+				{t('qb_line_interpolation', { defaultValue: "Line interpolation" })}
 			</Typography.Text>
 			<ToggleGroupSimple
 				type="single"

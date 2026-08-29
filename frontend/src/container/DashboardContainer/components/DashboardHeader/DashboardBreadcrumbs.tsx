@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useCallback, useRef } from 'react';
 import { Button } from 'antd';
 import getSessionStorageApi from 'api/browser/sessionstorage/get';
@@ -13,6 +14,7 @@ import { Base64Icons } from '../../DashboardSettings/General/utils';
 import './DashboardBreadcrumbs.styles.scss';
 
 function DashboardBreadcrumbs(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { safeNavigate } = useSafeNavigate();
 	const { dashboardData } = useDashboardStore();
 	const updatedAtRef = useRef(dashboardData?.updatedAt);
@@ -51,7 +53,7 @@ function DashboardBreadcrumbs(): JSX.Element {
 				className="dashboard-btn"
 				onClick={goToListPage}
 			>
-				Dashboard /
+				{t('qb_dashboard', { defaultValue: "Dashboard /" })}
 			</Button>
 			<Button type="text" className="id-btn dashboard-name-btn">
 				<img src={image} alt="dashboard-icon" className="dashboard-icon-image" />

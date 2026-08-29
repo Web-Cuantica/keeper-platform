@@ -1,4 +1,5 @@
 import cx from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import { useVariant } from '../../VariantContext';
 
@@ -23,11 +24,12 @@ const ROWS: { role: 'user' | 'assistant'; lines: number[] }[] = [
 
 /** Skeleton chat thread shown while a single conversation is being loaded. */
 export default function ConversationSkeleton(): JSX.Element {
+	const { t } = useTranslation('aiAssistant');
 	const variant = useVariant();
 	const isCompact = variant === 'panel';
 
 	return (
-		<div className={styles.thread} aria-busy aria-label="Loading conversation">
+		<div className={styles.thread} aria-busy aria-label={t('loading_conversation')}>
 			{ROWS.map((row, idx) => (
 				<div
 					// eslint-disable-next-line react/no-array-index-key

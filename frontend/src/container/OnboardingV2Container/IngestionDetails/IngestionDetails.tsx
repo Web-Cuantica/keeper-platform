@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
 import { Button, Skeleton, Tooltip } from 'antd';
@@ -38,6 +39,7 @@ const ONBOARDING_V3_ANALYTICS_EVENTS_MAP = {
 };
 
 export default function OnboardingIngestionDetails(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { notifications } = useNotifications();
 	const [, handleCopyToClipboard] = useCopyToClipboard();
 
@@ -110,7 +112,7 @@ export default function OnboardingIngestionDetails(): JSX.Element {
 				<>
 					<div className="ingestion-key-details-section">
 						<Typography.Text className="ingestion-key-details-section-text">
-							You can use this key to send your telemetry data to SigNoz.
+							{t('onb_you_can_use_this', { defaultValue: "You can use this key to send your telemetry data to SigNoz." })}
 						</Typography.Text>
 
 						<div className="ingestion-key-details-section-key">
@@ -126,7 +128,7 @@ export default function OnboardingIngestionDetails(): JSX.Element {
 									{!isLoadingGlobalConfig && (
 										<div className="ingestion-region-container">
 											<Typography.Text className="ingestion-region-label">
-												Ingestion URL
+												{t('onb_ingestion_url', { defaultValue: "Ingestion URL" })}
 											</Typography.Text>
 
 											{!isErrorGlobalConfig && (
@@ -177,7 +179,7 @@ export default function OnboardingIngestionDetails(): JSX.Element {
 
 									<div className="ingestion-key-container">
 										<Typography.Text className="ingestion-key-label">
-											<Key size={14} /> Ingestion Key
+											<Key size={14} /> {t('onb_ingestion_key', { defaultValue: "Ingestion Key" })}
 										</Typography.Text>
 
 										<Typography.Text className="ingestion-key-value-copy">

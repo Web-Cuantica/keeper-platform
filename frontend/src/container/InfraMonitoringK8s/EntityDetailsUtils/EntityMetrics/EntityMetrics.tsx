@@ -120,7 +120,12 @@ function EntityMetrics<T>({
 					minTimeScale: timeRange.startTime,
 					maxTimeScale: timeRange.endTime,
 					onDragSelect,
-					query: currentQuery,
+					// La leyenda de cada serie se resuelve contra ESTE query, no contra el
+					// del query builder global: es el del panel el que trae `legend`
+					// ('{{state}}', '{{device}}::{{direction}}', '1m'...) y sus agrupaciones.
+					// Con el global, `getLegend` leía una agregación ajena y rotulaba todas
+					// las series como "count()".
+					query: queryPayloads[idx]?.query ?? currentQuery,
 					legendScrollPosition: legendScrollPositionRef.current,
 					setLegendScrollPosition: (position: {
 						scrollTop: number;

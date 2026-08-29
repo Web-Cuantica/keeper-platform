@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { Skeleton } from 'antd';
 import { useFunnelsList } from 'hooks/TracesFunnels/useFunnels';
@@ -30,6 +31,7 @@ export function TracesFunnelsContentRenderer({
 	onFunnelClick,
 	shouldRedirectToTracesListOnDeleteSuccess,
 }: TracesFunnelsContentRendererProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	if (isLoading) {
 		return (
 			<div className="traces-funnels__loading">
@@ -51,7 +53,7 @@ export function TracesFunnelsContentRenderer({
 	}
 
 	if (isError) {
-		return <div>Something went wrong</div>;
+		return <div>{t('funnel_generic_error', { defaultValue: 'Something went wrong' })}</div>;
 	}
 
 	if (data.length === 0 && onCreateFunnel) {
@@ -76,6 +78,7 @@ TracesFunnelsContentRenderer.defaultProps = {
 };
 
 function TracesFunnels(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { searchQuery, handleSearch } = useHandleTraceFunnelsSearch();
 	const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
 	const { data, isLoading, isError } = useFunnelsList();

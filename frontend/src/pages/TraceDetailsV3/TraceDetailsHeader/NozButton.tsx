@@ -36,7 +36,7 @@ export default function NozButton(): JSX.Element | null {
 				size="icon"
 				color="secondary"
 				className="noz-wave"
-				aria-label="Open Noz"
+				aria-label="Open Qubi"
 				onClick={handleOpenNoz}
 			>
 				<Noz size={16} />

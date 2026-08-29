@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { memo, useCallback } from 'react';
 import { Button, Steps, Tooltip } from 'antd';
 import logEvent from 'api/common/logEvent';
@@ -20,6 +21,7 @@ function StepsContent({
 	isTraceDetailsPage?: boolean;
 	span?: Span;
 }): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { steps, handleAddStep, handleReplaceStep } = useFunnelContext();
 	const { hasEditPermission } = useAppContext();
 
@@ -69,7 +71,7 @@ function StepsContent({
 													handleReplaceStep(index, span.serviceName, span.name)
 												}
 											>
-												Replace
+												{t('qb2_replace', { defaultValue: "Replace" })}
 											</Button>
 										</Tooltip>
 									)}
@@ -98,7 +100,7 @@ function StepsContent({
 								icon={<Plus size={14} />}
 								disabled={!hasEditPermission}
 							>
-								{isTraceDetailsPage ? 'Add for new Step' : 'Add Funnel Step'}
+								{isTraceDetailsPage ? t('funnel_add_step_trace', { defaultValue: 'Add for new Step' }) : t('funnel_add_step', { defaultValue: 'Add Funnel Step' })}
 							</Button>
 						</Tooltip>
 					}

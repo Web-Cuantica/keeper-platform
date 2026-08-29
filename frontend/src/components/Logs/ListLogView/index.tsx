@@ -22,6 +22,7 @@ import { ILog } from 'types/api/logs/log';
 // components
 import AddToQueryHOC, { AddToQueryHOCProps } from '../AddToQueryHOC';
 import LogLinesActionButtons from '../LogLinesActionButtons/LogLinesActionButtons';
+import { useCopyLogJSON } from '../LogLinesActionButtons/useCopyLogJSON';
 import LogStateIndicator from '../LogStateIndicator/LogStateIndicator';
 import { getLogIndicatorType } from '../LogStateIndicator/utils';
 // styles
@@ -135,6 +136,7 @@ function ListLogView({
 		logData.id,
 	);
 	const isReadOnlyLog = !isLogsExplorerPage;
+	const handleCopyJSON = useCopyLogJSON(logData);
 
 	const isDarkMode = useIsDarkMode();
 
@@ -240,6 +242,8 @@ function ListLogView({
 					<LogLinesActionButtons
 						handleShowContext={handleShowContext}
 						onLogCopy={onLogCopy}
+						onViewDetails={handleDetailedView}
+						onCopyJSON={handleCopyJSON}
 					/>
 				)}
 			</Container>

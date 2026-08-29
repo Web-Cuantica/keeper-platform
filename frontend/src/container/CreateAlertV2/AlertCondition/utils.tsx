@@ -3,7 +3,6 @@ import { Button, Flex, SelectProps } from 'antd';
 import { Switch } from '@signozhq/ui/switch';
 import { Typography } from '@signozhq/ui/typography';
 import type { BaseOptionType, DefaultOptionType } from 'antd/es/select';
-import type { TFunction } from 'i18next';
 import { getInvolvedQueriesInTraceOperator } from 'components/QueryBuilderV2/QueryV2/TraceOperator/utils/utils';
 import { YAxisSource } from 'components/YAxisUnitSelector/types';
 import { getYAxisCategories } from 'components/YAxisUnitSelector/utils';
@@ -23,6 +22,7 @@ import { openInNewTab } from 'utils/navigation';
 
 import { ROUTING_POLICIES_ROUTE } from './constants';
 import { RoutingPolicyBannerProps } from './types';
+import { TraducirFn } from 'types/common/i18n';
 
 export function getQueryNames(currentQuery: Query): BaseOptionType[] {
 	const involvedQueriesInTraceOperator = getInvolvedQueriesInTraceOperator(
@@ -245,7 +245,7 @@ function TooltipLink(): JSX.Element {
 export const getMatchTypeTooltip = (
 	matchType: AlertThresholdMatchType,
 	operator: AlertThresholdOperator,
-	t: TFunction,
+	t: TraducirFn,
 ): React.ReactNode => {
 	const operatorSymbol = getTooltipOperatorSymbol(operator);
 	const operatorWord = getOperatorWord(operator);

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
 import { Button, Flex, Form, Input, Modal, Select } from 'antd';
 import { Typography } from '@signozhq/ui/typography';
@@ -25,6 +26,7 @@ function RoutingPolicyDetails({
 	isPolicyDetailsModalActionLoading,
 	refreshChannels,
 }: RoutingPolicyDetailsProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [form] = Form.useForm();
 	const { user } = useAppContext();
 
@@ -61,10 +63,10 @@ function RoutingPolicyDetails({
 	const notificationChannelsNotFoundContent = (
 		<Flex justify="space-between">
 			<Flex gap={4} align="center">
-				<Typography.Text>No channels yet.</Typography.Text>
+				<Typography.Text>{t('cfg_no_channels_yet', { defaultValue: "No channels yet." })}</Typography.Text>
 				{user?.role === USER_ROLES.ADMIN ? (
 					<Typography.Text>
-						Create one
+						{t('cfg_create_one', { defaultValue: "Create one" })}
 						<Button
 							style={{ padding: '0 4px' }}
 							type="link"
@@ -76,11 +78,11 @@ function RoutingPolicyDetails({
 						</Button>
 					</Typography.Text>
 				) : (
-					<Typography.Text>Please ask your admin to create one.</Typography.Text>
+					<Typography.Text>{t('cfg_please_ask_your_admin', { defaultValue: "Please ask your admin to create one." })}</Typography.Text>
 				)}
 			</Flex>
 			<Button type="text" onClick={refreshChannels}>
-				Refresh
+				{t('cfg_refresh', { defaultValue: "Refresh" })}
 			</Button>
 		</Flex>
 	);
@@ -103,7 +105,7 @@ function RoutingPolicyDetails({
 			>
 				<div className="create-policy-container">
 					<div className="input-group">
-						<Typography.Text>Routing Policy Name</Typography.Text>
+						<Typography.Text>{t('cfg_routing_policy_name', { defaultValue: "Routing Policy Name" })}</Typography.Text>
 						<Form.Item
 							name="name"
 							rules={[
@@ -113,11 +115,11 @@ function RoutingPolicyDetails({
 								},
 							]}
 						>
-							<Input placeholder="e.g. Base routing policy..." />
+							<Input placeholder={t('cfg_eg_base_routing_policy', { defaultValue: "e.g. Base routing policy..." })} />
 						</Form.Item>
 					</div>
 					<div className="input-group">
-						<Typography.Text>Description</Typography.Text>
+						<Typography.Text>{t('cfg_description', { defaultValue: "Description" })}</Typography.Text>
 						<Form.Item
 							name="description"
 							rules={[
@@ -127,14 +129,14 @@ function RoutingPolicyDetails({
 							]}
 						>
 							<Input.TextArea
-								placeholder="e.g. This is a routing policy that..."
+								placeholder={t('cfg_eg_this_is_a', { defaultValue: "e.g. This is a routing policy that..." })}
 								autoSize={{ minRows: 1, maxRows: 6 }}
 								style={{ resize: 'none' }}
 							/>
 						</Form.Item>
 					</div>
 					<div className="input-group">
-						<Typography.Text>Expression</Typography.Text>
+						<Typography.Text>{t('cfg_expression', { defaultValue: "Expression" })}</Typography.Text>
 						<Form.Item
 							name="expression"
 							rules={[
@@ -152,7 +154,7 @@ function RoutingPolicyDetails({
 						</Form.Item>
 					</div>
 					<div className="input-group">
-						<Typography.Text>Notification Channels</Typography.Text>
+						<Typography.Text>{t('cfg_notification_channels', { defaultValue: "Notification Channels" })}</Typography.Text>
 						<Form.Item
 							name="channels"
 							rules={[
@@ -168,7 +170,7 @@ function RoutingPolicyDetails({
 									label: channel.name,
 								}))}
 								mode="multiple"
-								placeholder="Select notification channels"
+								placeholder={t('cfg_select_notification_channels', { defaultValue: "Select notification channels" })}
 								showSearch
 								maxTagCount={3}
 								maxTagPlaceholder={(omittedValues): string =>
@@ -191,7 +193,7 @@ function RoutingPolicyDetails({
 						onClick={closeModal}
 						disabled={isPolicyDetailsModalActionLoading}
 					>
-						Cancel
+						{t('cfg_cancel', { defaultValue: "Cancel" })}
 					</Button>
 					<Button
 						icon={saveButtonIcon}
@@ -200,7 +202,7 @@ function RoutingPolicyDetails({
 						loading={isPolicyDetailsModalActionLoading}
 						disabled={isPolicyDetailsModalActionLoading}
 					>
-						Save Routing Policy
+						{t('cfg_save_routing_policy', { defaultValue: "Save Routing Policy" })}
 					</Button>
 				</Flex>
 			</Form>

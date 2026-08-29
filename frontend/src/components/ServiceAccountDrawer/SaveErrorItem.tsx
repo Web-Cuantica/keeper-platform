@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { Color } from '@signozhq/design-tokens';
 import { ChevronDown, ChevronUp, CircleAlert, RotateCw } from '@signozhq/icons';
@@ -16,6 +17,7 @@ function SaveErrorItem({
 	apiError,
 	onRetry,
 }: SaveErrorItemProps): JSX.Element {
+	const { t } = useTranslation('pages');
 	const [expanded, setExpanded] = useState(false);
 	const [isRetrying, setIsRetrying] = useState(false);
 
@@ -42,7 +44,7 @@ function SaveErrorItem({
 					<Button
 						variant="link"
 						color="none"
-						aria-label="Retry"
+						aria-label={t('onb_retry', { defaultValue: "Retry" })}
 						onClick={async (e): Promise<void> => {
 							e.stopPropagation();
 							setIsRetrying(true);

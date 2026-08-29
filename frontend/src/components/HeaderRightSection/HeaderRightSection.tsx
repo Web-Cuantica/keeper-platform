@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { Dot } from '@signozhq/icons';
 import { Button } from '@signozhq/ui/button';
@@ -36,6 +37,7 @@ function HeaderRightSection({
 	enableShare,
 	enableFeedback,
 }: HeaderRightSectionProps): JSX.Element | null {
+	const { t } = useTranslation('aiAssistant');
 	const location = useLocation();
 
 	const [openFeedbackModal, setOpenFeedbackModal] = useState(false);
@@ -118,14 +120,14 @@ function HeaderRightSection({
 							onClick={handleOpenAIAssistant}
 							aria-label={
 								showHeaderPendingBadge
-									? pendingUserInputCount === 1
-										? 'Open Noz, 1 action needs your response'
-										: `Open Noz, ${pendingUserInputCount} actions need your response`
-									: 'Open Noz'
+									? t('open_assistant_pending', {
+											count: pendingUserInputCount,
+									  })
+									: t('open_assistant')
 							}
 							prefix={<Noz size={20} />}
 						>
-							<Typography.Text>Noz</Typography.Text>
+							<Typography.Text>{t('assistant_name')}</Typography.Text>
 						</Button>
 					</TooltipSimple>
 				</div>

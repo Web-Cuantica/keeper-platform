@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
 import { ArrowLeft } from '@signozhq/icons';
 import { Badge } from '@signozhq/ui/badge';
@@ -28,6 +29,7 @@ import { useViewRolePageActions } from './useViewRolePageActions';
 import styles from './ViewRolePage.module.scss';
 
 function ViewRolePage(): JSX.Element {
+	const { t } = useTranslation('pages');
 	const { formatTimezoneAdjustedTimestampOptional } = useTimezone();
 	const { isRolesEnabled, isLoading: isFeatureGateLoading } =
 		useRolesFeatureGate();
@@ -91,7 +93,7 @@ function ViewRolePage(): JSX.Element {
 								color="muted"
 								className={styles.permissionTitle}
 							>
-								Transaction Groups
+								{t('cfg_transaction_groups', { defaultValue: "Transaction Groups" })}
 							</Typography>
 							<hr className={styles.permissionDivider} />
 							<RadioGroup
@@ -106,7 +108,7 @@ function ViewRolePage(): JSX.Element {
 									className={styles.permissionModeInput}
 									testId="permission-view-mode-list"
 								>
-									List
+									{t('cfg_list', { defaultValue: "List" })}
 								</RadioGroupItem>
 								<RadioGroupItem
 									value="json"
@@ -164,7 +166,7 @@ function ViewRolePage(): JSX.Element {
 						>
 							<ArrowLeft size={16} />
 						</Button>
-						<Typography.Title level={3}>View Role</Typography.Title>
+						<Typography.Title level={3}>{t('cfg_view_role', { defaultValue: "View Role" })}</Typography.Title>
 					</div>
 				</div>
 
@@ -209,7 +211,7 @@ function ViewRolePage(): JSX.Element {
 						>
 							<ArrowLeft size={16} />
 						</Button>
-						<Typography.Title level={3}>Failed to load role</Typography.Title>
+						<Typography.Title level={3}>{t('cfg_failed_to_load_role', { defaultValue: "Failed to load role" })}</Typography.Title>
 					</div>
 				</div>
 
@@ -255,7 +257,7 @@ function ViewRolePage(): JSX.Element {
 							data-testid="delete-button"
 							className={styles.deleteButton}
 						>
-							Delete
+							{t('cfg_delete', { defaultValue: "Delete" })}
 						</Button>
 					</TooltipSimple>
 
@@ -282,7 +284,7 @@ function ViewRolePage(): JSX.Element {
 									: undefined
 							}
 						>
-							Update
+							{t('cfg_update', { defaultValue: "Update" })}
 						</Button>
 					</TooltipSimple>
 				</div>
@@ -292,14 +294,14 @@ function ViewRolePage(): JSX.Element {
 				<div className={styles.viewRolePageForm}>
 					<div className={styles.formField}>
 						<label htmlFor="role-description" className={styles.formLabel}>
-							Description
+							{t('cfg_description', { defaultValue: "Description" })}
 						</label>
 						<Typography>{role.description}</Typography>
 					</div>
 					<div className={styles.formRow}>
 						<div className={styles.formField}>
 							<label htmlFor="role-created-at" className={styles.formLabel}>
-								Created At
+								{t('cfg_created_at', { defaultValue: "Created At" })}
 							</label>
 							<Badge color="secondary">
 								{formatTimezoneAdjustedTimestampOptional(role.createdAt)}
@@ -307,7 +309,7 @@ function ViewRolePage(): JSX.Element {
 						</div>
 						<div className={styles.formField}>
 							<label htmlFor="role-modified-at" className={styles.formLabel}>
-								Last Modified At
+								{t('cfg_last_modified_at', { defaultValue: "Last Modified At" })}
 							</label>
 							<Badge color="secondary">
 								{formatTimezoneAdjustedTimestampOptional(role.updatedAt)}
